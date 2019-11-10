@@ -4,6 +4,7 @@ import React from 'react'
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
+        this.setState(this.props);
     }
 
     render() {
@@ -15,7 +16,7 @@ class NavBar extends React.Component {
                         <div className="container">
                             {/* Icon in the top left */}
                             <a className="navbar-brand" onClick={this.switch_view_home} target="_blank">
-                                <strong className="blue-text">Libwalk</strong>
+                                <strong className="blue-text">LibWalk</strong>
                             </a>
                             {/* container for collapsing */}
                             <button className="navbar-toggler" type="button" data-toggle="collapse"

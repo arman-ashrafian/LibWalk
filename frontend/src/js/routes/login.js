@@ -4,25 +4,21 @@ import '../../css/style.min.css'
 import '../../css/mdb.min.css'
 import NavBar from "../navbar";
 
-/**
- * The login page with google authentication.
- * @returns {jsx code for rendering}
- */
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    handleLogIn() {
+    handle_log_in() {
         this.props.history.push('/home');
     }
     render() {
         return (
             <div>
-                <NavBar/>
-                {console.log(this.props)}
-            <form className="text-center border border-light p-5" onSubmit={() => this.handleLogIn()}>
+                <NavBar props={this.props}/>
+                {console.log(this.props.children)}
+            <form className="text-center border border-light p-5" onSubmit={() => this.handle_log_in()}>
                 <p className="h4 mb-4">Sign in</p>
                 {/* Email */}
                 <input type="email" id="defaultLoginFormEmail" className="form-control mb-4" placeholder="E-mail"/>

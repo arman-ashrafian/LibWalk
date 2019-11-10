@@ -6,6 +6,7 @@ import * as serviceWorker from './js/serviceWorker';
 import NavBar from "./js/navbar";
 
 ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<NavBar />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
