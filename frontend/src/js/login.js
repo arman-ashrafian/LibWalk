@@ -1,7 +1,7 @@
 import React from 'react';
-import '../css/bootstrap.min.css'
-import '../css/style.min.css'
-import '../css/mdb.lite.min.css'
+import '../css/bootstrap.css'
+import '../css/style.css'
+import '../css/mdb.lite.css'
 // import popper from 'popper';
 // import '../js/bootstrap_js/popper.min'
 // import '../js/bootstrap_js/bootstrap.min'
