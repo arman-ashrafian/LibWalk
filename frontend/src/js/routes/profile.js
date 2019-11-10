@@ -53,7 +53,7 @@ class Profile extends React.Component {
                     <h1 style={{textDecoration: 'underline'}}>
                         Settings
                     </h1>
-                    <button onClick="do nothing">
+                        <button onClick={this.switch_view_login()}>
                         Logout
                     </button>
 
@@ -61,6 +61,12 @@ class Profile extends React.Component {
 
             </div>);
     }
+
+    switch_view_login() {
+        console.log('Onclick')
+        this.props.history.push('/login');
+    }
+
 }
 
 
