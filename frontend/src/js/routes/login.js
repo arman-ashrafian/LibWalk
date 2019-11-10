@@ -17,8 +17,9 @@ class Login extends React.Component {
     render() {
         return (
             <div>
-                <NavBar props={this.props}/>
+                <NavBar {...this.props}/>
                 {console.log(this.props.children)}
+
             <form className="text-center border border-light p-5" onSubmit={() => this.handle_log_in()}>
                 <p className="h4 mb-4">Sign in</p>
                 {/* Email */}
