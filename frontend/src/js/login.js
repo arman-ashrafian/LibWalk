@@ -7,7 +7,16 @@ import '../css/mdb.lite.css'
 // import '../js/bootstrap_js/bootstrap.min'
 // import '../js/bootstrap_js/jquery-3.4.1.min'
 // import '../js/bootstrap_js/mdb.min'
+/**
+ * The login page with google authentication.
+ * @returns {jsx code for rendering}
+ */
 function login_screen() {
+
+    // todo set up database authentication here
+    // todo edit the fields of the form. Currently thinking about major and year (could have a text field and dropdown).
+    // todo optional: do remember me button
+
     return (
         <form className="text-center border border-light p-5" action="#!">
             <p className="h4 mb-4">Sign in</p>
