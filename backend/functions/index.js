@@ -27,10 +27,35 @@ exports.testDb = functions.https.onRequest((req, res) => {
     });
 });
 
+/* ================== /getUser ================== 
+ * request:
+ *    {uid: <string>}
+ *
+ * response:
+ *    {
+ *        "name": <string>,
+ *        "subscriptions": [<string>, <string>,...],
+ *        "year": <number>,
+ *        "major": <string> 
+ *    }
+ */
+
 exports.getUser = functions.https.onRequest((req, res) => {
-  res.send("get user");
+  const UID = req.body.uid; // user ID
+
+  admin
+    .firestore()
+    .collection("Users")
+    .doc(UID)
+    .get()
+    .then(doc => {
+      res.send(doc.data());
+    })
+    .catch(err => {
+      res.send(err);
+    });
 });
-*/
+
 exports.getClubs = functions.https.onRequest((req, res) => {
   admin
     .firestore()
