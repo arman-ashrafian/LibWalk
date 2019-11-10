@@ -9,6 +9,11 @@ class Profile extends React.Component {
         super(props);
     }
 
+    switch_view_login() {
+        console.log('Onclick')
+        this.props.history.push('/login');
+    }
+
     render() {
         let props = {
             userName: 'kaus',
@@ -53,18 +58,13 @@ class Profile extends React.Component {
                     <h1 style={{textDecoration: 'underline'}}>
                         Settings
                     </h1>
-                        <button onClick={this.switch_view_login()}>
+                        <button onClick={() => this.switch_view_login()}>
                         Logout
                     </button>
 
                 </div>
 
             </div>);
-    }
-
-    switch_view_login() {
-        console.log('Onclick')
-        this.props.history.push('/login');
     }
 
 }
