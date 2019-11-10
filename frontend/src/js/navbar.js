@@ -39,7 +39,7 @@ class NavBar extends React.Component {
                                     <li className="nav-item">
                                         <span className="sr-only">(current)</span>
                                         <a className="nav-link" onClick={this.switch_view_calendar}
-                                           target="_blank">Calender</a>
+                                           target="_blank">Calendar</a>
                                     </li>
                                     <li className="nav-item">
                                         <a className="nav-link" onClick={this.switch_view_announcements}
