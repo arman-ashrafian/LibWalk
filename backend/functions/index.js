@@ -77,6 +77,37 @@ exports.getEvent = functions.https.onRequest((req, res) => {
 });
 
 
+
+/* ================== /getEvents ================== 
+ * request: 
+ * 	{}
+ *
+ * response:
+ * 	{
+ * 		<event.JSON>
+ * 		<event.JSON>
+ * 		...
+ * 	}
+ */
+exports.getEvents = functions.https.onRequest((req, res) => {
+  const markers = [];
+  admin
+    .firestore()
+    .collection('Events')
+    .get()
+    .then( (cols) => {
+	cols.docs.forEach(doc => {
+		markers.push(doc.data());
+	});
+	res.send(markers);
+    })
+    .catch( (err) => {
+	res.send(err);
+    });
+
+});
+
+
 /* ================== /getTag ================== 
  * request: 
  * 	{tag_id: <string>}
@@ -99,3 +130,4 @@ exports.getTag = functions.https.onRequest((req, res) => {
 	res.send(err);
     });
 });
+
