@@ -29,7 +29,7 @@ exports.testDb = functions.https.onRequest((req, res) => {
  *    {uid: <string>}
  *
  * response:
- *    {{
+ *    {
  *        "name": <string>,
  *        "subscriptions": [<string>, <string>,...],
  *        "year": <number>,
