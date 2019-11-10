@@ -4,7 +4,7 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 // test function
-/*exports.helloWorld = functions.https.onRequest((req, res) => {
+exports.helloWorld = functions.https.onRequest((req, res) => {
   res.send("HIIIII");
 });
 
@@ -39,7 +39,6 @@ exports.testDb = functions.https.onRequest((req, res) => {
  *        "major": <string> 
  *    }
  */
-
 exports.getUser = functions.https.onRequest((req, res) => {
   const UID = req.body.uid; // user ID
 
@@ -54,6 +53,19 @@ exports.getUser = functions.https.onRequest((req, res) => {
     .catch(err => {
       res.send(err);
     });
+});
+
+//todo add comments
+exports.changeEvent = functions.https.onRequest((req, res) => {
+  const eventId = req.body.event_id;
+  const eventJson = req.body.event;
+
+  admin
+    .firestore()
+    .collection('Events').doc(eventId)
+    .set(eventJson)
+        .then( () => res.send({message:"changed event " + eventId}) )
+        .catch( (err) => res.send({message:err}) );
 });
 
 exports.getClubs = functions.https.onRequest((req, res) => {
