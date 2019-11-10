@@ -3,9 +3,30 @@ const admin = require('firebase-admin');
 
 admin.initializeApp();
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
- response.send("Testing Cloud Function");
+// test function
+exports.helloWorld = functions.https.onRequest((req, res) => {
+ res.send("HIIIII");
 });
+
+// test function
+// This function demonstrates how to get a document and read a particular attribute from the database
+exports.testDb = functions.https.onRequest((req, res) => {
+  admin
+    .firestore()
+    .collection('Test').doc('Arman')
+    .get()
+    .then( (doc) => { // db query success
+      let age = doc.data().Age; // doc.data() returns a JSON object
+      res.send({age: age}); // res.send() parameter must be JSON !!
+    })
+    .catch( (err) => { // db query fail
+      res.send(err);
+    });
+});
+
+exports.getUser = functions.https.onRequest((req, res) => {
+  res.send('get user');
+});
+
+
+
