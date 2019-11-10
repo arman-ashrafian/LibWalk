@@ -1,7 +1,8 @@
 import React from 'react';
 import '../css/bootstrap.min.css'
 import '../css/style.min.css'
-import '../js/bootstrap_js/popper.min'
+// import popper from 'popper';
+// import '../js/bootstrap_js/popper.min'
 // import '../js/bootstrap_js/bootstrap.min'
 // import '../js/bootstrap_js/jquery-3.4.1.min'
 // import '../js/bootstrap_js/mdb.min'
@@ -34,7 +35,7 @@ function login_screen() {
                         </div>
                     </div>
                     <div>
-                        <a href>Forgot password?</a>
+                        <a href=''>Forgot password?</a>
                     </div>
                     <button className="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
                             type="submit">Sign in
