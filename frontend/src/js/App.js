@@ -6,7 +6,6 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                {/*{login_screen()}*/}
                 {Calendar}
             </header>
         </div>
