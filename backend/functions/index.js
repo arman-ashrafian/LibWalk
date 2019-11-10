@@ -29,4 +29,73 @@ exports.getUser = functions.https.onRequest((req, res) => {
 });
 
 
+exports.getEvent = functions.https.onRequest((req, res) => {
+  let event_id = req.body.event_id;
+  admin
+    .firestore()
+    .collection('Events').doc(event_id)
+    .get()
+    .then( (doc) => {
+	res.send(doc.data());
+    })
+    .catch( (err) => {
+	res.send(err);
+    });
+});
 
+
+/* ================== /getEvent ================== 
+ * request: 
+ * 	{event_id: <string>}
+ *
+ * response:
+ * 	{
+ * 		"eventName": <string>,
+ * 		"location": <string>,
+ * 		"rsvpForm": <string>,
+ * 		"description": <string>,
+ * 		"clubsHosting": <string[]>,
+ * 		"pictureURL": <string>,
+ * 		"time": {
+ *				"seconds": <number>,
+ *				"nanoseconds": <number>
+ * 			}
+ * 	}
+ */
+exports.getEvent = functions.https.onRequest((req, res) => {
+  let event_id = req.body.event_id;
+  admin
+    .firestore()
+    .collection('Events').doc(event_id)
+    .get()
+    .then( (doc) => {
+	res.send(doc.data());
+    })
+    .catch( (err) => {
+	res.send(err);
+    });
+});
+
+
+/* ================== /getTag ================== 
+ * request: 
+ * 	{tag_id: <string>}
+ *
+ * response:
+ * 	{
+ * 		"type": <string>,
+ * 	}
+ */
+exports.getTag = functions.https.onRequest((req, res) => {
+  let tag_id = req.body.tag_id;
+  admin
+    .firestore()
+    .collection('Tags').doc(tag_id)
+    .get()
+    .then( (doc) => {
+	res.send(doc.data());
+    })
+    .catch( (err) => {
+	res.send(err);
+    });
+});
