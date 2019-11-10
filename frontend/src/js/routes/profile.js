@@ -3,60 +3,66 @@ import '../../css/bootstrap.min.css'
 import '../../css/index.css'
 import '../../css/mdb.lite.min.css'
 import '../../css/style.min.css'
-// import '../../css/'
-// import '../../css/'
-// import '../../css/'
 
-function show_user_profile(props) {
-    props = {
-        userName: 'kaus',
-        userEmail: 'you cant have my email.',
-        userMajor: 'CS',
-        userYear: 'Senior',
-        userUrl: "https://images-na.ssl-images-amazon.com/images/I/61MCdgpt%2BmL._SX425_.jpg",
-    };
+class Profile extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
-    return (
-        <div className="row">
-            {/*Display an image*/}
-            <div className="col-sm-4 text-center">
-                <img src={props.userUrl}
-                     onError="src='http://ucsdguardian.org/wp-content/uploads/2015/04/sun-god-with-glasses.png'"
-                     height={300} width={300}/>
-            </div>
+    render() {
+        let props = {
+            userName: 'kaus',
+            userEmail: 'you cant have my email.',
+            userMajor: 'CS',
+            userYear: 'Senior',
+            userUrl: "https://images-na.ssl-images-amazon.com/images/I/61MCdgpt%2BmL._SX425_.jpg",
+        };
 
-            {/*Display User Information*/}
-            <div className="col-sm-4 text-left">
-                <h1 style={{textDecoration: 'underline'}}>
-                    My Information
-                </h1>
-                <h3>
-                    {props.userName}
-                </h3>
-                <h3>
-                    {props.userEmail}
-                </h3>
-                <h3>
-                    {props.userMajor}
-                </h3>
-                <h3>
-                    {props.userYear}
-                </h3>
+        this.props = {...this.props, ...props};
 
-            </div>
-            <div className="col-sm-4">
+        return (
+            <div className="row">
+                {/*Display an image*/}
+                <div className="col-sm-4 text-center">
+                    <img src={this.props.userUrl}
+                         onError="src='http://ucsdguardian.org/wp-content/uploads/2015/04/sun-god-with-glasses.png'"
+                         height={300} width={300}/>
+                </div>
 
-                <h1 style={{textDecoration: 'underline'}}>
-                    Settings
-                </h1>
-                <button onClick="do nothing">
-                    Logout
-                </button>
+                {/*Display User Information*/}
+                <div className="col-sm-4 text-left">
+                    <h1 style={{textDecoration: 'underline'}}>
+                        My Information
+                    </h1>
+                    <h3>
+                        {this.props.userName}
+                    </h3>
+                    <h3>
+                        {this.props.userEmail}
+                    </h3>
+                    <h3>
+                        {this.props.userMajor}
+                    </h3>
+                    <h3>
+                        {this.props.userYear}
+                    </h3>
 
-            </div>
+                </div>
+                <div className="col-sm-4">
 
-        </div>);
+                    <h1 style={{textDecoration: 'underline'}}>
+                        Settings
+                    </h1>
+                    <button onClick="do nothing">
+                        Logout
+                    </button>
+
+                </div>
+
+            </div>);
+    }
 }
 
 
-export default show_user_profile;
+
+export default Profile;

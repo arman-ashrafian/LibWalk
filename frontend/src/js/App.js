@@ -7,7 +7,7 @@ import Search from "./routes/search";
 import Subs from "./routes/subs";
 import Login from "./routes/login";
 import Calendar from "./routes/calendar";
-import show_user_profile from "./routes/profile";
+import Profile from "./routes/profile";
 
 function App() {
     return (
@@ -19,7 +19,7 @@ function App() {
                 <Route exact path="/calendar" component={Calendar} />
                 <Route exact path="/search" component={Search} />
                 <Route exact path="/subs" component={Subs} />
-                <Route exact path="/profile" component={show_user_profile} />
+                <Route exact path="/profile" component={Profile} />
             </div>
         </Router>
     );
