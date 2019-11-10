@@ -8,6 +8,7 @@ import NavBar from "../navbar";
 class Profile extends React.Component {
     constructor(props) {
         super(props);
+        console.log('Profile constructor call.')
     }
 
 
@@ -23,44 +24,47 @@ class Profile extends React.Component {
         this.props = {...this.props, ...props};
 
         return (
-            <div className="row">
-                {/*Display an image*/}
-                <div className="col-sm-4 text-center">
-                    <img src={this.props.userUrl}
-                         onError="src='http://ucsdguardian.org/wp-content/uploads/2015/04/sun-god-with-glasses.png'"
-                         height={300} width={300}/>
+            <div>
+                <NavBar {...this.props}/>
+                <div className="row">
+                    {/*Display an image*/}
+                    <div className="col-sm-4 text-center">
+                        <img src={this.props.userUrl}
+                             onError="src='http://ucsdguardian.org/wp-content/uploads/2015/04/sun-god-with-glasses.png'"
+                             height={300} width={300}
+                        alt={''}/>
+                    </div>
+
+                    {/*Display User Information*/}
+                    <div className="col-sm-4 text-left">
+                        <h1 style={{textDecoration: 'underline'}}>
+                            My Information
+                        </h1>
+                        <h3>
+                            {this.props.userName}
+                        </h3>
+                        <h3>
+                            {this.props.userEmail}
+                        </h3>
+                        <h3>
+                            {this.props.userMajor}
+                        </h3>
+                        <h3>
+                            {this.props.userYear}
+                        </h3>
+
+                    </div>
+                    <div className="col-sm-4">
+
+                        <h1 style={{textDecoration: 'underline'}}>
+                            Settings
+                        </h1>
+                        <button onClick={this.switch_view_login()}>
+                            Logout
+                        </button>
+
+                    </div>
                 </div>
-
-                {/*Display User Information*/}
-                <div className="col-sm-4 text-left">
-                    <h1 style={{textDecoration: 'underline'}}>
-                        My Information
-                    </h1>
-                    <h3>
-                        {this.props.userName}
-                    </h3>
-                    <h3>
-                        {this.props.userEmail}
-                    </h3>
-                    <h3>
-                        {this.props.userMajor}
-                    </h3>
-                    <h3>
-                        {this.props.userYear}
-                    </h3>
-
-                </div>
-                <div className="col-sm-4">
-
-                    <h1 style={{textDecoration: 'underline'}}>
-                        Settings
-                    </h1>
-                    <button onClick={this.switch_view_login()}>
-                        Logout
-                    </button>
-
-                </div>
-
             </div>);
     }
 

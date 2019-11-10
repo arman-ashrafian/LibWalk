@@ -8,6 +8,7 @@ import NavBar from "../navbar";
 class Login extends React.Component {
     constructor(props) {
         super(props);
+        console.log('Login constructor call.')
     }
 
     handle_log_in() {

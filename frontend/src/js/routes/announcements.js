@@ -4,12 +4,14 @@ import NavBar from "../navbar";
 class Announcements extends React.Component {
     constructor(props) {
         super(props);
+        console.log('Announcements constructor call.')
     }
     
     render() {
         return (
             <div>
-              <NavBar/>
+              <NavBar {...this.props}/>
+
               {/*Main layout*/}
               <main className="mt-5 pt-5">
                 <div className="container">

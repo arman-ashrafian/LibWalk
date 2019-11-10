@@ -5,15 +5,15 @@ import NavBar from "../navbar";
 class Calendar extends React.Component {
     constructor(props) {
         super(props);
-        this.setState(this.props);
         this.props = {...this.props, description: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]};
-        console.log('Calendar set its state to', this.props);
+        console.log('Calendar constructor call');
     }
 
     render() {
         return (<div>
-            <NavBar props={this.props}/>
-            this.draw_calendar()
+            <NavBar {...this.props}/>
+            <div>{console.log(this.props.children)}</div>
+            {this.draw_calendar()}
         </div>);
     }
 

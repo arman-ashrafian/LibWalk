@@ -4,7 +4,9 @@ import React from 'react'
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
-        this.setState(this.props);
+        this.state = {};
+        this.setState(props);
+        console.log('Navbar constructor called.', this.props, props);
     }
 
     render() {
@@ -66,13 +68,6 @@ class NavBar extends React.Component {
         )
     }
 
-    /**
-     * This should return an object that contains
-     */
-    get_nav_list = () => {
-
-    };
-
     switch_view_profile = () => {
         this.props.history.push('/profile');
 
@@ -85,8 +80,6 @@ class NavBar extends React.Component {
 
     switch_view_calendar = () => {
         this.props.history.push('/calendar');
-
-
     };
 
     switch_view_announcements = () => {
