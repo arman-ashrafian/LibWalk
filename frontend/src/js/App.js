@@ -5,9 +5,9 @@ import Home from "./routes/home";
 import Announcements from "./routes/announcements";
 import Search from "./routes/search";
 import Subs from "./routes/subs";
-import Profile from "./routes/profile";
 import Login from "./routes/login";
 import draw_calendar from "./routes/calendar";
+import show_user_profile from "./routes/profile";
 
 function App() {
     return (
@@ -19,7 +19,7 @@ function App() {
                 <Route exact path="/calendar" component={draw_calendar} />
                 <Route exact path="/search" component={Search} />
                 <Route exact path="/subs" component={Subs} />
-                <Route exact path="/profile" component={Profile} />
+                <Route exact path="/profile" component={show_user_profile} />
             </div>
         </Router>
     );
