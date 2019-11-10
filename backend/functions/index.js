@@ -72,7 +72,7 @@ exports.getUser = functions.https.onRequest((req, res) => {
  *
  * response:
  *   {
- *      message: "changed user <user_id>"
+ *      message: "changed event <event_id>"
  *   }
  *
  */
@@ -137,15 +137,19 @@ exports.getClub = functions.https.onRequest((req, res) => {
 
 /* ================== /changeUser  ====================
 * request:
-*   { club_id: <string> }
-*
-* response:
-*   {
+*   { user_id: <string>,
+      user: {
 *       "name": <string>,
 *       "major": <string>,
 *       "year": <string>,
 *       "user_reference": <string>,
 *       "subscriptions": [<string>]
+*     }
+*   }
+*
+* response:
+*   {
+*      message: "changed user <user_id>"
 *   }
 */
 exports.changeUser = functions.https.onRequest((req, res) => {
