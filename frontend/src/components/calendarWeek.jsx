@@ -13,7 +13,6 @@ var NewComponent = React.createClass({
         <div className="calendar__day day">{this.props.description[6]}</div>
 
       </div>
-
     );
   }
 });
