@@ -51,4 +51,15 @@ exports.getUser = functions.https.onRequest((req, res) => {
     });
 });
 
+//todo add comments
+exports.changeEvent = functions.https.onRequest((req, res) => {
+  const eventId = req.body.event_id;
+  const eventJson = req.body.event;
 
+  admin
+    .firestore()
+    .collection('Events').doc(eventId)
+    .set(eventJson)
+        .then( () => res.send({message:"changed event " + eventId}) )
+        .catch( (err) => res.send({message:err}) );
+});
