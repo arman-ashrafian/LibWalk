@@ -1,22 +1,14 @@
 import React from "react";
 
-function display_calendar() {
-
-
-    // return ();
-}
-
-
 class Calendar extends React.Component {
     render() {
         return (
             <div className='calendar_page'>
-                this.calendar_header()
-                this.calendar_title()
-                this.calendar_week()
+                calendar_header()
+                calendar_title()
+                calendar_week()
             </div>
-        )
-            ;
+        );
     }
 
 
@@ -55,3 +47,6 @@ class Calendar extends React.Component {
     }
 
 }
+
+
+export default Calendar;
