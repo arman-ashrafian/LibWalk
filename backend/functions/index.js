@@ -55,33 +55,104 @@ exports.getUser = functions.https.onRequest((req, res) => {
     });
 });
 
-//todo add comments
+/* ================= /changeEvent  ====================
+ * request:
+ *   { 
+ *      event_id: <string>,
+ *      event: {
+ *       "eventName": <string>,
+ *       "description": <string>,
+ *       "pictureURL": <string>,
+ *       "rsvpForm": [<string>],
+ *       "club_reference": <string>,
+ *       "time": <time>,
+ *       "clubsHosting": [<string>]
+ *      }
+ *   }
+ *
+ * response:
+ *   {
+ *      message: "changed user <user_id>"
+ *   }
+ *
+ */
 exports.changeEvent = functions.https.onRequest((req, res) => {
   const eventId = req.body.event_id;
   const eventJson = req.body.event;
-
-  admin
-    .firestore()
-    .collection('Events').doc(eventId)
-    .set(eventJson)
+    admin
+        .firestore()
+        .collection('Events').doc(eventId)
+        .set(eventJson)
         .then( () => res.send({message:"changed event " + eventId}) )
         .catch( (err) => res.send({message:err}) );
 });
 
 exports.getClubs = functions.https.onRequest((req, res) => {
-  admin
-    .firestore()
-    .collection("Clubs")
-    .get()
-    .then(querySnapshot => {
-      let json_data = { clubs: [] };
-      querySnapshot.forEach(doc => {
-        json_data.clubs.push(doc.data());
-      });
-      res.send(json_data);
-    })
-    .catch(err => {
-      // db query fail
-      res.send(err);
-    });
+    admin
+        .firestore()
+        .collection("Clubs")
+        .get()
+        .then(querySnapshot => {
+            let json_data = { clubs: [] };
+            querySnapshot.forEach(doc => {
+                json_data.clubs.push(doc.data());
+            });
+            res.send(json_data);
+        })
+        .catch(err => {
+            // db query fail
+            res.send(err);
+        });
 });
+
+/* ================= /getClub  ====================
+* request:
+*   { club_id: <string> }
+*
+* response:
+*   {
+*       "clubName": <string>,
+*       "description": <string>,
+*       "pictureURL": <string>,
+*       "club_reference": <string>,
+*       "announcements": [<string>],
+*       "emailList": [<string>],
+*       "eventList": [<string>],
+*       "tags": [<string>]
+*   }
+*/
+exports.getClub = functions.https.onRequest((req, res) => {
+  admin
+  .firestore()
+  .collection('Clubs').doc(req.body.club_id).get()
+  .then( (doc) => {
+    res.send(doc.data());
+  })
+  
+  .catch( (err) => { // db query fail
+    res.send(err);
+  });
+
+});
+
+/* ================== /changeUser  ====================
+* request:
+*   { club_id: <string> }
+*
+* response:
+*   {
+*       "name": <string>,
+*       "major": <string>,
+*       "year": <string>,
+*       "user_reference": <string>,
+*       "subscriptions": [<string>]
+*   }
+*/
+exports.changeUser = functions.https.onRequest((req, res) => {
+	user_id = req.body.user_id;
+  user_info = req.body.user;
+	admin.firestore().collection('Users').doc(user_id).set(user_info)
+    .then( () => res.send({message:"changed event " + eventId}) )
+    .catch( (err) => res.send(err))
+});
+
