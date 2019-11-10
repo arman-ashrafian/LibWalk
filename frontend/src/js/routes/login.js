@@ -1,66 +1,51 @@
 import React from 'react';
 import '../../css/bootstrap.min.css'
 import '../../css/style.min.css'
+import '../../css/mdb.min.css'
 
-// import popper from 'popper';
-// import '../js/bootstrap_js/popper.min'
-// import '../js/bootstrap_js/bootstrap.min'
-// import '../js/bootstrap_js/jquery-3.4.1.min'
-// import '../js/bootstrap_js/mdb.min'
+/**
+ * The login page with google authentication.
+ * @returns {jsx code for rendering}
+ */
+function login_screen() {
 
-function Login() {
+    // todo set up database authentication here
+    // todo edit the fields of the form. Currently thinking about major and year (could have a text field and dropdown).
+    // todo optional: do remember me button
+
     return (
-        <div className="card">
-            <div>
-                <h5 className="card-header info-color white-text text-center py-4">
-                    <strong>Sign in</strong>
-                </h5>
+        <form className="text-center border border-light p-5" action="#!">
+            <p className="h4 mb-4">Sign in</p>
+            {/* Email */}
+            <input type="email" id="defaultLoginFormEmail" className="form-control mb-4" placeholder="E-mail"/>
+            {/* Password */}
+            <input type="password" id="defaultLoginFormPassword" className="form-control mb-4" placeholder="Password"/>
+            <div className="d-flex justify-content-around">
+                <div>
+                    {/* Remember me */}
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="defaultLoginFormRemember"/>
+                        <label className="custom-control-label" htmlFor="defaultLoginFormRemember">Remember me</label>
+                    </div>
+                </div>
+                <div>
+                    {/* Forgot password */}
+                    <a href>Forgot password?</a>
+                </div>
             </div>
-            <div className="card-body px-lg-5 pt-0">
-                <form className="text-center" style={{color: '#757575'}} action="#!">
-                    <div className="md-form">
-                        <input type="email" id="materialLoginFormEmail" className="form-control"/>
-                        <label htmlFor="materialLoginFormEmail">E-mail</label>
-                    </div>
-                    <div className="md-form">
-                        <input type="password" id="materialLoginFormPassword" className="form-control"/>
-                        <label htmlFor="materialLoginFormPassword">Password</label>
-                    </div>
-                    <div className="d-flex justify-content-around">
-                        <div>
-                            <div className="form-check">
-                                <input type="checkbox" className="form-check-input" id="materialLoginFormRemember"/>
-                                <label className="form-check-label" htmlFor="materialLoginFormRemember">Remember
-                                    me</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <a href=''>Forgot password?</a>
-                    </div>
-                    <button className="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
-                            type="submit">Sign in
-                    </button>
-                    <p>Not a member?
-                        <a href>Register</a>
-                    </p>
-                    <p>or sign in with:</p>
-                    <a type="button" className="btn-floating btn-fb btn-sm">
-                        <i className="fab fa-facebook-f"/>
-                    </a>
-                    <a type="button" className="btn-floating btn-tw btn-sm">
-                        <i className="fab fa-twitter"/>
-                    </a>
-                    <a type="button" className="btn-floating btn-li btn-sm">
-                        <i className="fab fa-linkedin-in"/>
-                    </a>
-                    <a type="button" className="btn-floating btn-git btn-sm">
-                        <i className="fab fa-github"/>
-                    </a>
-                </form>
-            </div>
-        </div>
-    );
-};
+            {/* Sign in button */}
+            <button className="btn btn-info btn-block my-4" type="submit">Sign in</button>
+            {/* Register */}
+            <p>Not a member?
+                <a href>Register</a>
+            </p>
+            {/* Social login */}
+            <p>or sign in with:</p>
+            <a href="#" className="mx-2" role="button"><i className="fab fa-facebook-f light-blue-text"/></a>
+            <a href="#" className="mx-2" role="button"><i className="fab fa-twitter light-blue-text"/></a>
+            <a href="#" className="mx-2" role="button"><i className="fab fa-linkedin-in light-blue-text"/></a>
+            <a href="#" className="mx-2" role="button"><i className="fab fa-github light-blue-text"/></a>
+        </form>);
+}
 
-export default Login;
+export default login_screen;
