@@ -3,6 +3,7 @@ import '../../css/bootstrap.min.css'
 import '../../css/index.css'
 import '../../css/mdb.lite.min.css'
 import '../../css/style.min.css'
+import NavBar from "../navbar";
 
 class Profile extends React.Component {
     constructor(props) {
@@ -63,12 +64,10 @@ class Profile extends React.Component {
     }
 
     switch_view_login() {
-        console.log('Onclick')
+        console.log('Onclick');
         this.props.history.push('/login');
     }
 
 }
-
-
 
 export default Profile;

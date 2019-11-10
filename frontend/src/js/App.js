@@ -8,11 +8,13 @@ import Subs from "./routes/subs";
 import Login from "./routes/login";
 import Calendar from "./routes/calendar";
 import Profile from "./routes/profile";
+import NavBar from "./navbar";
 
 function App() {
     return (
         <Router>
             <div className="App">
+                <Route exact path="/" component={NavBar} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/home" component={Home} />
                 <Route exact path="/announcements" component={Announcements} />
