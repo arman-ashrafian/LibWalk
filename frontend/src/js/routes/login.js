@@ -11,16 +11,17 @@ class Login extends React.Component {
         console.log('Login constructor call.')
     }
 
-    view_switch_login() {
+    view_switch_login = () => {
+        console.log('profile switched pages');
         this.props.history.push('/home');
-    }
+    };
 
     render() {
         return (
             <div>
                 <NavBar {...this.props}/>
                 <div>
-                    <form className="text-center border border-light p-5" onSubmit={() => this.view_switch_login()}>
+                    <form className="text-center border border-light p-5" onSubmit={this.view_switch_login}>
                         <p className="h4 mb-4">Sign in</p>
                         {/* Email */}
                         <input type="email" id="defaultLoginFormEmail" className="form-control mb-4"

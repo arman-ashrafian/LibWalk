@@ -31,11 +31,11 @@ class NavBar extends React.Component {
                             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                 {/* Left Facing  */}
                                 <ul className="navbar-nav mr-auto">
-                                    <li className="nav-item">
-                                        <a className="nav-link"
-                                           onClick={this.switch_view_home}>Home
-                                        </a>
-                                    </li>
+                                    {/*<li className="nav-item">*/}
+                                    {/*    <a className="nav-link"*/}
+                                    {/*       onClick={this.switch_view_profile}>Profile*/}
+                                    {/*    </a>*/}
+                                    {/*</li>*/}
                                     <li className="nav-item">
                                         <span className="sr-only">(current)</span>
                                         <a className="nav-link" onClick={this.switch_view_calendar}
@@ -70,7 +70,6 @@ class NavBar extends React.Component {
 
     switch_view_profile = () => {
         this.props.history.push('/profile');
-
     };
 
     switch_view_subscriptions = () => {
