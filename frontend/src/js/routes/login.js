@@ -1,7 +1,7 @@
 import React from 'react';
-import '../../css/bootstrap.css'
-import '../../css/style.css'
-import '../../css/mdb.lite.css'
+import '../../css/bootstrap.min.css'
+import '../../css/style.min.css'
+import '../../css/mdb.min.css'
 
 /**
  * The login page with google authentication.

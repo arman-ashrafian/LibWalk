@@ -3,6 +3,10 @@ import '../../css/calendar.css'
 
 
 function draw_calendar(props) {
+    props = {
+        description : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    };
+
     return (
         <div className='calendar_page'>
             <h1> CALENDAR </h1>
