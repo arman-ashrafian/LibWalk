@@ -4,13 +4,13 @@ class Calendar extends React.Component {
     render() {
         return (
             <div className='calendar_page'>
-                calendar_header()
-                calendar_title()
-                calendar_week()
+                <h1> CALENDAR </h1>
+                {/* {this.calendar_header()} */}
+                {/* {this.calendar_title()} */}
+                {/* {this.calendar_week()} */}
             </div>
         );
     }
-
 
     calendar_header() {
         return (<div className="calendar__header">

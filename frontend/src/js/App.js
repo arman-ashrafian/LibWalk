@@ -1,15 +1,27 @@
 import React from 'react';
-import login_screen from "./login";
-import Calendar from "./calendar";
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import '../css/App.css';
+import Home from "./routes/home";
+import Announcements from "./routes/announcements";
+import Calendar from "./routes/calendar";
+import Search from "./routes/search";
+import Subs from "./routes/subs";
+import Profile from "./routes/profile";
+import Login from "./routes/login";
 
 function App() {
     return (
-        <div className="App">
-            <header className="App-header">
-                {/*{login_screen()}*/}
-                {Calendar}
-            </header>
-        </div>
+        <Router>
+            <div className="App">
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/home" component={Home} />
+                <Route exact path="/announcements" component={Announcements} />
+                <Route exact path="/calendar" component={Calendar} />
+                <Route exact path="/search" component={Search} />
+                <Route exact path="/subs" component={Subs} />
+                <Route exact path="/profile" component={Profile} />
+            </div>
+        </Router>
     );
 }
 
