@@ -63,7 +63,7 @@ class Profile extends React.Component {
             </div>);
     }
 
-    switch_view_login() {
+    switch_view_login = () => {
         console.log('Onclick');
         this.props.history.push('/login');
     }

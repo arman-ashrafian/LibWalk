@@ -1,16 +1,20 @@
 import React from "react";
 import '../../css/calendar.css'
+import NavBar from "../navbar";
 
 class Calendar extends React.Component {
     constructor(props) {
-        super(props) ;
+        super(props);
         this.setState(this.props);
-        this.props = {...this.props, description : [0, 1, 2, 3, 4, 5, 6 , 7 , 8, 9]};
-        console.log('Calendar set its state to', this.props );
+        this.props = {...this.props, description: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]};
+        console.log('Calendar set its state to', this.props);
     }
 
     render() {
-        return this.draw_calendar();
+        return (<div>
+            <NavBar props={this.props}/>
+            this.draw_calendar()
+        </div>);
     }
 
     draw_calendar() {
