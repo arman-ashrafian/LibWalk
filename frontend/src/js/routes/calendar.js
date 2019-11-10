@@ -1,6 +1,18 @@
 import React from "react";
+// import '../css/style.min.css'
+// import '../css/mdb.lite.min.css'
+// import '../css/mdb.min.css'
+// import '../css/bootstrap.min.css'
+import '../css/calendar.css'
 
 class Calendar extends React.Component {
+    constructor() {
+        super();
+        this.props = {
+            description: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        }
+    }
+
     render() {
         return (
             <div className='calendar_page'>
@@ -8,10 +20,15 @@ class Calendar extends React.Component {
                 {/* {this.calendar_header()} */}
                 {/* {this.calendar_title()} */}
                 {/* {this.calendar_week()} */}
+                {this.calendar_header()}
+                {this.calendar_title()}
+                {this.calendar_week()}
+                {this.calendar_week()}
+                {this.calendar_week()}
+                {this.calendar_week()}
             </div>
         );
     }
-
 
     calendar_header() {
         return (<div className="calendar__header">
