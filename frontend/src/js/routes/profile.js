@@ -10,6 +10,7 @@ class Profile extends React.Component {
         super(props);
     }
 
+
     render() {
         let props = {
             userName: 'kaus',
@@ -69,5 +70,7 @@ class Profile extends React.Component {
     }
 
 }
+
+
 
 export default Profile;

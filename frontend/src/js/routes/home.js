@@ -2,9 +2,11 @@ import React from "react";
 import NavBar from "../navbar";
 
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
-        // let navbar = new NavBar();
         return (
             <div>
                 <NavBar/>
