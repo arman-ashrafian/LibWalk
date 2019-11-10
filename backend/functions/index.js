@@ -131,3 +131,32 @@ exports.getTag = functions.https.onRequest((req, res) => {
     });
 });
 
+
+/* ================== /getTags ================== 
+ * request: 
+ * 	{}
+ *
+ * response:
+ * 	{
+ * 		<tag.JSON>
+ * 		<tag.JSON>
+ * 		...
+ * 	}
+ */
+exports.getTags = functions.https.onRequest((req, res) => {
+  const markers = [];
+  admin
+    .firestore()
+    .collection('Tags')
+    .get()
+    .then( (cols) => {
+	cols.docs.forEach(doc => {
+		markers.push(doc.data());
+	});
+	res.send(markers);
+    })
+    .catch( (err) => {
+	res.send(err);
+    });
+
+});
