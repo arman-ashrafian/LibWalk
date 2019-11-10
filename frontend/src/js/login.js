@@ -1,6 +1,10 @@
 import React from 'react';
-import '../css/'
-
+import '../css/bootstrap.min.css'
+import '../css/style.min.css'
+import '../js/bootstrap_js/popper.min'
+import '../js/bootstrap_js/bootstrap.min'
+import '../js/bootstrap_js/jquery-3.4.1.min'
+import '../js/bootstrap_js/mdb.min'
 function login_screen() {
     return (
         <div className="card">
