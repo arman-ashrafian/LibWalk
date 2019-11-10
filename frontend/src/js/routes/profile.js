@@ -55,7 +55,7 @@ class Profile extends React.Component {
                     <h1 style={{textDecoration: 'underline'}}>
                         Settings
                     </h1>
-                        <button onClick={this.switch_view_login()}>
+                    <button onClick={this.switch_view_login()}>
                         Logout
                     </button>
 
@@ -70,7 +70,6 @@ class Profile extends React.Component {
     }
 
 }
-
 
 
 export default Profile;
