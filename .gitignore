@@ -5,7 +5,7 @@ frontend/node_modules
 frontend/.pnp
 .pnp.js
 
-# testing
+# te
 frontend/coverage
 
 # production
