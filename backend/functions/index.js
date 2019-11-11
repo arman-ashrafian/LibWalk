@@ -159,4 +159,33 @@ exports.changeUser = functions.https.onRequest((req, res) => {
     .then( () => res.send({message:"changed event " + eventId}) )
     .catch( (err) => res.send(err))
 });
-
+/* ================== /changeClub ====================
+* request:
+*   { club_id: <string>,
+      club: {
+*       "clubName": <string>,
+*       "description": <string>,
+*       "pictureURL": <string>,
+*       "club_reference": <string>,
+*       "announcements": [<string>],
+*       "emailList": [<string>],
+*       "eventList": [<string>],
+*       "tags":[<string>]
+*     }
+*   }
+*
+* response:
+*   {
+*      message: "changed club <club_id>"
+*   }
+*/
+exports.changeClub = functions.https.onRequest((req, res) => {
+  const club_id = req.body.club_id;
+  const club_info = req.body.club;
+    admin
+        .firestore()
+        .collection('Clubs').doc(club_id)
+        .set(club_info)
+        .then( () => res.send({message:"changed club " + club_id}) )
+        .catch( (err) => res.send({message:err}) );
+});
