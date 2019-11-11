@@ -1,2 +1,2 @@
-#!/bin/bash
-firebase deploy --only functions
+#!/bin/bash -x
+firebase deploy --only functions:$1
