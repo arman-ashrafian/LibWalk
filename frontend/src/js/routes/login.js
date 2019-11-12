@@ -18,7 +18,7 @@ class Login extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className='mt-5 pt-5'>
                 <NavBar {...this.props}/>
                 <div>
                     <form className="text-center border border-light p-5" onSubmit={this.view_switch_login}>
