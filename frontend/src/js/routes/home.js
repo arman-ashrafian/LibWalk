@@ -8,7 +8,6 @@ import {MDBCol, MDBContainer, MDBRow} from "mdbreact";
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        console.log('Home constructor call.')
     }
 
     render() {
@@ -28,7 +27,7 @@ class Home extends React.Component {
         return (
             <div>
                 <NavBar/>
-                {/*actual page*/}
+                actual page
                 <main className='mt-5 pt-5'>
                     <NavBar {...this.props}/>
                     {/*<h1> Welcome</h1>*/}
@@ -38,17 +37,17 @@ class Home extends React.Component {
                     </div>
 
                     {/*Rest of the page here*/}
-                    {/*{org_grid_component(orgs[0])}*/}
                     {this.org_grid(orgs)}
                 </main>
             </div>
         );
     }
 
+
     org_grid = (orgs) => {
         let grid_items = [];
-        let numcols = 4;
-        let numrows = grid_items.length / numcols;
+        let numcols = 5;
+        let numrows = orgs.length / numcols;
         numrows = Math.ceil(numrows);
 
         orgs.forEach(function (e) {
@@ -57,9 +56,9 @@ class Home extends React.Component {
 
         let grid = [];
 
-        for (let i = 0; i < numrows; i++) {
+        for (let i = 0; i <= numrows; i++) {
             let row = [];
-            for (let j = 0; j < numcols; j++) {
+            for (let j = 0; j <= numcols; j++) {
                 row.push(
                     <div>
                         <MDBCol>
@@ -69,6 +68,7 @@ class Home extends React.Component {
                 )
             }
             let col = <div><MDBRow>{row}</MDBRow></div>;
+            console.log('col', col);
             grid.push(col);
         }
 
@@ -80,7 +80,6 @@ class Home extends React.Component {
             </div>
         );
     };
-
 
     org_carousel = (orgs) => {
         let carousel_items = [];
@@ -100,7 +99,6 @@ class Home extends React.Component {
 
 
 let one_carousel_item = (org) => {
-    console.log('called one carousel item with args', org);
     return (
         <Carousel.Item>
             <img
@@ -128,7 +126,7 @@ let org_grid_component = (org) => {
                     <Card.Text>
                         {org.desc}
                     </Card.Text>
-                    <Button variant="primary">Org Home</Button>
+                    <Button variant="primary" href={org.link}>Org Home</Button>
                 </Card.Body>
             </Card>
         </div>
