@@ -3,7 +3,7 @@ import NavBar from "../navbar";
 import Carousel from 'react-bootstrap/Carousel'
 import Card from 'react-bootstrap/Card'
 import Button from "react-bootstrap/Button";
-import {MDBCol, MDBRow} from "mdbreact";
+import {MDBCol, MDBContainer, MDBRow} from "mdbreact";
 
 class Home extends React.Component {
     constructor(props) {
@@ -61,12 +61,14 @@ class Home extends React.Component {
             let row = [];
             for (let j = 0; j < numcols; j++) {
                 row.push(
-                    <MDBCol md={4}>
-                        {grid_items[i * numcols + j]}
-                    </MDBCol>
+                    <div>
+                        <MDBCol>
+                            {grid_items[i * numcols + j]}
+                        </MDBCol>
+                    </div>
                 )
             }
-            let col = <MDBRow>{row}</MDBRow>
+            let col = <div><MDBRow>{row}</MDBRow></div>;
             grid.push(col);
         }
 
