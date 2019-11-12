@@ -19,7 +19,8 @@ class Home extends React.Component {
         // todo remove this code once we get clubs form the backend
         for (let i = 1; i < 30; i++) {
             let org = {};
-            org.img = 'https://www.lawrodriguez.com/wp-content/uploads/2013/03/landscape-' + 1 + '-800x400.jpg';
+            // org.img = 'https://www.lawrodriguez.com/wp-content/uploads/2013/03/landscape-' + 1 + '-800x400.jpg';
+            org.img = 'https://picsum.photos/800/400';
             org.alt = '' + i;
 
             org.name = 'Org Number ' + i;
@@ -108,7 +109,7 @@ let one_carousel_item = (org) => {
                 className="d-block w-100"
                 // src={org.img}
                 alt={org.alt}
-                src='https://www.lawrodriguez.com/wp-content/uploads/2013/03/landscape-1-800x400.jpg'
+                src={org.img}
             />
             <Carousel.Caption>
                 <h3>{org.name}</h3>
@@ -121,6 +122,7 @@ let one_carousel_item = (org) => {
 
 let org_grid_component = (org) => {
     org.link = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+    org.img = 'https://picsum.photos/200/100';
     return (
         <div className='home_grid_component'>
             <Card style={{width: '18rem'}}>

@@ -35,8 +35,11 @@
 .calendar__day {
   border-right: 1px solid #e1e1e1;
   border-top: 1px solid #e1e1e1;
+  background-color: #8ab6b7;
+
 }
 
 .calendar__day:last-child {
   border-right: 0;
+  background-color: #2fb7b2;
 }
