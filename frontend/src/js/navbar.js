@@ -6,7 +6,7 @@ class NavBar extends React.Component {
         super(props);
         this.state = {};
         this.setState(props);
-        console.log('Navbar constructor called.', this.props, props);
+        // console.log('Navbar constructor called.', this.props, props);
     }
 
     render() {

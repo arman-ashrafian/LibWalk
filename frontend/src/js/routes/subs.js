@@ -50,7 +50,7 @@ class Subs extends React.Component {
                     <p className="grey-text">{this.props.club_description}</p>
                     {this.props.club_tags.map(tag => (
                         // add club tag stuff here
-                        <a target="_blank" className="btn btn-danger btn-md">
+                        <a target="_blank" className="btn btn-danger btn-md" href='#'>
                             {tag}
                         </a>
                     ))}

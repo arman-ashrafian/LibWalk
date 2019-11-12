@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './css/index.css';
 import App from './js/App';
 import * as serviceWorker from './js/serviceWorker';
-import NavBar from "./js/navbar";
 
 ReactDOM.render(<App />, document.getElementById('root'));
 // ReactDOM.render(<NavBar />, document.getElementById('root'));
