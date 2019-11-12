@@ -8,17 +8,10 @@
     color: #709e9f;
     padding: 10px;
     margin: auto;
-    border: #0d0d0d;
 }
 
 .home_grid_component {
     background-color: #709e9f;
-
-}
-
-
-
-MDBCol {
-    background-color: #709e9f;
-    border: #0d0d0d;
+    padding: 10px;
+    margin: auto;
 }

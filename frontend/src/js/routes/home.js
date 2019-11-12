@@ -4,6 +4,9 @@ import Carousel from 'react-bootstrap/Carousel'
 import Card from 'react-bootstrap/Card'
 import Button from "react-bootstrap/Button";
 import {MDBCol, MDBContainer, MDBRow} from "mdbreact";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Container from "react-bootstrap/Container";
 
 class Home extends React.Component {
     constructor(props) {
@@ -14,7 +17,7 @@ class Home extends React.Component {
         let orgs = [];
 
         // todo remove this code once we get clubs form the backend
-        for (let i = 1; i < 5; i++) {
+        for (let i = 1; i < 30; i++) {
             let org = {};
             org.img = 'https://www.lawrodriguez.com/wp-content/uploads/2013/03/landscape-' + 1 + '-800x400.jpg';
             org.alt = '' + i;
@@ -46,7 +49,7 @@ class Home extends React.Component {
 
     org_grid = (orgs) => {
         let grid_items = [];
-        let numcols = 5;
+        let numcols = 2;
         let numrows = orgs.length / numcols;
         numrows = Math.ceil(numrows);
 
@@ -60,28 +63,28 @@ class Home extends React.Component {
             let row = [];
             for (let j = 0; j <= numcols; j++) {
                 row.push(
-                    <div>
-                        <MDBCol>
+                    <div className='home_grid_component'>
+                        <Col>
                             {grid_items[i * numcols + j]}
-                        </MDBCol>
+                        </Col>
                     </div>
                 )
             }
-            let col = <div><MDBRow>{row}</MDBRow></div>;
-            console.log('col', col);
+            let col = <div className='home_grid_component'><Row >{row}</Row></div>;
             grid.push(col);
         }
 
         return (
             <div className='home_grid_container'>
-                <MDBContainer>
+                <Container>
                     {grid}
-                </MDBContainer>
+                </Container>
             </div>
         );
     };
 
     org_carousel = (orgs) => {
+        orgs = orgs.slice(0, 5);
         let carousel_items = [];
         orgs.forEach(function (e) {
             carousel_items.push(one_carousel_item(e));
@@ -112,6 +115,7 @@ let one_carousel_item = (org) => {
                 <p>{org.desc}</p>
             </Carousel.Caption>
         </Carousel.Item>
+
     );
 };
 
@@ -120,7 +124,7 @@ let org_grid_component = (org) => {
     return (
         <div className='home_grid_component'>
             <Card style={{width: '18rem'}}>
-                <Card.Img variant="top" src={org.img + "/100px180"}/>
+                <Card.Img variant="top" src={org.img}/>
                 <Card.Body>
                     <Card.Title>{org.name}</Card.Title>
                     <Card.Text>
