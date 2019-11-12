@@ -3,7 +3,7 @@
 .calendar__week,
 .calendar__header {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);  
+  grid-template-columns: repeat(7, 1fr);
 }
 .calendar__week {
   grid-auto-rows: 100px;
@@ -18,6 +18,7 @@
 
 .calendar__day {
   padding: 16px;
+  text-align: center ;
 }
 
 .calendar {

@@ -1,5 +1,6 @@
 import React from "react";
 import '../../css/calendar.css'
+import '../../css/addons/datatables.min.css'
 import NavBar from "../navbar";
 
 class Calendar extends React.Component {
@@ -10,16 +11,15 @@ class Calendar extends React.Component {
     }
 
     render() {
-        return (<div>
+        return (<div className='calendar'>
             <NavBar {...this.props}/>
-            <div>{console.log(this.props.children)}</div>
             {this.draw_calendar()}
         </div>);
     }
 
     draw_calendar() {
         return (
-            <div className='calendar_page'>
+            <div className='calendar'>
                 <h1> CALENDAR </h1>
                 {this.calendar_header()}
                 {this.calendar_title()}
@@ -47,15 +47,6 @@ class Calendar extends React.Component {
 
         return (
             <div className="calendar__week">
-                {/*<div className="calendar__day day">{this.props.description[0]}</div>*/}
-                {/*<div className="calendar__day day">{this.props.description[1]}</div>*/}
-                {/*<div className="calendar__day day">{this.props.description[2]}</div>*/}
-                {/*<div className="calendar__day day">{this.props.description[3]}</div>*/}
-                {/*<div className="calendar__day day">{this.props.description[4]}</div>*/}
-                {/*<div className="calendar__day day">{this.props.description[5]}</div>*/}
-                {/*<div className="calendar__day day">{this.props.description[6]}</div>*/}
-
-
                 <div className="calendar__day day">{'Test'}</div>
                 <div className="calendar__day day">{'Test'}</div>
                 <div className="calendar__day day">{'Test'}</div>

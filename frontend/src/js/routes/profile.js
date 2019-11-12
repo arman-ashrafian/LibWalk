@@ -1,6 +1,5 @@
 import React from "react";
 import '../../css/bootstrap.min.css'
-import '../../css/index.css'
 import '../../css/mdb.lite.min.css'
 import '../../css/style.min.css'
 import NavBar from "../navbar";
@@ -24,48 +23,50 @@ class Profile extends React.Component {
         this.props = {...this.props, ...props};
 
         return (
-            <div>
+            <main className='mt-5 pt-5'>
                 <NavBar {...this.props}/>
-                <div className="row">
-                    {/*Display an image*/}
-                    <div className="col-sm-4 text-center">
-                        <img src={this.props.userUrl}
-                             onError="src='http://ucsdguardian.org/wp-content/uploads/2015/04/sun-god-with-glasses.png'"
-                             height={300} width={300}
-                        alt={''}/>
-                    </div>
+                <div className='container'>
+                    <div className="row">
+                        {/*Display an image*/}
+                        <div className="col-sm-4 text-center">
+                            <img src={this.props.userUrl}
+                                 onError="src='http://ucsdguardian.org/wp-content/uploads/2015/04/sun-god-with-glasses.png'"
+                                 height={300} width={300}
+                                 alt={''}/>
+                        </div>
 
-                    {/*Display User Information*/}
-                    <div className="col-sm-4 text-left">
-                        <h1 style={{textDecoration: 'underline'}}>
-                            My Information
-                        </h1>
-                        <h3>
-                            {this.props.userName}
-                        </h3>
-                        <h3>
-                            {this.props.userEmail}
-                        </h3>
-                        <h3>
-                            {this.props.userMajor}
-                        </h3>
-                        <h3>
-                            {this.props.userYear}
-                        </h3>
+                        {/*Display User Information*/}
+                        <div className="col-sm-4 text-left">
+                            <h1 style={{textDecoration: 'underline'}}>
+                                My Information
+                            </h1>
+                            <h3>
+                                {this.props.userName}
+                            </h3>
+                            <h3>
+                                {this.props.userEmail}
+                            </h3>
+                            <h3>
+                                {this.props.userMajor}
+                            </h3>
+                            <h3>
+                                {this.props.userYear}
+                            </h3>
 
-                    </div>
-                    <div className="col-sm-4">
+                        </div>
+                        <div className="col-sm-4">
 
-                        <h1 style={{textDecoration: 'underline'}}>
-                            Settings
-                        </h1>
-                        <button onClick={this.switch_view_login}>
-                            Logout
-                        </button>
+                            <h1 style={{textDecoration: 'underline'}}>
+                                Settings
+                            </h1>
+                            <button onClick={this.switch_view_login}>
+                                Logout
+                            </button>
 
+                        </div>
                     </div>
                 </div>
-            </div>);
+            </main>);
     }
 
     switch_view_login = () => {
