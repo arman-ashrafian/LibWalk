@@ -12,8 +12,8 @@ class Home extends React.Component {
     }
 
     render() {
-        let orgs = [];
-
+        this.orgs = [];
+        let orgs = this.orgs;
         // todo remove this code once we get clubs form the backend
         for (let i = 1; i < 100; i++) {
             let org = {};
@@ -47,6 +47,8 @@ class Home extends React.Component {
         );
     }
 
+    componentDidMount() {
+    }
 
     org_grid = (orgs) => {
         shuffle(orgs); // todo add timer to auto shuffle as described here https://stackoverflow.com/questions/42094060/changing-shuffling-text-every-1-5-second-in-a-react-component
