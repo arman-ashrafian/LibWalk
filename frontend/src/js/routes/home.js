@@ -5,26 +5,23 @@ import Card from 'react-bootstrap/Card'
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import CardDeck from "react-bootstrap/CardDeck";
+import {getClubs} from "../cloud";
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            orgs: []
+        }
+
+        // GET /getClubs & set the state when the api response is recieved
+        getClubs().then((json) => {
+            this.setState({orgs: json.clubs});
+        })
     }
 
     render() {
-        this.orgs = [];
-        let orgs = this.orgs;
-        // todo remove this code once we get clubs form the backend
-        for (let i = 1; i < 100; i++) {
-            let org = {};
-            org.img = 'https://picsum.photos/800/250';
-            org.alt = '' + i;
-
-            org.name = 'Org Number ' + i;
-
-            org.desc = 'Org Description: ' + makeid(Math.ceil(Math.random() * 180));
-            orgs.push(org);
-        }
 
         return (
             <div>
@@ -35,12 +32,12 @@ class Home extends React.Component {
                     {/*<h1> Welcome</h1>*/}
                     {/* org carousel here*/}
                     <div>
-                        {this.org_carousel(orgs)}
+                        {this.org_carousel(this.state.orgs)}
                     </div>
 
                     {/*Rest of the page here*/}
                     <div className='home_grid_container'>
-                        {this.org_grid(orgs)}
+                        {this.org_grid(this.state.orgs)}
                     </div>
                 </main>
             </div>
@@ -126,9 +123,9 @@ let org_grid_component = (org) => {
             <Card style={{width: '26rem', height: '28rem'}} className='text-center'>
                 <Card.Img variant="top" src={org.img}/>
                 <Card.Body>
-                    <Card.Title>{org.name}</Card.Title>
+                    <Card.Title>{org.clubName}</Card.Title> {/* LOL AT OUR NAMING CONVENTION - we should actually decide on either club or org*/}
                     <Card.Text>
-                        {org.desc}
+                        {org.description}
                     </Card.Text>
                     <Button variant="primary" href={org.link}>Org Home</Button>
                 </Card.Body>
@@ -137,6 +134,7 @@ let org_grid_component = (org) => {
     )
 };
 
+// THE FUCK DOES THIS EVEN DO BRAHHHHH
 function makeid(length) {
     var result = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnop   qrstuvwxyz0123456789 _!@#$%^&     ';
