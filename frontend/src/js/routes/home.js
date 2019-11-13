@@ -17,7 +17,7 @@ class Home extends React.Component {
         // todo remove this code once we get clubs form the backend
         for (let i = 1; i < 100; i++) {
             let org = {};
-            org.img = 'https://picsum.photos/800/400';
+            org.img = 'https://picsum.photos/800/250';
             org.alt = '' + i;
 
             org.name = 'Org Number ' + i;
@@ -45,9 +45,6 @@ class Home extends React.Component {
                 </main>
             </div>
         );
-    }
-
-    componentDidMount() {
     }
 
     org_grid = (orgs) => {
@@ -126,7 +123,7 @@ let org_grid_component = (org) => {
     return (
         <div>
             {/*<Card style={{width: '18rem'}}>*/}
-            <Card bg='dark' text='white' style={{width: '26rem', height: '28rem'}} className='text-center'>
+            <Card style={{width: '26rem', height: '28rem'}} className='text-center'>
                 <Card.Img variant="top" src={org.img}/>
                 <Card.Body>
                     <Card.Title>{org.name}</Card.Title>
