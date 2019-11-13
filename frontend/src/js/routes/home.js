@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import {CardColumns} from "react-bootstrap";
 import CardDeck from "react-bootstrap/CardDeck";
+import CardGroup from "react-bootstrap/CardGroup";
 
 class Home extends React.Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class Home extends React.Component {
         let orgs = [];
 
         // todo remove this code once we get clubs form the backend
-        for (let i = 1; i < 30; i++) {
+        for (let i = 1; i < 100; i++) {
             let org = {};
             org.img = 'https://picsum.photos/800/400';
             org.alt = '' + i;
@@ -52,6 +53,7 @@ class Home extends React.Component {
 
 
     org_grid = (orgs) => {
+        shuffle(orgs);
         let grid_items = [];
         let numcols = 4;
         let numrows = orgs.length / numcols;
@@ -74,15 +76,12 @@ class Home extends React.Component {
                     </div>
                 )
             }
-            // let col = <div className='home_grid_container'>{row}</div>;
-            // grid.push(col);
-
             grid.push(row)
         }
 
         return (
             <div>
-                <CardColumns> {grid} </CardColumns>
+                <CardDeck> {grid} </CardDeck>
             </div>
         );
     };
@@ -129,7 +128,7 @@ let org_grid_component = (org) => {
     return (
         <div>
             {/*<Card style={{width: '18rem'}}>*/}
-            <Card bg='dark' text='white' style={{width: '26rem'}}>
+            <Card bg='dark' text='white' style={{width: '26rem', height: '28rem'}}>
                 <Card.Img variant="top" src={org.img}/>
                 <Card.Body>
                     <Card.Title>{org.name}</Card.Title>
@@ -154,3 +153,8 @@ function makeid(length) {
 };
 
 export default Home;
+
+
+function shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+}
