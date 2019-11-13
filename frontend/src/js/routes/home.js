@@ -4,11 +4,7 @@ import Carousel from 'react-bootstrap/Carousel'
 import Card from 'react-bootstrap/Card'
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Container from "react-bootstrap/Container";
-import {CardColumns} from "react-bootstrap";
 import CardDeck from "react-bootstrap/CardDeck";
-import CardGroup from "react-bootstrap/CardGroup";
 
 class Home extends React.Component {
     constructor(props) {
