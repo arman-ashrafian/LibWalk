@@ -22,7 +22,7 @@ class Home extends React.Component {
 
             org.name = 'Org Number ' + i;
 
-            org.desc = 'Org Description: ' + makeid(Math.ceil(Math.random() * 100));
+            org.desc = 'Org Description: ' + makeid(Math.ceil(Math.random() * 180));
             orgs.push(org);
         }
 
@@ -124,7 +124,7 @@ let org_grid_component = (org) => {
     return (
         <div>
             {/*<Card style={{width: '18rem'}}>*/}
-            <Card bg='dark' text='white' style={{width: '26rem', height: '28rem'}}>
+            <Card bg='dark' text='white' style={{width: '26rem', height: '28rem'}} className='text-center'>
                 <Card.Img variant="top" src={org.img}/>
                 <Card.Body>
                     <Card.Title>{org.name}</Card.Title>
@@ -140,7 +140,7 @@ let org_grid_component = (org) => {
 
 function makeid(length) {
     var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 _!@#$%^&     ';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnop   qrstuvwxyz0123456789 _!@#$%^&     ';
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
