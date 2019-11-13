@@ -4,15 +4,7 @@
 }
 
 .home_grid_container {
-    display: grid;
-    background-color: #709e9f;
-    color: #709e9f;
-    padding: 10px;
-    margin: auto;
 }
 
 .home_grid_component {
-    background-color: #709e9f;
-    padding: 10px;
-    margin: auto;
 }

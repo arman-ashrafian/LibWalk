@@ -3,10 +3,11 @@ import NavBar from "../navbar";
 import Carousel from 'react-bootstrap/Carousel'
 import Card from 'react-bootstrap/Card'
 import Button from "react-bootstrap/Button";
-import {MDBCol, MDBContainer, MDBRow} from "mdbreact";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
+import {CardColumns} from "react-bootstrap";
+import CardDeck from "react-bootstrap/CardDeck";
 
 class Home extends React.Component {
     constructor(props) {
@@ -19,12 +20,12 @@ class Home extends React.Component {
         // todo remove this code once we get clubs form the backend
         for (let i = 1; i < 30; i++) {
             let org = {};
-            // org.img = 'https://www.lawrodriguez.com/wp-content/uploads/2013/03/landscape-' + 1 + '-800x400.jpg';
             org.img = 'https://picsum.photos/800/400';
             org.alt = '' + i;
 
             org.name = 'Org Number ' + i;
-            org.desc = 'Org Description';
+
+            org.desc = 'Org Description: ' + makeid(Math.ceil(Math.random() * 100));
             orgs.push(org);
         }
 
@@ -41,7 +42,9 @@ class Home extends React.Component {
                     </div>
 
                     {/*Rest of the page here*/}
-                    {this.org_grid(orgs)}
+                    <div className='home_grid_container'>
+                        {this.org_grid(orgs)}
+                    </div>
                 </main>
             </div>
         );
@@ -50,7 +53,7 @@ class Home extends React.Component {
 
     org_grid = (orgs) => {
         let grid_items = [];
-        let numcols = 2;
+        let numcols = 4;
         let numrows = orgs.length / numcols;
         numrows = Math.ceil(numrows);
 
@@ -62,7 +65,7 @@ class Home extends React.Component {
 
         for (let i = 0; i <= numrows; i++) {
             let row = [];
-            for (let j = 0; j <= numcols; j++) {
+            for (let j = 0; j < numcols; j++) {
                 row.push(
                     <div className='home_grid_component'>
                         <Col>
@@ -71,15 +74,15 @@ class Home extends React.Component {
                     </div>
                 )
             }
-            let col = <div className='home_grid_component'><Row >{row}</Row></div>;
-            grid.push(col);
+            // let col = <div className='home_grid_container'>{row}</div>;
+            // grid.push(col);
+
+            grid.push(row)
         }
 
         return (
-            <div className='home_grid_container'>
-                <Container>
-                    {grid}
-                </Container>
+            <div>
+                <CardColumns> {grid} </CardColumns>
             </div>
         );
     };
@@ -122,10 +125,11 @@ let one_carousel_item = (org) => {
 
 let org_grid_component = (org) => {
     org.link = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-    org.img = 'https://picsum.photos/200/100';
+    org.img = 'https://picsum.photos/150/50';
     return (
-        <div className='home_grid_component'>
-            <Card style={{width: '18rem'}}>
+        <div>
+            {/*<Card style={{width: '18rem'}}>*/}
+            <Card bg='dark' text='white' style={{width: '26rem'}}>
                 <Card.Img variant="top" src={org.img}/>
                 <Card.Body>
                     <Card.Title>{org.name}</Card.Title>
@@ -137,6 +141,16 @@ let org_grid_component = (org) => {
             </Card>
         </div>
     )
+};
+
+function makeid(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 _!@#$%^&     ';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 };
 
 export default Home;
