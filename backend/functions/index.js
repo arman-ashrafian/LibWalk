@@ -1,33 +1,38 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const cors = require("cors")({ origin: true });
 
 admin.initializeApp();
 
 // test function
 exports.helloWorld = functions.https.onRequest((req, res) => {
-  res.send("HIIIII");
+  cors(req, res, () => {
+    res.send("HIIIII");
+  });
 });
 
 // test function
 // This function demonstrates how to get a document and read a particular attribute from the database
 exports.testDb = functions.https.onRequest((req, res) => {
-  admin
-    .firestore()
-    .collection("Test")
-    .doc("Arman")
-    .get()
-    .then(doc => {
-      // db query success
-      let age = doc.data().Age; // doc.data() returns a JSON object
-      res.send({ age: age }); // res.send() parameter must be JSON !!
-    })
-    .catch(err => {
-      // db query fail
-      res.send(err);
-    });
+  cors(req, res, () => {
+    admin
+      .firestore()
+      .collection("Test")
+      .doc("Arman")
+      .get()
+      .then(doc => {
+        // db query success
+        let age = doc.data().Age; // doc.data() returns a JSON object
+        res.send({ age: age }); // res.send() parameter must be JSON !!
+      })
+      .catch(err => {
+        // db query fail
+        res.send(err);
+      });
+  });
 });
 
-/* ================== /getUser ================== 
+/* ================== /getUser ==================
  * request:
  *    {uid: <string>}
  *
@@ -36,28 +41,30 @@ exports.testDb = functions.https.onRequest((req, res) => {
  *        "name": <string>,
  *        "subscriptions": [<string>, <string>,...],
  *        "year": <number>,
- *        "major": <string> 
+ *        "major": <string>
  *    }
  */
 exports.getUser = functions.https.onRequest((req, res) => {
-  const UID = req.body.uid; // user ID
+  cors(req, res, () => {
+    const UID = req.body.uid; // user ID
 
-  admin
-    .firestore()
-    .collection("Users")
-    .doc(UID)
-    .get()
-    .then(doc => {
-      res.send(doc.data());
-    })
-    .catch(err => {
-      res.send(err);
-    });
+    admin
+      .firestore()
+      .collection("Users")
+      .doc(UID)
+      .get()
+      .then(doc => {
+        res.send(doc.data());
+      })
+      .catch(err => {
+        res.send(err);
+      });
+  });
 });
 
 /* ================= /changeEvent  ====================
  * request:
- *   { 
+ *   {
  *      event_id: <string>,
  *      event: {
  *       "eventName": <string>,
@@ -77,36 +84,43 @@ exports.getUser = functions.https.onRequest((req, res) => {
  *
  */
 exports.changeEvent = functions.https.onRequest((req, res) => {
-  const eventId = req.body.event_id;
-  const eventJson = req.body.event;
+  cors(req, res, () => {
+    const eventId = req.body.event_id;
+    const eventJson = req.body.event;
     admin
-        .firestore()
-        .collection('Events').doc(eventId)
-        .set(eventJson)
-        .then( () => res.send({message:"changed event " + eventId}) )
-        .catch( (err) => res.send({message:err}) );
+      .firestore()
+      .collection("Events")
+      .doc(eventId)
+      .set(eventJson)
+      .then(() => res.send({ message: "changed event " + eventId }))
+      .catch(err => res.send({ message: err }));
+  });
 });
 
+/* ================= /getClubs ====================
+ */
 exports.getClubs = functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
     admin
-        .firestore()
-        .collection("Clubs")
-        .get()
-        .then(querySnapshot => {
-            let json_data = { clubs: [] };
-            querySnapshot.forEach(doc => {
-                json_data.clubs.push(doc.data());
-            });
-            res.send(json_data);
-        })
-        .catch(err => {
-            // db query fail
-            res.send(err);
+      .firestore()
+      .collection("Clubs")
+      .get()
+      .then(querySnapshot => {
+        let json_data = { clubs: [] };
+        querySnapshot.forEach(doc => {
+          json_data.clubs.push(doc.data());
         });
+        res.send(json_data);
+      })
+      .catch(err => {
+        // db query fail
+        res.send(err);
+      });
+  });
 });
 
-/* ================== /getEvent ================== 
- * request: 
+/* ================== /getEvent ==================
+ * request:
  * 	{event_id: <string>}
  *
  * response:
@@ -124,23 +138,24 @@ exports.getClubs = functions.https.onRequest((req, res) => {
  * 	}
  */
 exports.getEvent = functions.https.onRequest((req, res) => {
-  let event_id = req.body.event_id;
-  admin
-    .firestore()
-    .collection('Events').doc(event_id)
-    .get()
-    .then( (doc) => {
-	res.send(doc.data());
-    })
-    .catch( (err) => {
-	res.send(err);
-    });
+  cors(req, res, () => {
+    let event_id = req.body.event_id;
+    admin
+      .firestore()
+      .collection("Events")
+      .doc(event_id)
+      .get()
+      .then(doc => {
+        res.send(doc.data());
+      })
+      .catch(err => {
+        res.send(err);
+      });
+  });
 });
 
-
-
-/* ================== /getEvents ================== 
- * request: 
+/* ================== /getEvents ==================
+ * request:
  * 	{}
  *
  * response:
@@ -151,26 +166,26 @@ exports.getEvent = functions.https.onRequest((req, res) => {
  * 	}
  */
 exports.getEvents = functions.https.onRequest((req, res) => {
-  const markers = [];
-  admin
-    .firestore()
-    .collection('Events')
-    .get()
-    .then( (cols) => {
-	cols.docs.forEach(doc => {
-		markers.push(doc.data());
-	});
-	res.send(markers);
-    })
-    .catch( (err) => {
-	res.send(err);
-    });
-
+  cors(req, res, () => {
+    const markers = [];
+    admin
+      .firestore()
+      .collection("Events")
+      .get()
+      .then(cols => {
+        cols.docs.forEach(doc => {
+          markers.push(doc.data());
+        });
+        res.send(markers);
+      })
+      .catch(err => {
+        res.send(err);
+      });
+  });
 });
 
-
-/* ================== /getTag ================== 
- * request: 
+/* ================== /getTag ==================
+ * request:
  * 	{tag_id: <string>}
  *
  * response:
@@ -179,22 +194,24 @@ exports.getEvents = functions.https.onRequest((req, res) => {
  * 	}
  */
 exports.getTag = functions.https.onRequest((req, res) => {
-  let tag_id = req.body.tag_id;
-  admin
-    .firestore()
-    .collection('Tags').doc(tag_id)
-    .get()
-    .then( (doc) => {
-	res.send(doc.data());
-    })
-    .catch( (err) => {
-	res.send(err);
-    });
+  cors(req, res, () => {
+    let tag_id = req.body.tag_id;
+    admin
+      .firestore()
+      .collection("Tags")
+      .doc(tag_id)
+      .get()
+      .then(doc => {
+        res.send(doc.data());
+      })
+      .catch(err => {
+        res.send(err);
+      });
+  });
 });
 
-
-/* ================== /getTags ================== 
- * request: 
+/* ================== /getTags ==================
+ * request:
  * 	{}
  *
  * response:
@@ -205,51 +222,56 @@ exports.getTag = functions.https.onRequest((req, res) => {
  * 	}
  */
 exports.getTags = functions.https.onRequest((req, res) => {
-  const markers = [];
-  admin
-    .firestore()
-    .collection('Tags')
-    .get()
-    .then( (cols) => {
-	cols.docs.forEach(doc => {
-		markers.push(doc.data());
-	});
-	res.send(markers);
-    })
-    .catch( (err) => {
-	res.send(err);
-    });
-
+  cors(req, res, () => {
+    const markers = [];
+    admin
+      .firestore()
+      .collection("Tags")
+      .get()
+      .then(cols => {
+        cols.docs.forEach(doc => {
+          markers.push(doc.data());
+        });
+        res.send(markers);
+      })
+      .catch(err => {
+        res.send(err);
+      });
+  });
 });
 
 /* ================= /getClub  ====================
-* request:
-*   { club_id: <string> }
-*
-* response:
-*   {
-*       "clubName": <string>,
-*       "description": <string>,
-*       "pictureURL": <string>,
-*       "club_reference": <string>,
-*       "announcements": [<string>],
-*       "emailList": [<string>],
-*       "eventList": [<string>],
-*       "tags": [<string>]
-*   }
-*/
+ * request:
+ *   { club_id: <string> }
+ *
+ * response:
+ *   {
+ *       "clubName": <string>,
+ *       "description": <string>,
+ *       "pictureURL": <string>,
+ *       "club_reference": <string>,
+ *       "announcements": [<string>],
+ *       "emailList": [<string>],
+ *       "eventList": [<string>],
+ *       "tags": [<string>]
+ *   }
+ */
 exports.getClub = functions.https.onRequest((req, res) => {
-  admin
-  .firestore()
-  .collection('Clubs').doc(req.body.club_id).get()
-  .then( (doc) => {
-    res.send(doc.data());
-  })
-  
-  .catch( (err) => { // db query fail
-    res.send(err);
-  });
+  cors(req, res, () => {
+    admin
+      .firestore()
+      .collection("Clubs")
+      .doc(req.body.club_id)
+      .get()
+      .then(doc => {
+        res.send(doc.data());
+      })
 
+      .catch(err => {
+        // db query fail
+        res.send(err);
+      });
+  });
 });
 
 /* ================== /changeUser  ====================
@@ -270,12 +292,19 @@ exports.getClub = functions.https.onRequest((req, res) => {
 *   }
 */
 exports.changeUser = functions.https.onRequest((req, res) => {
-	user_id = req.body.user_id;
-  user_info = req.body.user;
-	admin.firestore().collection('Users').doc(user_id).set(user_info)
-    .then( () => res.send({message:"changed event " + eventId}) )
-    .catch( (err) => res.send(err))
+  cors(req, res, () => {
+    user_id = req.body.user_id;
+    user_info = req.body.user;
+    admin
+      .firestore()
+      .collection("Users")
+      .doc(user_id)
+      .set(user_info)
+      .then(() => res.send({ message: "changed event " + eventId }))
+      .catch(err => res.send(err));
+  });
 });
+
 /* ================== /changeClub ====================
 * request:
 *   { club_id: <string>,
@@ -297,12 +326,15 @@ exports.changeUser = functions.https.onRequest((req, res) => {
 *   }
 */
 exports.changeClub = functions.https.onRequest((req, res) => {
-  const club_id = req.body.club_id;
-  const club_info = req.body.club;
+  cors(req, res, () => {
+    const club_id = req.body.club_id;
+    const club_info = req.body.club;
     admin
-        .firestore()
-        .collection('Clubs').doc(club_id)
-        .set(club_info)
-        .then( () => res.send({message:"changed club " + club_id}) )
-        .catch( (err) => res.send({message:err}) );
+      .firestore()
+      .collection("Clubs")
+      .doc(club_id)
+      .set(club_info)
+      .then(() => res.send({ message: "changed club " + club_id }))
+      .catch(err => res.send({ message: err }));
+  });
 });

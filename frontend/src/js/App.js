@@ -9,6 +9,7 @@ import Login from "./routes/login";
 import Calendar from "./routes/calendar";
 import Profile from "./routes/profile";
 import NavBar from "./navbar";
+import { getClubs } from "./cloud";
 
 function App() {
     return (
