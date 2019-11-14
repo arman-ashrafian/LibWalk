@@ -1,62 +1,82 @@
-import React from "react";
+import React, { Component } from "react";
 import NavBar from "../navbar";
-import '../../css/mdb.css'
-import '../../css/bootstrap.css'
-import '../../css/style.min.css'
-import '../../css/subs.css'
+//import "../../css/mdb.css";
+//import "../../css/bootstrap.css";
+//import "../../css/style.min.css";
+import "../../css/subs.css";
+import { Divider } from "@material-ui/core";
+import { View } from "react-native-web";
+import { MDBBtn } from "mdbreact";
 
 class Subs extends React.Component {
-    constructor(props) {
-        super(props);
-        console.log('Subs created.')
-    }
+  constructor(props) {
+    super(props);
+    console.log("Subs created.");
+  }
 
-    render() {
-        return (
-            <main className='mt-5 pt-5'>
-                <div className='container'>
-                <h1> SUBS </h1>
-                {this.getSubs()}
-                </div>
-            </main>
-        );
-    }
+  render() {
+    var headerStyle = {
+      marginTop: "50px",
+      marginBottom: "100px",
+      fontWeight: "bold",
+      textAlign: "center",
+      fontSize: "65px"
+    };
 
-    getSubs = () => {
-        this.props = {
-            ...this.props, ...{
-                club_name: "ECE USC",
-                club_picture: "https://image.flaticon.com/icons/png/512/564/564276.png",
-                club_tags: ["Academic", "Social", 'random tag', 'surface', 'tech']
-            }
-        };
+    return (
+      <main className="mt-5 pt-5">
+        <div className="container">
+          <h1 style={headerStyle}> Subscriptions</h1>
+          <Divider />
 
-        return (
-            <div className='sub_container'>
-                <NavBar {...this.props}/>
+          {this.getSubs()}
+        </div>
+      </main>
+    );
+  }
 
-                <div className="col-lg-5 col-xl-4 mb-4 sub_container">
-                    {/*Featured image*/}
-                    <div className="view overlay rounded z-depth-1 sub_img">
-                        <img src={this.props.club_picture} className="img-fluid" alt=""/>
-                    </div>
+  getSubs = () => {
+    this.props = {
+      ...this.props,
+      ...{
+        club_name: "ECE USC",
+        club_picture:
+          "https://i.barkpost.com/wp-content/uploads/2015/02/featmeme.jpg?q=70&fit=crop&crop=entropy&w=808&h=500",
+        club_tags: ["Academic", "Social", "random tag", "surface", "tech"],
+        club_description: "This is Undergraduate Student Council"
+      }
+    };
 
-                </div>
+    return (
+      <div className="sub_container">
+        <NavBar {...this.props} />
+        <View
+          className="small_container"
+          style={{ flexDirection: "row", justifyContent: "center" }}
+        >
+          <View>
+            {/*Featured image*/}
+            <img src={this.props.club_picture} className="sub_img" alt="" />
+          </View>
 
-                <div className="col-lg-7 col-xl-7 ml-xl-4 mb-4 sub_container">
-                    <h3 className="mb-3 font-weight-bold dark-grey-text">
-                        <strong>{this.props.club_name}</strong>
-                    </h3>
-                    <p className="grey-text">{this.props.club_description}</p>
-                    {this.props.club_tags.map(tag => (
-                        // add club tag stuff here
-                        <a target="_blank" className="btn btn-danger btn-md" href='#'>
-                            {tag}
-                        </a>
-                    ))}
-                </div>
-            </div>);
-    }
+          <View>
+            <div className="information">
+              <h3 className="clubName">
+                <strong>{this.props.club_name}</strong>
+              </h3>
+              <p className="description">{this.props.club_description}</p>
+              {this.props.club_tags.map(tag => (
+                // add club tag stuff here
+                <MDBBtn color="amber">{tag}</MDBBtn>
+              ))}
+            </div>
+          </View>
+        </View>
+
+        <Divider />
+      </div>
+    );
+  };
 }
 
 export default Subs;
