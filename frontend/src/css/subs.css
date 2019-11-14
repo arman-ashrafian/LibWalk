@@ -1,11 +1,30 @@
-.sub_img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.sub_container {
+  margin: 0;
+  padding: 0;
 }
 
-.sub_container {
-    margin: auto;
-    width: 75%;
-    padding: auto;
+.sub_img {
+  width: 550px;
+  height: 330px;
+}
+
+.small_container {
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.information {
+  margin-left: 100px;
+}
+
+.clubName {
+  text-align: left;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.description {
+  text-align: left;
+  margin-top: 10px;
+  font-size: 30px;
 }
