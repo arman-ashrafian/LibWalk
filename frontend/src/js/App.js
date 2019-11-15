@@ -1,6 +1,6 @@
-import React from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
-import '../css/App.css';
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import "../css/App.css";
 import Home from "./routes/home";
 import Announcements from "./routes/announcements";
 import Search from "./routes/search";
@@ -11,22 +11,20 @@ import Profile from "./routes/profile";
 import NavBar from "./navbar";
 
 function App() {
-    return (
-        <Router>
-            <div className="App">
-                <Route exact path="/" component={Home} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/home" component={Home} />
-                <Route exact path="/announcements" component={Announcements} />
-                <Route exact path="/calendar" component={Calendar} />
-                <Route exact path="/search" component={Search} />
-                <Route exact path="/subs" component={Subs} />
-                <Route exact path="/profile" component={Profile} />
-            </div>
-        </Router>
-    );
+  return (
+    <Router>
+      <div className="App">
+        <Route exact path="/" component={Home} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/home" component={Home} />
+        <Route exact path="/announcements" component={Announcements} />
+        <Route exact path="/calendar" component={Calendar} />
+        <Route exact path="/search" component={Search} />
+        <Route exact path="/subs" component={Subs} />
+        <Route exact path="/profile" component={Profile} />
+      </div>
+    </Router>
+  );
 }
-
-
 
 export default App;
