@@ -1,72 +1,134 @@
 import React from "react";
 import NavBar from "../navbar";
+import Toast from 'react-bootstrap/Toast'
+import '../../css/announcements.css'
+import {getClubs} from "../cloud";
+import Col from "react-bootstrap/Col";
+import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container'
+import CardDeck from "react-bootstrap/CardDeck";
+import Card from "react-bootstrap/Card";
+
 
 class Announcements extends React.Component {
     constructor(props) {
         super(props);
-        console.log('Announcements constructor call.')
+
+        this.state = {
+            orgs: []
+        };
+
+        // GET /getClubs & set the state when the api response is recieved
+        getClubs().then((json) => {
+            this.setState({orgs: json.clubs});
+        });
+
+        if(this.state.orgs === undefined) {
+            this.state = {
+                orgs: []
+            };
+        }
     }
-    
+
     render() {
+        if(this.state.orgs === undefined) {
+            this.state = {
+                orgs: []
+            }
+        }
+
         return (
             <div>
-              <NavBar {...this.props}/>
-
-              {/*Main layout*/}
-              <main className="mt-5 pt-5">
-                <div className="container">
-                  {/*Section: Cards*/}
-                  <section >
-                    {/* Heading & Description */}
+                <NavBar/>
+                actual page
+                <main className='mt-5 pt-5'>
+                    <NavBar {...this.props}/>
+                    {/*<h1> Welcome</h1>*/}
+                    {/* org carousel here*/}
                     <div className="wow fadeIn">
-                      {/*Section heading*/}
-                      <h2 className="h1 text-center mb-5">Notifications</h2>
-                      <h5 className="text-center mb-5">Messages from organizations you subscribe to are listed below. </h5>
+                        {/*Section heading*/}
+                        <h1 className="h1 text-center mb-5">Notifications</h1>
+                        <h5 className="text-center mb-5">Messages from organizations you subscribe to are listed
+                            below. </h5>
                     </div>
-                    {/* Heading & Description */}
-                    <hr className="mb-5" />
-                    <div className="profiles">
-                      <div className="profile">
-                        <header className="heading">
-                          <h3>Fraternity Apple Pie Alpha</h3>
-                        </header>
-                        <div className="toast" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
-                          <div className="toast-header">
-                            <svg className=" rounded mr-2" width={20} height={20} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
-                              <rect fill="#007aff" width="100%" height="100%" /></svg>
-                            <strong className="mr-auto">Bootstrap</strong>
-                            <small className="text-muted">11 mins ago</small>
-                            <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                              <span aria-hidden="true">×</span>
-                            </button>
-                          </div>
-                          <div className="toast-body">
-                            Hello, world! This is a toast message.
-                          </div>
-                        </div> 
-                        <div className="toast" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
-                          <div className="toast-header">
-                            <svg className=" rounded mr-2" width={20} height={20} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
-                              <rect fill="#007aff" width="100%" height="100%" /></svg>
-                            <strong className="mr-auto">Bootstrap</strong>
-                            <small className="text-muted">11 mins ago</small>
-                            <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                              <span aria-hidden="true">×</span>
-                            </button>
-                          </div>
-                          <div className="toast-body">
-                            Hello, world! This is a toast message.
-                          </div>
-                        </div> 
-                      </div>
-                    </div>
-                </section>
-                </div>
-              </main>
-            </div>
-          );
-    }
-}
 
+                    {/*Rest of the page here*/}
+                    <div className='announcements_grid_container'>
+                        {this.club_grid_loop(this.state.orgs)}
+                    </div>
+                </main>
+            </div>
+        );
+    }
+
+    club_grid_loop = (orgs) => {
+        let grid_items = [];
+        let numcols = 4;
+        let numrows = orgs.length / numcols;
+        numrows = Math.ceil(numrows);
+
+        orgs.forEach(function (e) {
+            grid_items.push(club_grid(e));
+        });
+
+        let grid = [];
+
+        for (let i = 0; i <= numrows; i++) {
+            let row = [];
+            for (let j = 0; j < numcols; j++) {
+                row.push(
+                    <div className='home_grid_component'>
+                        <Col>
+                            {grid_items[i * numcols + j]}
+                        </Col>
+                    </div>
+                )
+            }
+            grid.push(row)
+        }
+
+        return (
+            <div>
+                <CardDeck> {grid} </CardDeck>
+            </div>
+        );
+
+    };
+}
+    let club_grid = (org) => {
+        return (
+            <Card border="dark" style={{width: '24rem', height: '23rem'}} className='text-center'>
+                <Card.Header>{org.clubName}</Card.Header>
+                <Card.Body>
+                    <Toast className='text-center'>
+                        <Toast.Header>
+                            <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
+                            <strong className="mr-auto">Notification</strong>
+                            <small>just now</small>
+                        </Toast.Header>
+                        <Toast.Body>First meeting tomorrow 11/11/2019.</Toast.Body>
+                    </Toast>
+
+                    <Toast className='text-center'>
+                        <Toast.Header>
+                            <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
+                            <strong className="mr-auto">Notification</strong>
+                            <small>just now</small>
+                        </Toast.Header>
+                        <Toast.Body>First meeting tomorrow 11/11/2019.</Toast.Body>
+                    </Toast>
+
+                    <Toast className='text-center'>
+                        <Toast.Header>
+                            <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
+                            <strong className="mr-auto">Notification</strong>
+                            <small>2 seconds ago</small>
+                        </Toast.Header>
+                        <Toast.Body>Pizza Night</Toast.Body>
+                    </Toast>
+                </Card.Body>
+            </Card>
+        )
+    };
 
 export default Announcements;
