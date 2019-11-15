@@ -1,8 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import NavBar from "../navbar";
-//import "../../css/mdb.css";
-//import "../../css/bootstrap.css";
-//import "../../css/style.min.css";
 import "../../css/subs.css";
 import { Divider } from "@material-ui/core";
 import { View } from "react-native-web";
@@ -27,13 +24,36 @@ class Subs extends React.Component {
       <main className="mt-5 pt-5">
         <div className="container">
           <h1 style={headerStyle}> Subscriptions</h1>
-          <Divider />
+          <Divider variant="fullWidth" />
 
           {this.getSubs()}
         </div>
       </main>
     );
   }
+
+  random_color = () => {
+    var colors = [
+      "elegant",
+      "unique",
+      "pink",
+      "purple",
+      "deep-purple",
+      "indigo",
+      "light-blue",
+      "cyan",
+      "dark-green",
+      "light-green",
+      "yellow",
+      "amber",
+      "deep-orange",
+      "brown",
+      "blue-grey"
+    ];
+    var number = Math.floor(Math.random() * colors.length);
+    alert(number);
+    return colors[number];
+  };
 
   getSubs = () => {
     this.props = {
@@ -65,15 +85,17 @@ class Subs extends React.Component {
                 <strong>{this.props.club_name}</strong>
               </h3>
               <p className="description">{this.props.club_description}</p>
+              {this.random_color}
               {this.props.club_tags.map(tag => (
                 // add club tag stuff here
-                <MDBBtn color="amber">{tag}</MDBBtn>
+
+                <MDBBtn color={this.random_color}>{tag}</MDBBtn>
               ))}
             </div>
           </View>
         </View>
 
-        <Divider />
+        <Divider variant="fullWidth" />
       </div>
     );
   };

@@ -8,7 +8,6 @@ import Subs from "./routes/subs";
 import Login from "./routes/login";
 import Calendar from "./routes/calendar";
 import Profile from "./routes/profile";
-import NavBar from "./navbar";
 
 function App() {
   return (
