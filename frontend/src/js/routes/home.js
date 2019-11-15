@@ -22,14 +22,17 @@ class Home extends React.Component {
 
         if (this.state.orgs === undefined) {
             this.state = {
-                ...this.state,
                 orgs: []
             };
         }
     }
 
     render() {
-
+        if (this.state.orgs === undefined) {
+            this.state = {
+                orgs: []
+            };
+        }
         return (
             <div>
                 <NavBar/>
@@ -53,7 +56,6 @@ class Home extends React.Component {
     }
 
     org_grid = (orgs) => {
-        shuffle(orgs); // todo add timer to auto shuffle as described here https://stackoverflow.com/questions/42094060/changing-shuffling-text-every-1-5-second-in-a-react-component
         let grid_items = [];
         let numcols = 4;
         let numrows = orgs.length / numcols;

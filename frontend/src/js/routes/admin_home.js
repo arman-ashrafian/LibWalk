@@ -83,7 +83,6 @@ class AdminHome extends React.Component {
 
         if (this.state.orgs === undefined) {
             this.state = {
-                ...this.state,
                 orgs: []
             };
         }
