@@ -13,7 +13,7 @@ class Home extends React.Component {
 
         this.state = {
             orgs: []
-        }
+        };
 
         // GET /getClubs & set the state when the api response is recieved
         getClubs().then((json) => {
@@ -32,6 +32,7 @@ class Home extends React.Component {
                     {/*<h1> Welcome</h1>*/}
                     {/* org carousel here*/}
                     <div>
+                        {console.log(JSON.stringify(this.state.orgs))}
                         {this.org_carousel(this.state.orgs)}
                     </div>
 
@@ -134,16 +135,6 @@ let org_grid_component = (org) => {
     )
 };
 
-// THE FUCK DOES THIS EVEN DO BRAHHHHH
-function makeid(length) {
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnop   qrstuvwxyz0123456789 _!@#$%^&     ';
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-};
 
 export default Home;
 
