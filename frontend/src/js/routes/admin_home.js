@@ -79,7 +79,14 @@ class AdminHome extends React.Component {
         // get data from firebase
         getClubs().then((json) => {
             this.setState({orgs: json.clubs});
-        })
+        });
+
+        if (this.state.orgs === undefined) {
+            this.state = {
+                ...this.state,
+                orgs: []
+            };
+        }
     };
 }
 

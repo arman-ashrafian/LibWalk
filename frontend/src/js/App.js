@@ -9,7 +9,6 @@ import Login from "./routes/login";
 import Calendar from "./routes/calendar";
 import Profile from "./routes/profile";
 import AdminHome from "./routes/admin_home"
-import NavBar from "./navbar";
 
 function App() {
   return (

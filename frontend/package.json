@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "firebase": "^7.4.0",
     "jquery": "^3.4.1",
     "mdbreact": "^4.22.0",
     "popper": "^1.0.1",
