@@ -27,7 +27,8 @@ function check_login_type() {
         case "Google":
             return "user";
         case "none":
-            throw new Error();
+            throw new Error('user could not be authenticated');
+
         default:
             return "admin";
     }

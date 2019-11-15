@@ -1,5 +1,23 @@
 import React from 'react'
+import db from "../firebase";
 
+function check_login_type() {
+    let user_provider = 'none';
+    db.auth().onAuthStateChanged(firebaseUser => {
+            user_provider = firebaseUser.providerId;
+            console.log('firebaseUser', firebaseUser);
+        }
+    );
+
+    switch (user_provider) {
+        case "Google":
+            return "user";
+        case "none":
+            throw new Error('user could not be authenticated');
+        default:
+            return "admin";
+    }
+}
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -7,6 +25,10 @@ class NavBar extends React.Component {
         this.state = {};
         this.setState(props);
         // console.log('Navbar constructor called.', this.props, props);
+    }
+
+    isAdmin() {
+        return check_login_type() === 'admin';
     }
 
     render() {
@@ -49,6 +71,10 @@ class NavBar extends React.Component {
                                         <a className="nav-link waves-effect" onClick={this.switch_view_subscriptions}
                                            target="_blank">Subscriptions</a>
                                     </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link waves-effect" onClick={this.switch_view_subscriptions}
+                                           target="_blank" hidden={!this.isAdmin()}>Subscriptions</a>
+                                    </li>
                                 </ul>
                                 {/* Right */}
                                 <ul className="navbar-nav nav-flex-icons">
@@ -67,6 +93,11 @@ class NavBar extends React.Component {
             </div>
         )
     }
+
+    switch_view_admin_home = () => {
+        this.props.history.push('/admin_home');
+
+    };
 
     switch_view_profile = () => {
         this.props.history.push('/profile');
