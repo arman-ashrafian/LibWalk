@@ -2,22 +2,45 @@ import React from 'react'
 import NavBar from "../navbar";
 import {getClubs} from "../cloud";
 
-import db from "../firebase";
+import db from "../../firebase.js";
 
-function check_login_type() {
-    if (db.auth().currentuser.provider === 'Google')
-        return 'admin';
-    else
-        return 'user';
+function get_user_uid() {
+    let uid = 'none';
+    db.auth().onAuthStateChanged(firebaseUser => {
+            uid = firebaseUser.uid;
+            console.log('firebaseUser', firebaseUser);
+        }
+    );
+
 }
 
-class AdminHome extends Component {
+function check_login_type() {
+    return "admin";
+    let user_provider = 'none';
+    db.auth().onAuthStateChanged(firebaseUser => {
+            user_provider = firebaseUser.providerId;
+            console.log('firebaseUser', firebaseUser);
+        }
+    );
+
+    switch (user_provider) {
+        case "Google":
+            return "user";
+        case "none":
+            throw new Error();
+        default:
+            return "admin";
+    }
+}
+
+class AdminHome extends React.Component {
     render() {
 
         if (check_login_type() === 'user') {
             this.view_switch_login();
         }
 
+        let club = this.get_club_data();
         return (
             <div>
                 {/*create navigation bar*/}
@@ -25,13 +48,21 @@ class AdminHome extends Component {
 
                 {/*start the rest of the page*/}
                 <main className='mt-5 pt-5'>
-                    <h2 className="h1 text-center mb-5">Notifications</h2>
-                    <h5 className="text-center mb-5">Messages from organizations you subscribe to are listed
-                        below. </h5>
+                    <h2 className="h1 text-center mb-5">club.name</h2>
+                    <h5 className="text-center mb-5">club.desc</h5>
                 </main>
             </div>
         );
     }
+
+    /***
+     * Finds the club from the state of the component
+     * @returns {*}
+     */
+    get_club_data = () => {
+        let uid = get_user_uid();
+        return this.state.orgs[uid];
+    };
 
     /**
      * If the user is not authorized as an admin, then we just take them to the home page.
@@ -50,6 +81,6 @@ class AdminHome extends Component {
             this.setState({orgs: json.clubs});
         })
     };
-
-
 }
+
+export default AdminHome;
