@@ -1,4 +1,5 @@
 import React from 'react'
+import db from "../firebase";
 
 
 class NavBar extends React.Component {
@@ -49,6 +50,7 @@ class NavBar extends React.Component {
                                         <a className="nav-link waves-effect" onClick={this.switch_view_subscriptions}
                                            target="_blank">Subscriptions</a>
                                     </li>
+
                                 </ul>
                                 {/* Right */}
                                 <ul className="navbar-nav nav-flex-icons">
@@ -67,6 +69,11 @@ class NavBar extends React.Component {
             </div>
         )
     }
+
+    switch_view_admin_home = () => {
+        this.props.history.push('/admin_home');
+
+    };
 
     switch_view_profile = () => {
         this.props.history.push('/profile');

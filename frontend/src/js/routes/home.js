@@ -13,16 +13,26 @@ class Home extends React.Component {
 
         this.state = {
             orgs: []
-        }
+        };
 
         // GET /getClubs & set the state when the api response is recieved
         getClubs().then((json) => {
             this.setState({orgs: json.clubs});
-        })
+        });
+
+        if (this.state.orgs === undefined) {
+            this.state = {
+                orgs: []
+            };
+        }
     }
 
     render() {
-
+        if (this.state.orgs === undefined) {
+            this.state = {
+                orgs: []
+            };
+        }
         return (
             <div>
                 <NavBar/>
@@ -32,6 +42,7 @@ class Home extends React.Component {
                     {/*<h1> Welcome</h1>*/}
                     {/* org carousel here*/}
                     <div>
+                        {console.log(JSON.stringify(this.state.orgs))}
                         {this.org_carousel(this.state.orgs)}
                     </div>
 
@@ -45,7 +56,6 @@ class Home extends React.Component {
     }
 
     org_grid = (orgs) => {
-        shuffle(orgs); // todo add timer to auto shuffle as described here https://stackoverflow.com/questions/42094060/changing-shuffling-text-every-1-5-second-in-a-react-component
         let grid_items = [];
         let numcols = 4;
         let numrows = orgs.length / numcols;
@@ -123,7 +133,7 @@ let org_grid_component = (org) => {
             <Card style={{width: '26rem', height: '28rem'}} className='text-center'>
                 <Card.Img variant="top" src={org.img}/>
                 <Card.Body>
-                    <Card.Title>{org.clubName}</Card.Title> {/* LOL AT OUR NAMING CONVENTION - we should actually decide on either club or org*/}
+                    <Card.Title>{org.clubName}</Card.Title>
                     <Card.Text>
                         {org.description}
                     </Card.Text>
@@ -134,16 +144,6 @@ let org_grid_component = (org) => {
     )
 };
 
-// THE FUCK DOES THIS EVEN DO BRAHHHHH
-function makeid(length) {
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnop   qrstuvwxyz0123456789 _!@#$%^&     ';
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-};
 
 export default Home;
 
