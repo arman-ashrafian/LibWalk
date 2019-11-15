@@ -12,6 +12,7 @@ function get_user_uid() {
         }
     );
 
+    return uid;
 }
 
 function check_login_type() {
@@ -41,16 +42,23 @@ class AdminHome extends React.Component {
             this.view_switch_login();
         }
 
+        if (this.state.orgs === undefined) {
+            this.state = {
+                orgs: []
+            };
+        }
+
         let club = this.get_club_data();
+
+        if (club === undefined)
+            club = {name: 'YEET MEATY', desc: 'FUCK THE BACKEND'};
+
         return (
             <div>
-                {/*create navigation bar*/}
-                <NavBar {...this.props}/>
-
                 {/*start the rest of the page*/}
                 <main className='mt-5 pt-5'>
-                    <h2 className="h1 text-center mb-5">club.name</h2>
-                    <h5 className="text-center mb-5">club.desc</h5>
+                    <h2 className="h1 text-center mb-5">{club.name}</h2>
+                    <h5 className="text-center mb-5">{club.desc}</h5>
                 </main>
             </div>
         );
@@ -76,6 +84,10 @@ class AdminHome extends React.Component {
     constructor(props) {
         super(props);
         console.log('AdminHome element created with props', props);
+
+        this.state = {
+            orgs: []
+        };
 
         // get data from firebase
         getClubs().then((json) => {
