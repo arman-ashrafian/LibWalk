@@ -133,7 +133,7 @@ let org_grid_component = (org) => {
             <Card style={{width: '26rem', height: '28rem'}} className='text-center'>
                 <Card.Img variant="top" src={org.img}/>
                 <Card.Body>
-                    <Card.Title>{org.clubName}</Card.Title> {/* LOL AT OUR NAMING CONVENTION - we should actually decide on either club or org*/}
+                    <Card.Title>{org.clubName}</Card.Title>
                     <Card.Text>
                         {org.description}
                     </Card.Text>
