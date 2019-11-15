@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container'
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
+import Image from "react-bootstrap/Image";
 
 
 class Announcements extends React.Component {
@@ -38,33 +39,31 @@ class Announcements extends React.Component {
         }
 
         return (
-            <div>
-                <NavBar/>
-                actual page
-                <main className='mt-5 pt-5'>
-                    <NavBar {...this.props}/>
-                    {/*<h1> Welcome</h1>*/}
-                    {/* org carousel here*/}
-                    <div className="wow fadeIn">
-                        {/*Section heading*/}
-                        <h1 className="h1 text-center mb-5">Notifications</h1>
-                        <h5 className="text-center mb-5">Messages from organizations you subscribe to are listed
-                            below. </h5>
-                    </div>
 
-                    {/*Rest of the page here*/}
-                    <div className='announcements_grid_container'>
-                        {this.club_grid_loop(this.state.orgs)}
+            <main className='mt-5 pt-5'>
+                <NavBar {...this.props}/>
+                <div className='container centerPage' >
+                    <div className="row centerPage">
+
+                        {/*Display User Information*/}
+                        <div className="col-sm-12 text-center">
+                            <h1 className="h1 text-center mb-5">Notifications</h1>
+                            <h5 className="text-center mb-5">Messages from organizations you subscribe to are listed
+                                below. </h5>
+                        </div>
+                        <div className="div-centered ">
+                            {this.club_grid_loop(this.state.orgs)}
+                        </div>
                     </div>
-                </main>
-            </div>
+                </div>
+            </main>
         );
     }
 
     club_grid_loop = (orgs) => {
         let grid_items = [];
         let numcols = 4;
-        let numrows = orgs.length / numcols;
+        let numrows = 3;
         numrows = Math.ceil(numrows);
 
         orgs.forEach(function (e) {
@@ -97,10 +96,10 @@ class Announcements extends React.Component {
 }
     let club_grid = (org) => {
         return (
-            <Card border="dark" style={{width: '24rem', height: '23rem'}} className='text-center'>
+            <Card border="info" style={{width: '20rem', height: '28rem'}} className='text-center'>
                 <Card.Header>{org.clubName}</Card.Header>
                 <Card.Body>
-                    <Toast className='text-center'>
+                    <Toast>
                         <Toast.Header>
                             <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
                             <strong className="mr-auto">Notification</strong>
@@ -109,20 +108,20 @@ class Announcements extends React.Component {
                         <Toast.Body>First meeting tomorrow 11/11/2019.</Toast.Body>
                     </Toast>
 
-                    <Toast className='text-center'>
-                        <Toast.Header>
-                            <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
-                            <strong className="mr-auto">Notification</strong>
-                            <small>just now</small>
-                        </Toast.Header>
-                        <Toast.Body>First meeting tomorrow 11/11/2019.</Toast.Body>
-                    </Toast>
-
-                    <Toast className='text-center'>
+                    <Toast>
                         <Toast.Header>
                             <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
                             <strong className="mr-auto">Notification</strong>
                             <small>2 seconds ago</small>
+                        </Toast.Header>
+                        <Toast.Body>Come tomorrow for free boba.</Toast.Body>
+                    </Toast>
+
+                    <Toast>
+                        <Toast.Header>
+                            <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
+                            <strong className="mr-auto">Notification</strong>
+                            <small>5 minutes ago</small>
                         </Toast.Header>
                         <Toast.Body>Pizza Night</Toast.Body>
                     </Toast>
