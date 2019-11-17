@@ -47,7 +47,6 @@ exports.testDb = functions.https.onRequest((req, res) => {
 exports.getUser = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     const UID = req.body.uid; // user ID
-
     admin
       .firestore()
       .collection("Users")

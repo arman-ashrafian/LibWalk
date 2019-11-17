@@ -2,6 +2,7 @@ import React from "react";
 import '../../css/calendar.css'
 import '../../css/addons/datatables.min.css'
 import NavBar from "../navbar";
+import {getUser} from '../cloud';
 
 class Calendar extends React.Component {
     constructor(props) {
