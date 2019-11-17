@@ -9,13 +9,20 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import {FaUser, FaGraduationCap, FaSchool} from 'react-icons/fa';
 import {MdEmail} from 'react-icons/md';
-
+import db from "../../firebase";
+import {getUser} from "../cloud";
 
 class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.initialState = {
-            editMode: false
+            editMode: false,
+            userId:'',
+            userName: '',
+            userEmail: '',
+            userMajor: '',
+            userYear: '',
+            user: ''
         }
 
         this.state = this.initialState
@@ -23,8 +30,31 @@ class Profile extends React.Component {
         this.close = this.close.bind(this);
     }
 
+    componentDidMount() {
+        db.auth().onAuthStateChanged(firebaseUser => {
+            if( firebaseUser) {
+                this.setState({ userId: firebaseUser.uid });
+                alert(this.state.userId)
+                // getUser using userId and populate this.state
+                getUser(this.state.userId).then(json => {
+                    this.setState({
+                        userName: json['name'],
+                        userEmail: json['email'],
+                        userMajor: json['major'],
+                        userYear: json['year']
+                    })
+                })
+
+                console.log(this.state.userName)
+
+            } else {
+                console.log("User not logged in")
+            }
+        });
+    }
+
     close() {
-        this.setState(() => this.initialState)
+        this.setState({ editMode: false});
     }
 
     open() {
@@ -32,7 +62,7 @@ class Profile extends React.Component {
     }
 
     handleEdit() {
-        alert("submitted")
+        alert(this.state.userId)
     }
 
     render() {
@@ -58,16 +88,16 @@ class Profile extends React.Component {
                         </div>
                         <div className="div-centered ">
                             <h3>
-                                <FaUser /> Name : {this.props.userName}
+                                <FaUser /> Name : {this.state.userName}
                             </h3>
                             <h3>
-                                <MdEmail /> Email : {this.props.userEmail}
+                                <MdEmail /> Email : {this.state.userEmail}
                             </h3>
                             <h3>
-                                <FaGraduationCap /> Major : {this.props.userMajor}
+                                <FaGraduationCap /> Major : {this.state.userMajor}
                             </h3>
                             <h3>
-                                <FaSchool /> Year : {this.props.userYear}
+                                <FaSchool /> Year : {this.state.userYear}
                             </h3>
 
                         </div>
