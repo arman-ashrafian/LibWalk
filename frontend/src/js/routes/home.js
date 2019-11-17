@@ -20,7 +20,6 @@ class Home extends React.Component {
             this.setState({orgs: json.clubs});
         });
 
-
         if (this.state.orgs === undefined) {
             this.state = {
                 orgs: []
