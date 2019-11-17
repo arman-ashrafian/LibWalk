@@ -66,6 +66,9 @@ export function editUser(userId, userData) {
     return postRequest(editUserURL, data)
 }
 
+export function getAnnouncements() {
+
+}
 export function registerUser() {
     return null;
 }

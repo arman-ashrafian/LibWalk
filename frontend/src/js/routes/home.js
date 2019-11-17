@@ -75,6 +75,9 @@ class Home extends React.Component {
                         <Col>
                             {grid_items[i * numcols + j]}
                         </Col>
+                        <div>
+                            <br />
+                        </div>
                     </div>
                 )
             }
@@ -132,7 +135,7 @@ let org_grid_component = (org) => {
     return (
         <div>
             {/*<Card style={{width: '18rem'}}>*/}
-            <Card style={{width: '26rem', height: '28rem'}} className='text-center'>
+            <Card style={{width: '26rem', height: '36rem'}} className='text-center'>
                 <Card.Img variant="top" src={org.img}/>
                 <Card.Body>
                     <Card.Title>{org.clubName}</Card.Title>

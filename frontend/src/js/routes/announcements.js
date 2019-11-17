@@ -3,7 +3,7 @@ import NavBar from "../navbar";
 import Toast from 'react-bootstrap/Toast'
 import ToastHeader from 'react-bootstrap/ToastHeader'
 import ToastBody from 'react-bootstrap/ToastBody'
-import '../../css/announcements.css'
+import '../../css/notifs.css'
 import {getClubs} from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from 'react-bootstrap/Row';
@@ -49,7 +49,7 @@ class Announcements extends React.Component {
                     <div className="row centerPage">
                         {/*Display User Information*/}
                         <div className="col-sm-12 text-center" padding>
-                            <h1 className="h1 text-center mb-5">Event Notifications</h1>
+                            <h1 className="h1 text-center mb-5">Notifications</h1>
                             <h5 className="text-center mb-5">Messages from organizations you subscribe to are listed
                                 below. </h5>
                         </div>
@@ -82,6 +82,10 @@ class Announcements extends React.Component {
                         <Col>
                             {grid_items[i * numcols + j]}
                         </Col>
+                        <div>
+                            <br />
+                            <br />
+                        </div>
                     </div>
                 )
             }
@@ -100,7 +104,7 @@ class Announcements extends React.Component {
     let club_grid = (org) => {
 
         return (
-            <Card bg="light" border="warning" style={{width: '20rem', height: '28rem'}} className='text-center'>
+            <Card bg="light" border="warning" style={{width: '20rem', height: '26rem'}} className='text-center'>
                 <Card.Header>{org.clubName}</Card.Header>
                 <Card.Body>
                     <MakeToast />
