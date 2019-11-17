@@ -48,7 +48,7 @@ class Announcements extends React.Component {
                 <div className='container centerPage' >
                     <div className="row centerPage">
                         {/*Display User Information*/}
-                        <div className="col-sm-12 text-center" padding>
+                        <div className="col-sm-12 text-center">
                             <h1 className="h1 text-center mb-5">Notifications</h1>
                             <h5 className="text-center mb-5">Messages from organizations you subscribe to are listed
                                 below. </h5>
