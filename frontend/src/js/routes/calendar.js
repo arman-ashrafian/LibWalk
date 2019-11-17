@@ -9,11 +9,6 @@ class Calendar extends React.Component {
         super(props);
         this.props = {...this.props, description: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]};
         console.log('Calendar constructor call');
-
-        getUser('5emACumaCiNLpWJ8aBiByHyAorF3').then( json => {
-            console.log(json);
-        });
-
     }
 
     render() {
