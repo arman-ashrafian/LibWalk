@@ -8,6 +8,10 @@ import Subs from "./routes/subs";
 import Login from "./routes/login";
 import Calendar from "./routes/calendar";
 import Profile from "./routes/profile";
+<<<<<<< HEAD
+=======
+import AdminHome from "./routes/admin_home"
+>>>>>>> ed099c8d2df6c451ec33301ac04d86f32f8959b1
 
 function App() {
   return (
@@ -21,6 +25,7 @@ function App() {
         <Route exact path="/search" component={Search} />
         <Route exact path="/subs" component={Subs} />
         <Route exact path="/profile" component={Profile} />
+        <Route exact path="/admin_home" component={AdminHome} />
       </div>
     </Router>
   );

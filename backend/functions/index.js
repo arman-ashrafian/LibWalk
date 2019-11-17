@@ -47,11 +47,10 @@ exports.testDb = functions.https.onRequest((req, res) => {
 exports.getUser = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     const UID = req.body.uid; // user ID
-
     admin
       .firestore()
       .collection("Users")
-      .doc(UID)
+      .doc(""+UID)
       .get()
       .then(doc => {
         res.send(doc.data());
@@ -300,7 +299,7 @@ exports.changeUser = functions.https.onRequest((req, res) => {
       .collection("Users")
       .doc(user_id)
       .set(user_info)
-      .then(() => res.send({ message: "changed event " + eventId }))
+      .then(() => res.send({ message: "changed user " + user_id }))
       .catch(err => res.send(err));
   });
 });
