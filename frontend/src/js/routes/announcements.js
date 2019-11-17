@@ -1,6 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import NavBar from "../navbar";
 import Toast from 'react-bootstrap/Toast'
+import ToastHeader from 'react-bootstrap/ToastHeader'
+import ToastBody from 'react-bootstrap/ToastBody'
 import '../../css/announcements.css'
 import {getClubs} from "../cloud";
 import Col from "react-bootstrap/Col";
@@ -9,6 +11,7 @@ import Container from 'react-bootstrap/Container'
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
+import Button from "react-bootstrap/Button";
 
 
 class Announcements extends React.Component {
@@ -29,7 +32,7 @@ class Announcements extends React.Component {
                 orgs: []
             };
         }
-    }
+    };
 
     render() {
         if(this.state.orgs === undefined) {
@@ -44,14 +47,13 @@ class Announcements extends React.Component {
                 <NavBar {...this.props}/>
                 <div className='container centerPage' >
                     <div className="row centerPage">
-
                         {/*Display User Information*/}
-                        <div className="col-sm-12 text-center">
-                            <h1 className="h1 text-center mb-5">Notifications</h1>
+                        <div className="col-sm-12 text-center" padding>
+                            <h1 className="h1 text-center mb-5">Event Notifications</h1>
                             <h5 className="text-center mb-5">Messages from organizations you subscribe to are listed
                                 below. </h5>
                         </div>
-                        <div className="div-centered ">
+                        <div className="div-centered">
                             {this.club_grid_loop(this.state.orgs)}
                         </div>
                     </div>
@@ -63,7 +65,7 @@ class Announcements extends React.Component {
     club_grid_loop = (orgs) => {
         let grid_items = [];
         let numcols = 4;
-        let numrows = 3;
+        let numrows = 4;//orgs.length / numcols;
         numrows = Math.ceil(numrows);
 
         orgs.forEach(function (e) {
@@ -76,7 +78,7 @@ class Announcements extends React.Component {
             let row = [];
             for (let j = 0; j < numcols; j++) {
                 row.push(
-                    <div className='home_grid_component'>
+                    <div className='club_grid_component'>
                         <Col>
                             {grid_items[i * numcols + j]}
                         </Col>
@@ -94,40 +96,57 @@ class Announcements extends React.Component {
 
     };
 }
+
     let club_grid = (org) => {
+
         return (
-            <Card border="info" style={{width: '20rem', height: '28rem'}} className='text-center'>
+            <Card bg="light" border="warning" style={{width: '20rem', height: '28rem'}} className='text-center'>
                 <Card.Header>{org.clubName}</Card.Header>
                 <Card.Body>
-                    <Toast>
-                        <Toast.Header>
-                            <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
-                            <strong className="mr-auto">Notification</strong>
-                            <small>just now</small>
-                        </Toast.Header>
-                        <Toast.Body>First meeting tomorrow 11/11/2019.</Toast.Body>
-                    </Toast>
-
-                    <Toast>
-                        <Toast.Header>
-                            <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
-                            <strong className="mr-auto">Notification</strong>
-                            <small>2 seconds ago</small>
-                        </Toast.Header>
-                        <Toast.Body>Come tomorrow for free boba.</Toast.Body>
-                    </Toast>
-
-                    <Toast>
-                        <Toast.Header>
-                            <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
-                            <strong className="mr-auto">Notification</strong>
-                            <small>5 minutes ago</small>
-                        </Toast.Header>
-                        <Toast.Body>Pizza Night</Toast.Body>
-                    </Toast>
+                    <MakeToast />
                 </Card.Body>
             </Card>
         )
     };
+
+    function MakeToast() {
+        const [showA, setShowA] = useState(true);
+        const [showB, setShowB] = useState(true);
+        const [showC, setShowC] = useState(true);
+
+        const toggleShowA = () => setShowA(!showA);
+        const toggleShowB = () => setShowB(!showB);
+        const toggleShowC = () => setShowC(!showC);
+
+        return (
+            <Col>
+                <Toast show={showA} onClose={toggleShowA}>
+                    <Toast.Header>
+                        <strong className="mr-auto">Notification</strong>
+                        <small>11 mins ago</small>
+                    </Toast.Header>
+                    <Toast.Body>Pizza Night</Toast.Body>
+                </Toast>
+
+                <Toast show={showB} onClose={toggleShowB}>
+                    <Toast.Header>
+                        <strong className="mr-auto">Notification</strong>
+                        <small>12 mins ago</small>
+                    </Toast.Header>
+                    <Toast.Body> Free Boba Tomorrow Night</Toast.Body>
+                </Toast>
+
+                <Toast show={showC} onClose={toggleShowC}>
+                    <Toast.Header>
+                        <strong className="mr-auto">Notification</strong>
+                        <small>15 mins ago</small>
+                    </Toast.Header>
+                    <Toast.Body>First Meeting Starts @ 12pm on 11/11/2019</Toast.Body>
+                </Toast>
+            </Col>
+        );
+    }
+
+
 
 export default Announcements;
