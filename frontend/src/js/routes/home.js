@@ -5,7 +5,7 @@ import Card from 'react-bootstrap/Card'
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import CardDeck from "react-bootstrap/CardDeck";
-import {getClubs, getUser} from "../cloud";
+import {getClubs} from "../cloud";
 
 class Home extends React.Component {
     constructor(props) {
