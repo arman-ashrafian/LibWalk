@@ -35,7 +35,7 @@ export async function getClubs() {
     if ( !cache['getClubs'] || (now - cache['getClubs'].date) > CACHE_TIMEOUT_MS) {
         return getRequest(getClubsURL).then( json => { 
             cache['getClubs'] = {
-                time: now,
+                date: now,
                 resp: json
             }
             return json
