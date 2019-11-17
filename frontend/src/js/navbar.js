@@ -1,14 +1,30 @@
-import React from 'react'
+import React from 'react';
 import db from "../firebase";
+import Button from "react-bootstrap/Button";
 
 
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            userId: '',
+            loggedIn: false
+        };
         this.setState(props);
         // console.log('Navbar constructor called.', this.props, props);
     }
+
+    
+    componentDidMount() {
+        db.auth().onAuthStateChanged(firebaseUser => {
+            if( firebaseUser) {
+                this.setState({ userId: firebaseUser.uid, loggedIn: true });
+                // getUser using userId and populate this.state
+            } else {
+                console.log("Not logged in")
+            }
+        })
+    };
 
     render() {
         return (
@@ -55,11 +71,22 @@ class NavBar extends React.Component {
                                 {/* Right */}
                                 <ul className="navbar-nav nav-flex-icons">
                                     <li className="nav-item">
-                                        <a className="nav-link border border-light rounded waves-effect"
-                                           onClick={this.switch_view_profile}
-                                           target="_blank">
-                                            <i className="fa fa-user mr-2"/>Profile
-                                        </a>
+                                        
+
+                                        {this.state.loggedIn ?
+                                            <a className="nav-link border rounded waves-effect "
+                                                onClick={this.switch_view_profile}
+                                                target="_blank" >
+                                                <i className="fa fa-user mr-2"/>Profile
+                                            </a>              
+                                        :
+                                            <a className="nav-link border rounded waves-effect "
+                                                onClick={this.switch_view_login}
+                                                target="_blank" >
+                                                <i className="fa fa-user mr-2"/>Login
+                                            </a>           
+                                        }
+                                        
                                     </li>
                                 </ul>
                             </div>
@@ -72,7 +99,10 @@ class NavBar extends React.Component {
 
     switch_view_admin_home = () => {
         this.props.history.push('/admin_home');
+    };
 
+    switch_view_login = () => {
+        this.props.history.push('/login');
     };
 
     switch_view_profile = () => {
@@ -95,7 +125,6 @@ class NavBar extends React.Component {
 
     switch_view_home = () => {
         this.props.history.push('/home');
-
     };
 }
 

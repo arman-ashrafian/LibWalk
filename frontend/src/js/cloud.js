@@ -67,11 +67,6 @@ export function registerUser() {
     return null;
 }
 
-export function updateUser() {
-    return null;
-}
-
-
 export function registerClub() {
     return null;
 }
