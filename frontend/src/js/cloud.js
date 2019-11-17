@@ -2,6 +2,8 @@
 const getClubsURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClubs';
 const getUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getUser';
 const getEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getEvent';
+const editUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeUser';
+
 /* ============ fetch() wrappers ==================== */
 // Use these functions instead of calling fetch directly
 // so you don't have to set the params every time.
@@ -30,7 +32,18 @@ export function getClubs() {
 }
 
 export function getUser(userId) {
-    return postRequest(getUserURL, {uid: userId});
+    let data = {
+        uid: userId
+    }
+    return postRequest(getUserURL, data)
+}
+
+export function editUser(userId, userData) {
+    let data = {
+        user_id: userId,
+        user: userData
+    }
+    return postRequest(editUserURL, data)
 }
 
 export function registerUser() {

@@ -10,7 +10,7 @@ import Form from "react-bootstrap/Form";
 import {FaUser, FaGraduationCap, FaSchool} from 'react-icons/fa';
 import {MdEmail} from 'react-icons/md';
 import db from "../../firebase";
-import {getUser} from "../cloud";
+import {getUser, editUser} from "../cloud";
 
 class Profile extends React.Component {
     constructor(props) {
@@ -18,19 +18,33 @@ class Profile extends React.Component {
         this.initialState = {
             editMode: false,
             userId:'',
-            userName: '',
-            userEmail: '',
-            userMajor: '',
-            userYear: '',
-            user: ''
+            user: {
+                userName: '',
+                userEmail: '',
+                userMajor: '',
+                userYear: '',
+            }
         }
 
-        this.state = this.initialState
+        this.state = this.initialState;
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
     }
 
     componentDidMount() {
+        getUser('30wStJj7FoaT64BjDhbIr0ujdH32').then(json => {
+            this.setState({
+                userId: '30wStJj7FoaT64BjDhbIr0ujdH32',
+                user: {
+                    userName: json['name'],
+                    userEmail: json['email'],
+                    userMajor: json['major'],
+                    userYear: json['year']
+                }
+            })
+        })
+        /*
         db.auth().onAuthStateChanged(firebaseUser => {
             if( firebaseUser) {
                 this.setState({ userId: firebaseUser.uid });
@@ -48,9 +62,11 @@ class Profile extends React.Component {
                 console.log(this.state.userName)
 
             } else {
-                console.log("User not logged in")
+                alert("Not logged in")
             }
+        
         });
+        */
     }
 
     close() {
@@ -62,20 +78,12 @@ class Profile extends React.Component {
     }
 
     handleEdit() {
-        alert(this.state.userId)
+        alert("Submitted")
+        //editUser(this.state.userId, this.state.user)
+
     }
 
     render() {
-        let props = {
-            userName: 'Gary G.',
-            userEmail: 'ggez@ucsd.edu',
-            userMajor: 'CS',
-            userYear: 'Super Senior',
-            userUrl: "https://www.jacobsschool.ucsd.edu/faculty/faculty_bios/photos/300.jpg",
-        };
-
-        this.props = {...this.props, ...props};
-
         return (
             <main className='mt-5 pt-5'>
                 <NavBar {...this.props}/>
@@ -84,20 +92,20 @@ class Profile extends React.Component {
 
                         {/*Display User Information*/}
                         <div className="col-sm-12 text-center">
-                            <Image src={this.props.userUrl} height="150" width="150" roundedCircle />
+                            <Image src={"https://www.jacobsschool.ucsd.edu/faculty/faculty_bios/photos/300.jpg"} height="150" width="150" roundedCircle />
                         </div>
                         <div className="div-centered ">
                             <h3>
-                                <FaUser /> Name : {this.state.userName}
+                                <FaUser /> Name : {this.state.user.userName}
                             </h3>
                             <h3>
-                                <MdEmail /> Email : {this.state.userEmail}
+                                <MdEmail /> Email : {this.state.user.userEmail}
                             </h3>
                             <h3>
-                                <FaGraduationCap /> Major : {this.state.userMajor}
+                                <FaGraduationCap /> Major : {this.state.user.userMajor}
                             </h3>
                             <h3>
-                                <FaSchool /> Year : {this.state.userYear}
+                                <FaSchool /> Year : {this.state.user.userYear}
                             </h3>
 
                         </div>
@@ -115,7 +123,7 @@ class Profile extends React.Component {
                 </div>
 
                 <Modal show={this.state.editMode} onHide={this.close} size="m">
-                    <Modal.Header centered closeButton>
+                    <Modal.Header closeButton>
                         <Modal.Title > Edit Profile </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
@@ -123,22 +131,22 @@ class Profile extends React.Component {
                         <Form onSubmit={this.handleEdit}>
                             <Form.Group controlId="formName">
                                 <Form.Label>Name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter Name" />
+                                <Form.Control type="name" placeholder="Enter Name" defaultValue={this.state.userName}/>
                             </Form.Group>
 
                             <Form.Group controlId="formEmail">
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Enter Email" />
+                                <Form.Control type="email" placeholder="Enter Email" defaultValue={this.state.userEmail}/>
                             </Form.Group>
 
                             <Form.Group controlId="formMajor">
                                 <Form.Label>Major</Form.Label>
-                                <Form.Control type="major" placeholder="Enter Major" />
+                                <Form.Control type="major" placeholder="Enter Major" defaultValue={this.state.userMajor}/>
                             </Form.Group>
 
                             <Form.Group controlId="formYear">
                                 <Form.Label>Year</Form.Label>
-                                <Form.Control type="year" placeholder="Enter Year" />
+                                <Form.Control type="year" placeholder="Enter Year" defaultValue={this.state.userYear}/>
                             </Form.Group>
                             <Button variant="primary" type="submit" >
                                 Submit
