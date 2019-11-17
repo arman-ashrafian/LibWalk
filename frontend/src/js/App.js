@@ -9,13 +9,9 @@ import Login from "./routes/login";
 import Calendar from "./routes/calendar";
 import Profile from "./routes/profile";
 import AdminHome from "./routes/admin_home"
-<<<<<<< HEAD
 import NavBar from "./navbar";
 import AdminLogin from "./routes/adminlogin";
-=======
 import Events from "./routes/events";
-import NavBar from "./navbar";
->>>>>>> 8244dda1235244a17acd20dc42d41c7dfa1b155e
 
 function App() {
   return (
