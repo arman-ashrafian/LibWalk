@@ -50,7 +50,7 @@ exports.getUser = functions.https.onRequest((req, res) => {
     admin
       .firestore()
       .collection("Users")
-      .doc(UID)
+      .doc(""+UID)
       .get()
       .then(doc => {
         res.send(doc.data());
