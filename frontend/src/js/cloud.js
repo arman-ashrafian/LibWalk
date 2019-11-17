@@ -18,6 +18,7 @@ const postRequest = function (url, data) { // data argument should be json
         }).then((resp) => resp.json());
 }
 
+
 const getRequest = function (url) {
     return fetch(url, {mode: 'cors', method: 'GET'})
         .then((resp) => resp.json());
