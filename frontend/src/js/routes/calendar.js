@@ -2,12 +2,18 @@ import React from "react";
 import '../../css/calendar.css'
 import '../../css/addons/datatables.min.css'
 import NavBar from "../navbar";
+import {getUser} from '../cloud';
 
 class Calendar extends React.Component {
     constructor(props) {
         super(props);
         this.props = {...this.props, description: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]};
         console.log('Calendar constructor call');
+
+        getUser('5emACumaCiNLpWJ8aBiByHyAorF3').then( json => {
+            console.log(json);
+        });
+
     }
 
     render() {

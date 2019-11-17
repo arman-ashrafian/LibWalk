@@ -5,7 +5,7 @@ import Card from 'react-bootstrap/Card'
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import CardDeck from "react-bootstrap/CardDeck";
-import {getClubs} from "../cloud";
+import {getClubs, getUser} from "../cloud";
 
 class Home extends React.Component {
     constructor(props) {
@@ -19,6 +19,7 @@ class Home extends React.Component {
         getClubs().then((json) => {
             this.setState({orgs: json.clubs});
         });
+
 
         if (this.state.orgs === undefined) {
             this.state = {
