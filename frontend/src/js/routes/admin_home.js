@@ -53,6 +53,14 @@ class AdminHome extends React.Component {
 		this.setState({editInfo: true})
 	}
 
+	handleEditTag() {
+		this.setState({editTag: true})
+	}
+
+	handleEditEvent() {
+		this.setState({editEvent: true})
+	}
+
     render() {
 
         if (check_login_type() === 'user') {
@@ -85,31 +93,89 @@ class AdminHome extends React.Component {
 					onHide={this.close}
 					aria-labelledby="example-modal-sizes-title-lg"
 					>
-					<Modal.Header closeButton>
-					<Modal.Title id="example-modal-sizes-title-lg">
-						Club Info
-					</Modal.Title>
-					</Modal.Header>
+						<Modal.Header closeButton>
+						<Modal.Title id="example-modal-sizes-title-lg">
+							Club Info
+						</Modal.Title>
+						</Modal.Header>
  
-					<Modal.Body>
-					<Form.Group controlId="formName">
-						<Form.Label>Club Name</Form.Label>
-						<Form.Control type="name" placeholder="Enter Club Name" />
-					</Form.Group>
-					<Form.Group controlId="formImage">
-						<Form.Label>Image URL</Form.Label>
-						<Form.Control type="name" placeholder="Enter Image URL" />
-					</Form.Group>
-					<Form.Group controlId="formName">
-						<Form.Label>Description</Form.Label>
-						<Form.Control type="name" placeholder="Enter Club Description" />
-					</Form.Group>
-						<Button variant="primary" type="submit" >
-						Submit
-						</Button>
-					</Modal.Body>
- 
+						<Modal.Body>
+						<Form.Group controlId="formName">
+							<Form.Label>Club Name</Form.Label>
+							<Form.Control type="name" placeholder="Enter Club Name" />
+						</Form.Group>
+						<Form.Group controlId="formImage">
+							<Form.Label>Image URL</Form.Label>
+							<Form.Control type="name" placeholder="Enter Image URL" />
+						</Form.Group>
+						<Form.Group controlId="formName">
+							<Form.Label>Description</Form.Label>
+							<Form.Control type="name" placeholder="Enter Club Description" />
+						</Form.Group>
+							<Button variant="primary" type="submit" >
+							Submit
+							</Button>
+						</Modal.Body>
 					</Modal>
+
+					<Button onClick={this.handleEditTag}>Edit Tag</Button>
+					<Modal
+					size="sm"
+					show={this.state.editTag}
+					onHide={this.close}
+					aria-labelledby="example-modal-sizes-title-sm"
+					>
+						<Modal.Header closeButton>
+							<Modal.Title id="example-modal-sizes-title-sm">
+								Tag Info
+							</Modal.Title>
+						</Modal.Header>
+        
+						<Modal.Body>
+							<Form.Group controlId="formName">
+								<Form.Label>Tag Name</Form.Label>
+								<Form.Control type="name" placeholder="Enter Tag Name" />
+							</Form.Group>
+							<Button variant="primary" type="submit" >
+								Submit
+							</Button>
+						 </Modal.Body>
+					</Modal>
+
+					<Button onClick={this.handleEditEvent}>Edit Event</Button>
+						<Modal
+						size="lg"
+						show={this.state.editEvent}
+						onHide={this.close}
+						aria-labelledby="example-modal-sizes-title-lg"
+						>
+							<Modal.Header closeButton>
+								<Modal.Title id="example-modal-sizes-title-lg">
+									Event Info
+								</Modal.Title>
+							</Modal.Header>
+        
+							<Modal.Body>
+								<Form.Group controlId="formName">
+									<Form.Label>Event Name</Form.Label>
+									<Form.Control type="name" placeholder="Enter Event Name" />
+								</Form.Group>
+  
+								<Form.Group controlId="formPlaceTime">
+									<Form.Label>Place/Time</Form.Label>
+									<Form.Control type="place/time" placeholder="Enter Place/Time" />
+								</Form.Group>
+	  
+								<Form.Group controlId="formDetails">
+									<Form.Label>Details</Form.Label>
+									<Form.Control type="details" placeholder="Enter Details" />
+								</Form.Group>
+								<Button variant="primary" type="submit" >
+									Submit
+								</Button>
+							</Modal.Body>        
+					  </Modal>
+
                 </main>
             </div>
         );
@@ -156,6 +222,8 @@ class AdminHome extends React.Component {
 
 		this.close = this.close.bind(this);
 		this.handleEditInfo = this.handleEditInfo.bind(this);
+		this.handleEditTag = this.handleEditTag.bind(this);
+		this.handleEditEvent = this.handleEditEvent.bind(this);
     };
 }
 

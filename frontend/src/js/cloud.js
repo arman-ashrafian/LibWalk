@@ -101,7 +101,7 @@ export function getEvent(eventId) {
 
 export function changeTag(tagId, tagData) {
 	let data = {
-		tag_id: tagId;
+		tag_id: tagId,
 		type: tagData
 	}
 	return postRequest(changeTagURL, data);
@@ -109,7 +109,7 @@ export function changeTag(tagId, tagData) {
 
 export function getAnnouncements(clubId) {
 	let data = {
-		club_id = clubId
+		club_id: clubId
 	}
 	return postRequest(getAnnouncementsURL, data);
 }
