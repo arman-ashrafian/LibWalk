@@ -140,7 +140,7 @@ let org_grid_component = (org) => {
                 <Card.Body>
                     <Card.Title>{org.clubName}</Card.Title>
                     <Card.Text>
-                        {org.description}
+                        <small className="scroll-box">{org.description.slice(0, 450)}</small>
                     </Card.Text>
                     <Button variant="primary" href={org.pageURL}>Org Home</Button>
                 </Card.Body>
