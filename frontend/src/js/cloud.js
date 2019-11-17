@@ -2,6 +2,7 @@
 const getClubsURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClubs';
 const getUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getUser';
 
+const CACHE_TIMEOUT_MS = 120000 // only make API request if last call was over 120,000 ms == 120 seconds
 let cache = {}
 
 /* ============ fetch() wrappers ==================== */
@@ -31,7 +32,7 @@ export async function getClubs() {
     console.log('printing cache !!!!!');
     console.log(cache);
     let now = new Date();
-    if ( !cache['getClubs'] || (now - cache['getClubs'].date) > 120000 ) {
+    if ( !cache['getClubs'] || (now - cache['getClubs'].date) > CACHE_TIMEOUT_MS) {
         return getRequest(getClubsURL).then( json => { 
             cache['getClubs'] = {
                 time: now,
