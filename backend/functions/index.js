@@ -337,3 +337,57 @@ exports.changeClub = functions.https.onRequest((req, res) => {
       .catch(err => res.send({ message: err }));
   });
 });
+
+/* ================== /changeTag ==================
+ * request:
+ *      { tag_id: <string>,
+ *        tag: {
+ *              "type": <string>
+ *        }
+ *      }
+ *
+ * response:
+ *      {
+ *        message: "changed tag <tag_id>"
+ *      }
+ */
+
+exports.changeTag = functions.https.onRequest((req, res) => {
+	cors(req, res, () => {
+		const tag_id = req.body.tag_id;
+		const tag_info = req.body.tag;
+
+		admin
+		.firestore()
+		.collection('Tags')
+		.doc(tag_id)
+		.set(tag_info)
+		.then(() => res.send({ message: "changed tag " + tag_id }))
+		.catch(err => res.send(err));
+	});
+});
+
+/* ================== /getAnnouncements ==================
+ * request:
+ *      { club_id: <string> }
+ *
+ * response:
+ *      {
+ *              "announcements": <string[]>
+ *      }
+ */
+exports.getAnnouncements = functions.https.onRequest((req, res) => {
+	cors(req, res, () => {
+		admin
+		.firestore()
+		.collection('Clubs')
+		.doc(req.body.club_id)
+		.get()
+		.then(doc => {
+			res.send(doc.data().announcements)
+		})
+		.catch(err => {
+			res.send(err);
+		});
+	});
+});

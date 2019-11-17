@@ -12,6 +12,10 @@ import {MdEmail} from 'react-icons/md';
 import db from "../../firebase";
 import {getUser, editUser} from "../cloud";
 
+import * as firebase from "firebase";
+
+const auth = firebase.auth();
+
 class Profile extends React.Component {
     constructor(props) {
         super(props);
@@ -169,6 +173,11 @@ class Profile extends React.Component {
 
     switch_view_login = () => {
         console.log('Onclick');
+		auth.signOut().then((result) => {
+			this.setState({
+				user: null
+			})
+		});
         this.props.history.push('/login');
     }
 

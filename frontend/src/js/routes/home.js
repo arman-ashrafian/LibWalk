@@ -16,9 +16,9 @@ class Home extends React.Component {
         };
 
         // GET /getClubs & set the state when the api response is recieved
-        getClubs().then((json) => {
+        /*getClubs().then((json) => {
             this.setState({orgs: json.clubs});
-        });
+        });*/
 
         if (this.state.orgs === undefined) {
             this.state = {
