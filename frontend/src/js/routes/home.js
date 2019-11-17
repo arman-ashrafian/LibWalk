@@ -125,8 +125,10 @@ let one_carousel_item = (org) => {
 };
 
 let org_grid_component = (org) => {
-    org.link = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+    org = Object.values(org)[0]
+    console.log(JSON.stringify(org));
     org.img = 'https://picsum.photos/150/50';
+
     return (
         <div>
             {/*<Card style={{width: '18rem'}}>*/}
@@ -137,7 +139,7 @@ let org_grid_component = (org) => {
                     <Card.Text>
                         {org.description}
                     </Card.Text>
-                    <Button variant="primary" href={org.link}>Org Home</Button>
+                    <Button variant="primary" href={org.pageURL}>Org Home</Button>
                 </Card.Body>
             </Card>
         </div>
