@@ -144,6 +144,7 @@ class Profile extends React.Component {
                             <Form.Group controlId="formEmail">
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control type="email" placeholder="Enter Email" defaultValue={this.state.user.email}/>
+
                             </Form.Group>
 
                             <Form.Group controlId="formMajor">
