@@ -299,7 +299,7 @@ exports.changeUser = functions.https.onRequest((req, res) => {
       .collection("Users")
       .doc(user_id)
       .set(user_info)
-      .then(() => res.send({ message: "changed event " + eventId }))
+      .then(() => res.send({ message: "changed user " + user_id }))
       .catch(err => res.send(err));
   });
 });

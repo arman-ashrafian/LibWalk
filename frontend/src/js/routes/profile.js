@@ -19,10 +19,10 @@ class Profile extends React.Component {
             editMode: false,
             userId:'',
             user: {
-                userName: '',
-                userEmail: '',
-                userMajor: '',
-                userYear: '',
+                name: '',
+                email: '',
+                major: '',
+                year: '',
             }
         }
 
@@ -37,10 +37,10 @@ class Profile extends React.Component {
             this.setState({
                 userId: '30wStJj7FoaT64BjDhbIr0ujdH32',
                 user: {
-                    userName: json['name'],
-                    userEmail: json['email'],
-                    userMajor: json['major'],
-                    userYear: json['year']
+                    name: json['name'],
+                    email: json['email'],
+                    major: json['major'],
+                    year: json['year']
                 }
             })
         })
@@ -48,18 +48,17 @@ class Profile extends React.Component {
         db.auth().onAuthStateChanged(firebaseUser => {
             if( firebaseUser) {
                 this.setState({ userId: firebaseUser.uid });
-                alert(this.state.userId)
                 // getUser using userId and populate this.state
-                getUser(this.state.userId).then(json => {
+                getUser({this.state.userId}).then(json => {
                     this.setState({
-                        userName: json['name'],
-                        userEmail: json['email'],
-                        userMajor: json['major'],
-                        userYear: json['year']
-                    })
+                    user: {
+                        name: json['name'],
+                        email: json['email'],
+                        major: json['major'],
+                        year: json['year']
+                    }
                 })
-
-                console.log(this.state.userName)
+        })
 
             } else {
                 alert("Not logged in")
@@ -77,10 +76,18 @@ class Profile extends React.Component {
         this.setState({ editMode: true});
     }
 
-    handleEdit() {
-        alert("Submitted")
-        //editUser(this.state.userId, this.state.user)
-
+    async handleEdit(e) {
+        e.preventDefault();
+        await this.setState({
+            user: {
+                name: e.target[0].value,
+                email: e.target[1].value,
+                major: e.target[2].value,
+                year: e.target[3].value
+            }
+        })
+        editUser(this.state.userId, this.state.user);
+        this.close()
     }
 
     render() {
@@ -96,16 +103,16 @@ class Profile extends React.Component {
                         </div>
                         <div className="div-centered ">
                             <h3>
-                                <FaUser /> Name : {this.state.user.userName}
+                                <FaUser /> Name : {this.state.user.name}
                             </h3>
                             <h3>
-                                <MdEmail /> Email : {this.state.user.userEmail}
+                                <MdEmail /> Email : {this.state.user.email}
                             </h3>
                             <h3>
-                                <FaGraduationCap /> Major : {this.state.user.userMajor}
+                                <FaGraduationCap /> Major : {this.state.user.major}
                             </h3>
                             <h3>
-                                <FaSchool /> Year : {this.state.user.userYear}
+                                <FaSchool /> Year : {this.state.user.year}
                             </h3>
 
                         </div>
@@ -131,22 +138,23 @@ class Profile extends React.Component {
                         <Form onSubmit={this.handleEdit}>
                             <Form.Group controlId="formName">
                                 <Form.Label>Name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter Name" defaultValue={this.state.userName}/>
+                                <Form.Control type="name" placeholder="Enter Name" defaultValue={this.state.user.name}/>
                             </Form.Group>
 
                             <Form.Group controlId="formEmail">
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Enter Email" defaultValue={this.state.userEmail}/>
+                                <Form.Control type="email" placeholder="Enter Email" defaultValue={this.state.user.email}/>
+
                             </Form.Group>
 
                             <Form.Group controlId="formMajor">
                                 <Form.Label>Major</Form.Label>
-                                <Form.Control type="major" placeholder="Enter Major" defaultValue={this.state.userMajor}/>
+                                <Form.Control type="major" placeholder="Enter Major" defaultValue={this.state.user.major}/>
                             </Form.Group>
 
                             <Form.Group controlId="formYear">
                                 <Form.Label>Year</Form.Label>
-                                <Form.Control type="year" placeholder="Enter Year" defaultValue={this.state.userYear}/>
+                                <Form.Control type="year" placeholder="Enter Year" defaultValue={this.state.user.year}/>
                             </Form.Group>
                             <Button variant="primary" type="submit" >
                                 Submit
