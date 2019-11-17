@@ -131,22 +131,22 @@ class Profile extends React.Component {
                         <Form onSubmit={this.handleEdit}>
                             <Form.Group controlId="formName">
                                 <Form.Label>Name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter Name" defaultValue={this.state.userName}/>
+                                <Form.Control type="name" placeholder="Enter Name" defaultValue={this.state.user.userName}/>
                             </Form.Group>
 
                             <Form.Group controlId="formEmail">
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Enter Email" defaultValue={this.state.userEmail}/>
+                                <Form.Control type="email" placeholder="Enter Email" defaultValue={this.state.user.userEmail}/>
                             </Form.Group>
 
                             <Form.Group controlId="formMajor">
                                 <Form.Label>Major</Form.Label>
-                                <Form.Control type="major" placeholder="Enter Major" defaultValue={this.state.userMajor}/>
+                                <Form.Control type="major" placeholder="Enter Major" defaultValue={this.state.user.userMajor}/>
                             </Form.Group>
 
                             <Form.Group controlId="formYear">
                                 <Form.Label>Year</Form.Label>
-                                <Form.Control type="year" placeholder="Enter Year" defaultValue={this.state.userYear}/>
+                                <Form.Control type="year" placeholder="Enter Year" defaultValue={this.state.user.userYear}/>
                             </Form.Group>
                             <Button variant="primary" type="submit" >
                                 Submit
