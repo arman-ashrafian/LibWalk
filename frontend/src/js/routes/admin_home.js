@@ -41,10 +41,20 @@ function check_login_type() {
 
 class AdminHome extends React.Component {
 
-	close() {
+	closeInfo() {
 		this.setState({
-			editInfo: false,
-			editTag: false,
+			editInfo: false
+		})
+	}
+
+	closeTag() {
+		this.setState({
+			editTag: false
+		})
+	}
+
+	closeEvent() {
+		this.setState({
 			editEvent: false
 		})
 	}
@@ -90,7 +100,7 @@ class AdminHome extends React.Component {
 					<Modal
 					size="lg"
 					show={this.state.editInfo}
-					onHide={this.close}
+					onHide={this.closeInfo}
 					aria-labelledby="example-modal-sizes-title-lg"
 					>
 						<Modal.Header closeButton>
@@ -122,7 +132,7 @@ class AdminHome extends React.Component {
 					<Modal
 					size="sm"
 					show={this.state.editTag}
-					onHide={this.close}
+					onHide={this.closeTag}
 					aria-labelledby="example-modal-sizes-title-sm"
 					>
 						<Modal.Header closeButton>
@@ -146,7 +156,7 @@ class AdminHome extends React.Component {
 						<Modal
 						size="lg"
 						show={this.state.editEvent}
-						onHide={this.close}
+						onHide={this.closeEvent}
 						aria-labelledby="example-modal-sizes-title-lg"
 						>
 							<Modal.Header closeButton>
@@ -220,7 +230,9 @@ class AdminHome extends React.Component {
             };
         }
 
-		this.close = this.close.bind(this);
+		this.closeInfo = this.closeInfo.bind(this);
+		this.closeTag = this.closeTag.bind(this);
+		this.closeEvent = this.closeEvent.bind(this);
 		this.handleEditInfo = this.handleEditInfo.bind(this);
 		this.handleEditTag = this.handleEditTag.bind(this);
 		this.handleEditEvent = this.handleEditEvent.bind(this);
