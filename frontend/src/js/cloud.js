@@ -4,7 +4,7 @@ const getUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getUser
 const getEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getEvent';
 const editUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeUser';
 
-const CACHE_TIMEOUT_MS = 120000 // only make API request if last call was over 120,000 ms == 120 seconds
+const CACHE_TIMEOUT_MS = 120000000000000000000000000 // only make API request if last call was over 120,000 ms == 120 seconds
 let cache = {}
 
 /* ============ fetch() wrappers ==================== */

@@ -1,16 +1,20 @@
-import React from 'react'
+import React, {useState} from 'react'
 import NavBar from "../navbar";
 import {getClubs} from "../cloud";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 import db from "../../firebase.js";
 
 function get_user_uid() {
     let uid = 'none';
     db.auth().onAuthStateChanged(firebaseUser => {
+		if(firebaseUser) {
             uid = firebaseUser.uid;
             console.log('firebaseUser', firebaseUser);
         }
-    );
+    });
 
     return uid;
 }
@@ -36,6 +40,19 @@ function check_login_type() {
 }
 
 class AdminHome extends React.Component {
+
+	close() {
+		this.setState({
+			editInfo: false,
+			editTag: false,
+			editEvent: false
+		})
+	}
+
+	handleEditInfo() {
+		this.setState({editInfo: true})
+	}
+
     render() {
 
         if (check_login_type() === 'user') {
@@ -53,12 +70,46 @@ class AdminHome extends React.Component {
         if (club === undefined)
             club = {name: 'YEET MEATY', desc: 'FUCK THE BACKEND'};
 
+		
         return (
             <div>
                 {/*start the rest of the page*/}
                 <main className='mt-5 pt-5'>
-                    <h2 className="h1 text-center mb-5">{club.name}</h2>
+                    <h2 className="h1 text-center mb-5" >{club.name}</h2>
                     <h5 className="text-center mb-5">{club.desc}</h5>
+
+					<Button onClick={this.handleEditInfo}>Edit Club</Button>
+					<Modal
+					size="lg"
+					show={this.state.editInfo}
+					onHide={this.close}
+					aria-labelledby="example-modal-sizes-title-lg"
+					>
+					<Modal.Header closeButton>
+					<Modal.Title id="example-modal-sizes-title-lg">
+						Club Info
+					</Modal.Title>
+					</Modal.Header>
+ 
+					<Modal.Body>
+					<Form.Group controlId="formName">
+						<Form.Label>Club Name</Form.Label>
+						<Form.Control type="name" placeholder="Enter Club Name" />
+					</Form.Group>
+					<Form.Group controlId="formImage">
+						<Form.Label>Image URL</Form.Label>
+						<Form.Control type="name" placeholder="Enter Image URL" />
+					</Form.Group>
+					<Form.Group controlId="formName">
+						<Form.Label>Description</Form.Label>
+						<Form.Control type="name" placeholder="Enter Club Description" />
+					</Form.Group>
+						<Button variant="primary" type="submit" >
+						Submit
+						</Button>
+					</Modal.Body>
+ 
+					</Modal>
                 </main>
             </div>
         );
@@ -86,7 +137,10 @@ class AdminHome extends React.Component {
         console.log('AdminHome element created with props', props);
 
         this.state = {
-            orgs: []
+            orgs: [],
+			editInfo: false,
+			editTag: false,
+			editEvent: false
         };
 
         // get data from firebase
@@ -99,6 +153,9 @@ class AdminHome extends React.Component {
                 orgs: []
             };
         }
+
+		this.close = this.close.bind(this);
+		this.handleEditInfo = this.handleEditInfo.bind(this);
     };
 }
 
