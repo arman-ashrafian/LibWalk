@@ -2,6 +2,8 @@
 const getClubsURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClubs';
 const getUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getUser';
 
+let cache = {}
+
 /* ============ fetch() wrappers ==================== */
 // Use these functions instead of calling fetch directly
 // so you don't have to set the params every time.
@@ -25,8 +27,23 @@ const getRequest = function (url) {
 }
 /* ================================================== */
 
-export function getClubs() {
-    return getRequest(getClubsURL);
+export async function getClubs() {
+    console.log('printing cache !!!!!');
+    console.log(cache);
+    let now = new Date();
+    if ( !cache['getClubs'] || (now - cache['getClubs'].date) > 120000 ) {
+        return getRequest(getClubsURL).then( json => { 
+            cache['getClubs'] = {
+                time: now,
+                resp: json
+            }
+            return json
+        });
+    } else {
+        return new Promise(function(resolve, reject) {
+            return resolve(cache['getClubs'].resp);
+        })
+    }
 }
 
 export function getUser(userId) {
