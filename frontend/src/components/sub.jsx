@@ -4,12 +4,12 @@ import Info from "./clubInfo";
 const EachClub = props => (
   <div>
     {/*Grid column*/}
-    <div className="col-lg-5 col-xl-4 mb-4">
-      {/*Featured image*/}
-      <div className="view overlay rounded z-depth-1">
-        <img src={props.clubPicture} className="img-fluid" alt="" />
-      </div>
+
+    {/*Featured image*/}
+    <div>
+      <img src={props.clubPicture} className="img-fluid" />
     </div>
+
     {/*Grid column*/}
     {/*Grid column*/}
     <div className="col-lg-7 col-xl-7 ml-xl-4 mb-4">
