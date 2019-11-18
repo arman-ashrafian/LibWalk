@@ -1,17 +1,24 @@
 export default [
   {
     clubName: "ECE USC",
-    clubPicture: "https://image.flaticon.com/icons/png/512/564/564276.png",
-    clubTags: ["Academic", "Social"]
+    clubPicture:
+      "https://i.barkpost.com/wp-content/uploads/2015/02/featmeme.jpg?q=70&fit=crop&crop=entropy&w=808&h=500",
+    clubTags: ["Academic", "Social", "random tag", "surface", "tech"],
+    clubDescription: "This is Undergraduate Student Council"
   },
   {
     clubName: "Alpha Beta",
-    clubPicture: "https://image.flaticon.com/icons/png/512/564/564276.png",
-    clubTags: ["Social", "frat"]
+    clubPicture:
+      "https://i.barkpost.com/wp-content/uploads/2015/02/featmeme.jpg?q=70&fit=crop&crop=entropy&w=808&h=500",
+    clubdDescription: "This is Undergraduate Student Council",
+    clubTags: ["Social", "frat"],
+    clubDescription: "It's just a frat"
   },
   {
-    clubName: "TESC",
-    clubPicture: "https://image.flaticon.com/icons/png/512/564/564276.png",
-    clubTags: ["Professional"]
+    clubName: "IDK",
+    clubPicture:
+      "https://i.barkpost.com/wp-content/uploads/2015/02/featmeme.jpg?q=70&fit=crop&crop=entropy&w=808&h=500",
+    clubTags: ["Academic", "Social", "surface", "tech"],
+    clubDescription: "This is Undergraduate Student Council"
   }
 ];

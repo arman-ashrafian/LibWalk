@@ -1,16 +1,20 @@
-import React from 'react'
+import React, {useState} from 'react'
 import NavBar from "../navbar";
 import {getClubs} from "../cloud";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 import db from "../../firebase.js";
 
 function get_user_uid() {
     let uid = 'none';
     db.auth().onAuthStateChanged(firebaseUser => {
+		if(firebaseUser) {
             uid = firebaseUser.uid;
             console.log('firebaseUser', firebaseUser);
         }
-    );
+    });
 
     return uid;
 }
@@ -36,6 +40,37 @@ function check_login_type() {
 }
 
 class AdminHome extends React.Component {
+
+	closeInfo() {
+		this.setState({
+			editInfo: false
+		})
+	}
+
+	closeTag() {
+		this.setState({
+			editTag: false
+		})
+	}
+
+	closeEvent() {
+		this.setState({
+			editEvent: false
+		})
+	}
+
+	handleEditInfo() {
+		this.setState({editInfo: true})
+	}
+
+	handleEditTag() {
+		this.setState({editTag: true})
+	}
+
+	handleEditEvent() {
+		this.setState({editEvent: true})
+	}
+
     render() {
 
         if (check_login_type() === 'user') {
@@ -53,12 +88,104 @@ class AdminHome extends React.Component {
         if (club === undefined)
             club = {name: 'YEET MEATY', desc: 'FUCK THE BACKEND'};
 
+		
         return (
             <div>
                 {/*start the rest of the page*/}
                 <main className='mt-5 pt-5'>
-                    <h2 className="h1 text-center mb-5">{club.name}</h2>
+                    <h2 className="h1 text-center mb-5" >{club.name}</h2>
                     <h5 className="text-center mb-5">{club.desc}</h5>
+
+					<Button onClick={this.handleEditInfo}>Edit Club</Button>
+					<Modal
+					size="lg"
+					show={this.state.editInfo}
+					onHide={this.closeInfo}
+					aria-labelledby="example-modal-sizes-title-lg"
+					>
+						<Modal.Header closeButton>
+						<Modal.Title id="example-modal-sizes-title-lg">
+							Club Info
+						</Modal.Title>
+						</Modal.Header>
+ 
+						<Modal.Body>
+						<Form.Group controlId="formName">
+							<Form.Label>Club Name</Form.Label>
+							<Form.Control type="name" placeholder="Enter Club Name" />
+						</Form.Group>
+						<Form.Group controlId="formImage">
+							<Form.Label>Image URL</Form.Label>
+							<Form.Control type="name" placeholder="Enter Image URL" />
+						</Form.Group>
+						<Form.Group controlId="formName">
+							<Form.Label>Description</Form.Label>
+							<Form.Control type="name" placeholder="Enter Club Description" />
+						</Form.Group>
+							<Button variant="primary" type="submit" >
+							Submit
+							</Button>
+						</Modal.Body>
+					</Modal>
+
+					<Button onClick={this.handleEditTag}>Edit Tag</Button>
+					<Modal
+					size="sm"
+					show={this.state.editTag}
+					onHide={this.closeTag}
+					aria-labelledby="example-modal-sizes-title-sm"
+					>
+						<Modal.Header closeButton>
+							<Modal.Title id="example-modal-sizes-title-sm">
+								Tag Info
+							</Modal.Title>
+						</Modal.Header>
+        
+						<Modal.Body>
+							<Form.Group controlId="formName">
+								<Form.Label>Tag Name</Form.Label>
+								<Form.Control type="name" placeholder="Enter Tag Name" />
+							</Form.Group>
+							<Button variant="primary" type="submit" >
+								Submit
+							</Button>
+						 </Modal.Body>
+					</Modal>
+
+					<Button onClick={this.handleEditEvent}>Edit Event</Button>
+						<Modal
+						size="lg"
+						show={this.state.editEvent}
+						onHide={this.closeEvent}
+						aria-labelledby="example-modal-sizes-title-lg"
+						>
+							<Modal.Header closeButton>
+								<Modal.Title id="example-modal-sizes-title-lg">
+									Event Info
+								</Modal.Title>
+							</Modal.Header>
+        
+							<Modal.Body>
+								<Form.Group controlId="formName">
+									<Form.Label>Event Name</Form.Label>
+									<Form.Control type="name" placeholder="Enter Event Name" />
+								</Form.Group>
+  
+								<Form.Group controlId="formPlaceTime">
+									<Form.Label>Place/Time</Form.Label>
+									<Form.Control type="place/time" placeholder="Enter Place/Time" />
+								</Form.Group>
+	  
+								<Form.Group controlId="formDetails">
+									<Form.Label>Details</Form.Label>
+									<Form.Control type="details" placeholder="Enter Details" />
+								</Form.Group>
+								<Button variant="primary" type="submit" >
+									Submit
+								</Button>
+							</Modal.Body>        
+					  </Modal>
+
                 </main>
             </div>
         );
@@ -86,7 +213,10 @@ class AdminHome extends React.Component {
         console.log('AdminHome element created with props', props);
 
         this.state = {
-            orgs: []
+            orgs: [],
+			editInfo: false,
+			editTag: false,
+			editEvent: false
         };
 
         // get data from firebase
@@ -99,6 +229,13 @@ class AdminHome extends React.Component {
                 orgs: []
             };
         }
+
+		this.closeInfo = this.closeInfo.bind(this);
+		this.closeTag = this.closeTag.bind(this);
+		this.closeEvent = this.closeEvent.bind(this);
+		this.handleEditInfo = this.handleEditInfo.bind(this);
+		this.handleEditTag = this.handleEditTag.bind(this);
+		this.handleEditEvent = this.handleEditEvent.bind(this);
     };
 }
 

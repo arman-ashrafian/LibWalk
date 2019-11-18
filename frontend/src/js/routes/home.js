@@ -38,17 +38,21 @@ class Home extends React.Component {
                 <NavBar/>
                 actual page
                 <main className='mt-5 pt-5'>
-                    <NavBar {...this.props}/>
-                    {/*<h1> Welcome</h1>*/}
-                    {/* org carousel here*/}
-                    <div>
-                        {console.log(JSON.stringify(this.state.orgs))}
-                        {this.org_carousel(this.state.orgs)}
-                    </div>
+                    <div className='container centerPage'>
+                        <div className='row centerPage'>
+                            <NavBar {...this.props}/>
+                            {/*<h1> Welcome</h1>*/}
+                            {/* org carousel here*/}
+                            <div>
+                                {console.log(JSON.stringify(this.state.orgs))}
+                                {this.org_carousel(this.state.orgs)}
+                            </div>
 
-                    {/*Rest of the page here*/}
-                    <div className='home_grid_container'>
-                        {this.org_grid(this.state.orgs)}
+                            {/*Rest of the page here*/}
+                            <div className='home_grid_container'>
+                                {this.org_grid(this.state.orgs)}
+                            </div>
+                        </div>
                     </div>
                 </main>
             </div>
@@ -75,6 +79,9 @@ class Home extends React.Component {
                         <Col>
                             {grid_items[i * numcols + j]}
                         </Col>
+                        <div>
+                            <br />
+                        </div>
                     </div>
                 )
             }
@@ -125,19 +132,21 @@ let one_carousel_item = (org) => {
 };
 
 let org_grid_component = (org) => {
-    org.link = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+    org = Object.values(org)[0]
+    console.log(JSON.stringify(org));
     org.img = 'https://picsum.photos/150/50';
+
     return (
         <div>
             {/*<Card style={{width: '18rem'}}>*/}
-            <Card style={{width: '26rem', height: '28rem'}} className='text-center'>
+            <Card style={{width: '20rem', height: '36rem'}} className='text-center'>
                 <Card.Img variant="top" src={org.img}/>
                 <Card.Body>
                     <Card.Title>{org.clubName}</Card.Title>
                     <Card.Text>
-                        {org.description}
+                        <small className="scroll-box">{org.description.slice(0, 450)}</small>
                     </Card.Text>
-                    <Button variant="primary" href={org.link}>Org Home</Button>
+                    <Button variant="primary" href={org.pageURL}>Org Home</Button>
                 </Card.Body>
             </Card>
         </div>

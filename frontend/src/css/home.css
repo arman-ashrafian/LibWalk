@@ -3,6 +3,12 @@
     color: #0d0d0d;
 }
 
+.scroll-box {
+    overflow-y: scroll;
+    height: 100px;
+    padding: 1rem
+}
+
 .home_grid_container {
 }
 
