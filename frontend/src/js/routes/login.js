@@ -10,16 +10,32 @@ import Form from 'react-bootstrap/Form'
 import Image from 'react-bootstrap/Image'
 import db from "../../firebase.js";
 import * as firebase from "firebase";
+import {getUser, editUser} from "../cloud";
 
 const auth = firebase.auth();
 
 const provider2 = new firebase.auth.GoogleAuthProvider();
 		
+function registerUserGoogle(props) {
+	if(props.user){
+		console.log("Logged in");
+		return(<a onClick={this.handleLoginWithGoogle}><Image src={require('../../img/google/btnNormal.png')} fluid /></a>);
+	}
+	//If the user hasnt logged in with a google account, then show the log in button here
+	else{
+			console.log("Logged out");
+		return(
+		<a onClick={this.handleLoginWithGoogle}><Image src={require('../../img/google/btnNormal.png')} fluid /></a>
+		);
+	}
+	
+}
+	
 class Login extends React.Component {
     constructor(props) {
         super(props);
         console.log('Login constructor call.')
-		this.state = { login : true}; 
+		this.state = { login : true, user : null, userId : null}; 
 		this.registerTime = this.registerTime.bind(this);
 		this.handleLoginWithGoogle = this.handleLoginWithGoogle.bind(this);
 		this.loginTime = this.loginTime.bind(this);
@@ -44,6 +60,26 @@ class Login extends React.Component {
             }
     };
 	
+	handleRegister = (e) => {
+		//Check if the google account is linked
+		if(this.state.user){
+			//Save to database
+			editUser(this.state.user.uid, 
+			{
+				name: e.target[0].value,
+                email: this.state.user.email,
+                major: e.target[1].value,
+                year: e.target[2].value
+			})
+			
+			
+		}
+		//Else prompt the user to link their google account
+		else{
+			alert("Please link your google account");
+		}
+	};
+	
 	registerTime = () =>{
 
 		this.setState({login: false})
@@ -57,10 +93,22 @@ class Login extends React.Component {
 	componentDidMount(){
 		auth.onAuthStateChanged((user) => {
 			if(user){
-				this.props.history.push('/home');
+				this.setState({ userId: user.uid });
+				getUser(user.uid).then(json => {
+					//This means that that the user does not exist in the database and must register
+                    if(json === null || json === undefined || json == {}){
+						this.registerTime();
+					}
+					//Else user is already in the database so just log right in
+					else{
+						this.props.history.push('/home');
+					}
+                })
 			}
 		})
 	}
+	
+
 	
     render() {
         return (
@@ -111,15 +159,23 @@ class Login extends React.Component {
 
 					<Modal.Body >
 						<Container id="numberOneContainerNA">
-							<Form className="text-center p-5">
+							<Form className="text-center p-5"  onSubmit={this.handleRegister}>
+								{this.state.user ? (
+									<p><b>Linked to {this.state.user.displayName}</b></p>
+								) : (
+									<div>
+										<p>Link your google account</p>
+										<a onClick={this.handleLoginWithGoogle}><Image src={require('../../img/google/btnNormal.png')} fluid /></a>
+									</div>
+								)}
 								{/* Name */}
-								<Form.Control type="name" className="form-control mb-4"
-									   placeholder="Name"/>
+								<Form.Control required type="name" className="form-control mb-4 mt-5"
+									   placeholder="Preferred Name"/>
 								{/* Major */}
-								<Form.Control type="major" className="form-control mb-4"
+								<Form.Control required type="major" className="form-control mb-4"
 									   placeholder="Major"/>
 								{/* Year */}
-								<Form.Control type="year" className="form-control mb-4"
+								<Form.Control required type="year" className="form-control mb-4"
 									   placeholder="Year"/>
 							
 								{/* Sign in button */}
