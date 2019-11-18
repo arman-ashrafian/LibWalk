@@ -3,6 +3,14 @@
   padding: 0;
 }
 
+.header {
+  margin-top: 150px;
+  margin-bottom: 100px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 65px;
+}
+
 .sub_img {
   width: 550px;
   height: 330px;
@@ -41,4 +49,9 @@
 .tag {
   width: 160px;
   height: 50px;
+}
+
+.pagination {
+  justify-content: center;
+  margin-top: 5rem;
 }

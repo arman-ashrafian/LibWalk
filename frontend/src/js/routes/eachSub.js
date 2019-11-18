@@ -37,6 +37,7 @@ class EachSub extends React.Component {
 
     return (
       <div className="sub_container">
+        <Divider variant="fullWidth" />
         <View
           className="small_container"
           style={{ flexDirection: "row", justifyContent: "center" }}
