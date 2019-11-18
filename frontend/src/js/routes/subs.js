@@ -13,8 +13,10 @@ class Subs extends React.Component {
     this.states = {
       startIndex: 0,
       endIndex: 3,
+      clubPerPage: 3,
       userId: "",
-      subscriptions: []
+      subscriptions: [],
+      currentPage: 1
     };
     console.log("Subs created.");
   }
@@ -48,6 +50,38 @@ class Subs extends React.Component {
     });*/
   }
 
+  paginate(number) {
+    number += 1;
+    alert("click");
+  }
+
+  loadPagination(activePage) {
+    let active = activePage;
+    let pageNumber = [];
+    let length = Info.length;
+    let clubPerPage = 3;
+    for (let number = 1; number <= Math.ceil(length / clubPerPage); number++) {
+      pageNumber.push(number);
+    }
+
+    return (
+      <div>
+        <Pagination size="lg">
+          {pageNumber.map(number => (
+            <Pagination.Item
+              key={number}
+              active={active === number}
+              onClick={() => this.paginate(number)}
+            >
+              {number}
+            </Pagination.Item>
+          ))}
+        </Pagination>
+        <br />
+      </div>
+    );
+  }
+
   render() {
     var headerStyle = {
       marginTop: "150px",
@@ -57,22 +91,9 @@ class Subs extends React.Component {
       fontSize: "65px"
     };
 
-    let active = 4;
-    let items = [];
-    for (let number = 1; number <= 10; number++) {
-      items.push(
-        <Pagination.Item key={number} active={number === active}>
-          {number}
-        </Pagination.Item>
-      );
-    }
-
-    const paginationBasic = (
-      <div>
-        <Pagination size="lg">{items}</Pagination>
-        <br />
-      </div>
-    );
+    const indexOfLastPost = this.states.currentPage * this.states.clubPerPage;
+    const indexOfFirstPost = indexOfLastPost - this.states.clubPerPage;
+    const currentPosts = Info.slice(indexOfFirstPost, indexOfLastPost);
 
     return (
       <main>
@@ -81,7 +102,7 @@ class Subs extends React.Component {
           <h1 style={headerStyle}> Subscriptions</h1>
           <Divider variant="fullWidth" />
           {/*Display each sub container*/}
-          {Info.slice(this.states.startIndex, this.states.endIndex).map(m => (
+          {currentPosts.map(m => (
             <EachSub {...m} />
           ))}
         </div>
@@ -101,7 +122,7 @@ class Subs extends React.Component {
           <Pagination.Next />
           <Pagination.Last />
         </Pagination>*/}
-        {paginationBasic}
+        {this.loadPagination(this.states.currentPage)}
       </main>
     );
   }
