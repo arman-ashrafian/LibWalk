@@ -1,12 +1,11 @@
 .sub_container {
-  margin-top: 0px;
+  margin: 0;
   padding: 0;
 }
 
 .sub_img {
   width: 550px;
   height: 330px;
-  margin-left: 0;
 }
 
 .small_container {
@@ -28,17 +27,4 @@
   text-align: left;
   margin-top: 10px;
   font-size: 30px;
-}
-
-.tags {
-  width: 600px;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-}
-
-.tag {
-  width: 160px;
-  height: 50px;
 }

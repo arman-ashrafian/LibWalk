@@ -2,112 +2,103 @@ import React from "react";
 import NavBar from "../navbar";
 import "../../css/subs.css";
 import { Divider } from "@material-ui/core";
-import Info from "../../components/clubInfo";
-import EachSub from "./eachSub";
-import Pagination from "react-bootstrap/Pagination";
-import { getUser } from "../cloud";
+import { View } from "react-native-web";
+import { MDBBtn } from "mdbreact";
 
 class Subs extends React.Component {
   constructor(props) {
     super(props);
-    this.states = {
-      startIndex: 0,
-      endIndex: 3,
-      userId: "",
-      subscriptions: []
-    };
     console.log("Subs created.");
-  }
-
-  componentDidMount() {
-    getUser("30wStJj7FoaT64BjDhbIr0ujdH32").then(json => {
-      this.setState({
-        userId: "30wStJj7FoaT64BjDhbIr0ujdH32",
-        subscriptions: json["subscriptions"]
-      });
-    });
-
-    /*db.auth().onAuthStateChanged(firebaseUser => {
-        if( firebaseUser) {
-            this.setState({ userId: firebaseUser.uid });
-            // getUser using userId and populate this.state
-            getUser({this.state.userId}).then(json => {
-                this.setState({
-                user: {
-                    name: json['name'],
-                    email: json['email'],
-                    major: json['major'],
-                    year: json['year']
-                }
-            })
-    })
-
-        } else {
-            alert("Not logged in")
-        }
-    
-    });*/
   }
 
   render() {
     var headerStyle = {
-      marginTop: "150px",
+      marginTop: "50px",
       marginBottom: "100px",
       fontWeight: "bold",
       textAlign: "center",
       fontSize: "65px"
     };
 
-    let active = 4;
-    let items = [];
-    for (let number = 1; number <= 10; number++) {
-      items.push(
-        <Pagination.Item key={number} active={number === active}>
-          {number}
-        </Pagination.Item>
-      );
-    }
-
-    const paginationBasic = (
-      <div>
-        <Pagination size="lg">{items}</Pagination>
-        <br />
-      </div>
-    );
-
     return (
-      <main>
-        <NavBar {...this.props} />
+      <main className="mt-5 pt-5">
         <div className="container">
           <h1 style={headerStyle}> Subscriptions</h1>
           <Divider variant="fullWidth" />
-          {/*Display each sub container*/}
-          {Info.slice(this.states.startIndex, this.states.endIndex).map(m => (
-            <EachSub {...m} />
-          ))}
+
+          {this.getSubs()}
         </div>
-
-        {/*<Pagination>
-          <Pagination.First />
-          <Pagination.Prev />
-          <Pagination.Item>{1}</Pagination.Item>
-          <Pagination.Ellipsis />
-
-          <Pagination.Item>{10}</Pagination.Item>
-          <Pagination.Item>{11}</Pagination.Item>
-          <Pagination.Item active>{12}</Pagination.Item>
-          <Pagination.Item>{13}</Pagination.Item>
-          <Pagination.Item disabled>{14}</Pagination.Item>
-
-          <Pagination.Ellipsis />
-          <Pagination.Item>{20}</Pagination.Item>
-          <Pagination.Next />
-          <Pagination.Last />
-        </Pagination>*/}
-        {paginationBasic}
       </main>
     );
   }
+
+  random_color = () => {
+    var colors = [
+      "elegant",
+      "unique",
+      "pink",
+      "purple",
+      "deep-purple",
+      "indigo",
+      "light-blue",
+      "cyan",
+      "dark-green",
+      "light-green",
+      "yellow",
+      "amber",
+      "deep-orange",
+      "brown",
+      "blue-grey"
+    ];
+    var number = Math.floor(Math.random() * colors.length);
+    alert(number);
+    return colors[number];
+  };
+
+  getSubs = () => {
+    this.props = {
+      ...this.props,
+      ...{
+        club_name: "ECE USC",
+        club_picture:
+          "https://i.barkpost.com/wp-content/uploads/2015/02/featmeme.jpg?q=70&fit=crop&crop=entropy&w=808&h=500",
+        club_tags: ["Academic", "Social", "random tag", "surface", "tech"],
+        club_description: "This is Undergraduate Student Council"
+      }
+    };
+
+    return (
+      <div className="sub_container">
+        <NavBar {...this.props} />
+        <View
+          className="small_container"
+          style={{ flexDirection: "row", justifyContent: "center" }}
+        >
+          <View>
+            {/*Featured image*/}
+            <img src={this.props.club_picture} className="sub_img" alt="" />
+          </View>
+
+          <View>
+            <div className="information">
+              <h3 className="clubName">
+                <strong>{this.props.club_name}</strong>
+              </h3>
+              <p className="description">{this.props.club_description}</p>
+              {this.random_color}
+              {this.props.club_tags.map(tag => (
+                // add club tag stuff here
+
+                <MDBBtn color={this.random_color}>{tag}</MDBBtn>
+              ))}
+            </div>
+          </View>
+        </View>
+
+        <Divider variant="fullWidth" />
+      </div>
+    );
+  };
 }
 
 export default Subs;
