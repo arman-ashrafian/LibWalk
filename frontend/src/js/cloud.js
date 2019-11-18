@@ -1,4 +1,5 @@
 // URLS for our Cloud Functions
+
 const getClubsURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClubs';
 const getUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getUser';
 const getEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getEvent';
@@ -10,7 +11,6 @@ let cache = {}
 /* ============ fetch() wrappers ==================== */
 // Use these functions instead of calling fetch directly
 // so you don't have to set the params every time.
-
 const postRequest = function (url, data) { // data argument should be json 
     return fetch(url,
         {
@@ -28,6 +28,7 @@ const getRequest = function (url) {
     return fetch(url, {mode: 'cors', method: 'GET'})
         .then((resp) => resp.json());
 }
+
 
 /* ================================================== */
 export async function getClubs() {
@@ -52,38 +53,37 @@ export async function getClubs() {
 }
 
 export function getUser(userId) {
-    let data = {
-        uid: userId
-    }
-    return postRequest(getUserURL, data)
+  let data = {
+    uid: userId
+  };
+  return postRequest(getUserURL, data);
 }
 
 export function editUser(userId, userData) {
-    let data = {
-        user_id: userId,
-        user: userData
-    }
-    return postRequest(editUserURL, data)
+  let data = {
+    user_id: userId,
+    user: userData
+  };
+  return postRequest(editUserURL, data);
 }
 
 export function getAnnouncements() {
 
 }
 export function registerUser() {
-    return null;
+  return null;
 }
 
 export function updateUser() {
-    return null;
+  return null;
 }
 
-
 export function registerClub() {
-    return null;
+  return null;
 }
 
 export function updateClub() {
-    return null;
+  return null;
 }
 
 export function orgLogin() {
@@ -5024,3 +5024,4 @@ let club_list = [
     }
 ];
 let club_data = {clubs: club_list}
+
