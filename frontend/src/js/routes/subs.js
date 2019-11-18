@@ -1,13 +1,10 @@
 import React from "react";
 import NavBar from "../navbar";
 import "../../css/subs.css";
-import { Divider } from "@material-ui/core";
 import Info from "../../components/clubInfo";
 import EachSub from "./eachSub";
 import Pagination from "react-bootstrap/Pagination";
 import { getUser } from "../cloud";
-//import { start } from "repl";
-//import LoadPagination from "./pagination";
 
 class Subs extends React.Component {
   constructor(props) {
@@ -20,6 +17,10 @@ class Subs extends React.Component {
       clubList: Info
     };
     this.setPage = this.setPage.bind(this);
+    this.setPageNext = this.setPageNext.bind(this);
+    this.setPagePrev = this.setPagePrev.bind(this);
+    this.moveFirstPage = this.moveFirstPage.bind(this);
+    this.moveLastPage = this.moveLastPage.bind(this);
   }
 
   componentDidMount() {
@@ -66,6 +67,44 @@ class Subs extends React.Component {
     //this.states.currentPage = Number(event.target.id);
   }
 
+  /* Function to move to the next page */
+  setPageNext(event) {
+    //currentPage += 1;
+    if (this.state.currentPage < Math.ceil(Info.length / 3)) {
+      this.setState({
+        currentPage: this.state.currentPage + 1
+      });
+    }
+  }
+
+  /* Function to move to the previous page */
+  setPagePrev(event) {
+    if (this.state.currentPage > 1) {
+      this.setState({
+        currentPage: this.state.currentPage - 1
+      });
+    }
+  }
+
+  /* Function to move to the first page */
+  moveFirstPage(event) {
+    if (this.state.currentPage > 1) {
+      this.setState({
+        currentPage: 1
+      });
+    }
+  }
+
+  /* Function to move to the last page */
+  moveLastPage(event) {
+    var lastPage = Math.ceil(this.state.clubList.length / 3);
+    if (this.state.currentPage < lastPage) {
+      this.setState({
+        currentPage: lastPage
+      });
+    }
+  }
+
   render() {
     // Update the current page number and the current clubs that will be shown in each page
     const { currentPage, clubPerPage, clubList } = this.state;
@@ -110,7 +149,11 @@ class Subs extends React.Component {
           {showClubs}
         </div>
         <Pagination className="pagination" size="lg">
+          <Pagination.First onClick={this.moveFirstPage} />
+          <Pagination.Prev onClick={this.setPagePrev} />
           {loadPageNumber}
+          <Pagination.Next onClick={this.setPageNext} />
+          <Pagination.Last onClick={this.moveLastPage} />
         </Pagination>
       </main>
     );
