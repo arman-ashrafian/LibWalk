@@ -6,19 +6,20 @@ import Info from "../../components/clubInfo";
 import EachSub from "./eachSub";
 import Pagination from "react-bootstrap/Pagination";
 import { getUser } from "../cloud";
+//import { start } from "repl";
+//import LoadPagination from "./pagination";
 
 class Subs extends React.Component {
   constructor(props) {
     super(props);
-    this.states = {
-      startIndex: 0,
-      endIndex: 3,
+    this.state = {
       clubPerPage: 3,
+      currentPage: 1,
       userId: "",
       subscriptions: [],
-      currentPage: 1
+      clubList: Info
     };
-    console.log("Subs created.");
+    this.setPage = this.setPage.bind(this);
   }
 
   componentDidMount() {
@@ -50,79 +51,67 @@ class Subs extends React.Component {
     });*/
   }
 
-  paginate(number) {
-    number += 1;
-    alert("click");
+  /* Check if the user is subcribe to any clubs  */
+  noClub() {
+    if (this.state.clubList.length === 0) {
+      return <div>You are currently not following any clubs</div>;
+    }
   }
 
-  loadPagination(activePage) {
-    let active = activePage;
-    let pageNumber = [];
-    let length = Info.length;
-    let clubPerPage = 3;
-    for (let number = 1; number <= Math.ceil(length / clubPerPage); number++) {
-      pageNumber.push(number);
-    }
-
-    return (
-      <div>
-        <Pagination size="lg">
-          {pageNumber.map(number => (
-            <Pagination.Item
-              key={number}
-              active={active === number}
-              onClick={() => this.paginate(number)}
-            >
-              {number}
-            </Pagination.Item>
-          ))}
-        </Pagination>
-        <br />
-      </div>
-    );
+  /* Function to update page and clubs per page */
+  setPage(event) {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
+    //this.states.currentPage = Number(event.target.id);
   }
 
   render() {
-    var headerStyle = {
-      marginTop: "150px",
-      marginBottom: "100px",
-      fontWeight: "bold",
-      textAlign: "center",
-      fontSize: "65px"
-    };
+    // Update the current page number and the current clubs that will be shown in each page
+    const { currentPage, clubPerPage, clubList } = this.state;
+    const endIndex = currentPage * clubPerPage;
+    const firstIndex = endIndex - clubPerPage;
+    const currentClubs = clubList.slice(firstIndex, endIndex);
 
-    const indexOfLastPost = this.states.currentPage * this.states.clubPerPage;
-    const indexOfFirstPost = indexOfLastPost - this.states.clubPerPage;
-    const currentPosts = Info.slice(indexOfFirstPost, indexOfLastPost);
+    // Function to render the clubs
+    const showClubs = currentClubs.map(club => {
+      return <EachSub {...club} />;
+    });
+
+    // Find how many pages for the clubs
+    const pageNumber = [];
+    for (let i = 1; i <= Math.ceil(Info.length / clubPerPage); i++) {
+      pageNumber.push(i);
+    }
+
+    // Load the pagination with the number of page
+    const loadPageNumber = pageNumber.map(page => {
+      return (
+        <div>
+          <Pagination.Item
+            key={page}
+            id={page}
+            active={page === currentPage}
+            onClick={this.setPage}
+          >
+            {page}
+          </Pagination.Item>
+        </div>
+      );
+    });
 
     return (
       <main>
         <NavBar {...this.props} />
+        <h1 className="header"> Subscriptions</h1>
+        {this.noClub()}
         <div className="container">
-          <h1 style={headerStyle}> Subscriptions</h1>
-          <Divider variant="fullWidth" />
           {/*Display each sub container*/}
-          {currentPosts.map(m => (
-            <EachSub {...m} />
-          ))}
+          {showClubs}
         </div>
-
-        {/*<Pagination>
-          <Pagination.First />
-          <Pagination.Prev />
-          <Pagination.Item>{1}</Pagination.Item>
-          <Pagination.Ellipsis />
-          <Pagination.Item>{10}</Pagination.Item>
-          <Pagination.Item>{11}</Pagination.Item>
-          <Pagination.Item active>{12}</Pagination.Item>
-          <Pagination.Item>{13}</Pagination.Item>
-          <Pagination.Item disabled>{14}</Pagination.Item>
-          <Pagination.Ellipsis />
-          <Pagination.Item>{20}</Pagination.Item>
-          <Pagination.Next />
-          <Pagination.Last />
-        </Pagination>*/}
-        {this.loadPagination(this.states.currentPage)}
+        <Pagination className="pagination" size="lg">
+          {loadPageNumber}
+        </Pagination>
       </main>
     );
   }
