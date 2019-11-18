@@ -8,7 +8,10 @@ import Subs from "./routes/subs";
 import Login from "./routes/login";
 import Calendar from "./routes/calendar";
 import Profile from "./routes/profile";
-import AdminHome from "./routes/admin_home";
+import AdminHome from "./routes/admin_home"
+import NavBar from "./navbar";
+import AdminLogin from "./routes/adminlogin";
+import Events from "./routes/events";
 
 function App() {
   return (
@@ -23,6 +26,8 @@ function App() {
         <Route exact path="/subs" component={Subs} />
         <Route exact path="/profile" component={Profile} />
         <Route exact path="/admin_home" component={AdminHome} />
+	<Route exact path="/adminlogin" component={AdminLogin} />
+	<Route exact path="/events" component={Events} />
       </div>
     </Router>
   );
