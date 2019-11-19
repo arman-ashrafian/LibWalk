@@ -109,6 +109,8 @@ exports.getClubs = functions.https.onRequest((req, res) => {
         querySnapshot.forEach(doc => {
           json_data.clubs.push(doc.data());
         });
+        // cache the content in browser for 5 minutes & CDN for 10 minutes
+        res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
         res.send(json_data);
       })
       .catch(err => {
