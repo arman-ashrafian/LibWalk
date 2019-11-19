@@ -35,7 +35,11 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         console.log('Login constructor call.')
-		this.state = { login : true, user : null, userId : null}; 
+		this.state = {
+			login : true, 
+			user : null, 
+			userId : null
+		}; 
 		this.registerTime = this.registerTime.bind(this);
 		this.handleLoginWithGoogle = this.handleLoginWithGoogle.bind(this);
 		this.loginTime = this.loginTime.bind(this);
@@ -46,18 +50,33 @@ class Login extends React.Component {
         this.props.history.push('/home');
     };
 	
-	handleLoginWithGoogle = () => {
-          try{
-                  db
-                    .auth()
-                    .signInWithPopup(provider2).then((result) => {
-						this.setState({
-						user: result.user
-						})
-					});
-            } catch (error){
-                alert(error);
-            }
+	async handleLoginWithGoogle() {
+		try{
+				await db
+				.auth()
+				.signInWithPopup(provider2).then((result) => {
+					this.setState({
+						user: result.user,
+						userId: result.uid
+					})
+				})
+
+				auth.onAuthStateChanged((user) => {
+					if(user){
+						this.setState({ userId: user.uid });
+						db.firestore().collection("Users").doc(user.uid).get()
+							.then((doc) => {
+								if (doc.exists) {
+									this.props.history.push('/home');
+								} else {
+									this.registerTime();
+								}
+						});
+					}
+				});
+		} catch (error){
+			alert(error);
+		}
     };
 	
 	handleRegister = (e) => {
@@ -72,7 +91,6 @@ class Login extends React.Component {
                 year: e.target[2].value
 			})
 			
-			
 		}
 		//Else prompt the user to link their google account
 		else{
@@ -81,7 +99,6 @@ class Login extends React.Component {
 	};
 	
 	registerTime = () =>{
-
 		this.setState({login: false})
 	};
 	
@@ -90,33 +107,9 @@ class Login extends React.Component {
 		this.setState({login: true})
 	};
 	
-	componentDidMount(){
-		auth.onAuthStateChanged((user) => {
-			if(user){
-				this.setState({ userId: user.uid });
-				getUser(user.uid).then(json => {
-					//This means that that the user does not exist in the database and must register
-                    if(json === null || json === undefined || json == {}){
-						this.registerTime();
-					}
-					//Else user is already in the database so just log right in
-					else{
-						this.props.history.push('/home');
-					}
-                })
-			}
-		})
-	}
-	
-
-	
     render() {
         return (
             <div className='mt-5 pt-5'>
-                <NavBar {...this.props}/>
-                <div>
-                    
-                </div>
 				<Modal.Dialog style={{display: this.state.login ? 'block' : 'none'}}> 
 					<Modal.Header>
 						<Modal.Title>Sign In</Modal.Title>
@@ -138,7 +131,7 @@ class Login extends React.Component {
                             </div>
                         {/* Register */}
                         <p>Not a member? 
-                            <a onClick={this.registerTime}> Register</a>
+                            <a onClick={this.registerTime} > Register</a>
                         </p>
                     </form>
 						</Container>
