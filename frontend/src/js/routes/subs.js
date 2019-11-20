@@ -4,17 +4,18 @@ import "../../css/subs.css";
 import Info from "../../components/clubInfo";
 import EachSub from "./eachSub";
 import Pagination from "react-bootstrap/Pagination";
-import { getUser } from "../cloud";
+//import { getUser } from "../cloud";
 
 class Subs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clubPerPage: 3,
+      clubPerPage: 1,
       currentPage: 1,
       userId: "",
       subscriptions: [],
-      clubList: Info
+      clubList: Info,
+      totalPages: Math.ceil(Info.length / 1)
     };
     this.setPage = this.setPage.bind(this);
     this.setPageNext = this.setPageNext.bind(this);
@@ -24,13 +25,12 @@ class Subs extends React.Component {
   }
 
   componentDidMount() {
-    getUser("30wStJj7FoaT64BjDhbIr0ujdH32").then(json => {
+    /*getUser("30wStJj7FoaT64BjDhbIr0ujdH32").then(json => {
       this.setState({
         userId: "30wStJj7FoaT64BjDhbIr0ujdH32",
         subscriptions: json["subscriptions"]
       });
-    });
-
+    });*/
     /*db.auth().onAuthStateChanged(firebaseUser => {
         if( firebaseUser) {
             this.setState({ userId: firebaseUser.uid });
@@ -64,13 +64,13 @@ class Subs extends React.Component {
     this.setState({
       currentPage: Number(event.target.id)
     });
-    //this.states.currentPage = Number(event.target.id);
   }
 
   /* Function to move to the next page */
   setPageNext(event) {
-    //currentPage += 1;
-    if (this.state.currentPage < Math.ceil(Info.length / 3)) {
+    if (
+      this.state.currentPage < Math.ceil(Info.length / this.state.clubPerPage)
+    ) {
       this.setState({
         currentPage: this.state.currentPage + 1
       });
@@ -97,7 +97,7 @@ class Subs extends React.Component {
 
   /* Function to move to the last page */
   moveLastPage(event) {
-    var lastPage = Math.ceil(this.state.clubList.length / 3);
+    var lastPage = this.state.totalPages;
     if (this.state.currentPage < lastPage) {
       this.setState({
         currentPage: lastPage
@@ -105,9 +105,43 @@ class Subs extends React.Component {
     }
   }
 
+  pagination(currentPage, totalPages) {
+    const offset = 2;
+    const left = currentPage - offset,
+      right = currentPage + offset + 1;
+    let dummyValue = 0;
+    const dummyArray = [];
+    const pageNumber = [];
+
+    // Generate the dummyArray
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === 1 || i === totalPages || (i >= left && i < right)) {
+        dummyArray.push(i);
+      }
+    }
+
+    // Generate the pageNumber array
+    for (let i of dummyArray) {
+      if (dummyValue) {
+        if (i - dummyValue === offset) {
+          pageNumber.push(dummyValue + 1);
+        } else if (i - dummyValue !== 1) {
+          pageNumber.push("...");
+        }
+      }
+      pageNumber.push(i);
+      dummyValue = i;
+    }
+    return pageNumber;
+  }
+
+  doNothing(event) {
+    console.log("Do nothing");
+  }
+
   render() {
     // Update the current page number and the current clubs that will be shown in each page
-    const { currentPage, clubPerPage, clubList } = this.state;
+    const { currentPage, clubPerPage, clubList, totalPages } = this.state;
     const endIndex = currentPage * clubPerPage;
     const firstIndex = endIndex - clubPerPage;
     const currentClubs = clubList.slice(firstIndex, endIndex);
@@ -118,26 +152,48 @@ class Subs extends React.Component {
     });
 
     // Find how many pages for the clubs
-    const pageNumber = [];
-    for (let i = 1; i <= Math.ceil(Info.length / clubPerPage); i++) {
-      pageNumber.push(i);
+    let pageNumber = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumber.push(i);
+      }
+    } else {
+      pageNumber = this.pagination(currentPage, totalPages);
     }
 
     // Load the pagination with the number of page
-    const loadPageNumber = pageNumber.map(page => {
-      return (
-        <div>
-          <Pagination.Item
-            key={page}
-            id={page}
-            active={page === currentPage}
-            onClick={this.setPage}
-          >
-            {page}
-          </Pagination.Item>
-        </div>
-      );
-    });
+    let loadPageNumber;
+    if (totalPages <= 5) {
+      loadPageNumber = pageNumber.map(page => {
+        return (
+          <div>
+            <Pagination.Item
+              key={page}
+              id={page}
+              active={page === currentPage}
+              onClick={this.setPage}
+            >
+              {page}
+            </Pagination.Item>
+          </div>
+        );
+      });
+    } else {
+      loadPageNumber = pageNumber.map(page => {
+        return (
+          <div>
+            <Pagination.Item
+              key={page}
+              id={page}
+              active={page === currentPage}
+              onClick={page === "..." ? this.doNothing : this.setPage}
+            >
+              {(page = page === "..." ? <Pagination.Ellipsis /> : page)}
+            </Pagination.Item>
+          </div>
+        );
+      });
+    }
 
     return (
       <main>

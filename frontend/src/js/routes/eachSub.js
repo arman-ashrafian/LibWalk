@@ -56,7 +56,7 @@ class EachSub extends React.Component {
               <div className="tags">
                 {this.props.clubTags.map(tag => (
                   // add club tag stuff here
-                  <MDBBtn className="tag" color={random_color()}>
+                  <MDBBtn className="tag" /*color={random_color()}*/>
                     {tag}
                   </MDBBtn>
                 ))}
