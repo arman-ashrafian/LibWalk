@@ -4,18 +4,18 @@ import "../../css/subs.css";
 import Info from "../../components/clubInfo";
 import EachSub from "./eachSub";
 import Pagination from "react-bootstrap/Pagination";
-//import { getUser } from "../cloud";
+import { getUser } from "../cloud";
 
 class Subs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clubPerPage: 1,
+      clubPerPage: 3,
       currentPage: 1,
       userId: "",
       subscriptions: [],
       clubList: Info,
-      totalPages: Math.ceil(Info.length / 1)
+      totalPages: Math.ceil(Info.length / 3)
     };
     this.setPage = this.setPage.bind(this);
     this.setPageNext = this.setPageNext.bind(this);
@@ -25,12 +25,23 @@ class Subs extends React.Component {
   }
 
   componentDidMount() {
-    /*getUser("30wStJj7FoaT64BjDhbIr0ujdH32").then(json => {
+    getUser("07Yn93n0wkUD0kEI7X4Q0NYuq9j1").then(json => {
       this.setState({
-        userId: "30wStJj7FoaT64BjDhbIr0ujdH32",
+        userId: "07Yn93n0wkUD0kEI7X4Q0NYuq9j1",
         subscriptions: json["subscriptions"]
       });
-    });*/
+      const len = Object.keys(this.state.subscriptions).length;
+      let pages = 0;
+      if (Math.ceil(len / 3) < 1) {
+        pages = 1;
+      } else {
+        pages = Math.ceil(len / 3);
+      }
+      this.setState({
+        totalPages: pages
+      });
+      //console.log(Object.keys(this.state.subscriptions).length);
+    });
     /*db.auth().onAuthStateChanged(firebaseUser => {
         if( firebaseUser) {
             this.setState({ userId: firebaseUser.uid });
@@ -144,7 +155,7 @@ class Subs extends React.Component {
     const { currentPage, clubPerPage, clubList, totalPages } = this.state;
     const endIndex = currentPage * clubPerPage;
     const firstIndex = endIndex - clubPerPage;
-    const currentClubs = clubList.slice(firstIndex, endIndex);
+    const currentClubs = this.state.subscriptions.slice(firstIndex, endIndex);
 
     // Function to render the clubs
     const showClubs = currentClubs.map(club => {
