@@ -1,7 +1,5 @@
 import React from 'react';
 import db from "../firebase";
-import Button from "react-bootstrap/Button";
-
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -13,7 +11,6 @@ class NavBar extends React.Component {
         this.setState(props);
         // console.log('Navbar constructor called.', this.props, props);
     }
-
     
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
@@ -66,6 +63,10 @@ class NavBar extends React.Component {
                                         <a className="nav-link waves-effect" onClick={this.switch_view_subscriptions}
                                            target="_blank">Subscriptions</a>
                                     </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link waves-effect" onClick={this.switch_view_search}
+                                           target="_blank">Search</a>
+                                    </li>
 
                                 </ul>
                                 {/* Right */}
@@ -111,7 +112,10 @@ class NavBar extends React.Component {
 
     switch_view_subscriptions = () => {
         this.props.history.push('/subs');
+    };
 
+    switch_view_search = () => {
+        this.props.history.push('/search');
     };
 
     switch_view_calendar = () => {
