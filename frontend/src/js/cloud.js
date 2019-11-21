@@ -68,7 +68,7 @@ export function editUser(userId, userData) {
 }
 
 export function getAnnouncements() {
-
+    return null;
 }
 export function registerUser() {
   return null;

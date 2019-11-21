@@ -2,7 +2,8 @@ import React from "react";
 import "../../css/subs.css";
 import { Divider } from "@material-ui/core";
 import { View } from "react-native-web";
-import { MDBBtn } from "mdbreact";
+//import { MDBBtn } from "mdbreact";
+import Button from "react-bootstrap/Button";
 
 class EachSub extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class EachSub extends React.Component {
     };
   }
   render() {
-    const random_color = () => {
+    /*const random_color = () => {
       var colors = [
         "elegant",
         "unique",
@@ -33,7 +34,7 @@ class EachSub extends React.Component {
       ];
       var number = Math.floor(Math.random() * colors.length);
       return colors[number];
-    };
+    };*/
 
     return (
       <div className="sub_container">
@@ -56,9 +57,9 @@ class EachSub extends React.Component {
               <div className="tags">
                 {this.props.clubTags.map(tag => (
                   // add club tag stuff here
-                  <MDBBtn className="tag" color={random_color()}>
+                  <Button className="tag" /*color={random_color()}*/>
                     {tag}
-                  </MDBBtn>
+                  </Button>
                 ))}
               </div>
             </div>

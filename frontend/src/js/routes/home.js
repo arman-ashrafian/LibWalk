@@ -5,7 +5,8 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import CardDeck from "react-bootstrap/CardDeck";
-import { getClubs } from "../cloud";
+import { club_list } from "../cloud";
+//import {getClubs} from "../cloud"
 import Pagination from "react-bootstrap/Pagination";
 
 class Home extends React.Component {
@@ -13,12 +14,10 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      orgs: [],
+      orgs: club_list,
       currentPage: 1,
       clubPerPage: 9,
-      totalPages: 0,
-      startPage: 1,
-      endPage: 5
+      totalPages: Math.ceil(club_list.length / 9)
     };
 
     this.setClubPerPage = this.setClubPerPage.bind(this);
@@ -28,12 +27,12 @@ class Home extends React.Component {
     this.moveLastPage = this.moveLastPage.bind(this);
 
     // GET /getClubs & set the state when the api response is recieved
-    getClubs().then(json => {
+    /*getClubs().then(json => {
       this.setState({
         orgs: json.clubs,
         totalPages: Math.ceil(json.clubs.length / 9)
       });
-    });
+    });*/
 
     if (this.state.orgs === undefined) {
       this.state = {
@@ -109,7 +108,7 @@ class Home extends React.Component {
 
       // Generate the dummyArray
       for (let i = 1; i <= totalPages; i++) {
-        if (i == 1 || i == totalPages || (i >= left && i < right)) {
+        if (i === 1 || i === totalPages || (i >= left && i < right)) {
           dummyArray.push(i);
         }
       }
@@ -213,7 +212,7 @@ class Home extends React.Component {
     );
   };
 
-  org_carousel = orgs => {
+  /*  org_carousel = orgs => {
     orgs = orgs.slice(0, 5);
     let carousel_items = [];
     orgs.forEach(function(e) {
@@ -242,8 +241,8 @@ let one_carousel_item = org => {
         <p>{org.desc}</p>
       </Carousel.Caption>
     </Carousel.Item>
-  );
-};
+  );*/
+}
 
 let org_grid_component = org => {
   org = Object.values(org)[0];
