@@ -14,8 +14,8 @@ class Subs extends React.Component {
       currentPage: 1,
       userId: "",
       subscriptions: [],
-      clubList: Info,
-      totalPages: Math.ceil(Info.length / 3)
+      clubList: 0,
+      totalPages: 0
     };
     this.setPage = this.setPage.bind(this);
     this.setPageNext = this.setPageNext.bind(this);
@@ -79,9 +79,7 @@ class Subs extends React.Component {
 
   /* Function to move to the next page */
   setPageNext(event) {
-    if (
-      this.state.currentPage < Math.ceil(Info.length / this.state.clubPerPage)
-    ) {
+    if (this.state.currentPage < this.state.totalPages) {
       this.setState({
         currentPage: this.state.currentPage + 1
       });
@@ -152,7 +150,7 @@ class Subs extends React.Component {
 
   render() {
     // Update the current page number and the current clubs that will be shown in each page
-    const { currentPage, clubPerPage, clubList, totalPages } = this.state;
+    const { currentPage, clubPerPage, totalPages } = this.state;
     const endIndex = currentPage * clubPerPage;
     const firstIndex = endIndex - clubPerPage;
     const currentClubs = this.state.subscriptions.slice(firstIndex, endIndex);
