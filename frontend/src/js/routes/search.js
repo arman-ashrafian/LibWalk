@@ -10,7 +10,7 @@ class Search extends React.Component {
     render() {
         return (
             <main className='mt-5 pt-5'>
-                <NavBar />
+                <NavBar {...this.props}/>
                 <MdSearch />
                 <input type="text" className="input"
                     placeholder="Search..." 
