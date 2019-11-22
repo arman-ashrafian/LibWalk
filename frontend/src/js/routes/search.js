@@ -6,21 +6,21 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
     }
-    
+
     render() {
         return (
-            <main className='mt-5 pt-5'>
+            <div>
                 <NavBar {...this.props}/>
-                <MdSearch />
-                <input type="text" className="input"
-                    placeholder="Search..." 
-                    style={{ margin: '0 auto', width: 500, fontSize:25, paddingLeft:20}}
-                />
-            </main>
+                <main className='mt-5 pt-5'>
+                    <MdSearch/>
+                    <input type="text" className="input"
+                           placeholder="Search..."
+                           style={{margin: '0 auto', width: 500, fontSize: 25, paddingLeft: 20}}
+                    />
+                </main>
+            </div>
         );
     }
-
-
 }
 
 
