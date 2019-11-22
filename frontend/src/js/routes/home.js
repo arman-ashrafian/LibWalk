@@ -149,7 +149,7 @@ class Home extends React.Component {
 
         return (
             <div>
-                <NavBar/>
+                <NavBar {...this.props}/>
                 <main className="mt-5 pt-5">
                     <div className="container centerPage">
                         <div className="row centerPage">
