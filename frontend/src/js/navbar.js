@@ -1,7 +1,5 @@
 import React from 'react';
 import db from "../firebase";
-import Button from "react-bootstrap/Button";
-
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -11,9 +9,16 @@ class NavBar extends React.Component {
             loggedIn: false
         };
         this.setState(props);
+        this.switch_view_admin_home = this.switch_view_admin_home.bind(this)
+        this.switch_view_announcements = this.switch_view_announcements.bind(this)
+        this.switch_view_calendar = this.switch_view_calendar.bind(this)
+        this.switch_view_home = this.switch_view_home.bind(this)
+        this.switch_view_login = this.switch_view_login.bind(this)
+        this.switch_view_profile = this.switch_view_profile.bind(this)
+        this.switch_view_subscriptions = this.switch_view_subscriptions.bind(this)
+        this.switch_view_search = this.switch_view_search.bind(this)
         // console.log('Navbar constructor called.', this.props, props);
     }
-
     
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
@@ -66,6 +71,10 @@ class NavBar extends React.Component {
                                         <a className="nav-link waves-effect" onClick={this.switch_view_subscriptions}
                                            target="_blank">Subscriptions</a>
                                     </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link waves-effect" onClick={this.switch_view_search}
+                                           target="_blank">Search</a>
+                                    </li>
 
                                 </ul>
                                 {/* Right */}
@@ -111,7 +120,10 @@ class NavBar extends React.Component {
 
     switch_view_subscriptions = () => {
         this.props.history.push('/subs');
+    };
 
+    switch_view_search = () => {
+        this.props.history.push('/search');
     };
 
     switch_view_calendar = () => {

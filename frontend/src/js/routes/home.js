@@ -150,11 +150,9 @@ class Home extends React.Component {
     return (
       <div>
         <NavBar />
-        actual page
         <main className="mt-5 pt-5">
           <div className="container centerPage">
             <div className="row centerPage">
-              <NavBar {...this.props} />
               {/*<h1> Welcome</h1>*/}
               {/* org carousel here*/}
               <div>
