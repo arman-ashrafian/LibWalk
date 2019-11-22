@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import NavBar from "../navbar";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Toast from 'react-bootstrap/Toast'
 
 import '../../css/notifs.css'
@@ -12,6 +13,11 @@ import ToastBody from "react-bootstrap/ToastBody";
 import "../../css/notifs.css";
 import { getClubs } from "../cloud";
 >>>>>>> 53ad9844204ef241430fc952539d685c77905009
+=======
+import Toast from 'react-bootstrap/Toast'
+import '../../css/notifs.css'
+import {getUser, getAnnouncements} from "../cloud";
+>>>>>>> d389ae002ff0a07d0284e375a072378505787b48
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
@@ -21,6 +27,10 @@ import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import Pagination from "react-bootstrap/Pagination";
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> d389ae002ff0a07d0284e375a072378505787b48
 import '../cloud.js'
 import TimeAgo from '@jshimko/react-time-ago';
 import db from "../../firebase";
@@ -63,6 +73,7 @@ class Announcements extends React.Component {
                 orgs: []
             }
         }
+<<<<<<< HEAD
 =======
 import "../cloud.js";
 import TimeAgo from "@jshimko/react-time-ago";
@@ -80,6 +91,9 @@ class Announcements extends React.Component {
       this.setState({ orgs: json.clubs });
     });
 >>>>>>> 53ad9844204ef241430fc952539d685c77905009
+=======
+
+>>>>>>> d389ae002ff0a07d0284e375a072378505787b48
 
     if (this.state.orgs === undefined) {
       this.state = {
@@ -156,6 +170,9 @@ class Announcements extends React.Component {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d389ae002ff0a07d0284e375a072378505787b48
     let club_grid = (org) => {
         return (
             <Card border="info" style={{width: '20rem', height: '40rem'}} className='text-center'>
@@ -198,6 +215,7 @@ class Announcements extends React.Component {
             </Col>
         );
     }
+<<<<<<< HEAD
 =======
 let club_grid = org => {
   return (
@@ -258,5 +276,7 @@ function MakeToast() {
   );
 }
 >>>>>>> 53ad9844204ef241430fc952539d685c77905009
+=======
+>>>>>>> d389ae002ff0a07d0284e375a072378505787b48
 
 export default Announcements;
