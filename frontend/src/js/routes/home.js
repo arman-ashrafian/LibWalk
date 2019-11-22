@@ -41,53 +41,6 @@ class Home extends React.Component {
     }
   }
 
-  setClubPerPage(event) {
-    this.setState({
-      currentPage: Number(event.target.id)
-    });
-  }
-
-  /* Function to move to the next page */
-  setPageNext(event) {
-    //currentPage += 1;
-    if (this.state.currentPage < this.state.totalPages) {
-      this.setState({
-        currentPage: this.state.currentPage + 1
-      });
-    }
-  }
-
-  /* Function to move to the previous page */
-  setPagePrev(event) {
-    if (this.state.currentPage > 1) {
-      this.setState({
-        currentPage: this.state.currentPage - 1
-      });
-    }
-  }
-
-  /* Function to move to the first page */
-  moveFirstPage(event) {
-    if (this.state.currentPage > 1) {
-      this.setState({
-        currentPage: 1
-      });
-    }
-  }
-
-  /* Function to move to the last page */
-  moveLastPage(event) {
-    if (this.state.currentPage < this.state.totalPages) {
-      this.setState({
-        currentPage: this.state.totalPages
-      });
-    }
-  }
-
-  doNothing(event) {
-    console.log("Do nothing");
-  }
-
   render() {
     /* Update the number of clubs to show per page and from what range to what range */
     const { clubPerPage, currentPage, orgs, totalPages } = this.state;
@@ -97,39 +50,8 @@ class Home extends React.Component {
     // Choose the subarray of clubs to show in orgs array
     const currentClubs = orgs.slice(startInd, endInd);
 
-    /* Function to produce the correct pagination */
-    const pagination = (currentPage, totalPages) => {
-      const offset = 2;
-      const left = currentPage - offset,
-        right = currentPage + offset + 1;
-      let dummyValue = 0;
-      const dummyArray = [];
-      const pageNumber = [];
-
-      // Generate the dummyArray
-      for (let i = 1; i <= totalPages; i++) {
-        if (i === 1 || i === totalPages || (i >= left && i < right)) {
-          dummyArray.push(i);
-        }
-      }
-
-      // Generate the pageNumber array
-      for (let i of dummyArray) {
-        if (dummyValue) {
-          if (i - dummyValue === offset) {
-            pageNumber.push(dummyValue + 1);
-          } else if (i - dummyValue !== 1) {
-            pageNumber.push("...");
-          }
-        }
-        pageNumber.push(i);
-        dummyValue = i;
-      }
-      return pageNumber;
-    };
-
     // Call pagination function to get all the pages for pagination
-    const pageNumber = pagination(currentPage, totalPages);
+    const pageNumber = this.getPagination(currentPage, totalPages);
 
     // Load pagination
     const loadPageNumber = pageNumber.map(page => {
@@ -178,6 +100,84 @@ class Home extends React.Component {
         </Pagination>
       </div>
     );
+  }
+
+  setClubPerPage(event) {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
+  }
+
+  /* Function to move to the next page */
+  setPageNext(event) {
+    if (this.state.currentPage < this.state.totalPages) {
+      this.setState({
+        currentPage: this.state.currentPage + 1
+      });
+    }
+  }
+
+  /* Function to move to the previous page */
+  setPagePrev(event) {
+    if (this.state.currentPage > 1) {
+      this.setState({
+        currentPage: this.state.currentPage - 1
+      });
+    }
+  }
+
+  /* Function to move to the first page */
+  moveFirstPage(event) {
+    if (this.state.currentPage > 1) {
+      this.setState({
+        currentPage: 1
+      });
+    }
+  }
+
+  /* Function to move to the last page */
+  moveLastPage(event) {
+    if (this.state.currentPage < this.state.totalPages) {
+      this.setState({
+        currentPage: this.state.totalPages
+      });
+    }
+  }
+
+  /* Function to do nothing */
+  doNothing(event) {
+    console.log("Do nothing");
+  }
+
+  /* Function to get the number of pagination */
+  getPagination(currentPage, totalPages) {
+    const offset = 2;
+    const left = currentPage - offset,
+      right = currentPage + offset + 1;
+    let dummyValue = 0;
+    const dummyArray = [];
+    const pageNumber = [];
+
+    // Generate the dummyArray
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === 1 || i === totalPages || (i >= left && i < right)) {
+        dummyArray.push(i);
+      }
+    }
+
+    // Generate the pageNumber array
+    for (let i of dummyArray) {
+      if (dummyValue) {
+        if (i - dummyValue === offset) {
+          pageNumber.push(dummyValue + 1);
+        } else if (i - dummyValue !== 1) {
+          pageNumber.push("...");
+        }
+      }
+      pageNumber.push(i);
+      dummyValue = i;
+    }
+    return pageNumber;
   }
 
   org_grid = orgs => {
