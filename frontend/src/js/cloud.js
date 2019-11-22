@@ -103,7 +103,7 @@ export function getEvent(eventId) {
     return postRequest(getEventURL, {event_id: eventId});
 }
 
-let club_list = [
+export let club_list = [
     {
         "ggb8UPUOI9QaosjQgzwzbauclM32": {
             "clubName": "4Corners Christian Fellowship at UCSD"
