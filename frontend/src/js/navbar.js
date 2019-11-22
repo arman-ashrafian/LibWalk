@@ -34,9 +34,10 @@ class NavBar extends React.Component {
     };
 
     render() {
+        //interesting
         return (
             <div>
-                <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+                <Navbar collapseOnSelect expand="lg">
                     <Navbar.Brand onClick={this.switch_view_home}>LibWalk</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
                     <Navbar.Collapse id="responsive-navbar-nav">

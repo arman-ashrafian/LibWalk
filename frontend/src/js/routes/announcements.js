@@ -45,8 +45,9 @@ class Announcements extends React.Component {
 
         return (
             <div>
+                <NavBar {...this.props}/>
+
                 <main className='mt-5 pt-5'>
-                    <NavBar {...this.props}/>
                     <div className='container centerPage'>
                         <div className="row centerPage">
                             {/*Display User Information*/}
