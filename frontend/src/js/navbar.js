@@ -3,6 +3,7 @@ import db from "../firebase";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -48,12 +49,12 @@ class NavBar extends React.Component {
                             <Nav.Link onClick={this.switch_view_subscriptions}>Subscriptions</Nav.Link>
                             <Nav.Link onClick={this.switch_view_search}>Search</Nav.Link>
                             
-                            {this.state.loggedIn ?
-                                <Button variant="outline-primary" size="m" style={{display:flex;float:"right"}} onClick={this.switch_view_profile}> Profile </Button>            
-                            :
-                                <Button variant="outline-primary" size="m" onClick={this.switch_view_login} style={{float:"right"}}> Login </Button>           
-                            }
                             
+                            {this.state.loggedIn ? 
+                                <Button className="float-right" variant="outline-primary" size="m" onClick={this.switch_view_profile}> Profile </Button>            
+                            :
+                                <Button className="float-right" variant="outline-primary" size="m" onClick={this.switch_view_login} > Login </Button>           
+                            }
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>

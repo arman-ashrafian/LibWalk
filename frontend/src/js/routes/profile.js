@@ -82,8 +82,10 @@ class Profile extends React.Component {
 
     render() {
         return (
+            <div>
+            <NavBar {...this.props}/>
             <main className='mt-5 pt-5'>
-                <NavBar {...this.props}/>
+                
                 <div className='container centerPage' >
                     <div className="row centerPage">
 
@@ -154,7 +156,9 @@ class Profile extends React.Component {
                         </div>
                     </Modal.Body>
                 </Modal>
-            </main>);
+            </main>
+            </div>
+            );
     }
 
     switch_view_login = () => {
