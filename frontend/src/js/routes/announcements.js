@@ -1,10 +1,9 @@
 import React, {useState} from "react";
 import NavBar from "../navbar";
 import Toast from 'react-bootstrap/Toast'
-import ToastHeader from 'react-bootstrap/ToastHeader'
-import ToastBody from 'react-bootstrap/ToastBody'
+
 import '../../css/notifs.css'
-import {getClubs} from "../cloud";
+import {getUser, getAnnouncements} from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container'
@@ -15,18 +14,20 @@ import Button from "react-bootstrap/Button";
 import Pagination from "react-bootstrap/Pagination";
 import '../cloud.js'
 import TimeAgo from '@jshimko/react-time-ago';
+import db from "../../firebase";
 
 class Announcements extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            userId: "",
             orgs: []
         };
 
         // GET /getClubs & set the state when the api response is recieved
-        getClubs().then((json) => {
-            this.setState({orgs: json.clubs});
+        getUser(this.state.userId).then((json) => {
+            this.setState({orgs: json.subscriptions});
         });
 
         if(this.state.orgs === undefined) {
@@ -35,6 +36,17 @@ class Announcements extends React.Component {
             };
         }
     };
+
+    componentDidMount() {
+        db.auth().onAuthStateChanged(firebaseUser => {
+            if( firebaseUser) {
+                this.setState({ userId: firebaseUser.uid });
+            } else {
+                console.log("Redirecting to login page")
+            }
+
+        });
+    }
 
     render() {
         if(this.state.orgs === undefined) {
@@ -106,51 +118,44 @@ class Announcements extends React.Component {
 }
 
     let club_grid = (org) => {
-
         return (
-            <Card border="info" style={{width: '20rem', height: '26rem'}} className='text-center'>
-                <Card.Header>{org.clubName}</Card.Header>
+            <Card border="info" style={{width: '20rem', height: '40rem'}} className='text-center'>
+                <Card.Header><strong>{org.clubName}</strong></Card.Header>
                 <Card.Body>
-                    <MakeToast />
+                    <div className="div-centered">
+                        <MakeCard />
+                    </div>
                 </Card.Body>
             </Card>
         )
     };
 
-    function MakeToast() {
-        const [showA, setShowA] = useState(true);
-        const [showB, setShowB] = useState(true);
-        const [showC, setShowC] = useState(true);
-
-        const toggleShowA = () => setShowA(!showA);
-        const toggleShowB = () => setShowB(!showB);
-        const toggleShowC = () => setShowC(!showC);
-
+    function MakeCard() {
         return (
             <Col>
-                <Toast show={showA} onClose={toggleShowA}>
-                    <Toast.Header>
+                <Card style={{fontSize: 12}}>
+                    <Card.Header>
                         <strong className="mr-auto">Notification</strong>
-                        <small><TimeAgo date='Nov 19, 2019' /></small>
-                    </Toast.Header>
-                    <Toast.Body>Pizza Night</Toast.Body>
-                </Toast>
-
-                <Toast show={showB} onClose={toggleShowB}>
-                    <Toast.Header>
+                    </Card.Header>
+                    <Card.Body>Pizza Night</Card.Body>
+                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
+                </Card>
+                <br />
+                <Card style={{fontSize: 12}}>
+                    <Card.Header>
                         <strong className="mr-auto">Notification</strong>
-                        <small><TimeAgo date='Nov 19, 2019' /></small>
-                    </Toast.Header>
-                    <Toast.Body> Free Boba Tomorrow Night</Toast.Body>
-                </Toast>
-
-                <Toast show={showC} onClose={toggleShowC}>
-                    <Toast.Header>
+                    </Card.Header>
+                    <Card.Body> Free Boba Tomorrow Night</Card.Body>
+                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
+                </Card>
+                <br />
+                <Card style={{fontSize: 12}}>
+                    <Card.Header>
                         <strong className="mr-auto">Notification</strong>
-                        <small><TimeAgo date='Nov 19, 2019' /></small>
-                    </Toast.Header>
-                    <Toast.Body>First Meeting Starts @ 12pm on 11/11/2019</Toast.Body>
-                </Toast>
+                    </Card.Header>
+                    <Card.Body>First Meeting Starts @ 12pm on 11/11/2019</Card.Body>
+                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
+                </Card>
             </Col>
         );
     }
