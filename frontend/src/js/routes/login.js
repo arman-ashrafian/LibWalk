@@ -14,22 +14,7 @@ import {getUser, editUser} from "../cloud";
 
 const auth = firebase.auth();
 
-const provider2 = new firebase.auth.GoogleAuthProvider();
-		
-function registerUserGoogle(props) {
-	if(props.user){
-		console.log("Logged in");
-		return(<a onClick={this.handleLoginWithGoogle}><Image src={require('../../img/google/btnNormal.png')} fluid /></a>);
-	}
-	//If the user hasnt logged in with a google account, then show the log in button here
-	else{
-			console.log("Logged out");
-		return(
-		<a onClick={this.handleLoginWithGoogle}><Image src={require('../../img/google/btnNormal.png')} fluid /></a>
-		);
-	}
-	
-}
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 	
 class Login extends React.Component {
     constructor(props) {
@@ -54,7 +39,7 @@ class Login extends React.Component {
 		try{
 				await db
 				.auth()
-				.signInWithPopup(provider2).then((result) => {
+				.signInWithPopup(googleProvider).then((result) => {
 					this.setState({
 						user: result.user,
 						userId: result.uid
@@ -80,7 +65,7 @@ class Login extends React.Component {
     };
 	
 	handleRegister = (e) => {
-		//Check if the google account is linked
+		//Check if the Google account is linked
 		if(this.state.user){
 			//Save to database
 			editUser(this.state.user.uid, 
@@ -103,7 +88,6 @@ class Login extends React.Component {
 	};
 	
 	loginTime = () =>{
-
 		this.setState({login: true})
 	};
 	
@@ -137,12 +121,6 @@ class Login extends React.Component {
 						</Container>
 					</Modal.Body>
 
-					{/*
-					<Modal.Footer>
-						<Button variant="secondary">Register</Button>
-						<Button variant="primary">Login</Button>
-					</Modal.Footer>
-					*/}
 				</Modal.Dialog>
 				
 				<Modal.Dialog style={{display: this.state.login ? 'none' : 'block'}}> 
@@ -177,25 +155,10 @@ class Login extends React.Component {
 								<p>Already registered?
 									<a onClick={this.loginTime}> Login</a>
 								</p>
-								{/* 
-								<p>or sign in with:</p>
-								<a href="#" className="mx-2" role="button"><i
-									className="fab fa-facebook-f light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i className="fab fa-twitter light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i
-									className="fab fa-linkedin-in light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i className="fab fa-github light-blue-text"/></a>
-								*/}
 							</Form>
 						</Container>
 					</Modal.Body>
 
-					{/*
-					<Modal.Footer>
-						<Button variant="secondary">Register</Button>
-						<Button variant="primary">Login</Button>
-					</Modal.Footer>
-					*/}
 				</Modal.Dialog>
             </div>);
     }
