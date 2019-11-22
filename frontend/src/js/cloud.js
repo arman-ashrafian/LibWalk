@@ -78,7 +78,7 @@ export function editUser(userId, userData) {
 }
 
 export function getAnnouncements() {
-
+    return null;
 }
 export function registerUser() {
   return null;
@@ -125,7 +125,7 @@ export function changeEvent(eventID, eventData) {
     return postRequest(changeEventURL, data);
 }
 
-let club_list = [
+export let club_list = [
     {
         "ggb8UPUOI9QaosjQgzwzbauclM32": {
             "clubName": "4Corners Christian Fellowship at UCSD"

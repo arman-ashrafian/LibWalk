@@ -12,7 +12,9 @@ import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
-
+import Pagination from "react-bootstrap/Pagination";
+import '../cloud.js'
+import TimeAgo from '@jshimko/react-time-ago';
 
 class Announcements extends React.Component {
     constructor(props) {
@@ -42,23 +44,25 @@ class Announcements extends React.Component {
         }
 
         return (
-
-            <main className='mt-5 pt-5'>
+            <div>
                 <NavBar {...this.props}/>
-                <div className='container centerPage'>
-                    <div className="row centerPage">
-                        {/*Display User Information*/}
-                        <div className="col-sm-12 text-center">
-                            <h1 className="h1 text-center mb-5">Notifications</h1>
-                            <h5 className="text-center mb-5">Messages from organizations you subscribe to are listed
-                                below. </h5>
-                        </div>
-                        <div className="div-centered">
-                            {this.club_grid_loop(this.state.orgs)}
+
+                <main className='mt-5 pt-5'>
+                    <div className='container centerPage'>
+                        <div className="row centerPage">
+                            {/*Display User Information*/}
+                            <div className="col-sm-12 text-center">
+                                <h1 className="h1 text-center mb-5">Announcements</h1>
+                                <h5 className="text-center mb-5">Announcements from organizations you subscribe to are listed
+                                    below. </h5>
+                            </div>
+                            <div className="div-centered">
+                                {this.club_grid_loop(this.state.orgs)}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </main>
+                </main>
+            </div>
         );
     }
 
@@ -104,7 +108,7 @@ class Announcements extends React.Component {
     let club_grid = (org) => {
 
         return (
-            <Card bg="light" border="warning" style={{width: '20rem', height: '26rem'}} className='text-center'>
+            <Card border="info" style={{width: '20rem', height: '26rem'}} className='text-center'>
                 <Card.Header>{org.clubName}</Card.Header>
                 <Card.Body>
                     <MakeToast />
@@ -127,7 +131,7 @@ class Announcements extends React.Component {
                 <Toast show={showA} onClose={toggleShowA}>
                     <Toast.Header>
                         <strong className="mr-auto">Notification</strong>
-                        <small>11 mins ago</small>
+                        <small><TimeAgo date='Nov 19, 2019' /></small>
                     </Toast.Header>
                     <Toast.Body>Pizza Night</Toast.Body>
                 </Toast>
@@ -135,7 +139,7 @@ class Announcements extends React.Component {
                 <Toast show={showB} onClose={toggleShowB}>
                     <Toast.Header>
                         <strong className="mr-auto">Notification</strong>
-                        <small>12 mins ago</small>
+                        <small><TimeAgo date='Nov 19, 2019' /></small>
                     </Toast.Header>
                     <Toast.Body> Free Boba Tomorrow Night</Toast.Body>
                 </Toast>
@@ -143,14 +147,12 @@ class Announcements extends React.Component {
                 <Toast show={showC} onClose={toggleShowC}>
                     <Toast.Header>
                         <strong className="mr-auto">Notification</strong>
-                        <small>15 mins ago</small>
+                        <small><TimeAgo date='Nov 19, 2019' /></small>
                     </Toast.Header>
                     <Toast.Body>First Meeting Starts @ 12pm on 11/11/2019</Toast.Body>
                 </Toast>
             </Col>
         );
     }
-
-
 
 export default Announcements;

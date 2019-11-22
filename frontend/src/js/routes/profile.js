@@ -37,23 +37,11 @@ class Profile extends React.Component {
     }
 
     componentDidMount() {
-        getUser('30wStJj7FoaT64BjDhbIr0ujdH32').then(json => {
-            this.setState({
-                userId: '30wStJj7FoaT64BjDhbIr0ujdH32',
-                user: {
-                    name: json['name'],
-                    email: json['email'],
-                    major: json['major'],
-                    year: json['year']
-                }
-            })
-        })
-        /*
         db.auth().onAuthStateChanged(firebaseUser => {
             if( firebaseUser) {
                 this.setState({ userId: firebaseUser.uid });
                 // getUser using userId and populate this.state
-                getUser({this.state.userId}).then(json => {
+                getUser(this.state.userId).then(json => {
                     this.setState({
                     user: {
                         name: json['name'],
@@ -63,13 +51,11 @@ class Profile extends React.Component {
                     }
                 })
         })
-
             } else {
-                alert("Not logged in")
+                console.log("Redirecting to login page")
             }
         
         });
-        */
     }
 
     close() {
