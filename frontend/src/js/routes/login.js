@@ -90,7 +90,9 @@ class Login extends React.Component {
                 major: e.target[1].value,
                 year: e.target[2].value
 			})
-			
+		
+		this.view_switch_login()
+
 		}
 		//Else prompt the user to link their google account
 		else{
