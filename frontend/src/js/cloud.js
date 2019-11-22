@@ -4,6 +4,9 @@ const getClubsURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClu
 const getUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getUser';
 const getEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getEvent';
 const editUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeUser';
+const getClubURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClub';
+const changeClubURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeClub';
+const changeEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeEvent';
 
 const CACHE_TIMEOUT_MS = 120000000000000000000000000 // only make API request if last call was over 120,000 ms == 120 seconds
 let cache = {}
@@ -31,6 +34,13 @@ const getRequest = function (url) {
 
 
 /* ================================================== */
+export function getClub(clubId) {
+	let data = {
+		club_id: clubId
+	};
+	return postRequest(getClubURL, data);
+}
+
 export async function getClubs() {
     console.log('printing cache !!!!!');
     console.log(cache);
@@ -83,8 +93,12 @@ export function registerClub() {
   return null;
 }
 
-export function updateClub() {
-  return null;
+export function changeClub(clubId, clubData) {
+  let data = {
+  	  club_id: clubId,
+	  club: clubData
+  }
+  return postRequest(changeClubURL, data);
 }
 
 export function orgLogin() {
@@ -101,6 +115,14 @@ export function editUserProfile() {
 
 export function getEvent(eventId) {
     return postRequest(getEventURL, {event_id: eventId});
+}
+
+export function changeEvent(eventID, eventData) {
+    let data = {
+        event_id: eventID,
+        event: eventData
+    }
+    return postRequest(changeEventURL, data);
 }
 
 let club_list = [
