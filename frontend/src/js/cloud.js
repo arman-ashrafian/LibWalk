@@ -4,26 +4,14 @@ const getClubsURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClu
 const getUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getUser';
 const getEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getEvent';
 const editUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeUser';
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 const getAnnounceURL = "https://us-central1-libwalk-721c2.cloudfunctions.net/getAnnouncements";
-const CACHE_TIMEOUT_MS = 120000000000000000000000000 // only make API request if last call was over 120,000 ms == 120 seconds
-let cache = {}
-=======
-=======
-const getAnnounceURL = "https://us-central1-libwalk-721c2.cloudfunctions.net/getAnnouncements";
->>>>>>> d389ae002ff0a07d0284e375a072378505787b48
 const getClubURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClub';
 const changeClubURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeClub';
 const changeEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeEvent';
 
 const CACHE_TIMEOUT_MS = 120000000000000000000000000; // only make API request if last call was over 120,000 ms == 120 seconds
 let cache = {};
-<<<<<<< HEAD
->>>>>>> 53ad9844204ef241430fc952539d685c77905009
-=======
-
->>>>>>> d389ae002ff0a07d0284e375a072378505787b48
 
 /* ============ fetch() wrappers ==================== */
 // Use these functions instead of calling fetch directly
@@ -89,21 +77,11 @@ export function editUser(userId, userData) {
   return postRequest(editUserURL, data);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-export function createAnnouncements() {
-    return null;
-=======
-export function getAnnouncements() {
-  return null;
->>>>>>> 53ad9844204ef241430fc952539d685c77905009
-}
-=======
 
 export function createAnnouncements() {
-    return null;
+        return null;
+    }
 
->>>>>>> d389ae002ff0a07d0284e375a072378505787b48
 export function getAnnouncements(clubId) {
     let data = {
         club_id: clubId,
@@ -112,6 +90,7 @@ export function getAnnouncements(clubId) {
     return postRequest(getAnnounceURL, data);
 
 }
+
 export function registerUser() {
   return null;
 }
