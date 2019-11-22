@@ -34,6 +34,7 @@ class NavBar extends React.Component {
     };
 
     render() {
+        //interesting
         return (
             <div>
                 <Navbar collapseOnSelect expand="lg">
