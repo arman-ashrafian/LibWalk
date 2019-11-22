@@ -53,6 +53,7 @@ export async function getClubs() {
   }
 }
 
+// Get user
 export function getUser(userId) {
   let data = {
     uid: userId
