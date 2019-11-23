@@ -44,6 +44,47 @@ function check_login_type() {
 
 class AdminHome extends React.Component {
 
+	constructor(props) {
+        super(props);
+
+        this.state = {
+			editInfo: false,
+			editTag: false,
+			editEvent: false,
+			org_id: "",
+			org: {
+				clubReference: '',
+				clubName: '',
+				contactEmail: '',
+				description: '',
+				pictureURL: '',
+				tags: [],
+				pageURL: '',
+				emailList: []
+			},
+			event: {
+				clubsHosting: '',
+				description: '',
+				eventName: '',
+				locaction: '',
+				pictureURL: '',
+				rsvpForm: '',
+				time: ''
+			}
+		};
+
+		this.closeInfo = this.closeInfo.bind(this);
+		this.closeTag = this.closeTag.bind(this);
+		this.closeEvent = this.closeEvent.bind(this);
+		this.handleEditInfo = this.handleEditInfo.bind(this);
+		this.handleEditTag = this.handleEditTag.bind(this);
+		this.handleEditEvent = this.handleEditEvent.bind(this);
+		this.editHandleClub = this.editHandleClub.bind(this);
+		this.editHandleTag = this.editHandleTag.bind(this);
+		this.editHandleEvent = this.editHandleEvent.bind(this);
+		this.handleLogOut = this.handleLogOut.bind(this);
+    };
+		
 	closeInfo() {
 		this.setState({
 			editInfo: false
@@ -75,19 +116,28 @@ class AdminHome extends React.Component {
 	}
 
 	componentDidMount() {
-		getClub('08hzBkOlpgdVIR9gQD9sliLkAsy1').then(clubInfo => {
-			this.setState({
-				org: {
-					clubReference: clubInfo['clubReference'],
-					clubName: clubInfo['clubName'],
-					contactEmail: clubInfo['contactEmail'],
-					description: clubInfo['description'],
-					pictureURL: clubInfo['pictureURL'],
-					tags: clubInfo['tags'],
-					pageURL: clubInfo['pageURL'],
-					emailList: clubInfo['emailList']
-				}
-			})
+		db.auth().onAuthStateChanged(firebaseUser => {
+			if(firebaseUser) {
+				this.setState({
+					org_id: firebaseUser.uid
+				})
+				getClub(firebaseUser.uid).then(clubInfo => {
+					console.log(clubInfo)
+					this.setState({
+						org: {
+							clubReference: clubInfo['clubReference'],
+							clubName: clubInfo['clubName'],
+							contactEmail: clubInfo['contactEmail'],
+							description: clubInfo['description'],
+							pictureURL: clubInfo['pictureURL'],
+							tags: clubInfo['tags'],
+							pageURL: clubInfo['pageURL'],
+							emailList: clubInfo['emailList']
+						}
+					})
+					
+				})
+			}
 		})
 		
 		getEvent('event_id_00').then(eventInfo => {
@@ -146,16 +196,19 @@ class AdminHome extends React.Component {
 		this.closeEvent();
 	}
 
+	handleLogOut() {
+		db.auth().signOut().then((result) => {
+			this.setState({
+				org: null
+			})
+		});
+        this.props.history.push('/admin_login');
+	}
+
     render() {
 
         if (check_login_type() === 'user') {
             this.view_switch_login();
-        }
-
-        if (this.state.orgs === undefined) {
-            this.state = {
-                orgs: []
-            };
         }
 
         /*let club = this.get_club_data();
@@ -308,6 +361,7 @@ class AdminHome extends React.Component {
 							</Form>
 						</Modal.Body>        
 					</Modal>
+					<Button onClick={this.handleLogOut}>Log Out</Button>
                 </main>
             </div>
         );
@@ -330,57 +384,6 @@ class AdminHome extends React.Component {
 		this.props.history.push('/home');
 	};
 
-    constructor(props) {
-        super(props);
-        console.log('AdminHome element created with props', props);
-
-        this.state = {
-            orgs: [],
-			editInfo: false,
-			editTag: false,
-			editEvent: false,
-			org: {
-				clubReference: '',
-				clubName: '',
-				contactEmail: '',
-				description: '',
-				pictureURL: '',
-				tags: [],
-				pageURL: '',
-				emailList: []
-			},
-			event: {
-				clubsHosting: '',
-				description: '',
-				eventName: '',
-				locaction: '',
-				pictureURL: '',
-				rsvpForm: '',
-				time: ''
-			}
-        };
-
-        // get data from firebase
-        getClubs().then((json) => {
-            this.setState({orgs: json.clubs});
-        });
-
-        if (this.state.orgs === undefined) {
-            this.state = {
-                orgs: []
-            };
-        }
-
-		this.closeInfo = this.closeInfo.bind(this);
-		this.closeTag = this.closeTag.bind(this);
-		this.closeEvent = this.closeEvent.bind(this);
-		this.handleEditInfo = this.handleEditInfo.bind(this);
-		this.handleEditTag = this.handleEditTag.bind(this);
-		this.handleEditEvent = this.handleEditEvent.bind(this);
-		this.editHandleClub = this.editHandleClub.bind(this);
-		this.editHandleTag = this.editHandleTag.bind(this);
-		this.editHandleEvent = this.editHandleEvent.bind(this);
-    };
 };
 
 export default AdminHome;
