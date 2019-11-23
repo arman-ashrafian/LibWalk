@@ -137,7 +137,8 @@ export let club_list = [
                 "tags": [
                     "Alpha",
                     "Epilson",
-                    "Pie"
+                    "Pie",
+                    "Sorority"
                 ],
                 "announcements": [],
                 "clubReference": "08hzBkOlpgdVIR9gQD9sliLkAsy1"
@@ -1426,7 +1427,7 @@ export let club_list = [
                 "clubName": "Theta Tau",
                 "pageURL": "https://studentorg.ucsd.edu/Home/Details/8418",
                 "contactEmail": "",
-                "tags": [],
+                "tags": ["Fraternity", "Frat", "Professional", "Engineering"],
                 "announcements": [],
                 "clubReference": "A0uzPkimmGXpeuc7bwy9zmfZXwy1"
             }
@@ -4448,7 +4449,7 @@ export let club_list = [
                 "pictureURL": "",
                 "pageURL": "https://studentorg.ucsd.edu/Home/Details/10744",
                 "contactEmail": "",
-                "tags": [],
+                "tags": ["Gaming", "Fraternity", "Frat", "Events"],
                 "announcements": [],
                 "clubReference": "fh8FFeMV2ceHatxqPE31GzMekJr1",
                 "description": "Triton Gaming is a group of collegiate organizers that team up to create epic entertainment experiences for student gamers at the University of California, San Diego. Our organization is the product of several independent on-campus gaming organizations that each represent a different gaming genre and student community. Through Triton Gaming, our team strives to create an exciting, diverse, and all-inclusive gaming environment on campus through high-quality live events.",
@@ -4504,7 +4505,7 @@ export let club_list = [
                 "clubName": "Association for Computing Machinery (ACM)",
                 "pageURL": "https://studentorg.ucsd.edu/Home/Details/8350",
                 "contactEmail": "",
-                "tags": [],
+                "tags": ["CS", "Programming", "Events", "Workshops"],
                 "announcements": [],
                 "clubReference": "gEAnqSTcavXdeZnDK8eiVkAi9TF2",
                 "description": "To foster a community devoted to computing and help students interested in the field develop their technical skills and professional networks.",
@@ -4683,7 +4684,7 @@ export let club_list = [
             "icgcrjm5IeS60HTqBu1okrQ1TLn1": {
                 "pageURL": "https://studentorg.ucsd.edu/Home/Details/12033",
                 "contactEmail": "",
-                "tags": [],
+                "tags": ["Women", "ECE", "Development", "Engineering"],
                 "announcements": [],
                 "clubReference": "icgcrjm5IeS60HTqBu1okrQ1TLn1",
                 "description": "To build a community among graduate women in Electrical and Computer Engineering to enhance their career opportunities.",
@@ -5367,7 +5368,7 @@ export let club_list = [
         },
         {
             "pJMEuMY65GUIfZF78L1OWVH1pY12": {
-                "tags": [],
+                "tags": ["Gaming", "Development", "Programming", "Projects"],
                 "announcements": [],
                 "clubReference": "pJMEuMY65GUIfZF78L1OWVH1pY12",
                 "description": "The Video Game Development Club seeks to bring students who are interested in the process of video game design and development together in a collaborative environment. Students can develop games from start to finish with their peers, and seek feedback and assistance with ideas and projects they may be working on.",
@@ -5521,7 +5522,7 @@ export let club_list = [
         },
         {
             "r4QaqliotEN4FDQV91uUJhpTSOY2": {
-                "tags": [],
+                "tags": ["Women", "CS","Engineering", "Programming"],
                 "announcements": [],
                 "clubReference": "r4QaqliotEN4FDQV91uUJhpTSOY2",
                 "description": "WIC is a non-profit student organization committed to fostering a supportive and informative environment for women in computing through technical, professional development, and social events. We also focus on high school outreach programs to bring more young women into the field. Keynote speakers, mentorship, career fair information, interview preparation, programming competitions, and attending CS conferences are few of the opportunities that we provide for our members.",
@@ -6033,7 +6034,7 @@ export let club_list = [
                 "pictureURL": "",
                 "pageURL": "https://studentorg.ucsd.edu/Home/Details/8544",
                 "contactEmail": "",
-                "tags": [],
+                "tags": ["Programming", "Development", "Engineering", "CS", "Projects"],
                 "announcements": []
             }
         },

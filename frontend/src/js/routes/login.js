@@ -14,22 +14,7 @@ import {getUser, editUser} from "../cloud";
 
 const auth = firebase.auth();
 
-const provider2 = new firebase.auth.GoogleAuthProvider();
-		
-function registerUserGoogle(props) {
-	if(props.user){
-		console.log("Logged in");
-		return(<a onClick={this.handleLoginWithGoogle}><Image src={require('../../img/google/btnNormal.png')} fluid /></a>);
-	}
-	//If the user hasnt logged in with a google account, then show the log in button here
-	else{
-			console.log("Logged out");
-		return(
-		<a onClick={this.handleLoginWithGoogle}><Image src={require('../../img/google/btnNormal.png')} fluid /></a>
-		);
-	}
-	
-}
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 	
 class Login extends React.Component {
     constructor(props) {
@@ -58,7 +43,7 @@ class Login extends React.Component {
 		try{
 			await db
 			.auth()
-			.signInWithPopup(provider2).then((result) => {
+			.signInWithPopup(googleProvider).then((result) => {
 				this.setState({
 					user: result.user,
 					userId: result.uid
@@ -84,7 +69,7 @@ class Login extends React.Component {
     };
 	
 	handleRegister = (e) => {
-		//Check if the google account is linked
+		//Check if the Google account is linked
 		if(this.state.user){
 			//Save to database
 			editUser(this.state.user.uid, 
@@ -107,9 +92,8 @@ class Login extends React.Component {
 	register = () =>{
 		this.setState({login: false})
 	};
-	
-	login = () =>{
 
+	login = () =>{
 		this.setState({login: true})
 	};
 
