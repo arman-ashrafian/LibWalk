@@ -47,11 +47,10 @@ exports.testDb = functions.https.onRequest((req, res) => {
 exports.getUser = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     const UID = req.body.uid; // user ID
-
     admin
       .firestore()
       .collection("Users")
-      .doc(UID)
+      .doc("" + UID)
       .get()
       .then(doc => {
         res.send(doc.data());
@@ -98,9 +97,39 @@ exports.changeEvent = functions.https.onRequest((req, res) => {
 });
 
 /* ================= /getClubs ====================
+ * request:
+ *  {}
+ *
+ * response:
+ *  {
+ *  "clubs": [
+ *      {
+ *          "clubUID": {
+ *              "description": "",
+ *              "eventList": [],
+ *              "emailList": [],
+ *              "pictureURL": "",
+ *              "clubName": "",
+ *              "pageURL": "",
+ *              "contactEmail": "",
+ *              "tags": [
+ *                  "Alpha",
+ *                  "Epilson",
+ *                  "Pie"
+ *              ],
+ *              "announcements": [],
+ *              "clubReference": ""
+ *          }
+ *      },
+ *      {
+ *       ...
+ *      },
+ *  ]
+ *
+ *  }
  */
 exports.getClubs = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
+  /*cors(req, res, () => {
     admin
       .firestore()
       .collection("Clubs")
@@ -108,15 +137,20 @@ exports.getClubs = functions.https.onRequest((req, res) => {
       .then(querySnapshot => {
         let json_data = { clubs: [] };
         querySnapshot.forEach(doc => {
-          json_data.clubs.push(doc.data());
+          let json = {}
+          json[doc.id] = doc.data();
+          json_data.clubs.push(json);
         });
+        // cache the content in browser for 5 minutes & CDN for 10 minutes
+        res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
         res.send(json_data);
       })
       .catch(err => {
         // db query fail
         res.send(err);
       });
-  });
+  });*/
+  return "";
 });
 
 /* ================== /getEvent ==================
@@ -300,7 +334,7 @@ exports.changeUser = functions.https.onRequest((req, res) => {
       .collection("Users")
       .doc(user_id)
       .set(user_info)
-      .then(() => res.send({ message: "changed event " + eventId }))
+      .then(() => res.send({ message: "changed user " + user_id }))
       .catch(err => res.send(err));
   });
 });
@@ -336,5 +370,59 @@ exports.changeClub = functions.https.onRequest((req, res) => {
       .set(club_info)
       .then(() => res.send({ message: "changed club " + club_id }))
       .catch(err => res.send({ message: err }));
+  });
+});
+
+/* ================== /changeTag ==================
+ * request:
+ *      { tag_id: <string>,
+ *        tag: {
+ *              "type": <string>
+ *        }
+ *      }
+ *
+ * response:
+ *      {
+ *        message: "changed tag <tag_id>"
+ *      }
+ */
+
+exports.changeTag = functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    const tag_id = req.body.tag_id;
+    const tag_info = req.body.tag;
+
+    admin
+      .firestore()
+      .collection("Tags")
+      .doc(tag_id)
+      .set(tag_info)
+      .then(() => res.send({ message: "changed tag " + tag_id }))
+      .catch(err => res.send(err));
+  });
+});
+
+/* ================== /getAnnouncements ==================
+ * request:
+ *      { club_id: <string> }
+ *
+ * response:
+ *      {
+ *              "announcements": <string[]>
+ *      }
+ */
+exports.getAnnouncements = functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    admin
+      .firestore()
+      .collection("Clubs")
+      .doc(req.body.club_id)
+      .get()
+      .then(doc => {
+        res.send(doc.data().announcements);
+      })
+      .catch(err => {
+        res.send(err);
+      });
   });
 });

@@ -1,1 +1,13 @@
 .card-comments img{width:4rem}
+
+.centerPage {
+    display: flex;
+    justify-content: center;
+}
+
+.div-centered {
+    text-align: left;
+    margin: auto;
+    width: auto;
+    padding: 10px;
+}
