@@ -149,13 +149,6 @@ class Login extends React.Component {
                     </form>
 						</Container>
 					</Modal.Body>
-
-					{/*
-					<Modal.Footer>
-						<Button variant="secondary">Register</Button>
-						<Button variant="primary">Login</Button>
-					</Modal.Footer>
-					*/}
 				</Modal.Dialog>
 				
 				<Modal.Dialog style={{display: this.state.login ? 'none' : 'block'}}> 
@@ -190,25 +183,9 @@ class Login extends React.Component {
 								<p>Already registered?
 									<a onClick={this.login}> Login</a>
 								</p>
-								{/* 
-								<p>or sign in with:</p>
-								<a href="#" className="mx-2" role="button"><i
-									className="fab fa-facebook-f light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i className="fab fa-twitter light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i
-									className="fab fa-linkedin-in light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i className="fab fa-github light-blue-text"/></a>
-								*/}
 							</Form>
 						</Container>
 					</Modal.Body>
-
-					{/*
-					<Modal.Footer>
-						<Button variant="secondary">Register</Button>
-						<Button variant="primary">Login</Button>
-					</Modal.Footer>
-					*/}
 				</Modal.Dialog>
 			</div>
 			);

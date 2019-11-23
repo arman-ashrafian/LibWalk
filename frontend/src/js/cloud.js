@@ -3,10 +3,11 @@
 const getClubsURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClubs';
 const getUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getUser';
 const getEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getEvent';
-const editUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeUser';
-
 const getAnnounceURL = "https://us-central1-libwalk-721c2.cloudfunctions.net/getAnnouncements";
 const getClubURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClub';
+const getTagURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getTag';
+
+const editUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeUser';
 const changeClubURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeClub';
 const changeEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeEvent';
 
@@ -78,7 +79,7 @@ export function editUser(userId, userData) {
 }
 
 
-export function createAnnouncements() {
+export function editAnnouncements() {
         return null;
     }
 
@@ -91,18 +92,6 @@ export function getAnnouncements(clubId) {
 
 }
 
-export function registerUser() {
-  return null;
-}
-
-export function updateUser() {
-  return null;
-}
-
-export function registerClub() {
-  return null;
-}
-
 export function changeClub(clubId, clubData) {
   let data = {
   	  club_id: clubId,
@@ -110,12 +99,6 @@ export function changeClub(clubId, clubData) {
   }
   return postRequest(changeClubURL, data);
 }
-
-export function orgLogin() {}
-
-export function getUserProfile() {}
-
-export function editUserProfile() {}
 
 export function getEvent(eventId) {
   return postRequest(getEventURL, { event_id: eventId });
@@ -125,6 +108,18 @@ export function changeEvent(eventID, eventData) {
     let data = {
         event_id: eventID,
         event: eventData
+    }
+    return postRequest(changeEventURL, data);
+}
+
+export function getTag(tagId) {
+    return postRequest(getTagURL, { tag_id: tagId });
+}
+
+export function changeTag(tagID, tagData) {
+    let data = {
+        tag_id: tagID,
+        tag: tagData
     }
     return postRequest(changeEventURL, data);
 }

@@ -325,14 +325,9 @@ class AdminHome extends React.Component {
 									<Form.Control type="name" placeholder="Enter Event Name" defaultValue={this.state.event.ename}/>
 								</Form.Group>
 
-								<Form.Group controlId="formClubH">
-									<Form.Label>Club Hosting</Form.Label>
-									<Form.Control type="host" placeholder="Enter Host" defaultValue={this.state.event.host}/>
-								</Form.Group>
-
 								<Form.Group controlId="formPlace">
-									<Form.Label>Place</Form.Label>
-									<Form.Control type="place" placeholder="Enter Place" defaultValue={this.state.event.loc}/>
+									<Form.Label>Location</Form.Label>
+									<Form.Control type="place" placeholder="Enter Location" defaultValue={this.state.event.loc}/>
 								</Form.Group>
 
 								<Form.Group controlId="formTime">
