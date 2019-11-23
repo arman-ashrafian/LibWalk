@@ -4,6 +4,8 @@ const getClubsURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClu
 const getUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getUser';
 const getEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getEvent';
 const editUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeUser';
+
+const getAnnounceURL = "https://us-central1-libwalk-721c2.cloudfunctions.net/getAnnouncements";
 const getClubURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getClub';
 const changeClubURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeClub';
 const changeEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeEvent';
@@ -75,9 +77,20 @@ export function editUser(userId, userData) {
   return postRequest(editUserURL, data);
 }
 
-export function getAnnouncements() {
-  return null;
+
+export function createAnnouncements() {
+        return null;
+    }
+
+export function getAnnouncements(clubId) {
+    let data = {
+        club_id: clubId,
+    };
+    // add getTime function
+    return postRequest(getAnnounceURL, data);
+
 }
+
 export function registerUser() {
   return null;
 }

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from 'react';
+import '../cloud.js'
+import '../../css/notifs.css'
 import NavBar from "../navbar";
+import db from "../../firebase";
+import TimeAgo from '@jshimko/react-time-ago';
+import {getUser, getClubs, getAnnouncements} from "../cloud";
 import Toast from "react-bootstrap/Toast";
-import ToastHeader from "react-bootstrap/ToastHeader";
-import ToastBody from "react-bootstrap/ToastBody";
-import "../../css/notifs.css";
-import { getClubs } from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
@@ -13,21 +14,46 @@ import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import Pagination from "react-bootstrap/Pagination";
-import "../cloud.js";
-import TimeAgo from "@jshimko/react-time-ago";
+
 
 class Announcements extends React.Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      orgs: []
+        this.state = {
+            userId: "",
+            orgs: []
+        };
+
+        // GET /getClubs & set the state when the api response is recieved
+        getUser("HQZD1srcV2Z5Z7vCdSEV6iJncbT2").then((json) => {
+            this.setState({orgs: json.subscriptions});
+        });
+
+        if(this.state.orgs === undefined) {
+            this.state = {
+                orgs: []
+            };
+        }
     };
 
-    // GET /getClubs & set the state when the api response is recieved
-    getClubs().then(json => {
-      this.setState({ orgs: json.clubs });
-    });
+    componentDidMount() {
+        db.auth().onAuthStateChanged(firebaseUser => {
+            if( firebaseUser) {
+                this.setState({ userId: firebaseUser.uid });
+            } else {
+                console.log("Redirecting to login page")
+            }
+
+        });
+    }
+
+    render() {
+        if(this.state.orgs === undefined) {
+            this.state = {
+                orgs: []
+            }
+        }
 
     if (this.state.orgs === undefined) {
       this.state = {
@@ -102,64 +128,51 @@ class Announcements extends React.Component {
     );
   };
 }
+    let club_grid = (org) => {
+        return (
+            <Card style={{width: '80rem', height: '20rem'}} className='text-center'>
+                <Card.Header>
+                    <strong style={{fontSize: 24}}> {org.clubName}</strong>
+                    <br />
+                    <small style={{fontSize: 16}}>{org.clubDescription}</small>
+                </Card.Header>
+                <Card.Body>
+                    <div className="div-centered">
+                        <MakeCard />
+                    </div>
+                </Card.Body>
+            </Card>
+        )
+    };
 
-let club_grid = org => {
-  return (
-    <Card
-      border="info"
-      style={{ width: "20rem", height: "26rem" }}
-      className="text-center"
-    >
-      <Card.Header>{org.clubName}</Card.Header>
-      <Card.Body>
-        <MakeToast />
-      </Card.Body>
-    </Card>
-  );
-};
-
-function MakeToast() {
-  const [showA, setShowA] = useState(true);
-  const [showB, setShowB] = useState(true);
-  const [showC, setShowC] = useState(true);
-
-  const toggleShowA = () => setShowA(!showA);
-  const toggleShowB = () => setShowB(!showB);
-  const toggleShowC = () => setShowC(!showC);
-
-  return (
-    <Col>
-      <Toast show={showA} onClose={toggleShowA}>
-        <Toast.Header>
-          <strong className="mr-auto">Notification</strong>
-          <small>
-            <TimeAgo date="Nov 19, 2019" />
-          </small>
-        </Toast.Header>
-        <Toast.Body>Pizza Night</Toast.Body>
-      </Toast>
-
-      <Toast show={showB} onClose={toggleShowB}>
-        <Toast.Header>
-          <strong className="mr-auto">Notification</strong>
-          <small>
-            <TimeAgo date="Nov 19, 2019" />
-          </small>
-        </Toast.Header>
-        <Toast.Body> Free Boba Tomorrow Night</Toast.Body>
-      </Toast>
-
-      <Toast show={showC} onClose={toggleShowC}>
-        <Toast.Header>
-          <strong className="mr-auto">Notification</strong>
-          <small>
-            <TimeAgo date="Nov 19, 2019" />
-          </small>
-        </Toast.Header>
-        <Toast.Body>First Meeting Starts @ 12pm on 11/11/2019</Toast.Body>
-      </Toast>
-    </Col>
-  );
-}
+    function MakeCard() {
+        return (
+            <Row>
+                <Card border="info" style={{fontSize: 12}}>
+                    <Card.Header>
+                        <strong className="mr-auto">Notification</strong>
+                    </Card.Header>
+                    <Card.Body>Pizza Night</Card.Body>
+                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
+                </Card>
+                <br />
+                <Card border="warning" style={{fontSize: 12}}>
+                    <Card.Header>
+                        <strong className="mr-auto">Notification</strong>
+                    </Card.Header>
+                    <Card.Body> Free Boba Tomorrow Night</Card.Body>
+                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
+                </Card>
+                <br />
+                <Card border="danger" style={{fontSize: 12}}>
+                    <Card.Header>
+                        <strong className="mr-auto">Notification</strong>
+                    </Card.Header>
+                    <Card.Body>First Meeting Starts @ 12pm on 11/11/2019</Card.Body>
+                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
+                </Card>
+            </Row>
+        );
+    }
 
 export default Announcements;
