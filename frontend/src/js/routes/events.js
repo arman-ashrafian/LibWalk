@@ -1,5 +1,4 @@
-﻿import React, {useState} from "react";
-//import React, {Component} from "react";
+﻿import React from "react";
 import '../../css/bootstrap.min.css'
 import '../../css/mdb.lite.min.css'
 import '../../css/style.min.css'
@@ -9,7 +8,6 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
-import db from "../../firebase";
 import {getEvent} from "../cloud";
 
 import { Divider } from "@material-ui/core";
@@ -45,12 +43,14 @@ class Events extends React.Component {
 
     render() {
         return(
+			<div>
+			<NavBar {...this.props} />
             <main className='mt-5 pt-5'>
                 <div className="container">
                     <Divider />
 
                     <div className="sub_container">
-						<NavBar {...this.props} />
+						
 						<Card style={{ display: "flex" }}>
 						  <Card.Img variant="top" src={this.state.pictureUrl} />
 						  <Card.Body>
@@ -72,6 +72,7 @@ class Events extends React.Component {
 					</div>
                 </div>
             </main>
+			</div>
         );
     }
 }

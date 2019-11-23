@@ -8,23 +8,25 @@ import Container from 'react-bootstrap/Container'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import NavBar from "../navbar";
-const changeClubURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeClub'
-const localChangeClub = (e) => {
-	const{email, password} = e.target.elements;
-	return fetch( changeClubURL, {mode: 'cors', method: 'POST', body: {"email": email, "password": password}})
-		.then((resp) => resp.json());
-};
+import db from "../../firebase";
+
+const auth = db.auth();
+// const changeClubURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeClub'
+// const localChangeClub = (e) => {
+// 	const{email, password} = e.target.elements;
+// 	return fetch( changeClubURL, {mode: 'cors', method: 'POST', body: {"email": email, "password": password}})
+// 		.then((resp) => resp.json());
+// };
 
 
 class AdminLogin extends React.Component {
     constructor(props) {
         super(props);
 		this.state = {
+			adminId: "",
 			login: true
 		};
-        console.log('Admin login constructor call.');
-		this.state = { login : true}; 
+		this.handleLoginWithEmail = this.handleLoginWithEmail.bind(this)
 		this.registerTime = this.registerTime.bind(this);
     }
 	/*const handleSignIn = (event) => {
@@ -33,9 +35,48 @@ class AdminLogin extends React.Component {
 		const{email, password} = event.target.elements;
 		
 	}*/
+
+	async handleLoginWithEmail(e) {
+		try{
+			e.preventDefault();
+			db.auth()
+			.signInWithEmailAndPassword(e.target[0].value, e.target[1].value)
+			.then((user) => {
+				console.log("success")
+			})
+			.catch( function(error) {
+				var error_code = error.code;
+				var error_msg = error.message;
+				if (error_code === 'auth/wrong-password') {
+					alert("Wrong password");
+				} else {
+					alert(error_msg);
+				}
+			});
+			auth.onAuthStateChanged((user) => {
+				if(user){
+					this.setState({ adminId: user.uid })
+					db.firestore().collection("Clubs").doc(user.uid).get()
+						.then((doc) => {
+							console.log(doc)
+							if (doc.exists) {
+								this.props.history.push('/admin_home');
+							} else {
+								this.registerTime();
+							}
+					});
+				}
+			});
+		} catch (error){
+			alert(error);
+		}
+	};
+	
+	view_switch_user_login = () => {
+        this.props.history.push('/login');
+	};
 	
 	registerTime = () =>{
-
 		this.setState({login: false})
 	};
 	
@@ -47,15 +88,14 @@ class AdminLogin extends React.Component {
     render() {
         return (
             <div className='mt-5 pt-5'>
-                <NavBar {...this.props}/>
 				<Modal.Dialog style={{display: this.state.login ? 'block' : 'none'}}> 
-					<Modal.Header closeButton>
+					<Modal.Header>
 						<Modal.Title>Sign In</Modal.Title>
 					</Modal.Header>
 
 					<Modal.Body >
 						<Container id="numberOneContainerNA">
-							<Form className="text-center p-5" onSubmit={localChangeClub}>
+							<Form className="text-center p-5" onSubmit={this.handleLoginWithEmail}>
 								{/* Email */}
 								<Form.Control type="email" id="defaultLoginFormEmail" className="form-control mb-4"
 									   placeholder="E-mail"/>
@@ -64,24 +104,18 @@ class AdminLogin extends React.Component {
 									   placeholder="Password"/>
 								<div className="d-flex justify-content-around">
 									<div>
-										{/* Remember me */}
-										<div className="custom-control custom-checkbox">
-											<Form.Control type="checkbox" className="custom-control-input"
-												   id="defaultLoginFormRemember"/>
-											<Form.Label className="custom-control-label" htmlFor="defaultLoginFormRemember"> Remember me
-											</Form.Label>
-										</div>
-									</div>
-									<div>
 										{/* Forgot password */}
-										<a href>Forgot password?</a>
+										<a>Forgot password?</a>
 									</div>
 								</div>
 								{/* Sign in button */}
 								<button className="btn btn-info btn-block my-4" type="submit">Sign in</button>
 								{/* Register */}
 								<p>Not a member?
-									<a onClick={this.registerTime}> Register</a>
+									<a onClick={this.registerTime} style={{color:"#4169E1"}}> Register</a>
+								</p>
+								<p>Logging in as a student?
+									<a onClick={this.view_switch_user_login} style={{color:"#4169E1"}}> Student Log In</a>
 								</p>
 								{/* 
 								<p>or sign in with:</p>
@@ -111,7 +145,7 @@ class AdminLogin extends React.Component {
 
 					<Modal.Body >
 						<Container id="numberOneContainerNA">
-							<Form className="text-center p-5" onSubmit={localChangeClub}>
+							<Form className="text-center p-5">
 								{/* Name */}
 								<Form.Control type="name" className="form-control mb-4"
 									   placeholder="Name"/>
