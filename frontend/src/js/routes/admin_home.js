@@ -143,7 +143,6 @@ class AdminHome extends React.Component {
 		getEvent('event_id_00').then(eventInfo => {
 			this.setState({
 				event: {
-					clubsHosting: eventInfo['clubsHosting'],
 					description: eventInfo['description'],
 					eventName: eventInfo['eventName'],
 					location: eventInfo['location'],
@@ -185,12 +184,11 @@ class AdminHome extends React.Component {
 		await this.setState({
 			event: {
 				eventName: e.target[0].value,
-				clubsHosting: e.target[1].value,
-				location: e.target[2].value,
-				time: e.target[3].value,
-				pictureURL: e.target[4].value,
-				description: e.target[5].value,
-				rsvpForm: e.target[6].value
+				location: e.target[1].value,
+				time: e.target[2].value,
+				pictureURL: e.target[3].value,
+				description: e.target[4].value,
+				rsvpForm: e.target[5].value
 			}
 		})
 		this.closeEvent();
