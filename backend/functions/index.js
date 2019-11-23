@@ -50,7 +50,7 @@ exports.getUser = functions.https.onRequest((req, res) => {
     admin
       .firestore()
       .collection("Users")
-      .doc(""+UID)
+      .doc("" + UID)
       .get()
       .then(doc => {
         res.send(doc.data());
@@ -99,7 +99,7 @@ exports.changeEvent = functions.https.onRequest((req, res) => {
 /* ================= /getClubs ====================
  */
 exports.getClubs = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
+  /*cors(req, res, () => {
     admin
       .firestore()
       .collection("Clubs")
@@ -117,7 +117,8 @@ exports.getClubs = functions.https.onRequest((req, res) => {
         // db query fail
         res.send(err);
       });
-  });
+  });*/
+  return "";
 });
 
 /* ================== /getEvent ==================
@@ -355,18 +356,18 @@ exports.changeClub = functions.https.onRequest((req, res) => {
  */
 
 exports.changeTag = functions.https.onRequest((req, res) => {
-	cors(req, res, () => {
-		const tag_id = req.body.tag_id;
-		const tag_info = req.body.tag;
+  cors(req, res, () => {
+    const tag_id = req.body.tag_id;
+    const tag_info = req.body.tag;
 
-		admin
-		.firestore()
-		.collection('Tags')
-		.doc(tag_id)
-		.set(tag_info)
-		.then(() => res.send({ message: "changed tag " + tag_id }))
-		.catch(err => res.send(err));
-	});
+    admin
+      .firestore()
+      .collection("Tags")
+      .doc(tag_id)
+      .set(tag_info)
+      .then(() => res.send({ message: "changed tag " + tag_id }))
+      .catch(err => res.send(err));
+  });
 });
 
 /* ================== /getAnnouncements ==================
@@ -379,17 +380,17 @@ exports.changeTag = functions.https.onRequest((req, res) => {
  *      }
  */
 exports.getAnnouncements = functions.https.onRequest((req, res) => {
-	cors(req, res, () => {
-		admin
-		.firestore()
-		.collection('Clubs')
-		.doc(req.body.club_id)
-		.get()
-		.then(doc => {
-			res.send(doc.data().announcements)
-		})
-		.catch(err => {
-			res.send(err);
-		});
-	});
+  cors(req, res, () => {
+    admin
+      .firestore()
+      .collection("Clubs")
+      .doc(req.body.club_id)
+      .get()
+      .then(doc => {
+        res.send(doc.data().announcements);
+      })
+      .catch(err => {
+        res.send(err);
+      });
+  });
 });
