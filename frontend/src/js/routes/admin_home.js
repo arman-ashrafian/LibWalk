@@ -6,6 +6,14 @@ import Button from "react-bootstrap/Button";
 
 import db from "../../firebase.js";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import {MDBContainer} from "mdbreact";
+import ListGroup from "react-bootstrap/ListGroup";
+import ListGroupItem from "react-bootstrap/ListGroupItem";
 
 function get_user_uid() {
     let uid = 'none';
@@ -214,6 +222,21 @@ class AdminHome extends React.Component {
     }
 
     // container components
+    button_container = () => {
+        return (
+            <div>
+                <ButtonToolbar vertical>
+                    <Button onClick={this.handleEditInfo} block>Edit Club</Button>
+                    {this.modal_edit_clubs()}
+                    <Button onClick={this.handleEditTag} block>Change Tags</Button>
+                    {this.modal_edit_tag()}
+                    <Button onClick={this.handleEditEvent} block>Edit Event</Button>
+                    {this.modal_edit_event()}
+                    <Button onClick={this.handleLogOut} block>Log Out</Button>
+                </ButtonToolbar>
+            </div>
+        )
+    };
 
     // modals
     /**
@@ -367,32 +390,68 @@ class AdminHome extends React.Component {
         </div>)
     };
 
+    admin_panel_view = () => {
+        return (
+            <div>
+                <Card style={{width: '50rem'}} fluid>
+                    <Card.Img variant="top" src={this.state.org.pictureURL}/>
+                    <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>About Your Club</Card.Header>
+                    <Card.Body>
+                        <Card.Title>{this.state.org.clubName}</Card.Title>
+                        <Card.Subtitle>{this.state.org.contactEmail} </Card.Subtitle>
+                        <Card.Text>
+                            {this.state.org.description}
+                        </Card.Text>
+                        <ListGroup className="list-group-flush">
+                            <ListGroupItem>
+                                <Card.Link src={this.state.org.pageURL}>Official Website</Card.Link> </ListGroupItem>
+                            <ListGroupItem> {this.state.org.tags}</ListGroupItem>
+                            <ListGroupItem>Put Upcoming Events Here</ListGroupItem>
+                        </ListGroup>
+                    </Card.Body>
+                </Card>
+            </div>
+        )
+    };
+
     render() {
         // only admins should be able to see this page, redirect if the login type is not admin.
         if (check_login_type() === 'user') {
             this.view_switch_login();
         }
-
+        console.log('Admin home')
 
         return (
             <div>
                 {/*start the rest of the page*/}
                 <main className='mt-5 pt-5'>
+                    <MDBContainer>
+                        <Row style={{flex: 1}}>
+                            <Col style={{flex: 7}}>
+                                {this.admin_panel_view()}
+                            </Col>
+                            <Col style={{flex: 2, backgroundColor: 'blue'}}>
+                                {this.button_container()}
+                            </Col>
+                        </Row>
+
+                    </MDBContainer>
 
 
-                    <ButtonGroup vertical>
-                        <Button variant='outline-primary filled' onClick={this.handleEditInfo}>Edit Club</Button>
-                        {this.modal_edit_clubs()}
-                        <Button variant='outline-primary' onClick={this.handleEditTag}>Change Tags</Button>
-                        {this.modal_edit_tag()}
-                        <Button variant='outline-primary' onClick={this.handleEditEvent}>Edit Event</Button>
-                        {this.modal_edit_event()}
-                        <Button variant='outline-dark' onClick={this.handleLogOut}>Log Out</Button>
-                    </ButtonGroup>
+                    {/*render the button component*/}
                 </main>
             </div>
         );
     }
+
+    // clubReference: '',
+    // clubName: '',
+    // contactEmail: '',
+    // description: '',
+    // pictureURL: '',
+    // tags: [],
+    // pageURL: '',
+    // emailList: []
 
 };
 
