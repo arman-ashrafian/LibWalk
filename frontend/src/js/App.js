@@ -9,7 +9,7 @@ import Login from "./routes/login";
 import Calendar from "./routes/calendar";
 import Profile from "./routes/profile";
 import AdminHome from "./routes/admin_home";
-import AdminLogin from "./routes/adminlogin";
+import AdminLogin from "./routes/admin_login";
 import Events from "./routes/events";
 
 function App() {

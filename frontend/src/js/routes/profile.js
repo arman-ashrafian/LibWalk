@@ -85,7 +85,6 @@ class Profile extends React.Component {
             <div>
             <NavBar {...this.props}/>
             <main className='mt-5 pt-5'>
-                
                 <div className='container centerPage' >
                     <div className="row centerPage">
 
@@ -157,8 +156,7 @@ class Profile extends React.Component {
                     </Modal.Body>
                 </Modal>
             </main>
-            </div>
-            );
+            </div>);
     }
 
     switch_view_login = () => {
@@ -168,7 +166,7 @@ class Profile extends React.Component {
 				user: null
 			})
 		});
-        this.props.history.push('/login');
+        this.props.history.push('/home');
     }
 
 }
