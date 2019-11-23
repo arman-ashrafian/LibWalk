@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import NavBar from "../navbar";
 import {getClubs} from "../cloud";
 import {getClub} from "../cloud";

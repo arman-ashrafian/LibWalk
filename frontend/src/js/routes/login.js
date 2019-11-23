@@ -40,40 +40,44 @@ class Login extends React.Component {
 			user : null, 
 			userId : null
 		}; 
-		this.registerTime = this.registerTime.bind(this);
+		this.register = this.register.bind(this);
 		this.handleLoginWithGoogle = this.handleLoginWithGoogle.bind(this);
-		this.loginTime = this.loginTime.bind(this);
+		this.login = this.login.bind(this);
     }
 
     view_switch_login = () => {
         console.log('profile switched pages');
         this.props.history.push('/home');
+	};
+	
+	view_switch_admin_login = () => {
+        this.props.history.push('/admin_login');
     };
 	
 	async handleLoginWithGoogle() {
 		try{
-				await db
-				.auth()
-				.signInWithPopup(provider2).then((result) => {
-					this.setState({
-						user: result.user,
-						userId: result.uid
-					})
+			await db
+			.auth()
+			.signInWithPopup(provider2).then((result) => {
+				this.setState({
+					user: result.user,
+					userId: result.uid
 				})
+			})
 
-				auth.onAuthStateChanged((user) => {
-					if(user){
-						this.setState({ userId: user.uid });
-						db.firestore().collection("Users").doc(user.uid).get()
-							.then((doc) => {
-								if (doc.exists) {
-									this.props.history.push('/home');
-								} else {
-									this.registerTime();
-								}
-						});
-					}
-				});
+			auth.onAuthStateChanged((user) => {
+				if(user){
+					this.setState({ userId: user.uid });
+					db.firestore().collection("Users").doc(user.uid).get()
+						.then((doc) => {
+							if (doc.exists) {
+								this.props.history.push('/home');
+							} else {
+								this.registerTime();
+							}
+					});
+				}
+			});
 		} catch (error){
 			alert(error);
 		}
@@ -100,18 +104,22 @@ class Login extends React.Component {
 		}
 	};
 	
+	register = () =>{
+		this.setState({login: false})
+	};
+	
+	login = () =>{
+
+		this.setState({login: true})
+	};
+
 	registerTime = () =>{
 		this.setState({login: false})
 	};
 	
-	loginTime = () =>{
-
-		this.setState({login: true})
-	};
-	
     render() {
         return (
-            <div className='mt-5 pt-5'>
+			<div className='mt-5 pt-5'>
 				<Modal.Dialog style={{display: this.state.login ? 'block' : 'none'}}> 
 					<Modal.Header>
 						<Modal.Title>Sign In</Modal.Title>
@@ -132,8 +140,11 @@ class Login extends React.Component {
                                 </div>
                             </div>
                         {/* Register */}
-                        <p>Not a member? 
-                            <a onClick={this.registerTime} > Register</a>
+                        <p> Not a member yet? 
+                            <a onClick={this.register} style={{color:"#4169E1"}} > Register</a>
+                        </p>
+						<p> Logging in as a student org?
+                            <a onClick={this.view_switch_admin_login} style={{color:"#4169E1"}} > Admin Log In </a>
                         </p>
                     </form>
 						</Container>
@@ -177,7 +188,7 @@ class Login extends React.Component {
 								<button className="btn btn-info btn-block my-4" type="submit">Create Account</button>
 								{/* Register */}
 								<p>Already registered?
-									<a onClick={this.loginTime}> Login</a>
+									<a onClick={this.login}> Login</a>
 								</p>
 								{/* 
 								<p>or sign in with:</p>
@@ -199,7 +210,8 @@ class Login extends React.Component {
 					</Modal.Footer>
 					*/}
 				</Modal.Dialog>
-            </div>);
+			</div>
+			);
     }
 }
 

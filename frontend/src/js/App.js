@@ -25,7 +25,7 @@ function App() {
         <Route exact path="/subs" component={Subs} />
         <Route exact path="/profile" component={Profile} />
         <Route exact path="/admin_home" component={AdminHome} />
-        <Route exact path="/adminlogin" component={AdminLogin} />
+        <Route exact path="/admin_login" component={AdminLogin} />
         <Route exact path="/events" component={Events} />
       </div>
     </Router>
