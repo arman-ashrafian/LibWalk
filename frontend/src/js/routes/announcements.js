@@ -26,8 +26,9 @@ class Announcements extends React.Component {
         };
 
         // GET /getClubs & set the state when the api response is recieved
-        getUser("HQZD1srcV2Z5Z7vCdSEV6iJncbT2").then((json) => {
+        getUser(this.state.userId).then((json) => {
             this.setState({orgs: json.subscriptions});
+            alert(json.subscriptions);
         });
 
         if(this.state.orgs === undefined) {
@@ -47,20 +48,6 @@ class Announcements extends React.Component {
 
         });
     }
-
-    render() {
-        if(this.state.orgs === undefined) {
-            this.state = {
-                orgs: []
-            }
-        }
-
-    if (this.state.orgs === undefined) {
-      this.state = {
-        orgs: []
-      };
-    }
-  }
 
   render() {
     if (this.state.orgs === undefined) {
@@ -150,26 +137,32 @@ class Announcements extends React.Component {
             <Row>
                 <Card border="info" style={{fontSize: 12}}>
                     <Card.Header>
-                        <strong className="mr-auto">Notification</strong>
+                        <strong className="mr-auto">New Message</strong>
                     </Card.Header>
                     <Card.Body>Pizza Night</Card.Body>
-                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
+                    <Card.Footer>
+                        <strong className="mr-auto">Last posted <TimeAgo date='Nov 19, 2019' /></strong>
+                    </Card.Footer>
                 </Card>
                 <br />
                 <Card border="warning" style={{fontSize: 12}}>
                     <Card.Header>
-                        <strong className="mr-auto">Notification</strong>
+                        <strong className="mr-auto">New Message</strong>
                     </Card.Header>
                     <Card.Body> Free Boba Tomorrow Night</Card.Body>
-                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
+                    <Card.Footer>
+                        <strong className="mr-auto">Last posted <TimeAgo date='Nov 19, 2019' /></strong>
+                    </Card.Footer>
                 </Card>
                 <br />
                 <Card border="danger" style={{fontSize: 12}}>
                     <Card.Header>
-                        <strong className="mr-auto">Notification</strong>
+                        <strong className="mr-auto">New Message</strong>
                     </Card.Header>
                     <Card.Body>First Meeting Starts @ 12pm on 11/11/2019</Card.Body>
-                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
+                    <Card.Footer>
+                        <strong className="mr-auto">Last posted <TimeAgo date='Nov 19, 2019' /></strong>
+                    </Card.Footer>
                 </Card>
             </Row>
         );
