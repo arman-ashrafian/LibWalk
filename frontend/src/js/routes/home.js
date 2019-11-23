@@ -5,7 +5,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import CardDeck from "react-bootstrap/CardDeck";
-import { club_list } from "../cloud";
+import { club_list , getTag, getClub } from "../cloud";
 //import {getClubs} from "../cloud"
 import Pagination from "react-bootstrap/Pagination";
 
@@ -42,6 +42,10 @@ class Home extends React.Component {
   }
 
   render() {
+
+    getTag("CS").then(tagInfo => {
+      console.log(tagInfo)
+    })
     /* Update the number of clubs to show per page and from what range to what range */
     const { clubPerPage, currentPage, orgs, totalPages } = this.state;
     const endInd = currentPage * clubPerPage;
@@ -170,10 +174,6 @@ class Home extends React.Component {
     }
   }
 
-  doNothing(event) {
-    console.log("Do nothing");
-  }
-
   /* Function to produce the correct pagination */
   pagination(currentPage, totalPages) {
     const offset = 2;
@@ -218,11 +218,11 @@ let org_grid_component = org => {
         <Card.Img variant="top" src={org.img} />
         <Card.Body>
           <Card.Title>{org.clubName}</Card.Title>
-          <Card.Text>
+          {/* <Card.Text>
             <small className="scroll-box">
               {org.description.slice(0, 450)}
             </small>
-          </Card.Text>
+          </Card.Text> */}
           <Button variant="primary" href={org.pageURL}>
             Org Home
           </Button>
