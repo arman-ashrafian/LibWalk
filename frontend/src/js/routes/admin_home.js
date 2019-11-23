@@ -169,6 +169,7 @@ class AdminHome extends React.Component {
                 {/*start the rest of the page*/}
                 <main className='mt-5 pt-5'>
 					<img src={this.state.org.pictureURL} />
+					<p></p>
                     <h2>{this.state.org.clubName}</h2>
 					<div>
 						{this.state.org.tags.map(tag => (

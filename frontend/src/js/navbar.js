@@ -49,7 +49,7 @@ class NavBar extends React.Component {
                             <Nav.Link onClick={this.switch_view_search}>Search</Nav.Link>
                             
                             {this.state.loggedIn ?
-                                <Button variant="outline-primary" size="m" style={{display:flex;float:"right"}} onClick={this.switch_view_profile}> Profile </Button>            
+                                <Button variant="outline-primary" size="m" style={{display:"flex",float:"right"}} onClick={this.switch_view_profile}> Profile </Button>            
                             :
                                 <Button variant="outline-primary" size="m" onClick={this.switch_view_login} style={{float:"right"}}> Login </Button>           
                             }
