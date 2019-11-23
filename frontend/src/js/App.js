@@ -11,6 +11,7 @@ import Profile from "./routes/profile";
 import AdminHome from "./routes/admin_home";
 import AdminLogin from "./routes/admin_login";
 import Events from "./routes/events";
+import Orgs from "./routes/orgs";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route exact path="/admin_home" component={AdminHome} />
         <Route exact path="/admin_login" component={AdminLogin} />
         <Route exact path="/events" component={Events} />
+        <Route exact path="/orgs" component={Orgs} />
       </div>
     </Router>
   );

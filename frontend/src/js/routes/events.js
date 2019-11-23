@@ -18,14 +18,13 @@ class Events extends React.Component {
     constructor(props) {
         super(props);
 		this.state = {
-			eventId: '',
-			clubHost: [],
+			eventReference: '',
 			eventName: '',
-			pictureUrl: '',
+			pictureURL: '',
 			description: '',
 			location: '',
 			time: '',
-			rsvp: ''
+			rsvpForm: ''
 		}
     }
 
@@ -33,12 +32,12 @@ class Events extends React.Component {
 		getEvent('event_id_00').then(eventInfo => {
 			this.setState({
 				eventName: eventInfo['eventName'],
-				clubHost: eventInfo['clubsHosting'],
-				pictureUrl: eventInfo['pictureURL'],
+				pictureURL: eventInfo['pictureURL'],
 				description: eventInfo['description'],
 				location: eventInfo['location'],
 				time: eventInfo['time'],
-				rsvp: eventInfo['rsvpForm']
+				rsvpForm: eventInfo['rsvpForm'],
+				eventReference: eventInfo['eventReference']
 			})
 		});
 	}
@@ -46,34 +45,26 @@ class Events extends React.Component {
     render() {
         return(
 			<div>
-			<NavBar {...this.props} />
-            <main className='mt-5 pt-5'>
-                <div className="container">
-                    <Divider />
-
-                    <div className="sub_container">
-						
+				<NavBar {...this.props} />
+				<main className='mt-5 pt-5'>
+					<div className="container">
 						<Card style={{ display: "flex" }}>
-						  <Card.Img variant="top" src={this.state.pictureUrl} />
-						  <Card.Body>
+						<Card.Img variant="top" src={this.state.pictureURL} />
+						<Card.Body>
 							<Card.Title style={{fontSize:"80px"}}>
 								<strong>{this.state.eventName}</strong>
 							</Card.Title>
-							<Card.Subtitle className="mb-2 text-muted" style={{fontSize:"16px"}}>
-								{this.state.clubHost}
-							</Card.Subtitle>
 							<Card.Subtitle className="mb-2 text-muted" style={{fontSize:"20px"}}>
 								📍 {this.state.location} | 🕔 {this.state.time}
 							</Card.Subtitle>
 							<Card.Text>
-							  {this.state.description}
+							{this.state.description}
 							</Card.Text>
-							<Button variant="primary" onClick={this.state.rsvp}>RSVP</Button>
-						  </Card.Body>
+							<Button variant="primary" onClick={this.state.rsvpForm}>RSVP</Button>
+						</Card.Body>
 						</Card>
 					</div>
-                </div>
-            </main>
+				</main>
 			</div>
         );
     }
