@@ -16,24 +16,9 @@ import Button from "react-bootstrap/Button";
 import Pagination from "react-bootstrap/Pagination";
 
 class Announcements extends React.Component {
-<<<<<<< HEAD
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            userId: "",
-            orgs: []
-        };
-
-        // GET /getClubs & set the state when the api response is recieved
-        getUser(this.state.userId).then((json) => {
-            this.setState({orgs: json.subscriptions});
-            alert(json.subscriptions);
-        });
-=======
   constructor(props) {
     super(props);
->>>>>>> 26dd895099eafb5ca6c7920653bb0b97e134e85e
 
     this.state = {
       userId: "",
@@ -41,18 +26,6 @@ class Announcements extends React.Component {
     };
   }
 
-<<<<<<< HEAD
-    componentDidMount() {
-        db.auth().onAuthStateChanged(firebaseUser => {
-            if( firebaseUser) {
-                this.setState({ userId: firebaseUser.uid });
-            } else {
-                console.log("Redirecting to login page")
-            }
-
-        });
-    }
-=======
   componentDidMount() {
     db.auth().onAuthStateChanged(firebaseUser => {
       if (firebaseUser) {
@@ -68,8 +41,6 @@ class Announcements extends React.Component {
       }
     });
   }
-
->>>>>>> 26dd895099eafb5ca6c7920653bb0b97e134e85e
 
   render() {
     if (this.state.orgs === undefined) {
@@ -137,60 +108,7 @@ class Announcements extends React.Component {
     );
   };
 }
-<<<<<<< HEAD
-    let club_grid = (org) => {
-        return (
-            <Card style={{width: '80rem', height: '20rem'}} className='text-center'>
-                <Card.Header>
-                    <strong style={{fontSize: 24}}> {org.clubName}</strong>
-                    <br />
-                    <small style={{fontSize: 16}}>{org.clubDescription}</small>
-                </Card.Header>
-                <Card.Body>
-                    <div className="div-centered">
-                        <MakeCard />
-                    </div>
-                </Card.Body>
-            </Card>
-        )
-    };
 
-    function MakeCard() {
-        return (
-            <Row>
-                <Card border="info" style={{fontSize: 12}}>
-                    <Card.Header>
-                        <strong className="mr-auto">New Message</strong>
-                    </Card.Header>
-                    <Card.Body>Pizza Night</Card.Body>
-                    <Card.Footer>
-                        <strong className="mr-auto">Last posted <TimeAgo date='Nov 19, 2019' /></strong>
-                    </Card.Footer>
-                </Card>
-                <br />
-                <Card border="warning" style={{fontSize: 12}}>
-                    <Card.Header>
-                        <strong className="mr-auto">New Message</strong>
-                    </Card.Header>
-                    <Card.Body> Free Boba Tomorrow Night</Card.Body>
-                    <Card.Footer>
-                        <strong className="mr-auto">Last posted <TimeAgo date='Nov 19, 2019' /></strong>
-                    </Card.Footer>
-                </Card>
-                <br />
-                <Card border="danger" style={{fontSize: 12}}>
-                    <Card.Header>
-                        <strong className="mr-auto">New Message</strong>
-                    </Card.Header>
-                    <Card.Body>First Meeting Starts @ 12pm on 11/11/2019</Card.Body>
-                    <Card.Footer>
-                        <strong className="mr-auto">Last posted <TimeAgo date='Nov 19, 2019' /></strong>
-                    </Card.Footer>
-                </Card>
-            </Row>
-        );
-    }
-=======
 let club_grid = org => {
   return (
     <Card style={{ width: "80rem", height: "20rem" }} className="text-center">
@@ -243,6 +161,5 @@ function MakeCard() {
     </Row>
   );
 }
->>>>>>> 26dd895099eafb5ca6c7920653bb0b97e134e85e
 
 export default Announcements;
