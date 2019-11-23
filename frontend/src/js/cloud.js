@@ -136,7 +136,8 @@ export let club_list = [
       contactEmail: "4corners.ucsd@gmail.com",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/8348",
       description:
-        "The purpose of this organization is to provide all students, but in particular international students, the opportunity to learn about Christianity through studying the Bible and participating in Christian fellowship."
+        "The purpose of this organization is to provide all students, but in particular international students, the opportunity to learn about Christianity through studying the Bible and participating in Christian fellowship.",
+      tags:["christian", "religion", "bible"]
     }
   },
   {
@@ -190,7 +191,8 @@ export let club_list = [
       contactEmail: "acmucsd@gmail.com",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/11922",
       description:
-        "Specific goals for this chapter are to 1. build community for women in mathematics, 2. provide mentorship for UCSDâ€™s women in mathematics, 3. attract more diverse candidates to our graduate programs, and 4. create and maintain connections with other chapters of AWM. We believe achieving our goals will directly and positively impact our ability to support, retain, and attract talented women in our mathematics programs."
+        "Specific goals for this chapter are to 1. build community for women in mathematics, 2. provide mentorship for UCSDâ€™s women in mathematics, 3. attract more diverse candidates to our graduate programs, and 4. create and maintain connections with other chapters of AWM. We believe achieving our goals will directly and positively impact our ability to support, retain, and attract talented women in our mathematics programs.",
+      tags:["women", "math", "unity"]
     }
   },
   {
@@ -1114,7 +1116,8 @@ export let club_list = [
       contactEmail: "eziaeika@ucsd.edu",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/11866",
       description:
-        "WIC is a non-profit student organization committed to fostering a supportive and informative environment for women in computing through technical, professional development, and social events. We also focus on high school outreach programs to bring more young women into the field. Keynote speakers, mentorship, career fair information, interview preparation, programming competitions, and attending CS conferences are few of the opportunities that we provide for our members."
+        "WIC is a non-profit student organization committed to fostering a supportive and informative environment for women in computing through technical, professional development, and social events. We also focus on high school outreach programs to bring more young women into the field. Keynote speakers, mentorship, career fair information, interview preparation, programming competitions, and attending CS conferences are few of the opportunities that we provide for our members.",
+      tags:["Women", "Programming", "Hardware", "Engineering", "Development"]
     }
   },
   {
@@ -1707,7 +1710,8 @@ export let club_list = [
       contactEmail: "karandeepjune4@gmail.com",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/10826",
       description:
-        "The Video Game Development Club seeks to bring students who are interested in the process of video game design and development together in a collaborative environment. Students can develop games from start to finish with their peers, and seek feedback and assistance with ideas and projects they may be working on."
+        "The Video Game Development Club seeks to bring students who are interested in the process of video game design and development together in a collaborative environment. Students can develop games from start to finish with their peers, and seek feedback and assistance with ideas and projects they may be working on.",
+      tags:["video", "games", "development", "programming", "unity", "gaming"]
     }
   },
   {
@@ -1734,7 +1738,8 @@ export let club_list = [
       contactEmail: "kidznextdoordance@gmail.com",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/11991",
       description:
-        "Korean Graduate Student Association is the organization of the Korean graduate students, research staff, post-docs, professors, visiting scholars, and visiting professors at the University of California, San Diego (UCSD). The KGSA aims to promote unity and harmony among Korean people at UCSD and to support them in various ways. The main activities of the organization include assisting new incoming students with settlement, holding seasonal/ holiday/ sports events, and providing members with various kinds of useful information on the job market and life around campus. We welcome any kind of supports or contributions from individuals, organizations, and companies that could further consolidate the Korean community at UCSD and contribute to sound relationship between our members and society in general."
+        "Korean Graduate Student Association is the organization of the Korean graduate students, research staff, post-docs, professors, visiting scholars, and visiting professors at the University of California, San Diego (UCSD). The KGSA aims to promote unity and harmony among Korean people at UCSD and to support them in various ways. The main activities of the organization include assisting new incoming students with settlement, holding seasonal/ holiday/ sports events, and providing members with various kinds of useful information on the job market and life around campus. We welcome any kind of supports or contributions from individuals, organizations, and companies that could further consolidate the Korean community at UCSD and contribute to sound relationship between our members and society in general.",
+      tags: ["Korean", "Graduate"]
     }
   },
   {
@@ -1743,7 +1748,8 @@ export let club_list = [
       contactEmail: "kk6uc@ucsd.edu",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/8595",
       description:
-        "The purpose of the Amateur Radio Club at UCSD, licensed through the Federal Communications Commission (F.C.C.) as KK6UC and officially affiliated with the American Radio Relay League (ARRL), is to provide UCSD students and staff with tools and opportunities to explore and enjoy the hobby of amateur radio. KK6UC is a member-focused club that can host licensing classes, teach different modes of radio, participate in contests, collaborate with other amateur radio organizations, and perform general experimental wireless communications. The club was founded on campus as WA6DOT (later KI6FTQ) in fall 1965 by Michael C. Ransom WB6KMH (now AI6II) and run for many years by Brian Kantor WB6CYT. The club recently completed the 25-foot tall Gap Titan HF antenna atop Atkinson Hall for its new HF station, greatly adding to its on-campus RF capabilities."
+        "The purpose of the Amateur Radio Club at UCSD, licensed through the Federal Communications Commission (F.C.C.) as KK6UC and officially affiliated with the American Radio Relay League (ARRL), is to provide UCSD students and staff with tools and opportunities to explore and enjoy the hobby of amateur radio. KK6UC is a member-focused club that can host licensing classes, teach different modes of radio, participate in contests, collaborate with other amateur radio organizations, and perform general experimental wireless communications. The club was founded on campus as WA6DOT (later KI6FTQ) in fall 1965 by Michael C. Ransom WB6KMH (now AI6II) and run for many years by Brian Kantor WB6CYT. The club recently completed the 25-foot tall Gap Titan HF antenna atop Atkinson Hall for its new HF station, greatly adding to its on-campus RF capabilities.",
+      tags: ["Radio", "Amateur"]
     }
   },
   {
@@ -2213,7 +2219,8 @@ export let club_list = [
       contactEmail: "president@aporhopi.org",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/9613",
       description:
-        "Alpha Phi Omega is a co-ed service fraternity organized to provide community service, leadership and social opportunities to college students. The purpose of this fraternity is to assemble college students in a national service fraternity in the fellowship of principles derived from the Scout Oath and Law of the Boy Scouts of America; to develop leadership, to promote friendship and to provide service to humanity; and to further freedom that is our national, educational and intellectual heritage"
+        "Alpha Phi Omega is a co-ed service fraternity organized to provide community service, leadership and social opportunities to college students. The purpose of this fraternity is to assemble college students in a national service fraternity in the fellowship of principles derived from the Scout Oath and Law of the Boy Scouts of America; to develop leadership, to promote friendship and to provide service to humanity; and to further freedom that is our national, educational and intellectual heritage",
+      tags:["Fraternity", "Frat"]
     }
   },
   {
@@ -2222,7 +2229,8 @@ export let club_list = [
       contactEmail: "prior.ucsdsam@gmail.com",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/10679",
       description:
-        "SUMS provides resources, workshops, talks, and social events for UCSDâ€™s mathematics community with the goal of promoting mathematics and related fields."
+        "SUMS provides resources, workshops, talks, and social events for UCSDâ€™s mathematics community with the goal of promoting mathematics and related fields.",
+      tags:["Math", "STEM", "Undergraduate"]
     }
   },
   {
@@ -2411,7 +2419,8 @@ export let club_list = [
       contactEmail: "rpg@ucsd.edu",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/8481",
       description:
-        "Sigma Alpha Epsilon strives to give young men the leadership, scholarship, service and social experiences they need to excel in the walls outside their campus and once they graduate. We firmly believe membership is for life. In addition, we strive to mold our members into gentlemen so they can set an example in today's society."
+        "Sigma Alpha Epsilon strives to give young men the leadership, scholarship, service and social experiences they need to excel in the walls outside their campus and once they graduate. We firmly believe membership is for life. In addition, we strive to mold our members into gentlemen so they can set an example in today's society.",
+      tags:["Fraternity", "Frat"]
     }
   },
   {
@@ -2420,7 +2429,8 @@ export let club_list = [
       contactEmail: "rptpatucsd@gmail.com",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/11920",
       description:
-        "To unite each undergraduate member toward a more meaningful life, to prepare members for responsible fraternity and community involvement."
+        "To unite each undergraduate member toward a more meaningful life, to prepare members for responsible fraternity and community involvement.",
+      tags:["Fraternity", "Frat"]
     }
   },
   {
@@ -2430,7 +2440,8 @@ export let club_list = [
       contactEmail: "rylui@ucsd.edu",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/8362",
       description:
-        "KSEA-YG stands for Korean American Scientists and Engineers Association - Young Generation. Our parent organization was first established in 1971 to promote international cooperation between scientists and engineers in Korea and the US by providing career development and community service opportunities in the areas of science, technology, and entrepreneurship. More information about our parent organization can be found on the web: www.ksea.org. As a student chapter of KSEA, our organization foster communication among and provide assistance to Korean-American students in STEM field."
+        "KSEA-YG stands for Korean American Scientists and Engineers Association - Young Generation. Our parent organization was first established in 1971 to promote international cooperation between scientists and engineers in Korea and the US by providing career development and community service opportunities in the areas of science, technology, and entrepreneurship. More information about our parent organization can be found on the web: www.ksea.org. As a student chapter of KSEA, our organization foster communication among and provide assistance to Korean-American students in STEM field.",
+      tags:["Korean", "American", "Engineering", "Science"]
     }
   },
   {
@@ -3184,7 +3195,8 @@ export let club_list = [
       contactEmail: "ucsd.nasa@gmail.com",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/8544",
       description:
-        "Open Source @ UCSD (OS) is an organization that contributes to and creates open source projects. Open source projects are projects where all interested UCSD students can participate in. Participation can vary between fixing known bugs or glitches to improving the project by adding new features. Open Source @ UCSD will be using these projects to help teach students core open source practices, which include Git and basic coding principles, in an inclusive environment. As students learn the basics of creating their own Git repositories, they will be able to create their own open source projects for others to expand upon."
+        "Open Source @ UCSD (OS) is an organization that contributes to and creates open source projects. Open source projects are projects where all interested UCSD students can participate in. Participation can vary between fixing known bugs or glitches to improving the project by adding new features. Open Source @ UCSD will be using these projects to help teach students core open source practices, which include Git and basic coding principles, in an inclusive environment. As students learn the basics of creating their own Git repositories, they will be able to create their own open source projects for others to expand upon.",
+      tags:["Engineering", "Programming", "CS", "OpenSource", "Development"]
     }
   },
   {
@@ -3335,7 +3347,8 @@ export let club_list = [
       contactEmail: "ucsdapsa@gmail.com",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/8350",
       description:
-        "To foster a community devoted to computing and help students interested in the field develop their technical skills and professional networks."
+        "To foster a community devoted to computing and help students interested in the field develop their technical skills and professional networks.",
+      tags:["Computing", "Programming", "CS", "Development", "Hardware"]
     }
   },
   {
@@ -4180,7 +4193,8 @@ export let club_list = [
       contactEmail: "ymaa.ucsd@gmail.com",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/10744",
       description:
-        "Triton Gaming is a group of collegiate organizers that team up to create epic entertainment experiences for student gamers at the University of California, San Diego. Our organization is the product of several independent on-campus gaming organizations that each represent a different gaming genre and student community. Through Triton Gaming, our team strives to create an exciting, diverse, and all-inclusive gaming environment on campus through high-quality live events."
+        "Triton Gaming is a group of collegiate organizers that team up to create epic entertainment experiences for student gamers at the University of California, San Diego. Our organization is the product of several independent on-campus gaming organizations that each represent a different gaming genre and student community. Through Triton Gaming, our team strives to create an exciting, diverse, and all-inclusive gaming environment on campus through high-quality live events.",
+      tags:["Fraternity", "Frat", "Gaming", "Games"]
     }
   },
   {
