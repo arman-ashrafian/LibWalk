@@ -2,6 +2,9 @@ import React from 'react';
 import db from "../firebase";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import FormControl from "react-bootstrap/FormControl";
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -24,8 +27,8 @@ class NavBar extends React.Component {
 
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
-            if (firebaseUser) {
-                this.setState({userId: firebaseUser.uid, loggedIn: true});
+            if( firebaseUser) {
+                this.setState({ userId: firebaseUser.uid, loggedIn: true });
                 // getUser using userId and populate this.state
             } else {
                 console.log("Not logged in")
@@ -37,8 +40,9 @@ class NavBar extends React.Component {
         //interesting
         return (
             <div>
-                <Navbar collapseOnSelect expand="lg">
-                    <Navbar.Brand onClick={this.switch_view_home}>LibWalk</Navbar.Brand>
+                <Navbar style={{backgroundColor: '#006A96'}} collapseOnSelect expand="lg" variant="dark">
+                    {/* navbar.brand href is empty string so the cursor remains an arrow when hovering */}
+                    <Navbar.Brand href=" " onClick={this.switch_view_home}>LibWalk</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
@@ -47,6 +51,13 @@ class NavBar extends React.Component {
                             <Nav.Link onClick={this.switch_view_subscriptions}>Subscriptions</Nav.Link>
                             <Nav.Link onClick={this.switch_view_search}>Search</Nav.Link>
                         </Nav>
+                        <Form inline>
+                        {this.state.loggedIn ?
+                               <Button onClick={this.switch_view_profile} variant="outline-light" > Profile </Button>
+                               :
+                               <Button onClick={this.switch_view_login} variant="outline-light" > Login </Button>
+                        }
+                        </Form>
                     </Navbar.Collapse>
                 </Navbar>
             </div>

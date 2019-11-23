@@ -1,11 +1,15 @@
 import React, {useState} from 'react'
 import NavBar from "../navbar";
 import {getClubs} from "../cloud";
+import {getClub} from "../cloud";
+import {getEvent} from "../cloud";
+import {changeClub} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import db from "../../firebase.js";
+import { FaAlignJustify } from 'react-icons/fa';
 
 function get_user_uid() {
     let uid = 'none';
@@ -70,6 +74,78 @@ class AdminHome extends React.Component {
 		this.setState({editEvent: true})
 	}
 
+	componentDidMount() {
+		getClub('08hzBkOlpgdVIR9gQD9sliLkAsy1').then(clubInfo => {
+			this.setState({
+				org: {
+					clubReference: clubInfo['clubReference'],
+					clubName: clubInfo['clubName'],
+					contactEmail: clubInfo['contactEmail'],
+					description: clubInfo['description'],
+					pictureURL: clubInfo['pictureURL'],
+					tags: clubInfo['tags'],
+					pageURL: clubInfo['pageURL'],
+					emailList: clubInfo['emailList']
+				}
+			})
+		})
+		
+		getEvent('event_id_00').then(eventInfo => {
+			this.setState({
+				event: {
+					clubsHosting: eventInfo['clubsHosting'],
+					description: eventInfo['description'],
+					eventName: eventInfo['eventName'],
+					location: eventInfo['location'],
+					pictureURL: eventInfo['pictureURL'],
+					rsvpForm: eventInfo['rsvpForm'],
+					time: eventInfo['time'],
+				}
+			})
+		})
+	}
+
+	async editHandleClub(e) {
+		e.preventDefault();
+		await this.setState({
+			org: {
+				clubName: e.target[0].value,
+				contactEmail: e.target[1].value,
+				pictureURL: e.target[2].value,
+				description: e.target[3].value,
+				clubReference: this.state.org.ref,
+				tags: this.state.org.tags,
+				pageURL: this.state.org.pageURL
+			}
+		})
+		changeClub(this.state.org.ref, this.state.org);
+		this.closeInfo();
+	}
+
+	async editHandleTag(e) {
+		e.preventDefault();
+		await this.setState({
+			tag: e.target[0].value
+		})
+		this.closeTag();
+	}
+
+	async editHandleEvent(e) {
+		e.preventDefault();
+		await this.setState({
+			event: {
+				eventName: e.target[0].value,
+				clubsHosting: e.target[1].value,
+				location: e.target[2].value,
+				time: e.target[3].value,
+				pictureURL: e.target[4].value,
+				description: e.target[5].value,
+				rsvpForm: e.target[6].value
+			}
+		})
+		this.closeEvent();
+	}
+
     render() {
 
         if (check_login_type() === 'user') {
@@ -82,19 +158,30 @@ class AdminHome extends React.Component {
             };
         }
 
-        let club = this.get_club_data();
+        /*let club = this.get_club_data();
 
         if (club === undefined)
-            club = {name: 'YEET MEATY', desc: 'FUCK THE BACKEND'};
+            club = {name: 'YEET MEATY', desc: 'FUCK THE BACKEND'};*/
 
 		
         return (
             <div>
                 {/*start the rest of the page*/}
                 <main className='mt-5 pt-5'>
-                    <h2 className="h1 text-center mb-5" >{club.name}</h2>
-                    <h5 className="text-center mb-5">{club.desc}</h5>
-
+					<img src={this.state.org.pictureURL} />
+                    <h2>{this.state.org.clubName}</h2>
+					<div>
+						{this.state.org.tags.map(tag => (
+						// add club tag stuff here
+						<Button size="sm"/*color={random_color()}*/>
+							{tag}
+						</Button>
+						))}
+					</div>
+					<p></p>
+                    <h5 className="text-center mb-5">{this.state.org.description}</h5>
+					
+					
 					<Button onClick={this.handleEditInfo}>Edit Club</Button>
 					<Modal
 					size="lg"
@@ -107,23 +194,29 @@ class AdminHome extends React.Component {
 							Club Info
 						</Modal.Title>
 						</Modal.Header>
- 
+
 						<Modal.Body>
-						<Form.Group controlId="formName">
-							<Form.Label>Club Name</Form.Label>
-							<Form.Control type="name" placeholder="Enter Club Name" />
-						</Form.Group>
-						<Form.Group controlId="formImage">
-							<Form.Label>Image URL</Form.Label>
-							<Form.Control type="name" placeholder="Enter Image URL" />
-						</Form.Group>
-						<Form.Group controlId="formName">
-							<Form.Label>Description</Form.Label>
-							<Form.Control type="name" placeholder="Enter Club Description" />
-						</Form.Group>
-							<Button variant="primary" type="submit" >
-							Submit
-							</Button>
+							<Form onSubmit={this.editHandleClub}>
+								<Form.Group controlId="formName">
+									<Form.Label>Club Name</Form.Label>
+									<Form.Control type="name" placeholder="Enter Club Name" defaultValue={this.state.org.clubName}/>
+								</Form.Group>
+								<Form.Group controlId="formName">
+									<Form.Label>Club Email</Form.Label>
+									<Form.Control type="name" placeholder="Enter Club Email" defaultValue={this.state.org.contactEmail}/>
+								</Form.Group>
+								<Form.Group controlId="formImage">
+									<Form.Label>Image URL</Form.Label>
+									<Form.Control type="name" placeholder="Enter Image URL" defaultValue={this.state.org.pictureURL}/>
+								</Form.Group>
+								<Form.Group controlId="formName">
+									<Form.Label>Description</Form.Label>
+									<Form.Control type="name" placeholder="Enter Club Description" defaultValue={this.state.org.description}/>
+								</Form.Group>
+								<Button variant="primary" type="submit" >
+									Submit
+								</Button>
+							</Form>
 						</Modal.Body>
 					</Modal>
 
@@ -139,16 +232,24 @@ class AdminHome extends React.Component {
 								Tag Info
 							</Modal.Title>
 						</Modal.Header>
-        
-						<Modal.Body>
+
+						{/*<Modal.Body>
 							<Form.Group controlId="formName">
-								<Form.Label>Tag Name</Form.Label>
-								<Form.Control type="name" placeholder="Enter Tag Name" />
+								<Form.Label> {this.state.club.tag} </Form.Label>
 							</Form.Group>
-							<Button variant="primary" type="submit" >
-								Submit
-							</Button>
-						 </Modal.Body>
+						</Modal.Body>*/}
+
+						<Modal.Body>
+							<Form onSubmit={this.editHandleTag}>
+								<Form.Group controlId="formName">
+									<Form.Label>Tag Name</Form.Label>
+									<Form.Control type="name" placeholder="Enter Tag Name" />
+								</Form.Group>
+								<Button variant="primary" type="submit" >
+									Submit
+								</Button>
+							</Form>
+							</Modal.Body>
 					</Modal>
 
 					<Button onClick={this.handleEditEvent}>Edit Event</Button>
@@ -158,33 +259,55 @@ class AdminHome extends React.Component {
 						onHide={this.closeEvent}
 						aria-labelledby="example-modal-sizes-title-lg"
 						>
-							<Modal.Header closeButton>
-								<Modal.Title id="example-modal-sizes-title-lg">
-									Event Info
-								</Modal.Title>
-							</Modal.Header>
-        
-							<Modal.Body>
+						<Modal.Header closeButton>
+							<Modal.Title id="example-modal-sizes-title-lg">
+								Event Info
+							</Modal.Title>
+						</Modal.Header>
+
+						<Modal.Body>
+							<Form onSubmit={this.editHandleEvent}>
 								<Form.Group controlId="formName">
 									<Form.Label>Event Name</Form.Label>
-									<Form.Control type="name" placeholder="Enter Event Name" />
+									<Form.Control type="name" placeholder="Enter Event Name" defaultValue={this.state.event.ename}/>
 								</Form.Group>
-  
-								<Form.Group controlId="formPlaceTime">
-									<Form.Label>Place/Time</Form.Label>
-									<Form.Control type="place/time" placeholder="Enter Place/Time" />
+
+								<Form.Group controlId="formClubH">
+									<Form.Label>Club Hosting</Form.Label>
+									<Form.Control type="host" placeholder="Enter Host" defaultValue={this.state.event.host}/>
 								</Form.Group>
-	  
+
+								<Form.Group controlId="formPlace">
+									<Form.Label>Place</Form.Label>
+									<Form.Control type="place" placeholder="Enter Place" defaultValue={this.state.event.loc}/>
+								</Form.Group>
+
+								<Form.Group controlId="formTime">
+									<Form.Label>Time</Form.Label>
+									<Form.Control type="timeS" placeholder="Enter Time" defaultValue={this.state.event.time}/>
+								</Form.Group>
+
+								<Form.Group controlId="formPic">
+									<Form.Label>Picture</Form.Label>
+									<Form.Control type="pic" placeholder="Enter Picture URL" defaultValue={this.state.event.epic}/>
+								</Form.Group>
+
 								<Form.Group controlId="formDetails">
 									<Form.Label>Details</Form.Label>
-									<Form.Control type="details" placeholder="Enter Details" />
+									<Form.Control type="details" placeholder="Enter Details" defaultValue={this.state.event.edesc}/>
 								</Form.Group>
+
+								<Form.Group controlId="formRSVP">
+									<Form.Label>RSVP</Form.Label>
+									<Form.Control type="rsvp" placeholder="Enter RSVP URL" defaultValue={this.state.event.rsvp}/>
+								</Form.Group>
+
 								<Button variant="primary" type="submit" >
 									Submit
 								</Button>
-							</Modal.Body>        
-					  </Modal>
-
+							</Form>
+						</Modal.Body>        
+					</Modal>
                 </main>
             </div>
         );
@@ -204,8 +327,8 @@ class AdminHome extends React.Component {
      */
     view_switch_login = () => {
         console.log('WARN: Unauthorized user tried to access admin page.');
-        this.props.history.push('/home');
-    };
+		this.props.history.push('/home');
+	};
 
     constructor(props) {
         super(props);
@@ -215,7 +338,26 @@ class AdminHome extends React.Component {
             orgs: [],
 			editInfo: false,
 			editTag: false,
-			editEvent: false
+			editEvent: false,
+			org: {
+				clubReference: '',
+				clubName: '',
+				contactEmail: '',
+				description: '',
+				pictureURL: '',
+				tags: [],
+				pageURL: '',
+				emailList: []
+			},
+			event: {
+				clubsHosting: '',
+				description: '',
+				eventName: '',
+				locaction: '',
+				pictureURL: '',
+				rsvpForm: '',
+				time: ''
+			}
         };
 
         // get data from firebase
@@ -235,7 +377,10 @@ class AdminHome extends React.Component {
 		this.handleEditInfo = this.handleEditInfo.bind(this);
 		this.handleEditTag = this.handleEditTag.bind(this);
 		this.handleEditEvent = this.handleEditEvent.bind(this);
+		this.editHandleClub = this.editHandleClub.bind(this);
+		this.editHandleTag = this.editHandleTag.bind(this);
+		this.editHandleEvent = this.editHandleEvent.bind(this);
     };
-}
+};
 
 export default AdminHome;
