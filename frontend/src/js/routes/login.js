@@ -43,7 +43,7 @@ class Login extends React.Component {
 		try{
 			await db
 			.auth()
-			.signInWithPopup(provider2).then((result) => {
+			.signInWithPopup(googleProvider).then((result) => {
 				this.setState({
 					user: result.user,
 					userId: result.uid
