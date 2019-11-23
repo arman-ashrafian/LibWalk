@@ -113,7 +113,7 @@ class Profile extends React.Component {
                         </Button>
                         </div>
                         <div className="col-sm-12">
-                        <Button variant="primary" size="m" onClick={this.switch_view_login}> 
+                        <Button variant="primary" size="m" onClick={this.switch_view_logout}> 
                             Log Out
                         </Button>
                         </div>
@@ -159,7 +159,7 @@ class Profile extends React.Component {
             </div>);
     }
 
-    switch_view_login = () => {
+    switch_view_logout = () => {
         console.log('Onclick');
 		auth.signOut().then((result) => {
 			this.setState({

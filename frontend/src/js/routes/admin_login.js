@@ -70,7 +70,11 @@ class AdminLogin extends React.Component {
 		} catch (error){
 			alert(error);
 		}
-    };
+	};
+	
+	view_switch_user_login = () => {
+        this.props.history.push('/login');
+	};
 	
 	registerTime = () =>{
 		this.setState({login: false})
@@ -108,7 +112,10 @@ class AdminLogin extends React.Component {
 								<button className="btn btn-info btn-block my-4" type="submit">Sign in</button>
 								{/* Register */}
 								<p>Not a member?
-									<a onClick={this.registerTime}> Register</a>
+									<a onClick={this.registerTime} style={{color:"#4169E1"}}> Register</a>
+								</p>
+								<p>Logging in as a student?
+									<a onClick={this.view_switch_user_login} style={{color:"#4169E1"}}> Student Log In</a>
 								</p>
 								{/* 
 								<p>or sign in with:</p>
