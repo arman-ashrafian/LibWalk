@@ -9,7 +9,7 @@ import Login from "./routes/login";
 import Calendar from "./routes/calendar";
 import Profile from "./routes/profile";
 import AdminHome from "./routes/admin_home";
-import AdminLogin from "./routes/adminlogin";
+import AdminLogin from "./routes/admin_login";
 import Events from "./routes/events";
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
         <Route exact path="/subs" component={Subs} />
         <Route exact path="/profile" component={Profile} />
         <Route exact path="/admin_home" component={AdminHome} />
-        <Route exact path="/adminlogin" component={AdminLogin} />
+        <Route exact path="/admin_login" component={AdminLogin} />
         <Route exact path="/events" component={Events} />
       </div>
     </Router>
