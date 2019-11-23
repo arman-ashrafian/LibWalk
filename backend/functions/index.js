@@ -97,6 +97,36 @@ exports.changeEvent = functions.https.onRequest((req, res) => {
 });
 
 /* ================= /getClubs ====================
+ * request:
+ *  {}
+ *
+ * response:
+ *  {
+ *  "clubs": [
+ *      {
+ *          "clubUID": {
+ *              "description": "",
+ *              "eventList": [],
+ *              "emailList": [],
+ *              "pictureURL": "",
+ *              "clubName": "",
+ *              "pageURL": "",
+ *              "contactEmail": "",
+ *              "tags": [
+ *                  "Alpha",
+ *                  "Epilson",
+ *                  "Pie"
+ *              ],
+ *              "announcements": [],
+ *              "clubReference": ""
+ *          }
+ *      },
+ *      {
+ *       ...
+ *      },
+ *  ]
+ *
+ *  }
  */
 exports.getClubs = functions.https.onRequest((req, res) => {
   /*cors(req, res, () => {
@@ -107,7 +137,9 @@ exports.getClubs = functions.https.onRequest((req, res) => {
       .then(querySnapshot => {
         let json_data = { clubs: [] };
         querySnapshot.forEach(doc => {
-          json_data.clubs.push(doc.data());
+          let json = {}
+          json[doc.id] = doc.data();
+          json_data.clubs.push(json);
         });
         // cache the content in browser for 5 minutes & CDN for 10 minutes
         res.set('Cache-Control', 'public, max-age=300, s-maxage=600');

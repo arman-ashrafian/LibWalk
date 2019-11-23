@@ -26,7 +26,7 @@ class Announcements extends React.Component {
         };
 
         // GET /getClubs & set the state when the api response is recieved
-        getUser("HQZD1srcV2Z5Z7vCdSEV6iJncbT2").then((json) => {
+        getUser(this.state.userId).then((json) => {
             this.setState({orgs: json.subscriptions});
         });
 

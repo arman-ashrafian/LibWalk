@@ -45,12 +45,14 @@ class Events extends React.Component {
 
     render() {
         return(
+			<div>
+			<NavBar {...this.props} />
             <main className='mt-5 pt-5'>
                 <div className="container">
                     <Divider />
 
                     <div className="sub_container">
-						<NavBar {...this.props} />
+						
 						<Card style={{ display: "flex" }}>
 						  <Card.Img variant="top" src={this.state.pictureUrl} />
 						  <Card.Body>
@@ -72,6 +74,7 @@ class Events extends React.Component {
 					</div>
                 </div>
             </main>
+			</div>
         );
     }
 }
