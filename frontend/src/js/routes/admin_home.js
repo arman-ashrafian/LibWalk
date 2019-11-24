@@ -1,5 +1,7 @@
 import React from 'react'
-import {changeClub, getClub, getEvent} from "../cloud";
+import NavBar from "../navbar";
+import {getClubs} from "../cloud";
+import {changeClub, getClub, getEvent, changeTag, getTag} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -22,90 +24,126 @@ class AdminHome extends React.Component {
         super(props);
 
         this.state = {
-            editInfo: false,
-            editTag: false,
-            editEvent: false,
-            org_id: "",
-            org: {
-                clubReference: '',
-                clubName: '',
-                contactEmail: '',
-                description: '',
-                pictureURL: '',
-                tags: [],
-                pageURL: '',
-                emailList: []
-            },
-            event: {
-                clubsHosting: '',
-                description: '',
-                eventName: '',
-                locaction: '',
-                pictureURL: '',
-                rsvpForm: '',
-                time: ''
-            }
-        };
+			editInfo: false,
+			editTag: false,
+			editEvent: false,
+			org_id: "",
+			tag: "",
+			org: {
+				clubReference: '',
+				clubName: '',
+				contactEmail: '',
+				description: '',
+				pictureURL: '',
+				tags: [],
+				pageURL: '',
+				emailList: []
+			},
+			event: {
+				eventReference: '',
+				description: '',
+				eventName: '',
+				locaction: '',
+				pictureURL: '',
+				rsvpForm: '',
+				time: ''
+			},
+			tagInfo: {
+				orgs: [],
+				tagID: ''
+			}
+		};
 
-        this.closeInfo = this.closeInfo.bind(this);
-        this.closeTag = this.closeTag.bind(this);
-        this.closeEvent = this.closeEvent.bind(this);
-        this.handleEditInfo = this.handleEditInfo.bind(this);
-        this.handleEditTag = this.handleEditTag.bind(this);
-        this.handleEditEvent = this.handleEditEvent.bind(this);
-        this.editHandleClub = this.editHandleClub.bind(this);
-        this.editHandleTag = this.editHandleTag.bind(this);
-        this.editHandleEvent = this.editHandleEvent.bind(this);
-        this.handleLogOut = this.handleLogOut.bind(this);
+		this.closeInfo = this.closeInfo.bind(this);
+		this.closeTag = this.closeTag.bind(this);
+		this.closeEvent = this.closeEvent.bind(this);
+		this.handleEditInfo = this.handleEditInfo.bind(this);
+		this.handleEditTag = this.handleEditTag.bind(this);
+		this.handleEditEvent = this.handleEditEvent.bind(this);
+		this.editHandleClub = this.editHandleClub.bind(this);
+		this.editHandleTag = this.editHandleTag.bind(this);
+		this.editHandleEvent = this.editHandleEvent.bind(this);
+		this.handleLogOut = this.handleLogOut.bind(this);
     };
+		
+	closeInfo() {
+		this.setState({
+			editInfo: false
+		})
+	}
 
-    /**
-     * Set-up function that is called when the user is first directed to the admin home page.
-     */
-    componentDidMount() {
-        // this code will get the admin's information to display on the page and store it in state.
-        db.auth().onAuthStateChanged(firebaseUser => {
-            if (firebaseUser) {
-                this.setState({
-                    org_id: firebaseUser.uid
-                });
-                getClub(firebaseUser.uid).then(clubInfo => {
-                    console.log(clubInfo);
-                    this.setState({
-                        org: {
-                            clubReference: clubInfo['clubReference'],
-                            clubName: clubInfo['clubName'],
-                            contactEmail: clubInfo['contactEmail'],
-                            description: clubInfo['description'],
-                            pictureURL: clubInfo['pictureURL'],
-                            tags: clubInfo['tags'],
-                            pageURL: clubInfo['pageURL'],
-                            emailList: clubInfo['emailList']
-                        }
-                    })
+	closeTag() {
+		this.setState({
+			editTag: false
+		})
+	}
 
-                })
-            }
-        });
+	closeEvent() {
+		this.setState({
+			editEvent: false
+		})
+	}
 
-        // this code will fetch events for the admin based on event ids.
-        getEvent('event_id_00').then(eventInfo => {
-            this.setState({
-                event: {
-                    clubsHosting: eventInfo['clubsHosting'],
-                    description: eventInfo['description'],
-                    eventName: eventInfo['eventName'],
-                    location: eventInfo['location'],
-                    pictureURL: eventInfo['pictureURL'],
-                    rsvpForm: eventInfo['rsvpForm'],
-                    time: eventInfo['time'],
-                }
-            })
-        })
-    }
+	handleEditInfo() {
+		this.setState({editInfo: true})
+	}
 
-    // routing functions
-    /**
+	handleEditTag() {
+		this.setState({editTag: true})
+	}
+
+	handleEditEvent() {
+		this.setState({editEvent: true})
+	}
+
+	/**
+	 * Set-up function that is called when the user is first directed to the
+	 * admin home page
+	 */
+	componentDidMount() {
+		// This code will get the admin's information to display on the page and store it in state
+		db.auth().onAuthStateChanged(firebaseUser => {
+			if(firebaseUser) {
+				this.setState({
+					org_id: firebaseUser.uid
+				});
+				getClub(firebaseUser.uid).then(clubInfo => {
+					console.log(clubInfo);
+					this.setState({
+						org: {
+							clubReference: clubInfo['clubReference'],
+							clubName: clubInfo['clubName'],
+							contactEmail: clubInfo['contactEmail'],
+							description: clubInfo['description'],
+							pictureURL: clubInfo['pictureURL'],
+							tags: clubInfo['tags'],
+							pageURL: clubInfo['pageURL'],
+							emailList: clubInfo['emailList']
+						}
+					})
+					
+				})
+			}
+		})
+		
+		// This code will fetch events for the admin base don the event id
+		getEvent('event_id_00').then(eventInfo => {
+			this.setState({
+				event: {
+					eventReference: eventInfo['eventReference'],
+					description: eventInfo['description'],
+					eventName: eventInfo['eventName'],
+					location: eventInfo['location'],
+					pictureURL: eventInfo['pictureURL'],
+					rsvpForm: eventInfo['rsvpForm'],
+					time: eventInfo['time'],
+				}
+			})
+		})
+	}
+
+	// routing functions
+	/**
      * If the user is not authorized as an admin, then we just take them to the home page.
      */
     view_switch_login = () => {
@@ -117,64 +155,142 @@ class AdminHome extends React.Component {
     /**
      * Handles what happens when you change a club's details.
      */
-    async editHandleClub(e) {
-        e.preventDefault();
-        await this.setState({
-            org: {
-                clubName: e.target[0].value,
-                contactEmail: e.target[1].value,
-                pictureURL: e.target[2].value,
-                description: e.target[3].value,
-                clubReference: this.state.org.ref,
-                tags: this.state.org.tags,
-                pageURL: this.state.org.pageURL
-            }
-        });
-        await changeClub(this.state.org.ref, this.state.org);
-        //todo add a success notification here
-        this.closeInfo();
-    };
+	async editHandleClub(e) {
+		e.preventDefault();
+		await this.setState({
+			org: {
+				clubName: e.target[0].value,
+				contactEmail: e.target[1].value,
+				pictureURL: e.target[2].value,
+				description: e.target[3].value,
+				clubReference: this.state.org.ref,
+				tags: this.state.org.tags,
+				pageURL: this.state.org.pageURL
+			}
+		})
+		await changeClub(this.state.org.clubReference, this.state.org);
+		//TODO: add a success notification here
+		this.closeInfo();
+	};
 
-    /**
-     * Handles what happens when you change a club's details.
-     */
-    async editHandleTag(e) {
-        e.preventDefault();
-        await this.setState({
-            tag: e.target[0].value
-        });
-        // todo call the backend and add a success notification
-        this.closeTag();
-    };
+	/**
+	 * Handles what happens when you change a club tag
+	 * 
+	 */
+	async editHandleTag(e) {
+		e.preventDefault();
+		await this.setState({
+			tag: e.target[0].value
+		});
+		db.firestore().collection("Tags").doc(this.state.tag).get()
+			.then((doc) => {
+				if(doc.exists) {
+					getTag(this.state.tag).then(tagClubs => {
+						this.setState({
+							tagInfo: {
+								orgs: tagClubs['orgs'],
+								tagID: tagClubs['tagID']
+							}
+						})
+					})
+					if(this.tagInfo.orgs.includes(this.state.org.clubReference) === false) {
+						this.tagInfo.orgs.push(this.state.org.clubReference);
+						changeTag(this.state.tag, this.tagInfo);
+					}
+				}
+				else {
+					this.setState({
+						tagInfo: {
+							orgs: [this.state.org.clubReference],
+							tagID: this.state.tag
+						}
+					})
+					changeTag(this.state.tag, this.state.tagInfo);
+				}
+			});
+		/*
+		let i = 0;
+		let notExist = true;
+		while(i < this.state.org.tags.length) {
+			console.log("hi");
+			if(this.state.org.tags[i] === this.state.tag) {
+				notExist = false;
+			}
+			i++;
+		}
+		console.log(this.state.org.tags);
+		console.log(notExist);
+		if(notExist) {
+			this.setState({
+				org: {
+					clubName: this.state.org.clubName,
+					contactEmail: this.state.org.contactEmail,
+					pictureURL: this.state.org.pictureURL,
+					description: this.state.org.description,
+					clubReference: this.state.org.clubReference,
+					tags: this.state.org.tags.push(this.state.tag),
+					pageURL: this.state.org.pageURL
+				}
+			});
+			console.log(this.state.org.tags);
+			console.log(this.state.org.clubReference);
+			changeClub(this.state.org.clubReference, this.state.org);
+		}*/
+		this.closeTag();
+	};
 
-    /**
-     * Handles what happens when you change a club's details.
-     */
-    async editHandleEvent(e) {
-        e.preventDefault();
-        await this.setState({
-            event: {
-                eventName: e.target[0].value,
-                location: e.target[1].value,
-                time: e.target[2].value,
-                pictureURL: e.target[3].value,
-                description: e.target[4].value,
-                rsvpForm: e.target[5].value
-            }
-        });
-        //todo call the backend and add a success notification
-        this.closeEvent();
-    };
+	/**
+	 * Handles what happens when you change a clubs event details
+	 *  
+	 */
+	async editHandleEvent(e) {
+		e.preventDefault();
+		await this.setState({
+			event: {
+				eventName: e.target[0].value,
+				location: e.target[1].value,
+				time: e.target[2].value,
+				pictureURL: e.target[3].value,
+				description: e.target[4].value,
+				rsvpForm: e.target[5].value,
+				eventReference: this.state.eventReference
+			}
+		})
+		//TODO: call the backend and add a success notification
+		this.closeEvent();
+	}
 
-    /**
-     * Handles the authorization logic for logging the admin out.
-     */
-    handleLogOut = () => {
-        db.auth().signOut().then((result) => {
-            this.setState({
-                org: null
-            })
-        });
+	async editHandleEvent(e) {
+		try {
+			e.preventDefault();
+			db.firestore().collection("Events").doc().get()
+				.then((doc) => {
+
+				});
+			await this.setState({
+				eventName: e.target[0].value,
+				location: e.target[1].value,
+				time: e.target[2].value,
+				pictureURL: e.target[3].value,
+				description: e.target[4].value,
+				rsvpForm: e.target[5].value,
+				eventReference: this.state.event.eventReference
+			});
+		}
+		catch (error) {
+			alert(error);
+		}
+	}
+
+	/**
+	 * Handles the authorization logic for logging out
+	 */
+	handleLogOut() {
+		db.auth().signOut().then((result) => {
+			this.setState({
+				org: null
+			})
+		});
         this.props.history.push('/admin_login');
     };
 
@@ -420,14 +536,19 @@ class AdminHome extends React.Component {
         console.log('Org Data' + JSON.stringify(this.state.org));
         return (
             <div>
+<<<<<<< HEAD
+                <Card style={{width: 'flex'}}>
+
+                    <Card.Img src={this.state.org.pictureURL} style={{
+=======
                 {/*<Card style={{width: '50rem'}}>*/}
 <Card>
                     <Card.Img src={'https://picsum.photos/id/101/200/300'} style={{
+>>>>>>> 50dcd492ac3cc0a5a2831dc83c2bd2b1a88d62f2
                         width: '100%',
                         height: '15vw',
                         'object-fit': 'cover'
                     }}/>
-                    {/*<Card.Img variant="top" src={this.state.org.pictureURL}/>*/}
                     <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>About Your Club</Card.Header>
 
                     <Card.Body>
@@ -442,14 +563,20 @@ class AdminHome extends React.Component {
                             <ListGroupItem>
                                 <Card.Link href={this.state.org.pageURL}>Official Website</Card.Link>
                             </ListGroupItem>
-                            <ListGroupItem> Tags Rendered Here</ListGroupItem>
+							<ListGroupItem>
+								Tags
+								{this.state.org.tags.map(tag => (
+										<Button size="sm">
+											{tag}
+										</Button>
+								))}
+							</ListGroupItem>
                             <ListGroupItem>Put Upcoming Events Here</ListGroupItem>
                         </ListGroup>
 
                     </Card.Body>
 
                 </Card>
-
             </div>
         )
     };

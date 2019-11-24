@@ -1,0 +1,42 @@
+function EventModal() {
+  const [lgShow, setLgShow] = useState(false);
+
+  return (
+    <ButtonToolbar>
+      <Button onClick={() => setLgShow(true)}>Edit Event</Button>
+      <Modal
+        size="lg"
+        show={lgShow}
+        onHide={() => setLgShow(false)}
+        aria-labelledby="example-modal-sizes-title-lg"
+        >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg">
+            Event Info
+          </Modal.Title>
+        </Modal.Header>
+        
+        <Modal.Body>
+          <Form.Group controlId="formName">
+              <Form.Label>Event Name</Form.Label>
+              <Form.Control type="name" placeholder="Enter Event Name" />
+          </Form.Group>
+  
+          <Form.Group controlId="formPlaceTime">
+              <Form.Label>Place/Time</Form.Label>
+              <Form.Control type="place/time" placeholder="Enter Place/Time" />
+          </Form.Group>
+  
+          <Form.Group controlId="formDetails">
+              <Form.Label>Details</Form.Label>
+              <Form.Control type="details" placeholder="Enter Details" />
+          </Form.Group>
+	    <Button variant="primary" type="submit" >
+	      Submit
+	    </Button>
+        </Modal.Body>      
+               
+      </Modal>
+    </ButtonToolbar>
+  );
+}
