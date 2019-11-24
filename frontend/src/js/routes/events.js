@@ -3,14 +3,11 @@ import '../../css/bootstrap.min.css'
 import '../../css/mdb.lite.min.css'
 import '../../css/style.min.css'
 import NavBar from "../navbar";
-import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import {getEvent} from "../cloud";
 
-import { Divider } from "@material-ui/core";
+import {Divider} from "@material-ui/core";
 
 class Events extends React.Component {
     constructor(props) {

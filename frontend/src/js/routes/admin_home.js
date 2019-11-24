@@ -536,9 +536,15 @@ class AdminHome extends React.Component {
         console.log('Org Data' + JSON.stringify(this.state.org));
         return (
             <div>
+<<<<<<< HEAD
                 <Card style={{width: 'flex'}}>
 
                     <Card.Img src={this.state.org.pictureURL} style={{
+=======
+                {/*<Card style={{width: '50rem'}}>*/}
+<Card>
+                    <Card.Img src={'https://picsum.photos/id/101/200/300'} style={{
+>>>>>>> 50dcd492ac3cc0a5a2831dc83c2bd2b1a88d62f2
                         width: '100%',
                         height: '15vw',
                         'object-fit': 'cover'
@@ -575,6 +581,10 @@ class AdminHome extends React.Component {
         )
     };
 
+    next_upcoming_events = () => {
+      console.log('event data', this.state.event)
+    };
+
     render() {
         // only admins should be able to see this page, redirect if the login type is not admin.
         // if (check_login_type() === 'user') {
@@ -586,11 +596,14 @@ class AdminHome extends React.Component {
                 {/*start the rest of the page*/}
                 <main className='mt-5 pt-5'>
                     <Container>
-                        <Row style={{flex: 5}}>
-                            <Col style={{flex: 8}}>
+                        {/*<Row style={{flex: 5}}>*/}
+                        <Row>
+                            {/*<Col style={{flex: 8}}>*/}
+                            <Col sm={4} lg={8} md={8}>
                                 {this.admin_panel_view()}
                             </Col>
-                            <Col style={{flex: 2}}>
+                            {/*<Col style={{flex: 2}}>*/}
+                            <Col sm={4} lg={[2]} md={1}>
                                 {this.button_container()}
                             </Col>
                         </Row>
