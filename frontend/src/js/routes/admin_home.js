@@ -134,21 +134,20 @@ class AdminHome extends React.Component {
         this.closeTag();
     }
 
-    async editHandleEvent(e) {
-        e.preventDefault();
-        await this.setState({
-            event: {
-                eventName: e.target[0].value,
-                clubsHosting: e.target[1].value,
-                location: e.target[2].value,
-                time: e.target[3].value,
-                pictureURL: e.target[4].value,
-                description: e.target[5].value,
-                rsvpForm: e.target[6].value
-            }
-        });
-        this.closeEvent();
-    }
+	async editHandleEvent(e) {
+		e.preventDefault();
+		await this.setState({
+			event: {
+				eventName: e.target[0].value,
+				location: e.target[1].value,
+				time: e.target[2].value,
+				pictureURL: e.target[3].value,
+				description: e.target[4].value,
+				rsvpForm: e.target[5].value
+			}
+		})
+		this.closeEvent();
+	}
 
     handleLogOut() {
         db.auth().signOut().then((result) => {
@@ -438,6 +437,23 @@ class AdminHome extends React.Component {
             </div>
         );
     }
+
+    /***
+     * Finds the club from the state of the component
+     * @returns {*}
+     */
+    get_club_data = () => {
+        let uid = get_user_uid();
+        return this.state.orgs[uid];
+    };
+
+    /**
+     * If the user is not authorized as an admin, then we just take them to the home page.
+     */
+    view_switch_login = () => {
+        console.log('WARN: Unauthorized user tried to access admin page.');
+		this.props.history.push('/home');
+	};
 
 };
 

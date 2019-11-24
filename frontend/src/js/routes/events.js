@@ -1,5 +1,4 @@
-﻿import React, {useState} from "react";
-//import React, {Component} from "react";
+﻿import React from "react";
 import '../../css/bootstrap.min.css'
 import '../../css/mdb.lite.min.css'
 import '../../css/style.min.css'
@@ -9,7 +8,6 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
-import db from "../../firebase";
 import {getEvent} from "../cloud";
 
 import { Divider } from "@material-ui/core";
