@@ -10,6 +10,7 @@ const getTagURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/getTag';
 const editUserURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeUser';
 const changeClubURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeClub';
 const changeEventURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeEvent';
+const changeTagURL = 'https://us-central1-libwalk-721c2.cloudfunctions.net/changeTag';
 
 const CACHE_TIMEOUT_MS = 120000000000000000000000000; // only make API request if last call was over 120,000 ms == 120 seconds
 let cache = {};
@@ -121,7 +122,7 @@ export function changeTag(tagID, tagData) {
         tag_id: tagID,
         tag: tagData
     }
-    return postRequest(changeEventURL, data);
+    return postRequest(changeTagURL, data);
 }
 
 export let club_list = [

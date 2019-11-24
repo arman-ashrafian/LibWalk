@@ -4,12 +4,15 @@ import {getClubs} from "../cloud";
 import {getClub} from "../cloud";
 import {getEvent} from "../cloud";
 import {changeClub} from "../cloud";
+import {changeTag} from "../cloud";
+import {getTag} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import db from "../../firebase.js";
 import { FaAlignJustify } from 'react-icons/fa';
+import EachSub from './eachSub';
 
 function get_user_uid() {
     let uid = 'none';
@@ -52,6 +55,7 @@ class AdminHome extends React.Component {
 			editTag: false,
 			editEvent: false,
 			org_id: "",
+			tag: "",
 			org: {
 				clubReference: '',
 				clubName: '',
@@ -63,13 +67,17 @@ class AdminHome extends React.Component {
 				emailList: []
 			},
 			event: {
-				clubsHosting: '',
+				eventReference: '',
 				description: '',
 				eventName: '',
 				locaction: '',
 				pictureURL: '',
 				rsvpForm: '',
 				time: ''
+			},
+			tagInfo: {
+				orgs: [],
+				tagID: ''
 			}
 		};
 
@@ -143,6 +151,7 @@ class AdminHome extends React.Component {
 		getEvent('event_id_00').then(eventInfo => {
 			this.setState({
 				event: {
+					eventReference: eventInfo['eventReference'],
 					description: eventInfo['description'],
 					eventName: eventInfo['eventName'],
 					location: eventInfo['location'],
@@ -167,7 +176,7 @@ class AdminHome extends React.Component {
 				pageURL: this.state.org.pageURL
 			}
 		})
-		changeClub(this.state.org.ref, this.state.org);
+		changeClub(this.state.org.clubReference, this.state.org);
 		this.closeInfo();
 	}
 
@@ -175,7 +184,61 @@ class AdminHome extends React.Component {
 		e.preventDefault();
 		await this.setState({
 			tag: e.target[0].value
-		})
+		});
+		db.firestore().collection("Tags").doc(this.state.tag).get()
+			.then((doc) => {
+				if(doc.exists) {
+					getTag(this.state.tag).then(tagClubs => {
+						this.setState({
+							tagInfo: {
+								orgs: tagClubs['orgs'],
+								tagID: tagClubs['tagID']
+							}
+						})
+					})
+					if(this.tagInfo.orgs.includes(this.state.org.clubReference) === false) {
+						this.tagInfo.orgs.push(this.state.org.clubReference);
+						changeTag(this.state.tag, this.tagInfo);
+					}
+				}
+				else {
+					this.setState({
+						tagInfo: {
+							orgs: [this.state.org.clubReference],
+							tagID: this.state.tag
+						}
+					})
+					changeTag(this.state.tag, this.state.tagInfo);
+				}
+			});
+		/*
+		let i = 0;
+		let notExist = true;
+		while(i < this.state.org.tags.length) {
+			console.log("hi");
+			if(this.state.org.tags[i] === this.state.tag) {
+				notExist = false;
+			}
+			i++;
+		}
+		console.log(this.state.org.tags);
+		console.log(notExist);
+		if(notExist) {
+			this.setState({
+				org: {
+					clubName: this.state.org.clubName,
+					contactEmail: this.state.org.contactEmail,
+					pictureURL: this.state.org.pictureURL,
+					description: this.state.org.description,
+					clubReference: this.state.org.clubReference,
+					tags: this.state.org.tags.push(this.state.tag),
+					pageURL: this.state.org.pageURL
+				}
+			});
+			console.log(this.state.org.tags);
+			console.log(this.state.org.clubReference);
+			changeClub(this.state.org.clubReference, this.state.org);
+		}*/
 		this.closeTag();
 	}
 
@@ -188,10 +251,33 @@ class AdminHome extends React.Component {
 				time: e.target[2].value,
 				pictureURL: e.target[3].value,
 				description: e.target[4].value,
-				rsvpForm: e.target[5].value
+				rsvpForm: e.target[5].value,
+				eventReference: this.state.eventReference
 			}
 		})
 		this.closeEvent();
+	}
+
+	async editHandleEvent(e) {
+		try {
+			e.preventDefault();
+			db.firestore().collection("Events").doc().get()
+				.then((doc) => {
+
+				});
+			await this.setState({
+				eventName: e.target[0].value,
+				location: e.target[1].value,
+				time: e.target[2].value,
+				pictureURL: e.target[3].value,
+				description: e.target[4].value,
+				rsvpForm: e.target[5].value,
+				eventReference: this.state.event.eventReference
+			});
+		}
+		catch (error) {
+			alert(error);
+		}
 	}
 
 	handleLogOut() {
