@@ -10,6 +10,8 @@ import Pagination from "react-bootstrap/Pagination";
 import {club_list} from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
+import Dropdown from "react-bootstrap/Dropdown";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 
 //This will be at the top of the page and will show two search bars, one for name and one for tags
 function SearchBars(props){
@@ -24,7 +26,7 @@ function SearchBars(props){
                         </Col>
                         <Col sm={12} md={8} lg={8}>
                             <div className="input-group">
-                                <input onChange={(e) => textValueKeyword=e.target.value} className="form-control mr-sm-2" type="text" placeholder="Search by name..." aria-label="Search by tags..." />
+                                <input onChange={(e) => textValueKeyword=e.target.value} className="form-control mr-sm-2" type="text" placeholder={this.state.search_mode} />
                                 <MDBBtn onClick={() => props.nameSearch(textValueKeyword)} color="blue" rounded size="md" type="submit" className="pull-right mt-0">
                                     Search
                                 </MDBBtn>
@@ -43,7 +45,7 @@ function SearchBars(props){
                         </Col>
                         <Col sm={12} md={8} lg={8}>
                             <div className="input-group">
-                                <input onChange={(e) => textValueKeyword=e.target.value} className="form-control mr-sm-2" type="text" placeholder="Search by tags..." aria-label="Search by tags..." />
+                                <input onChange={(e) => textValueKeyword=e.target.value} className="form-control mr-sm-2" type="text" placeholder="Search by tags" aria-label="Search by tags" />
                                 <MDBBtn onClick={() => props.tagSearch(textValueKeyword)} color="blue" rounded size="md" type="submit" className="pull-right mt-0">
                                     Search
                                 </MDBBtn>
@@ -69,11 +71,10 @@ class Search extends React.Component {
         super(props);
         this.state = {
             orgs: club_list,
+            search_mode: "Search By Name",
+            search_keyword : "",
             results: [],
             searched: false,    //Remembers if we have searched before
-            currentPage: 1,
-            clubPerPage: 9,
-            totalPages: Math.ceil(club_list.length / 9)
         };
 
         if (this.state.orgs === undefined) {
@@ -82,49 +83,48 @@ class Search extends React.Component {
             };
         }
 
-        this.setClubPerPage = this.setClubPerPage.bind(this);
-        this.setPageNext = this.setPageNext.bind(this);
-        this.setPagePrev = this.setPagePrev.bind(this);
-        this.moveFirstPage = this.moveFirstPage.bind(this);
-        this.moveLastPage = this.moveLastPage.bind(this);
         this.searchByKeyword = this.searchByKeyword.bind(this);
         this.searchByTags = this.searchByTags.bind(this);
+        this.handleSearchSelect = this.handleSearchSelect.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     }
 
 
 
     render() {
-        const { clubPerPage, currentPage, orgs, totalPages } = this.state;
-        const endInd = currentPage * clubPerPage;
-        const startInd = endInd - clubPerPage;
-
-        // Choose the subarray of clubs to show in orgs array
-        const currentClubs = orgs.slice(startInd, endInd);
-
-        // Call pagination function to get all the pages for pagination
-        const pageNumber = this.pagination(currentPage, totalPages);
-
-        // Load pagination
-        const loadPageNumber = pageNumber.map(page => {
-            return (
-                <div>
-                    <Pagination.Item
-                        key={page}
-                        id={page}
-                        active={page === currentPage}
-                        onClick={page === "..." ? this.doNothing : this.setClubPerPage}
-                    >
-                        {(page = page === "..." ? <Pagination.Ellipsis /> : page)}
-                    </Pagination.Item>
-                </div>
-            );
-        });
+        const { orgs } = this.state;
 
         return (
             <div>
                 <NavBar {...this.props}/>
                 <main className='mt-5 pt-5'>
-                    <SearchBars nameSearch={this.searchByKeyword} tagSearch={this.searchByTags} orgs={this.state.orgs}/>
+                    {/* <SearchBars nameSearch={this.searchByKeyword} tagSearch={this.searchByTags} orgs={this.state.orgs} searchSelect={this.handleSearchSelect}/> */}
+                    <Container className='mt-0'>
+                        <Row className={"SearchBar"} style={{marginBottom: '10px'}}>
+                            <Col sm={12} md={12} lg={12}>
+                                <Row>
+                                    <Col sm={0} md={2} lg={2}>
+                                    </Col>
+                                    <Col sm={12} md={8} lg={8}>
+                                        <div className="input-group">
+                                            <input onChange={(e) => this.setState({ search_keyword :e.target.value})} className="form-control mr-sm-2" type="text" placeholder={this.state.search_mode} />
+                                            <Dropdown onSelect={(e) => this.handleSearchSelect(e)} as={ButtonGroup}>
+                                                <Button variant="primary" size="sm" onClick={() => this.handleSearchSubmit(this.state.search_keyword)}>Search</Button>
+                                                <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" size="sm" />
+                                                <Dropdown.Menu >
+                                                    <Dropdown.Item eventKey="Search By Name">Name</Dropdown.Item>
+                                                    <Dropdown.Item eventKey="Search By Tag">Tag</Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </div>
+                                    </Col>
+                                    <Col sm={0} md={2} lg={2}>
+                                    </Col>
+
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Container>
                 </main>
                 <div className="container centerPage">
                     <div className="row centerPage">
@@ -182,83 +182,23 @@ class Search extends React.Component {
         );
     };
 
-    setClubPerPage(event) {
-        this.setState({
-            currentPage: Number(event.target.id)
-        });
-    }
-
-    /* Function to move to the next page */
-    setPageNext(event) {
-        //currentPage += 1;
-        if (this.state.currentPage < this.state.totalPages) {
-            this.setState({
-                currentPage: this.state.currentPage + 1
-            });
+    handleSearchSubmit(e) {
+        if(this.state.search_mode === "Search By Tag") {
+            this.searchByTags(e)
         }
-    }
-
-    /* Function to move to the previous page */
-    setPagePrev(event) {
-        if (this.state.currentPage > 1) {
-            this.setState({
-                currentPage: this.state.currentPage - 1
-            });
+        else {
+            this.searchByKeyword(e)
         }
-    }
+    };
 
-    /* Function to move to the first page */
-    moveFirstPage(event) {
-        if (this.state.currentPage > 1) {
-            this.setState({
-                currentPage: 1
-            });
+    handleSearchSelect(e) {
+        if(e) {
+
+            this.setState({ 
+                search_mode: e
+            })
         }
-    }
-
-    /* Function to move to the last page */
-    moveLastPage(event) {
-        if (this.state.currentPage < this.state.totalPages) {
-            this.setState({
-                currentPage: this.state.totalPages
-            });
-        }
-    }
-
-    doNothing(event) {
-        console.log("Do nothing");
-    }
-
-    /* Function to produce the correct pagination */
-    pagination(currentPage, totalPages) {
-        const offset = 2;
-        const left = currentPage - offset,
-            right = currentPage + offset + 1;
-        let dummyValue = 0;
-        const dummyArray = [];
-        const pageNumber = [];
-
-        // Generate the dummyArray
-        for (let i = 1; i <= totalPages; i++) {
-            if (i === 1 || i === totalPages || (i >= left && i < right)) {
-                dummyArray.push(i);
-            }
-        }
-
-        // Generate the pageNumber array
-        for (let i of dummyArray) {
-            if (dummyValue) {
-                if (i - dummyValue === offset) {
-                    pageNumber.push(dummyValue + 1);
-                } else if (i - dummyValue !== 1) {
-                    pageNumber.push("...");
-                }
-            }
-            pageNumber.push(i);
-            dummyValue = i;
-        }
-        return pageNumber;
-    }
+    };
 
     //Go through the orgs and add a the found orgs to the results
     searchByKeyword(keyword){
@@ -288,7 +228,7 @@ class Search extends React.Component {
         var currentOrgs = [...this.state.orgs];   //Current orgs during the algorithm
 
         //First cut up the string into a list of strings
-        var tags = tagString.split(/(?:,| )+/);
+        var tags = tagString.split(',');
         console.log(tags)
         //If the keyword is empty, do not do anything
         if(tags.length == 0 || tagString.length == 0){
@@ -310,6 +250,7 @@ class Search extends React.Component {
                         //Check non case sensitive
                         if(orgTag.toLowerCase() == tag.toLowerCase()){
                             match = true;
+                            console.log("match")
                         }
                     });
                     if(!match){
