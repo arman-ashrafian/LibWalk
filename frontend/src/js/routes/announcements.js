@@ -30,7 +30,7 @@ class Announcements extends React.Component {
             this.setState({orgs: json.subscriptions});
         });
 
-        if(this.state.orgs === undefined) {
+        if (this.state.orgs === undefined) {
             this.state = {
                 orgs: []
             };
@@ -39,8 +39,8 @@ class Announcements extends React.Component {
 
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
-            if( firebaseUser) {
-                this.setState({ userId: firebaseUser.uid });
+            if (firebaseUser) {
+                this.setState({userId: firebaseUser.uid});
             } else {
                 console.log("Redirecting to login page")
             }
@@ -49,130 +49,131 @@ class Announcements extends React.Component {
     }
 
     render() {
-        if(this.state.orgs === undefined) {
+        if (this.state.orgs === undefined) {
             this.state = {
                 orgs: []
             }
         }
 
-    if (this.state.orgs === undefined) {
-      this.state = {
-        orgs: []
-      };
-    }
-  }
-
-  render() {
-    if (this.state.orgs === undefined) {
-      this.state = {
-        orgs: []
-      };
+        if (this.state.orgs === undefined) {
+            this.state = {
+                orgs: []
+            };
+        }
     }
 
-    return (
-      <div>
-        <NavBar {...this.props} />
-        <main className="mt-5 pt-5">
-          <div className="container centerPage">
-            <div className="row centerPage">
-              {/*Display User Information*/}
-              <div className="col-sm-12 text-center">
-                <h1 className="h1 text-center mb-5">Announcements</h1>
-                <h5 className="text-center mb-5">
-                  Announcements from organizations you subscribe to are listed
-                  below.{" "}
-                </h5>
-              </div>
-              <div className="div-centered">
-                {this.club_grid_loop(this.state.orgs)}
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
-    );
-  }
+    render() {
+        if (this.state.orgs === undefined) {
+            this.state = {
+                orgs: []
+            };
+        }
 
-  club_grid_loop = orgs => {
-    let grid_items = [];
-    let numcols = 4;
-    let numrows = 4; //orgs.length / numcols;
-    numrows = Math.ceil(numrows);
-
-    orgs.forEach(function(e) {
-      grid_items.push(club_grid(e));
-    });
-
-    let grid = [];
-
-    for (let i = 0; i <= numrows; i++) {
-      let row = [];
-      for (let j = 0; j < numcols; j++) {
-        row.push(
-          <div className="club_grid_component">
-            <Col>{grid_items[i * numcols + j]}</Col>
+        return (
             <div>
-              <br />
-              <br />
-            </div>
-          </div>
-        );
-      }
-      grid.push(row);
-    }
-
-    return (
-      <div>
-        <CardDeck> {grid} </CardDeck>
-      </div>
-    );
-  };
-}
-    let club_grid = (org) => {
-        return (
-            <Card style={{width: '80rem', height: '20rem'}} className='text-center'>
-                <Card.Header>
-                    <strong style={{fontSize: 24}}> {org.clubName}</strong>
-                    <br />
-                    <small style={{fontSize: 16}}>{org.clubDescription}</small>
-                </Card.Header>
-                <Card.Body>
-                    <div className="div-centered">
-                        <MakeCard />
+                <NavBar {...this.props} />
+                <main className="mt-5 pt-5">
+                    <div className="container centerPage">
+                        <div className="row centerPage">
+                            {/*Display User Information*/}
+                            <div className="col-sm-12 text-center">
+                                <h1 className="h1 text-center mb-5">Announcements</h1>
+                                <h5 className="text-center mb-5">
+                                    Announcements from organizations you subscribe to are listed
+                                    below.{" "}
+                                </h5>
+                            </div>
+                            <div className="div-centered">
+                                {this.club_grid_loop(this.state.orgs)}
+                            </div>
+                        </div>
                     </div>
-                </Card.Body>
-            </Card>
-        )
-    };
-
-    function MakeCard() {
-        return (
-            <Row>
-                <Card border="info" style={{fontSize: 12}}>
-                    <Card.Header>
-                        <strong className="mr-auto">Notification</strong>
-                    </Card.Header>
-                    <Card.Body>Pizza Night</Card.Body>
-                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
-                </Card>
-                <br />
-                <Card border="warning" style={{fontSize: 12}}>
-                    <Card.Header>
-                        <strong className="mr-auto">Notification</strong>
-                    </Card.Header>
-                    <Card.Body> Free Boba Tomorrow Night</Card.Body>
-                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
-                </Card>
-                <br />
-                <Card border="danger" style={{fontSize: 12}}>
-                    <Card.Header>
-                        <strong className="mr-auto">Notification</strong>
-                    </Card.Header>
-                    <Card.Body>First Meeting Starts @ 12pm on 11/11/2019</Card.Body>
-                    <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019' /></Card.Footer>
-                </Card>
-            </Row>
+                </main>
+            </div>
         );
     }
+
+    club_grid_loop = orgs => {
+        let grid_items = [];
+        let numcols = 4;
+        let numrows = 4; //orgs.length / numcols;
+        numrows = Math.ceil(numrows);
+
+        orgs.forEach(function (e) {
+            grid_items.push(club_grid(e));
+        });
+
+        let grid = [];
+
+        for (let i = 0; i <= numrows; i++) {
+            let row = [];
+            for (let j = 0; j < numcols; j++) {
+                row.push(
+                    <div className="club_grid_component">
+                        <Col>{grid_items[i * numcols + j]}</Col>
+                        <div>
+                            <br/>
+                            <br/>
+                        </div>
+                    </div>
+                );
+            }
+            grid.push(row);
+        }
+
+        return (
+            <div>
+                <CardDeck> {grid} </CardDeck>
+            </div>
+        );
+    };
+}
+
+let club_grid = (org) => {
+    return (
+        <Card style={{width: '80rem', height: '20rem'}} className='text-center'>
+            <Card.Header>
+                <strong style={{fontSize: 24}}> {org.clubName}</strong>
+                <br/>
+                <small style={{fontSize: 16}}>{org.clubDescription}</small>
+            </Card.Header>
+            <Card.Body>
+                <div className="div-centered">
+                    <MakeCard/>
+                </div>
+            </Card.Body>
+        </Card>
+    )
+};
+
+function MakeCard() {
+    return (
+        <Row>
+            <Card border="info" style={{fontSize: 12}}>
+                <Card.Header>
+                    <strong className="mr-auto">Notification</strong>
+                </Card.Header>
+                <Card.Body>Pizza Night</Card.Body>
+                <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019'/></Card.Footer>
+            </Card>
+            <br/>
+            <Card border="warning" style={{fontSize: 12}}>
+                <Card.Header>
+                    <strong className="mr-auto">Notification</strong>
+                </Card.Header>
+                <Card.Body> Free Boba Tomorrow Night</Card.Body>
+                <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019'/></Card.Footer>
+            </Card>
+            <br/>
+            <Card border="danger" style={{fontSize: 12}}>
+                <Card.Header>
+                    <strong className="mr-auto">Notification</strong>
+                </Card.Header>
+                <Card.Body>First Meeting Starts @ 12pm on 11/11/2019</Card.Body>
+                <Card.Footer>Last posted <TimeAgo date='Nov 19, 2019'/></Card.Footer>
+            </Card>
+        </Row>
+    );
+}
 
 export default Announcements;

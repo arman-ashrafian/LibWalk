@@ -378,22 +378,35 @@ class AdminHome extends React.Component {
         return (
             <div>
                 <Card style={{width: '50rem'}}>
-                    <Card.Img variant="top" src={this.state.org.pictureURL}/>
+
+                    <Card.Img src={'https://picsum.photos/id/101/200/300'} style={{
+                        width: '100%',
+                        height: '15vw',
+                        'object-fit': 'cover'
+                    }}/>
+                    {/*<Card.Img variant="top" src={this.state.org.pictureURL}/>*/}
                     <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>About Your Club</Card.Header>
+
                     <Card.Body>
+
                         <Card.Title>{this.state.org.clubName}</Card.Title>
                         <Card.Subtitle>{this.state.org.contactEmail} </Card.Subtitle>
                         <Card.Text>
                             {this.state.org.description}
                         </Card.Text>
+
                         <ListGroup className="list-group-flush">
                             <ListGroupItem>
-                                <Card.Link href={this.state.org.pageURL}>Official Website</Card.Link> </ListGroupItem>
-                            <ListGroupItem> {this.state.org.tags}</ListGroupItem>
+                                <Card.Link href={this.state.org.pageURL}>Official Website</Card.Link>
+                            </ListGroupItem>
+                            <ListGroupItem> Tags Rendered Here</ListGroupItem>
                             <ListGroupItem>Put Upcoming Events Here</ListGroupItem>
                         </ListGroup>
+
                     </Card.Body>
+
                 </Card>
+
             </div>
         )
     };

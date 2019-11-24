@@ -27,8 +27,8 @@ class NavBar extends React.Component {
 
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
-            if( firebaseUser) {
-                this.setState({ userId: firebaseUser.uid, loggedIn: true });
+            if (firebaseUser) {
+                this.setState({userId: firebaseUser.uid, loggedIn: true});
                 // getUser using userId and populate this.state
             } else {
                 console.log("Not logged in")
@@ -52,11 +52,11 @@ class NavBar extends React.Component {
                             <Nav.Link onClick={this.switch_view_search}>Search</Nav.Link>
                         </Nav>
                         <Form inline>
-                        {this.state.loggedIn ?
-                               <Button onClick={this.switch_view_profile} variant="outline-light" > Profile </Button>
-                               :
-                               <Button onClick={this.switch_view_login} variant="outline-light" > Login </Button>
-                        }
+                            {this.state.loggedIn ?
+                                <Button onClick={this.switch_view_profile} variant="outline-light"> Profile </Button>
+                                :
+                                <Button onClick={this.switch_view_login} variant="outline-light"> Login </Button>
+                            }
                         </Form>
                     </Navbar.Collapse>
                 </Navbar>
