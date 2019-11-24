@@ -438,14 +438,7 @@ class AdminHome extends React.Component {
         );
     }
 
-    /***
-     * Finds the club from the state of the component
-     * @returns {*}
-     */
-    get_club_data = () => {
-        let uid = get_user_uid();
-        return this.state.orgs[uid];
-    };
+
 
 };
 
