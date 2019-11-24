@@ -207,7 +207,10 @@ class Subs extends React.Component {
     return (
       <main>
         <NavBar {...this.props} />
-        <h1 className="header"> Subscriptions</h1>
+        <h1 className="h1 text-center mb-5" id="header">
+          {" "}
+          Subscriptions
+        </h1>
         {this.noClub()}
         <div className="container">
           {/*Display each sub container*/}
