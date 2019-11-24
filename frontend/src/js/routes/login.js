@@ -2,15 +2,13 @@ import React from 'react';
 import '../../css/bootstrap.min.css'
 import '../../css/style.min.css'
 import '../../css/mdb.min.css'
-import NavBar from "../navbar";
 import Container from 'react-bootstrap/Container'
 import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Image from 'react-bootstrap/Image'
 import db from "../../firebase.js";
 import * as firebase from "firebase";
-import {getUser, editUser} from "../cloud";
+import {editUser} from "../cloud";
 
 const auth = firebase.auth();
 
