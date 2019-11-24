@@ -206,14 +206,14 @@ export let club_list = [
       clubName: "Speech and Debate at the University of California: San Diego",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/10696",
       contactEmail: "",
-      tags: [],
+      tags: ["CS"],
       announcements: [],
       clubReference: "0pdYaWDj23VJaLUVO1gT2rkV0dD2"
     }
   },
   {
     "0sQeYfUvv1aQ7hSjjNhNo0dAIQI2": {
-      tags: [],
+      tags: ["CS"],
       announcements: [],
       clubReference: "0sQeYfUvv1aQ7hSjjNhNo0dAIQI2",
       description:
@@ -243,7 +243,7 @@ export let club_list = [
   },
   {
     "11tv8ZH3OWeYVvTbcmUhxEZch9F2": {
-      tags: [],
+      tags: ["CS"],
       announcements: [],
       clubReference: "11tv8ZH3OWeYVvTbcmUhxEZch9F2",
       description:
@@ -263,7 +263,7 @@ export let club_list = [
       clubName: "Lion Dance at UCSD",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/8440",
       contactEmail: "",
-      tags: [],
+      tags: ["CS"],
       announcements: [],
       clubReference: "18sY3L9GUGVF6fqLzn0Uj263RhY2",
       description:
@@ -273,7 +273,7 @@ export let club_list = [
   },
   {
     "1JDg5HrSgrgjohtYfGILSI8aQ3O2": {
-      tags: [],
+      tags: ["CS"],
       announcements: [],
       clubReference: "1JDg5HrSgrgjohtYfGILSI8aQ3O2",
       description:
@@ -6924,14 +6924,14 @@ export let club_list = [
       pictureURL: "",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/12060",
       contactEmail: "",
-      tags: [],
+      tags: ["Pie"],
       announcements: [],
       clubReference: "yic7A6OAFIZVJuZJuIiMoC8kEfH3"
     }
   },
   {
     zAdjO1xb4hdL8xI4Yh8MiWvZeEx2: {
-      tags: [],
+      tags: ["Pie"],
       announcements: [],
       clubReference: "zAdjO1xb4hdL8xI4Yh8MiWvZeEx2",
       description:
@@ -6955,13 +6955,13 @@ export let club_list = [
       pictureURL: "",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/10656",
       contactEmail: "",
-      tags: [],
+      tags: ["Pie"],
       announcements: []
     }
   },
   {
     zVAsaNnjakdJS6OboPIs2MGO2HO2: {
-      tags: [],
+      tags: ["Pie"],
       announcements: [],
       clubReference: "zVAsaNnjakdJS6OboPIs2MGO2HO2",
       description:
@@ -6981,7 +6981,7 @@ export let club_list = [
       clubName: "Figure Skating @ UCSD",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/8500",
       contactEmail: "",
-      tags: [],
+      tags: ["Pie"],
       announcements: [],
       clubReference: "zZOkTjzDThYJDiVKxbzfPIgv78X2",
       description:
@@ -7000,7 +7000,7 @@ export let club_list = [
       pictureURL: "",
       pageURL: "https://studentorg.ucsd.edu/Home/Details/8469",
       contactEmail: "",
-      tags: [],
+      tags: ["Pie"],
       announcements: []
     }
   }
