@@ -166,7 +166,6 @@ class AdminHome extends React.Component {
         this.closeEvent();
     };
 
-
     /**
      * Handles the authorization logic for logging the admin out.
      */
