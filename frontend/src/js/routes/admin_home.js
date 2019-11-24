@@ -536,15 +536,9 @@ class AdminHome extends React.Component {
         console.log('Org Data' + JSON.stringify(this.state.org));
         return (
             <div>
-<<<<<<< HEAD
                 <Card style={{width: 'flex'}}>
 
                     <Card.Img src={this.state.org.pictureURL} style={{
-=======
-                {/*<Card style={{width: '50rem'}}>*/}
-<Card>
-                    <Card.Img src={'https://picsum.photos/id/101/200/300'} style={{
->>>>>>> 50dcd492ac3cc0a5a2831dc83c2bd2b1a88d62f2
                         width: '100%',
                         height: '15vw',
                         'object-fit': 'cover'
