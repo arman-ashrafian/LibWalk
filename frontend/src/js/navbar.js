@@ -24,6 +24,10 @@ class NavBar extends React.Component {
         // console.log('Navbar constructor called.', this.props, props);
     }
 
+    /**
+     * Function is called every time the navbar is mounted. Logic manages hiding or viewing certain
+     * buttons (login, ...) by setting the application state.
+     */
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
             if (firebaseUser) {
@@ -119,7 +123,6 @@ class NavBar extends React.Component {
     switch_view_home = () => {
         this.props.history.push('/home');
     };
-
 }
 
 export default NavBar;
