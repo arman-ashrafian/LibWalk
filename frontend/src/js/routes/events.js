@@ -47,19 +47,19 @@ class Events extends React.Component {
 				<main className='mt-5 pt-5'>
 					<div className="container">
 						<Card style={{ display: "flex" }}>
-						<Card.Img variant="top" src={this.state.pictureURL} />
-						<Card.Body>
-							<Card.Title style={{fontSize:"80px"}}>
-								<strong>{this.state.eventName}</strong>
-							</Card.Title>
-							<Card.Subtitle className="mb-2 text-muted" style={{fontSize:"20px"}}>
-								📍 {this.state.location} | 🕔 {this.state.time}
-							</Card.Subtitle>
-							<Card.Text>
-							{this.state.description}
-							</Card.Text>
-							<Button variant="primary" onClick={this.state.rsvpForm}>RSVP</Button>
-						</Card.Body>
+							<Card.Img variant="top" src={this.state.pictureURL} />
+							<Card.Body>
+								<Card.Title style={{fontSize:"80px"}}>
+									<strong>{this.state.eventName}</strong>
+								</Card.Title>
+								<Card.Subtitle className="mb-2 text-muted" style={{fontSize:"20px"}}>
+									📍 {this.state.location} | 🕔 {this.state.time}
+								</Card.Subtitle>
+								<Card.Text>
+									{this.state.description}
+								</Card.Text>
+								<Button variant="primary" onClick={this.state.rsvpForm}>RSVP</Button>
+							</Card.Body>
 						</Card>
 					</div>
 				</main>
