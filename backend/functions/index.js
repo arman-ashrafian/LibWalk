@@ -426,3 +426,18 @@ exports.getAnnouncements = functions.https.onRequest((req, res) => {
       });
   });
 });
+
+exports.createAnnouncements = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        const ann_id = req.body.club_id;
+        const ann_info = req.body.announcements;
+
+        admin
+            .firestore()
+            .collection("Clubs")
+            .doc(ann_id)
+            .set(ann_info)
+            .then(() => res.send({ announcements: "create announcement" + ann_info }))
+            .catch(err => res.send(err));
+    });
+});
