@@ -17,6 +17,7 @@ class Home extends React.Component {
       orgs: club_list,
       currentPage: 1,
       clubPerPage: 9,
+      tagDict: {},
       totalPages: Math.ceil(club_list.length / 9)
     };
 
@@ -25,6 +26,9 @@ class Home extends React.Component {
     this.setPagePrev = this.setPagePrev.bind(this);
     this.moveFirstPage = this.moveFirstPage.bind(this);
     this.moveLastPage = this.moveLastPage.bind(this);
+    this.generateTagList = this.generateTagList.bind(this);
+
+    this.generateTagList();
 
     // GET /getClubs & set the state when the api response is recieved
     /*getClubs().then(json => {
@@ -203,6 +207,22 @@ class Home extends React.Component {
       dummyValue = i;
     }
     return pageNumber;
+  }
+
+  //Creates a hash map of tags
+  generateTagList(){
+    this.state.orgs.forEach( (org) =>{
+      let org_values = Object.values(org)[0];
+      org_values.tags.forEach((tag)=>{
+        let dict = this.state.tagDict;
+        if(!dict[tag]){
+          dict[tag] = [];
+        }
+        dict[tag].push(org);
+        this.setState({tagDict: dict})
+      })
+    })
+    console.log(this.state.tagDict)
   }
 }
 
