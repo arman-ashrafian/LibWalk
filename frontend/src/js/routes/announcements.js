@@ -59,7 +59,7 @@ class Announcements extends React.Component {
               <div className="col-sm-12 text-center">
                 <h1 className="h1 text-center mb-5">Announcements</h1>
                 <h5 className="text-center mb-5">
-                  Announcements from organizations you subscribe to are listed
+                  Announcements from organizations you subscribed to are listed
                   below.{" "}
                 </h5>
               </div>
@@ -131,31 +131,31 @@ function MakeCard() {
     <Row>
       <Card border="info" style={{ fontSize: 12 }}>
         <Card.Header>
-          <strong className="mr-auto">Notification</strong>
+          <strong className="mr-auto" style={{ fontSize: 24 }}>📢</strong>
         </Card.Header>
-        <Card.Body>Pizza Night</Card.Body>
+        <Card.Body>Official Announcement</Card.Body>
         <Card.Footer>
-          Last posted <TimeAgo date="Nov 19, 2019" />
+          <strong>Last posted <TimeAgo date="Nov 19, 2019" /></strong>
         </Card.Footer>
       </Card>
       <br />
       <Card border="warning" style={{ fontSize: 12 }}>
         <Card.Header>
-          <strong className="mr-auto">Notification</strong>
+          <strong className="mr-auto" style={{ fontSize: 24 }}>📣</strong>
         </Card.Header>
-        <Card.Body> Free Boba Tomorrow Night</Card.Body>
+        <Card.Body>Officer Application Is Up</Card.Body>
         <Card.Footer>
-          Last posted <TimeAgo date="Nov 19, 2019" />
+            <strong>Last posted <TimeAgo date="Nov 19, 2019" /></strong>
         </Card.Footer>
       </Card>
       <br />
       <Card border="danger" style={{ fontSize: 12 }}>
         <Card.Header>
-          <strong className="mr-auto">Notification</strong>
+          <strong className="mr-auto" style={{ fontSize: 24 }}>📌</strong>
         </Card.Header>
-        <Card.Body>First Meeting Starts @ 12pm on 11/11/2019</Card.Body>
+        <Card.Body>Official Announcement</Card.Body>
         <Card.Footer>
-          Last posted <TimeAgo date="Nov 19, 2019" />
+            <strong>Last posted <TimeAgo date="Nov 19, 2019" /></strong>
         </Card.Footer>
       </Card>
     </Row>
