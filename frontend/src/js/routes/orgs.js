@@ -5,7 +5,7 @@ import '../../css/style.min.css';
 import NavBar from "../navbar";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import {getEvent, getClub} from "../cloud";
+import {getClub} from "../cloud";
 import { Divider } from "@material-ui/core";
 
 class Orgs extends React.Component {
@@ -20,6 +20,7 @@ class Orgs extends React.Component {
             eventList: [],
             pageURL: '',
             pictureURL: '',
+            announcements: [],
             tags: []
         }
     }
@@ -35,6 +36,7 @@ class Orgs extends React.Component {
                 eventList: clubInfo['eventList'],
                 pageURL: clubInfo['pageURL'],
                 pictureURL: clubInfo['pictureURL'],
+                announcements: clubInfo['announcements'],
                 tags: clubInfo['tags']
             })
         });
