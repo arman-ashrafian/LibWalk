@@ -15,36 +15,6 @@ import {MDBContainer} from "mdbreact";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 
-function get_user_uid() {
-    let uid = 'none';
-    db.auth().onAuthStateChanged(firebaseUser => {
-        if (firebaseUser) {
-            uid = firebaseUser.uid;
-            console.log('firebaseUser', firebaseUser);
-        }
-    });
-
-    return uid;
-}
-
-function check_login_type() {
-    return "admin";
-    let user_provider = 'none';
-    db.auth().onAuthStateChanged(firebaseUser => {
-            user_provider = firebaseUser.providerId;
-            console.log('firebaseUser', firebaseUser);
-        }
-    );
-
-    switch (user_provider) {
-        case "Google":
-            return "user";
-        case "none":
-            throw new Error('user could not be authenticated');
-        default:
-            return "admin";
-    }
-}
 
 class AdminHome extends React.Component {
     // class and overridden methods
@@ -112,7 +82,7 @@ class AdminHome extends React.Component {
 
                 })
             }
-        })
+        });
 
         getEvent('event_id_00').then(eventInfo => {
             this.setState({
@@ -225,15 +195,28 @@ class AdminHome extends React.Component {
     button_container = () => {
         return (
             <div>
-                <ButtonToolbar vertical>
-                    <Button onClick={this.handleEditInfo} block>Edit Club</Button>
-                    {this.modal_edit_clubs()}
-                    <Button onClick={this.handleEditTag} block>Change Tags</Button>
-                    {this.modal_edit_tag()}
-                    <Button onClick={this.handleEditEvent} block>Edit Event</Button>
-                    {this.modal_edit_event()}
-                    <Button onClick={this.handleLogOut} block>Log Out</Button>
-                </ButtonToolbar>
+                {/*Code for button modals*/}
+                {this.modal_edit_clubs()}
+                {this.modal_edit_tag()}
+                {this.modal_edit_event()}
+
+                {/*Card that contains the buttons*/}
+                <Card>
+                    <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>Your Settings</Card.Header>
+
+                    <ListGroup variant="flush">
+                        <ListGroup.Item>
+                            <Card.Link onClick={this.handleEditInfo}>Edit Club</Card.Link></ListGroup.Item>
+                        <ListGroup.Item>
+                            <Card.Link onClick={this.handleEditTag}>Change Tags</Card.Link></ListGroup.Item>
+                        <ListGroup.Item>
+                            <Card.Link onClick={this.handleEditEvent}>Edit Event</Card.Link></ListGroup.Item>
+                        <ListGroup.Item>
+                            <Card.Link onClick={this.handleLogOut}>Log Out</Card.Link></ListGroup.Item>
+                    </ListGroup>
+
+
+                </Card>
             </div>
         )
     };
@@ -391,9 +374,10 @@ class AdminHome extends React.Component {
     };
 
     admin_panel_view = () => {
+        console.log('Org Data' + JSON.stringify(this.state.org));
         return (
             <div>
-                <Card style={{width: '50rem'}} fluid>
+                <Card style={{width: '50rem'}}>
                     <Card.Img variant="top" src={this.state.org.pictureURL}/>
                     <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>About Your Club</Card.Header>
                     <Card.Body>
@@ -404,7 +388,7 @@ class AdminHome extends React.Component {
                         </Card.Text>
                         <ListGroup className="list-group-flush">
                             <ListGroupItem>
-                                <Card.Link src={this.state.org.pageURL}>Official Website</Card.Link> </ListGroupItem>
+                                <Card.Link href={this.state.org.pageURL}>Official Website</Card.Link> </ListGroupItem>
                             <ListGroupItem> {this.state.org.tags}</ListGroupItem>
                             <ListGroupItem>Put Upcoming Events Here</ListGroupItem>
                         </ListGroup>
@@ -416,42 +400,31 @@ class AdminHome extends React.Component {
 
     render() {
         // only admins should be able to see this page, redirect if the login type is not admin.
-        if (check_login_type() === 'user') {
-            this.view_switch_login();
-        }
-        console.log('Admin home')
+        // if (check_login_type() === 'user') {
+        //     this.view_switch_login();
+        // }
 
         return (
             <div>
                 {/*start the rest of the page*/}
                 <main className='mt-5 pt-5'>
-                    <MDBContainer>
-                        <Row style={{flex: 1}}>
-                            <Col style={{flex: 7}}>
+                    <Container>
+                        <Row style={{flex: 5}}>
+                            <Col style={{flex: 8}}>
                                 {this.admin_panel_view()}
                             </Col>
-                            <Col style={{flex: 2, backgroundColor: 'blue'}}>
+                            <Col style={{flex: 2}}>
                                 {this.button_container()}
                             </Col>
                         </Row>
 
-                    </MDBContainer>
+                    </Container>
 
 
-                    {/*render the button component*/}
                 </main>
             </div>
         );
     }
-
-    // clubReference: '',
-    // clubName: '',
-    // contactEmail: '',
-    // description: '',
-    // pictureURL: '',
-    // tags: [],
-    // pageURL: '',
-    // emailList: []
 
 };
 
