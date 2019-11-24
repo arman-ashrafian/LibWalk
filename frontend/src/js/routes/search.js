@@ -53,9 +53,9 @@ class Search extends React.Component {
                                     </Col>
                                     <Col sm={12} md={8} lg={8}>
                                         <div className="input-group">
-                                            <input onChange={(e) => this.setState({ search_keyword :e.target.value})} className="form-control mr-sm-2" type="text" placeholder={this.state.search_mode} />
+                                            <input onChange={(e) => this.setState({ search_keyword :e.target.value})} className="form-control mr-sm-2" style={{fontSize:28}} type="text" placeholder={this.state.search_mode} />
                                             <Dropdown onSelect={(e) => this.handleSearchSelect(e)} as={ButtonGroup}>
-                                                <Button variant="primary" size="sm" onClick={() => this.handleSearchSubmit(this.state.search_keyword)}>Search</Button>
+                                                <Button variant="primary" size="m" onClick={() => this.handleSearchSubmit(this.state.search_keyword)}>Search</Button>
                                                 <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" size="sm" />
                                                 <Dropdown.Menu >
                                                     <Dropdown.Item eventKey="Search By Name">Name</Dropdown.Item>
@@ -79,7 +79,7 @@ class Search extends React.Component {
                             {/*Displays a message if there are no results found*/}
                             {this.state.searched ? (this.state.results.length == 0 ?
                                 <p>No Results Found</p> : this.org_grid(this.state.results)) :
-                                <p>Go ahead. Search something...</p>}
+                                <p></p>}
                         </div>
                     </div>
                 </div>
