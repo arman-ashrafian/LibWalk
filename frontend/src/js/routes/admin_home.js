@@ -16,6 +16,9 @@ import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 
 
+/**
+ * Component responsible for creating the Admin Home Page.
+ */
 class AdminHome extends React.Component {
     // class and overridden methods
     constructor(props) {
@@ -59,7 +62,11 @@ class AdminHome extends React.Component {
         this.handleLogOut = this.handleLogOut.bind(this);
     };
 
+    /**
+     * Set-up function that is called when the user is first directed to the admin home page.
+     */
     componentDidMount() {
+        // this code will get the admin's information to display on the page and store it in state.
         db.auth().onAuthStateChanged(firebaseUser => {
             if (firebaseUser) {
                 this.setState({
@@ -84,6 +91,7 @@ class AdminHome extends React.Component {
             }
         });
 
+        // this code will fetch events for the admin based on event ids.
         getEvent('event_id_00').then(eventInfo => {
             this.setState({
                 event: {
@@ -109,6 +117,9 @@ class AdminHome extends React.Component {
     };
 
     // Handler Methods
+    /**
+     * Handles what happens when you change a club's details.
+     */
     async editHandleClub(e) {
         e.preventDefault();
         await this.setState({
@@ -121,19 +132,27 @@ class AdminHome extends React.Component {
                 tags: this.state.org.tags,
                 pageURL: this.state.org.pageURL
             }
-        })
-        changeClub(this.state.org.ref, this.state.org);
+        });
+        await changeClub(this.state.org.ref, this.state.org);
+        //todo add a success notification here
         this.closeInfo();
-    }
+    };
 
+    /**
+     * Handles what happens when you change a club's details.
+     */
     async editHandleTag(e) {
         e.preventDefault();
         await this.setState({
             tag: e.target[0].value
-        })
+        });
+        // todo call the backend and add a success notification
         this.closeTag();
-    }
+    };
 
+    /**
+     * Handles what happens when you change a club's details.
+     */
     async editHandleEvent(e) {
         e.preventDefault();
         await this.setState({
@@ -145,52 +164,78 @@ class AdminHome extends React.Component {
                 description: e.target[4].value,
                 rsvpForm: e.target[5].value
             }
-        })
+        });
+        //todo call the backend and add a success notification
         this.closeEvent();
-    }
+    };
 
-    handleLogOut() {
+
+    /**
+     * Handles the authorization logic for logging the admin out.
+     */
+    handleLogOut = () => {
         db.auth().signOut().then((result) => {
             this.setState({
                 org: null
             })
         });
         this.props.history.push('/admin_login');
-    }
+    };
 
-    handleEditInfo() {
+    /**
+     * Handles the state change on editing the org's information.
+     */
+    handleEditInfo = () => {
         this.setState({editInfo: true})
-    }
+    };
 
-    handleEditTag() {
+    /**
+     * Handles the state change on editing an organization's tag.
+     */
+    handleEditTag = () => {
         this.setState({editTag: true})
-    }
+    };
 
-    handleEditEvent() {
+    /**
+     * Handles the state change when you edit and org's event.
+     */
+    handleEditEvent = () => {
         this.setState({editEvent: true})
-    }
+    };
 
     // Action Methods
+    /**
+     * Changes the state for helping render certain elements.
+     */
 
-    closeInfo() {
+    closeInfo = () => {
         this.setState({
             editInfo: false
         })
-    }
+    };
 
-    closeTag() {
+    /**
+     * Changes the state for helping render certain elements.
+     */
+    closeTag = () => {
         this.setState({
             editTag: false
         })
-    }
+    };
 
-    closeEvent() {
+    /**
+     * Changes the state for helping render certain elements.
+     */
+    closeEvent = () => {
         this.setState({
             editEvent: false
         })
-    }
+    };
 
     // container components
+    /**
+     * Creates a container for the Settings panel for the admin.
+     */
     button_container = () => {
         return (
             <div>
@@ -277,7 +322,7 @@ class AdminHome extends React.Component {
                                 <Form.Control type="rsvp" placeholder="Enter RSVP URL"
                                               defaultValue={this.state.event.rsvp}/>
                             </Form.Group>
-
+                            {/*todo add form verification*/}
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
@@ -372,6 +417,9 @@ class AdminHome extends React.Component {
         </div>)
     };
 
+    /**
+     * Element for the main organization view.
+     */
     admin_panel_view = () => {
         console.log('Org Data' + JSON.stringify(this.state.org));
         return (
@@ -437,7 +485,6 @@ class AdminHome extends React.Component {
             </div>
         );
     }
-
 
 
 };
