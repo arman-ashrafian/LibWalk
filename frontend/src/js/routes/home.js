@@ -1,12 +1,10 @@
 import React from "react";
 import NavBar from "../navbar";
-import Carousel from "react-bootstrap/Carousel";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import CardDeck from "react-bootstrap/CardDeck";
-import {club_list, getTag, getClub} from "../cloud";
-//import {getClubs} from "../cloud"
+import {club_list, getTag} from "../cloud";
 import Pagination from "react-bootstrap/Pagination";
 
 class Home extends React.Component {
@@ -241,6 +239,3 @@ let org_grid_component = org => {
 
 export default Home;
 
-function shuffle(array) {
-    array.sort(() => Math.random() - 0.5);
-}
