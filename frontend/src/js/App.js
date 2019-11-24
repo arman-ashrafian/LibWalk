@@ -10,7 +10,7 @@ import Calendar from "./routes/calendar";
 import Profile from "./routes/profile";
 import AdminHome from "./routes/admin_home";
 import AdminLogin from "./routes/admin_login";
-import Events from "./routes/events";
+import Events from "./routes/eventDetails";
 import Orgs from "./routes/orgs";
 
 function App() {
