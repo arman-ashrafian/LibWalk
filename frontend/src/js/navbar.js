@@ -14,13 +14,13 @@ class NavBar extends React.Component {
             loggedIn: false
         };
         this.setState(props);
-        this.switch_view_admin_home = this.switch_view_admin_home.bind(this)
-        this.switch_view_announcements = this.switch_view_announcements.bind(this)
-        this.switch_view_home = this.switch_view_home.bind(this)
-        this.switch_view_login = this.switch_view_login.bind(this)
-        this.switch_view_profile = this.switch_view_profile.bind(this)
-        this.switch_view_subscriptions = this.switch_view_subscriptions.bind(this)
-        this.switch_view_search = this.switch_view_search.bind(this)
+        this.switch_view_admin_home = this.switch_view_admin_home.bind(this);
+        this.switch_view_announcements = this.switch_view_announcements.bind(this);
+        this.switch_view_home = this.switch_view_home.bind(this);
+        this.switch_view_login = this.switch_view_login.bind(this);
+        this.switch_view_profile = this.switch_view_profile.bind(this);
+        this.switch_view_subscriptions = this.switch_view_subscriptions.bind(this);
+        this.switch_view_search = this.switch_view_search.bind(this);
         // console.log('Navbar constructor called.', this.props, props);
     }
 
