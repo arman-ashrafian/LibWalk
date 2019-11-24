@@ -1,7 +1,7 @@
 import React from 'react'
 import NavBar from "../navbar";
 import {getClubs} from "../cloud";
-import {changeClub, getClub, getEvent, changeTag, getTag} from "../cloud";
+import {changeClub, getClub, getEvent, changeEvent, changeTag, getTag} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -27,6 +27,7 @@ class AdminHome extends React.Component {
 			editInfo: false,
 			editTag: false,
 			editEvent: false,
+			createEvent: false,
 			org_id: "",
 			tag: "",
 			org: {
@@ -37,6 +38,7 @@ class AdminHome extends React.Component {
 				pictureURL: '',
 				tags: [],
 				pageURL: '',
+				announcements: [],
 				emailList: []
 			},
 			event: {
@@ -49,7 +51,7 @@ class AdminHome extends React.Component {
 				time: ''
 			},
 			tagInfo: {
-				orgs: [],
+				clubs: [],
 				tagID: ''
 			}
 		};
@@ -62,39 +64,10 @@ class AdminHome extends React.Component {
 		this.handleEditEvent = this.handleEditEvent.bind(this);
 		this.editHandleClub = this.editHandleClub.bind(this);
 		this.editHandleTag = this.editHandleTag.bind(this);
-		this.editHandleEvent = this.editHandleEvent.bind(this);
+		this.editHandleEditEvent = this.editHandleEditEvent.bind(this);
+		this.editHandleCreateEvent = this.editHandleCreateEvent.bind(this);
 		this.handleLogOut = this.handleLogOut.bind(this);
     };
-		
-	closeInfo() {
-		this.setState({
-			editInfo: false
-		})
-	}
-
-	closeTag() {
-		this.setState({
-			editTag: false
-		})
-	}
-
-	closeEvent() {
-		this.setState({
-			editEvent: false
-		})
-	}
-
-	handleEditInfo() {
-		this.setState({editInfo: true})
-	}
-
-	handleEditTag() {
-		this.setState({editTag: true})
-	}
-
-	handleEditEvent() {
-		this.setState({editEvent: true})
-	}
 
 	/**
 	 * Set-up function that is called when the user is first directed to the
@@ -126,7 +99,7 @@ class AdminHome extends React.Component {
 			}
 		})
 		
-		// This code will fetch events for the admin base don the event id
+		// This code will fetch events for the admin based on the event id
 		getEvent('event_id_00').then(eventInfo => {
 			this.setState({
 				event: {
@@ -165,11 +138,12 @@ class AdminHome extends React.Component {
 				description: e.target[3].value,
 				clubReference: this.state.org.ref,
 				tags: this.state.org.tags,
+				announcements: this.state.org.announcements,
 				pageURL: this.state.org.pageURL
 			}
 		})
 		await changeClub(this.state.org.clubReference, this.state.org);
-		//TODO: add a success notification here
+		alert('Updated');
 		this.closeInfo();
 	};
 
@@ -179,8 +153,12 @@ class AdminHome extends React.Component {
 	 */
 	async editHandleTag(e) {
 		e.preventDefault();
+		if(e) {
+			alert('Please Enter a Tag');
+			return;
+		}
 		await this.setState({
-			tag: e.target[0].value
+			tag: e.target[0].value.toLowerCase()
 		});
 		db.firestore().collection("Tags").doc(this.state.tag).get()
 			.then((doc) => {
@@ -188,54 +166,33 @@ class AdminHome extends React.Component {
 					getTag(this.state.tag).then(tagClubs => {
 						this.setState({
 							tagInfo: {
-								orgs: tagClubs['orgs'],
+								clubs: tagClubs['clubs'],
 								tagID: tagClubs['tagID']
 							}
 						})
 					})
-					if(this.tagInfo.orgs.includes(this.state.org.clubReference) === false) {
-						this.tagInfo.orgs.push(this.state.org.clubReference);
+					if(this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
+						this.state.tagInfo.clubs.push(this.state.org.clubReference);
 						changeTag(this.state.tag, this.tagInfo);
 					}
 				}
 				else {
 					this.setState({
 						tagInfo: {
-							orgs: [this.state.org.clubReference],
+							clubs: [this.state.org.clubReference],
 							tagID: this.state.tag
 						}
 					})
 					changeTag(this.state.tag, this.state.tagInfo);
 				}
 			});
-		/*
-		let i = 0;
-		let notExist = true;
-		while(i < this.state.org.tags.length) {
-			console.log("hi");
-			if(this.state.org.tags[i] === this.state.tag) {
-				notExist = false;
-			}
-			i++;
-		}
-		console.log(this.state.org.tags);
-		console.log(notExist);
-		if(notExist) {
-			this.setState({
-				org: {
-					clubName: this.state.org.clubName,
-					contactEmail: this.state.org.contactEmail,
-					pictureURL: this.state.org.pictureURL,
-					description: this.state.org.description,
-					clubReference: this.state.org.clubReference,
-					tags: this.state.org.tags.push(this.state.tag),
-					pageURL: this.state.org.pageURL
-				}
-			});
-			console.log(this.state.org.tags);
-			console.log(this.state.org.clubReference);
+		
+		if(this.state.org.tags.includes(this.state.tag) === false) {
+			this.state.org.tags.push(this.state.tag);
 			changeClub(this.state.org.clubReference, this.state.org);
-		}*/
+		}
+		console.log(this.state.clubReference);
+		alert('Updated');
 		this.closeTag();
 	};
 
@@ -243,7 +200,7 @@ class AdminHome extends React.Component {
 	 * Handles what happens when you change a clubs event details
 	 *  
 	 */
-	async editHandleEvent(e) {
+	async editHandleEditEvent(e) {
 		e.preventDefault();
 		await this.setState({
 			event: {
@@ -256,30 +213,42 @@ class AdminHome extends React.Component {
 				eventReference: this.state.eventReference
 			}
 		})
-		//TODO: call the backend and add a success notification
+		await changeEvent(this.state.event.eventReference, this.state.event);
+		alert('Updated');
 		this.closeEvent();
 	}
 
-	async editHandleEvent(e) {
-		try {
-			e.preventDefault();
-			db.firestore().collection("Events").doc().get()
-				.then((doc) => {
-
-				});
-			await this.setState({
+	async editHandleCreateEvent(e) {
+		e.preventDefault();
+		if(!e.target[0].value || !e.target[1].value || !e.target[2].value ||
+		   !e.target[4].value) {
+			alert('Please make sure to have name, location, time, and description');
+			return;
+		}
+		await this.setState({
+			event: {
 				eventName: e.target[0].value,
 				location: e.target[1].value,
 				time: e.target[2].value,
 				pictureURL: e.target[3].value,
 				description: e.target[4].value,
 				rsvpForm: e.target[5].value,
-				eventReference: this.state.event.eventReference
+				eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value
+			}
+		})
+		console.log(this.state.eventReference);
+		await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
+			.then((doc) => {
+				if(doc.exists) {
+					alert('You already have an event like this');
+					return;
+				}
+				else {
+					changeEvent(this.state.event.eventReference, this.state.event);
+					alert('Event Created');
+					this.closeCEvent();
+				}
 			});
-		}
-		catch (error) {
-			alert(error);
-		}
 	}
 
 	/**
@@ -313,7 +282,11 @@ class AdminHome extends React.Component {
      */
     handleEditEvent = () => {
         this.setState({editEvent: true})
-    };
+	};
+	
+	handleCreateEvent = () => {
+		this.setState({createEvent: true})
+	};
 
     // Action Methods
     /**
@@ -342,7 +315,16 @@ class AdminHome extends React.Component {
         this.setState({
             editEvent: false
         })
-    };
+	};
+	
+	/**
+	 * Changes the state for helping render certain elements
+	 */
+	closeCEvent = () => {
+		this.setState({
+			createEvent: false
+		})
+	}
 
     // container components
     /**
@@ -354,7 +336,8 @@ class AdminHome extends React.Component {
                 {/*Code for button modals*/}
                 {this.modal_edit_clubs()}
                 {this.modal_edit_tag()}
-                {this.modal_edit_event()}
+				{this.modal_edit_event()}
+				{this.modal_create_event()}
 
                 {/*Card that contains the buttons*/}
                 <Card>
@@ -364,9 +347,11 @@ class AdminHome extends React.Component {
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditInfo}>Edit Club</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleEditTag}>Change Tags</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleEditTag}>Add Tags</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditEvent}>Edit Event</Card.Link></ListGroup.Item>
+						<ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateEvent}>Create Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleLogOut}>Log Out</Card.Link></ListGroup.Item>
                     </ListGroup>
@@ -377,6 +362,62 @@ class AdminHome extends React.Component {
         )
     };
 
+	modal_create_event = () => {
+		return (
+			<div>
+				<Modal
+				size="lg"
+				show={this.state.createEvent}
+				onHide={this.closeCEvent}
+				aria-labelledby="example-modal-sizes-title-lg"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title id="example-modal-sizes-title-lg">
+                            Create Event
+                        </Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <Form onSubmit={this.editHandleCreateEvent}>
+                            <Form.Group controlId="formName">
+                                <Form.Label>Event Name</Form.Label>
+                                <Form.Control type="name" placeholder="Enter Event Name"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formPlace">
+                                <Form.Label>Location</Form.Label>
+                                <Form.Control type="place" placeholder="Enter Location"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formTime">
+                                <Form.Label>Time</Form.Label>
+                                <Form.Control type="timeS" placeholder="Enter Time"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formPic">
+                                <Form.Label>Picture</Form.Label>
+                                <Form.Control type="pic" placeholder="Enter Picture URL"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formDetails">
+                                <Form.Label>Details</Form.Label>
+                                <Form.Control type="details" placeholder="Enter Details"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formRSVP">
+                                <Form.Label>RSVP</Form.Label>
+                                <Form.Control type="rsvp" placeholder="Enter RSVP URL"/>
+                            </Form.Group>
+                            {/*todo add form verification*/}
+                            <Button variant="primary" type="submit">
+                                Submit
+                            </Button>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+			</div>
+		)
+	}
     // modals
     /**
      * Generates the jsx code to create and handle logic for a modal component to edit a clubs events.
@@ -386,10 +427,10 @@ class AdminHome extends React.Component {
         return (
             <div>
                 <Modal
-                    size="lg"
-                    show={this.state.editEvent}
-                    onHide={this.closeEvent}
-                    aria-labelledby="example-modal-sizes-title-lg"
+				size="lg"
+				show={this.state.editEvent}
+				onHide={this.closeEvent}
+				aria-labelledby="example-modal-sizes-title-lg"
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id="example-modal-sizes-title-lg">
@@ -398,17 +439,17 @@ class AdminHome extends React.Component {
                     </Modal.Header>
 
                     <Modal.Body>
-                        <Form onSubmit={this.editHandleEvent}>
+                        <Form onSubmit={this.editHandleEditEvent}>
                             <Form.Group controlId="formName">
                                 <Form.Label>Event Name</Form.Label>
                                 <Form.Control type="name" placeholder="Enter Event Name"
-                                              defaultValue={this.state.event.ename}/>
+                                              defaultValue={this.state.event.eventName}/>
                             </Form.Group>
 
                             <Form.Group controlId="formPlace">
                                 <Form.Label>Location</Form.Label>
                                 <Form.Control type="place" placeholder="Enter Location"
-                                              defaultValue={this.state.event.loc}/>
+                                              defaultValue={this.state.event.locatioin}/>
                             </Form.Group>
 
                             <Form.Group controlId="formTime">
@@ -420,19 +461,19 @@ class AdminHome extends React.Component {
                             <Form.Group controlId="formPic">
                                 <Form.Label>Picture</Form.Label>
                                 <Form.Control type="pic" placeholder="Enter Picture URL"
-                                              defaultValue={this.state.event.epic}/>
+                                              defaultValue={this.state.event.pictureURL}/>
                             </Form.Group>
 
                             <Form.Group controlId="formDetails">
                                 <Form.Label>Details</Form.Label>
                                 <Form.Control type="details" placeholder="Enter Details"
-                                              defaultValue={this.state.event.edesc}/>
+                                              defaultValue={this.state.event.description}/>
                             </Form.Group>
 
                             <Form.Group controlId="formRSVP">
                                 <Form.Label>RSVP</Form.Label>
                                 <Form.Control type="rsvp" placeholder="Enter RSVP URL"
-                                              defaultValue={this.state.event.rsvp}/>
+                                              defaultValue={this.state.event.rsvpForm}/>
                             </Form.Group>
                             {/*todo add form verification*/}
                             <Button variant="primary" type="submit">
