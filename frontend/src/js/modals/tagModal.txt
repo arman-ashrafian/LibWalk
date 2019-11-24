@@ -1,0 +1,32 @@
+function TagModal() {
+  const [smShow, setSmShow] = useState(false);
+
+  return (
+    <ButtonToolbar>
+      <Button onClick={() => setSmShow(true)}>Edit Tag</Button>
+      <Modal
+        size="sm"
+        show={smShow}
+        onHide={() => setSmShow(false)}
+        aria-labelledby="example-modal-sizes-title-sm"
+        >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-sm">
+            Tag Info
+          </Modal.Title>
+        </Modal.Header>
+        
+        <Modal.Body>
+          <Form.Group controlId="formName">
+              <Form.Label>Tag Name</Form.Label>
+              <Form.Control type="name" placeholder="Enter Tag Name" />
+          </Form.Group>
+            <Button variant="primary" type="submit" >
+              Submit
+            </Button>
+         </Modal.Body>      
+               
+      </Modal>
+    </ButtonToolbar>
+  );
+}

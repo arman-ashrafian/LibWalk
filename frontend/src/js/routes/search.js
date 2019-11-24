@@ -5,17 +5,17 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import { MDBCol, MDBInput, MDBBtn, MDBSelect } from "mdbreact"
+import {MDBCol, MDBInput, MDBBtn, MDBSelect} from "mdbreact"
 import Pagination from "react-bootstrap/Pagination";
 import {club_list} from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
 
 //This will be at the top of the page and will show two search bars, one for name and one for tags
-function SearchBars(props){
+function SearchBars(props) {
     //This will hold the current value of the input fields
     var textValueKeyword = "";
-    return(
+    return (
         <Container className='mt-0'>
             <Row className={"SearchBar"} style={{marginBottom: '10px'}}>
                 <Col sm={12} md={12} lg={12}>
@@ -24,8 +24,11 @@ function SearchBars(props){
                         </Col>
                         <Col sm={12} md={8} lg={8}>
                             <div className="input-group">
-                                <input onChange={(e) => textValueKeyword=e.target.value} className="form-control mr-sm-2" type="text" placeholder="Search by name..." aria-label="Search by tags..." />
-                                <MDBBtn onClick={() => props.nameSearch(textValueKeyword)} color="blue" rounded size="md" type="submit" className="pull-right mt-0">
+                                <input onChange={(e) => textValueKeyword = e.target.value}
+                                       className="form-control mr-sm-2" type="text" placeholder="Search by name..."
+                                       aria-label="Search by tags..."/>
+                                <MDBBtn onClick={() => props.nameSearch(textValueKeyword)} color="blue" rounded
+                                        size="md" type="submit" className="pull-right mt-0">
                                     Search
                                 </MDBBtn>
                             </div>
@@ -36,15 +39,18 @@ function SearchBars(props){
                     </Row>
                 </Col>
             </Row>
-            <Row  className={"SearchBar"} style={{marginBottom: '50px'}}>
+            <Row className={"SearchBar"} style={{marginBottom: '50px'}}>
                 <Col sm={12} md={12} lg={12}>
                     <Row>
                         <Col sm={0} md={2} lg={2}>
                         </Col>
                         <Col sm={12} md={8} lg={8}>
                             <div className="input-group">
-                                <input onChange={(e) => textValueKeyword=e.target.value} className="form-control mr-sm-2" type="text" placeholder="Search by tags..." aria-label="Search by tags..." />
-                                <MDBBtn onClick={() => props.tagSearch(textValueKeyword)} color="blue" rounded size="md" type="submit" className="pull-right mt-0">
+                                <input onChange={(e) => textValueKeyword = e.target.value}
+                                       className="form-control mr-sm-2" type="text" placeholder="Search by tags..."
+                                       aria-label="Search by tags..."/>
+                                <MDBBtn onClick={() => props.tagSearch(textValueKeyword)} color="blue" rounded size="md"
+                                        type="submit" className="pull-right mt-0">
                                     Search
                                 </MDBBtn>
                             </div>
@@ -60,7 +66,7 @@ function SearchBars(props){
     );
 }
 
-function searchResults(){
+function searchResults() {
 
 }
 
@@ -92,9 +98,8 @@ class Search extends React.Component {
     }
 
 
-
     render() {
-        const { clubPerPage, currentPage, orgs, totalPages } = this.state;
+        const {clubPerPage, currentPage, orgs, totalPages} = this.state;
         const endInd = currentPage * clubPerPage;
         const startInd = endInd - clubPerPage;
 
@@ -114,7 +119,7 @@ class Search extends React.Component {
                         active={page === currentPage}
                         onClick={page === "..." ? this.doNothing : this.setClubPerPage}
                     >
-                        {(page = page === "..." ? <Pagination.Ellipsis /> : page)}
+                        {(page = page === "..." ? <Pagination.Ellipsis/> : page)}
                     </Pagination.Item>
                 </div>
             );
@@ -131,7 +136,9 @@ class Search extends React.Component {
                         {/*Rest of the page here*/}
                         <div className="home_grid_container">
                             {/*Displays a message if there are no results found*/}
-                            {this.state.searched ? (this.state.results.length == 0 ? <p>No Results Found</p> : this.org_grid(this.state.results)) : <p>Go ahead.  Search something...</p>}
+                            {this.state.searched ? (this.state.results.length == 0 ?
+                                <p>No Results Found</p> : this.org_grid(this.state.results)) :
+                                <p>Go ahead. Search something...</p>}
                         </div>
                     </div>
                 </div>
@@ -144,17 +151,16 @@ class Search extends React.Component {
         var numcols = 4;
         var numrows = 1;
         //Change the number of cols to properly accomodate small results
-        if(orgs.length < 4){
+        if (orgs.length < 4) {
             numcols = orgs.length;
             numrows = 1;
-        }
-        else{
+        } else {
             numcols = 4;
             numrows = orgs.length / numcols;
             numrows = Math.ceil(numrows);
         }
 
-        orgs.forEach(function(e) {
+        orgs.forEach(function (e) {
             grid_items.push(org_grid_component(e));
         });
 
@@ -167,7 +173,7 @@ class Search extends React.Component {
                     <div className="home_grid_component">
                         <Col>{grid_items[i * numcols + j]}</Col>
                         <div>
-                            <br />
+                            <br/>
                         </div>
                     </div>
                 );
@@ -261,17 +267,17 @@ class Search extends React.Component {
     }
 
     //Go through the orgs and add a the found orgs to the results
-    searchByKeyword(keyword){
+    searchByKeyword(keyword) {
         var searchedOrgs = [];
 
         //If the keyword is empty, do not do anything
-        if(keyword.length == 0){
+        if (keyword.length == 0) {
             return;
         }
 
-        this.state.orgs.forEach(function(e){
+        this.state.orgs.forEach(function (e) {
             var org = Object.values(e)[0];
-            if(org.clubName.toLowerCase().includes(keyword.toLowerCase())) {
+            if (org.clubName.toLowerCase().includes(keyword.toLowerCase())) {
                 searchedOrgs.push(e)
             }
         });
@@ -284,37 +290,36 @@ class Search extends React.Component {
     }
 
     //Searches the clubs based on tags.  tags param is a string of tags
-    searchByTags(tagString){
+    searchByTags(tagString) {
         var currentOrgs = [...this.state.orgs];   //Current orgs during the algorithm
 
         //First cut up the string into a list of strings
         var tags = tagString.split(/(?:,| )+/);
         console.log(tags)
         //If the keyword is empty, do not do anything
-        if(tags.length == 0 || tagString.length == 0){
+        if (tags.length == 0 || tagString.length == 0) {
             return;
         }
 
         //Iterate through each searched tag
-        tags.forEach(function(tag){
+        tags.forEach(function (tag) {
             //Iterate through all orgs still in the list
             var i = currentOrgs.length;
-            while(i--){
+            while (i--) {
                 let org = Object.values(currentOrgs[i])[0];
-                if(!org.tags){
-                    currentOrgs.splice(i,1);
-                }
-                else{
+                if (!org.tags) {
+                    currentOrgs.splice(i, 1);
+                } else {
                     var match = false;
-                    org.tags.forEach(function(orgTag){
+                    org.tags.forEach(function (orgTag) {
                         //Check non case sensitive
-                        if(orgTag.toLowerCase() == tag.toLowerCase()){
+                        if (orgTag.toLowerCase() == tag.toLowerCase()) {
                             match = true;
                         }
                     });
-                    if(!match){
+                    if (!match) {
                         //Not in the array.  Remove it from current orgs
-                        currentOrgs.splice(i,1);
+                        currentOrgs.splice(i, 1);
                     }
                 }
 
@@ -337,8 +342,8 @@ let org_grid_component = org => {
     return (
         <div>
             {/*<Card style={{width: '18rem'}}>*/}
-            <Card style={{ width: "20rem", height: "36rem"}} className="text-center">
-                <Card.Img variant="top" src={org.img} />
+            <Card style={{width: "20rem", height: "36rem"}} className="text-center">
+                <Card.Img variant="top" src={org.img}/>
                 <Card.Body>
                     <Card.Title>{org.clubName}</Card.Title>
                     <Card.Text>
