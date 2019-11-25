@@ -41,8 +41,7 @@ class EachSub extends React.Component {
       pathname:"/orgs",
       state:{
           club_id: this.state.club_id,
-          test: "08ty8DCalehP6KbWldvDPkoK9ZA3"
-       }
+      }
      });
   }
 

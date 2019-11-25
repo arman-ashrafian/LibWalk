@@ -39,10 +39,10 @@ class Profile extends React.Component {
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
             if( firebaseUser) {
-                this.setState({ userId: firebaseUser.uid });
                 // getUser using userId and populate this.state
-                getUser(this.state.userId).then(json => {
+                getUser(firebaseUser.uid).then(json => {
                     this.setState({
+                    userId: firebaseUser.uid,
                     user: {
                         name: json['name'],
                         email: json['email'],
