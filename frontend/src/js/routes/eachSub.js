@@ -10,6 +10,7 @@ class EachSub extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      club_id : this.props.clubId,
       startIndex: 0,
       endIndex: 3,
       clubName: "",
@@ -17,18 +18,32 @@ class EachSub extends React.Component {
       clubPicture: "",
       clubTags: []
     };
+
+    this.redirectToClubDetail = this.redirectToClubDetail.bind(this)
   }
 
   componentDidMount() {
       getClub(this.props.clubId).then(json => {
           console.log(json)
           this.setState({
+              club_id: this.props.clubId,
               clubName: json['clubName'],
               clubDescription: json['description'],
               clubPicture: json['pictureURL'],
               clubTags: json['tags']
           });
       });
+  }
+
+  redirectToClubDetail() {
+    console.log(this.state.club_id)
+    this.props.history.push({
+      pathname:"/orgs",
+      state:{
+          club_id: this.state.club_id,
+          test: "08ty8DCalehP6KbWldvDPkoK9ZA3"
+       }
+     });
   }
 
   render() {
@@ -53,7 +68,6 @@ class EachSub extends React.Component {
       var number = Math.floor(Math.random() * colors.length);
       return colors[number];
     };*/
-    console.log(this.state.clubTags)
 
     return (
       <div className="sub_container">
@@ -69,10 +83,10 @@ class EachSub extends React.Component {
 
           <View>
             <div className="information">
-              <h4 className="clubName">
+              <a className="clubName" onClick={this.redirectToClubDetail}>
                 {this.state.clubName}
-              </h4>
-              <p className="description">{this.state.clubDescription}</p>
+              </a>
+              <p className="description">{this.state.clubDescription.slice(0, 200) + "..."}</p>
               <div className="tags">
                 {this.state.clubTags.map(tag => (
                   // add club tag stuff here

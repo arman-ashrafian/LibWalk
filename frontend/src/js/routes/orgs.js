@@ -27,7 +27,8 @@ class Orgs extends React.Component {
     }
 
     componentDidMount() {
-        getClub(this.state.club_id).then(clubInfo => {
+        console.log(this.props)
+        getClub(this.props.location.state.club_id).then(clubInfo => {
             console.log(clubInfo)
             this.setState({
                 clubName: clubInfo['clubName'],
