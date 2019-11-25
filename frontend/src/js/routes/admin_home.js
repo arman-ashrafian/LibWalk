@@ -250,6 +250,10 @@ class AdminHome extends React.Component {
         this.closeEvent();
     }
 
+    /**
+     * Handles what happens when you create an event for a club.
+     *
+     */
     async editHandleCreateEvent(e) {
         e.preventDefault();
         if (!e.target[0].value || !e.target[1].value || !e.target[2].value ||
@@ -267,7 +271,8 @@ class AdminHome extends React.Component {
                 rsvpForm: e.target[5].value,
                 eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value
             }
-        })
+        });
+
         console.log(this.state.eventReference);
         await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
             .then((doc) => {
@@ -688,6 +693,6 @@ class AdminHome extends React.Component {
     }
 
 
-};
+}
 
 export default AdminHome;
