@@ -70,19 +70,37 @@ class AdminHome extends React.Component {
                     org_id: firebaseUser.uid
                 });
                 getClub(firebaseUser.uid).then(clubInfo => {
-                    console.log(clubInfo);
-                    this.setState({
-                        org: {
-                            clubReference: clubInfo['clubReference'],
-                            clubName: clubInfo['clubName'],
-                            contactEmail: clubInfo['contactEmail'],
-                            description: clubInfo['description'],
-                            pictureURL: clubInfo['pictureURL'],
-                            tags: clubInfo['tags'],
-                            pageURL: clubInfo['pageURL'],
-                            emailList: clubInfo['emailList']
-                        }
-                    })
+                    console.log('Club Info', clubInfo);
+
+                    if (clubInfo === undefined) {
+                        this.setState({
+                            org: {
+                                clubReference: 'getClub Failure',
+                                clubName: 'System Failure',
+                                contactEmail: 'System Failure',
+                                description: 'System Failure',
+                                pictureURL: 'System Failure',
+                                tags: 'System Failure',
+                                pageURL: 'System Failure',
+                                emailList: 'System Failure',
+                            }
+                        })
+
+                    } else {
+                        this.setState({
+                            org: {
+                                clubReference: clubInfo['clubReference'],
+                                clubName: clubInfo['clubName'],
+                                contactEmail: clubInfo['contactEmail'],
+                                description: clubInfo['description'],
+                                pictureURL: clubInfo['pictureURL'],
+                                tags: clubInfo['tags'],
+                                pageURL: clubInfo['pageURL'],
+                                emailList: clubInfo['emailList']
+                            }
+                        })
+
+                    }
 
                 })
             }
@@ -421,7 +439,7 @@ class AdminHome extends React.Component {
         return (
             <div>
                 {/*<Card style={{width: '50rem'}}>*/}
-<Card>
+                <Card>
                     <Card.Img src={'https://picsum.photos/id/101/200/300'} style={{
                         width: '100%',
                         height: '15vw',
@@ -455,7 +473,7 @@ class AdminHome extends React.Component {
     };
 
     next_upcoming_events = () => {
-      console.log('event data', this.state.event)
+        console.log('event data', this.state.event)
     };
 
     render() {
