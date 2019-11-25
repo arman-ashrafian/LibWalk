@@ -148,15 +148,6 @@ class AdminHome extends React.Component {
         })
     }
 
-    // routing functions
-    /**
-     * If the user is not authorized as an admin, then we just take them to the home page.
-     */
-    view_switch_login = () => {
-        console.log('WARN: Unauthorized user tried to access admin page.');
-        this.props.history.push('/home');
-    };
-
     // Handler Methods
     /**
      * Handles what happens when you change a club's details.
