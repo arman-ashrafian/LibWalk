@@ -68,7 +68,7 @@ class Subs extends React.Component {
                     });
                 })
             } else {
-                alert("Not logged in")
+                console.log("Not logged in")
             }
 
         });
@@ -78,7 +78,7 @@ class Subs extends React.Component {
      *  Check if the user is subcribe to any clubs
      */
     noClub() {
-        if (this.state.clubList.length === 0) {
+        if (this.state.subscriptions.length === 0) {
             return <div>You are not subscribed to any orgs</div>;
         }
     }
@@ -169,7 +169,7 @@ class Subs extends React.Component {
     }
 
     render() {
-        const showClubs = [];
+        let showClubs = [];
         let loadPageNumber;
         if (this.state.subscriptions.length !== 0) {
             // Update the current page number and the current clubs that will be shown in each page
@@ -179,7 +179,8 @@ class Subs extends React.Component {
             const currentClubs = this.state.subscriptions.slice(firstIndex, endIndex);
             // Function to render the clubs
             showClubs = currentClubs.map(club => {
-                return <EachSub {...club} />;
+                console.log(club)
+                return <EachSub clubId={club} />;
             });
 
             // Find how many pages for the clubs

@@ -12,6 +12,7 @@ class Orgs extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            club_id : "08ty8DCalehP6KbWldvDPkoK9ZA3",
             clubName: '',
             clubReference: '',
             contactEmail: '',
@@ -26,7 +27,8 @@ class Orgs extends React.Component {
     }
 
     componentDidMount() {
-        getClub('08hzBkOlpgdVIR9gQD9sliLkAsy1').then(clubInfo => {
+        getClub(this.state.club_id).then(clubInfo => {
+            console.log(clubInfo)
             this.setState({
                 clubName: clubInfo['clubName'],
                 clubReference: clubInfo['clubReference'],
