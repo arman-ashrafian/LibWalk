@@ -53,10 +53,6 @@ class Announcements extends React.Component {
                             {/*Display User Information*/}
                             <div className="col-sm-12 text-center">
                                 <h1 className="h1 text-center mb-5">Announcements</h1>
-                                <h5 className="text-center mb-5">
-                                    Announcements from organizations you subscribed to are listed
-                                    below.{" "}
-                                </h5>
                             </div>
                             <div className="div-centered">
                                 {this.club_grid_loop(this.state.orgs)}

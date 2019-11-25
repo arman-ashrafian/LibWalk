@@ -51,6 +51,7 @@ class Login extends React.Component {
             auth.onAuthStateChanged((user) => {
                 if (user) {
                     this.setState({userId: user.uid});
+                    console.log(user.uid)
                     db.firestore().collection("Users").doc(user.uid).get()
                         .then((doc) => {
                             if (doc.exists) {
@@ -75,7 +76,8 @@ class Login extends React.Component {
                     name: e.target[0].value,
                     email: this.state.user.email,
                     major: e.target[1].value,
-                    year: e.target[2].value
+                    year: e.target[2].value,
+                    subscriptions: []
                 })
 
             this.view_switch_login()
