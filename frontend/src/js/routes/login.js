@@ -25,11 +25,11 @@ class Login extends React.Component {
         };
         this.register = this.register.bind(this);
         this.handleLoginWithGoogle = this.handleLoginWithGoogle.bind(this);
+        this.handleRegister = this.handleRegister.bind(this);
         this.login = this.login.bind(this);
     }
 
     view_switch_login = () => {
-        console.log('profile switched pages');
         this.props.history.push('/home');
     };
 
@@ -67,11 +67,12 @@ class Login extends React.Component {
         }
     };
 
-    handleRegister = (e) => {
+    async handleRegister(e) {
+        e.preventDefault();
         //Check if the Google account is linked
         if (this.state.user) {
             //Save to database
-            editUser(this.state.user.uid,
+            await editUser(this.state.user.uid,
                 {
                     name: e.target[0].value,
                     email: this.state.user.email,
