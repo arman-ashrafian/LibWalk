@@ -393,62 +393,6 @@ class AdminHome extends React.Component {
         )
     };
 
-    modal_create_event = () => {
-        return (
-            <div>
-                <Modal
-                    size="lg"
-                    show={this.state.createEvent}
-                    onHide={this.closeCEvent}
-                    aria-labelledby="example-modal-sizes-title-lg"
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title id="example-modal-sizes-title-lg">
-                            Create Event
-                        </Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        <Form onSubmit={this.editHandleCreateEvent}>
-                            <Form.Group controlId="formName">
-                                <Form.Label>Event Name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter Event Name"/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formPlace">
-                                <Form.Label>Location</Form.Label>
-                                <Form.Control type="place" placeholder="Enter Location"/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formTime">
-                                <Form.Label>Time</Form.Label>
-                                <Form.Control type="timeS" placeholder="Enter Time"/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formPic">
-                                <Form.Label>Picture</Form.Label>
-                                <Form.Control type="pic" placeholder="Enter Picture URL"/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formDetails">
-                                <Form.Label>Details</Form.Label>
-                                <Form.Control type="details" placeholder="Enter Details"/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formRSVP">
-                                <Form.Label>RSVP</Form.Label>
-                                <Form.Control type="rsvp" placeholder="Enter RSVP URL"/>
-                            </Form.Group>
-                            {/*todo add form verification*/}
-                            <Button variant="primary" type="submit">
-                                Submit
-                            </Button>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
-            </div>
-        )
-    }
     // modals
     /**
      * Generates the jsx code to create and handle logic for a modal component to edit a clubs events.
@@ -599,6 +543,67 @@ class AdminHome extends React.Component {
             </Modal>
 
         </div>)
+    };
+
+    /**
+     * Generates the jsx code to create and handle logic for a modal component to create an event.
+     * @returns {*}
+     */
+    modal_create_event = () => {
+        return (
+            <div>
+                <Modal
+                    size="lg"
+                    show={this.state.createEvent}
+                    onHide={this.closeCEvent}
+                    aria-labelledby="example-modal-sizes-title-lg"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title id="example-modal-sizes-title-lg">
+                            Create Event
+                        </Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <Form onSubmit={this.editHandleCreateEvent}>
+                            <Form.Group controlId="formName">
+                                <Form.Label>Event Name</Form.Label>
+                                <Form.Control type="name" placeholder="Enter Event Name"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formPlace">
+                                <Form.Label>Location</Form.Label>
+                                <Form.Control type="place" placeholder="Enter Location"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formTime">
+                                <Form.Label>Time</Form.Label>
+                                <Form.Control type="timeS" placeholder="Enter Time"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formPic">
+                                <Form.Label>Picture</Form.Label>
+                                <Form.Control type="pic" placeholder="Enter Picture URL"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formDetails">
+                                <Form.Label>Details</Form.Label>
+                                <Form.Control type="details" placeholder="Enter Details"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formRSVP">
+                                <Form.Label>RSVP</Form.Label>
+                                <Form.Control type="rsvp" placeholder="Enter RSVP URL"/>
+                            </Form.Group>
+                            {/*todo add form verification*/}
+                            <Button variant="primary" type="submit">
+                                Submit
+                            </Button>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+            </div>
+        )
     };
 
     /**
