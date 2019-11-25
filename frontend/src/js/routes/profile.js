@@ -27,6 +27,7 @@ class Profile extends React.Component {
                 email: '',
                 major: '',
                 year: '',
+                subscriptions: []
             }
         }
 
@@ -39,6 +40,7 @@ class Profile extends React.Component {
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
             if( firebaseUser) {
+                console.log(firebaseUser.uid)
                 // getUser using userId and populate this.state
                 getUser(firebaseUser.uid).then(json => {
                     this.setState({
@@ -47,7 +49,8 @@ class Profile extends React.Component {
                         name: json['name'],
                         email: json['email'],
                         major: json['major'],
-                        year: json['year']
+                        year: json['year'],
+                        subscriptions: json['subscriptions']
                     }
                 })
         })
@@ -73,7 +76,8 @@ class Profile extends React.Component {
                 name: e.target[0].value,
                 email: e.target[1].value,
                 major: e.target[2].value,
-                year: e.target[3].value
+                year: e.target[3].value,
+                subscriptions: e.target[4].value
             }
         })
         editUser(this.state.userId, this.state.user);
