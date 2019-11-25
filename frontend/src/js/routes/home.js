@@ -1,45 +1,47 @@
 import React from "react";
 import NavBar from "../navbar";
-import Carousel from "react-bootstrap/Carousel";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import CardDeck from "react-bootstrap/CardDeck";
-import {club_list, getTag, getClub} from "../cloud";
-//import {getClubs} from "../cloud"
+import {club_list, getTag} from "../cloud";
 import Pagination from "react-bootstrap/Pagination";
 
 class Home extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+      super(props);
 
-        this.state = {
-            orgs: club_list,
-            currentPage: 1,
-            clubPerPage: 9,
-            totalPages: Math.ceil(club_list.length / 9)
-        };
+      this.state = {
+          orgs: club_list,
+          currentPage: 1,
+          clubPerPage: 9,
+          tagDict: {},
+          totalPages: Math.ceil(club_list.length / 9)
+      };
 
-        this.setClubPerPage = this.setClubPerPage.bind(this);
-        this.setPageNext = this.setPageNext.bind(this);
-        this.setPagePrev = this.setPagePrev.bind(this);
-        this.moveFirstPage = this.moveFirstPage.bind(this);
-        this.moveLastPage = this.moveLastPage.bind(this);
+      this.setClubPerPage = this.setClubPerPage.bind(this);
+      this.setPageNext = this.setPageNext.bind(this);
+      this.setPagePrev = this.setPagePrev.bind(this);
+      this.moveFirstPage = this.moveFirstPage.bind(this);
+      this.moveLastPage = this.moveLastPage.bind(this);
+      this.generateTagList = this.generateTagList.bind(this);
 
-        // GET /getClubs & set the state when the api response is recieved
-        /*getClubs().then(json => {
-              this.setState({
-                orgs: json.clubs,
-                totalPages: Math.ceil(json.clubs.length / 9)
-              });
-            });*/
+      this.generateTagList();
 
-        if (this.state.orgs === undefined) {
-            this.state = {
-                orgs: []
-            };
-        }
-    }
+      // GET /getClubs & set the state when the api response is recieved
+      /*getClubs().then(json => {
+            this.setState({
+              orgs: json.clubs,
+              totalPages: Math.ceil(json.clubs.length / 9)
+            });
+          });*/
+
+      if (this.state.orgs === undefined) {
+          this.state = {
+              orgs: []
+          };
+      }
+  }
 
     render() {
 
@@ -204,6 +206,22 @@ class Home extends React.Component {
         }
         return pageNumber;
     }
+
+  //Creates a hash map of tags
+  generateTagList(){
+    this.state.orgs.forEach( (org) =>{
+      let org_values = Object.values(org)[0];
+      org_values.tags.forEach((tag)=>{
+        let dict = this.state.tagDict;
+        if(!dict[tag]){
+          dict[tag] = [];
+        }
+        dict[tag].push(org);
+        this.setState({tagDict: dict})
+      })
+    })
+    console.log(this.state.tagDict)
+  }
 }
 
 let org_grid_component = org => {
@@ -241,6 +259,3 @@ let org_grid_component = org => {
 
 export default Home;
 
-function shuffle(array) {
-    array.sort(() => Math.random() - 0.5);
-}

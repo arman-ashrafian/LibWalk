@@ -14,6 +14,7 @@ class NavBar extends React.Component {
             loggedIn: false
         };
         this.setState(props);
+
         this.switch_view_admin_home = this.switch_view_admin_home.bind(this);
         this.switch_view_announcements = this.switch_view_announcements.bind(this);
         this.switch_view_home = this.switch_view_home.bind(this);
@@ -21,13 +22,16 @@ class NavBar extends React.Component {
         this.switch_view_profile = this.switch_view_profile.bind(this);
         this.switch_view_subscriptions = this.switch_view_subscriptions.bind(this);
         this.switch_view_search = this.switch_view_search.bind(this);
-        // console.log('Navbar constructor called.', this.props, props);
     }
 
+    /**
+     * Function is called every time the navbar is mounted. Logic manages hiding or viewing certain
+     * buttons (login, ...) by setting the application state.
+     */
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
-            if( firebaseUser) {
-                this.setState({ userId: firebaseUser.uid, loggedIn: true });
+            if (firebaseUser) {
+                this.setState({userId: firebaseUser.uid, loggedIn: true});
                 // getUser using userId and populate this.state
             } else {
                 console.log("Not logged in")
@@ -51,11 +55,11 @@ class NavBar extends React.Component {
                             <Nav.Link onClick={this.switch_view_search}>Search</Nav.Link>
                         </Nav>
                         <Form inline>
-                        {this.state.loggedIn ?
-                            <Button onClick={this.switch_view_profile} variant="outline-light" > Profile </Button>
-                            :
-                            <Button onClick={this.switch_view_login} variant="outline-light" > Login </Button>
-                        }
+                            {this.state.loggedIn ?
+                                <Button onClick={this.switch_view_profile} variant="outline-light"> Profile </Button>
+                                :
+                                <Button onClick={this.switch_view_login} variant="outline-light"> Login </Button>
+                            }
                         </Form>
                     </Navbar.Collapse>
                 </Navbar>
@@ -63,39 +67,62 @@ class NavBar extends React.Component {
         );
     }
 
+    /**
+     * Routes the user to the admin home page.
+     */
     switch_view_admin_home = () => {
         this.props.history.push('/admin_home');
     };
 
+    /**
+     * Routes the user to the login page.
+     */
     switch_view_login = () => {
         this.props.history.push('/login');
     };
 
+    /**
+     * Routes the user to the profile page.
+     */
     switch_view_profile = () => {
         this.props.history.push('/profile');
     };
 
+    /**
+     * Routes the user to a subs page.
+     */
     switch_view_subscriptions = () => {
         this.props.history.push('/subs');
     };
 
+    /**
+     * Routes the user to a search page.
+     */
     switch_view_search = () => {
         this.props.history.push('/search');
     };
 
-    switch_view_events= () => {
+    /**
+     * Routes the user to the events page.
+     */
+    switch_view_events = () => {
         this.props.history.push('/events');
     };
 
+    /**
+     * Routes the user to the announcements page.
+     */
     switch_view_announcements = () => {
         this.props.history.push('/announcements');
 
     };
 
+    /**
+     * Routes the user to the home page.
+     */
     switch_view_home = () => {
         this.props.history.push('/home');
     };
-
 }
 
 export default NavBar;
