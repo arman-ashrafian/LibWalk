@@ -180,7 +180,7 @@ class Subs extends React.Component {
             // Function to render the clubs
             showClubs = currentClubs.map(club => {
                 console.log(club)
-                return <EachSub clubId={club} />;
+                return <EachSub clubId={club} {...this.props} />;
             });
 
             // Find how many pages for the clubs
