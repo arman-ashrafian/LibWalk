@@ -441,3 +441,34 @@ exports.createAnnouncements = functions.https.onRequest((req, res) => {
             .catch(err => res.send(err));
     });
 });
+
+/* ================== /getUserEvents ==================
+ * request:
+ *  {uid: <user id>}
+ *
+ * response:
+ * 
+ */
+exports.getUserEvents = functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    const UID = req.body.uid;
+    const fs = admin.firestore()
+    
+    fs.collection("Users")
+      .doc(UID).get().then( user => {
+        let subs = user.data().subscriptions
+        let userEvents = {};
+
+        fs.collection("Events").where("clubsHosting", "array-contains-any", subs).get()
+          .then( querySnapshot => {
+            querySnapshot.forEach( doc => {
+              userEvents[doc.id] = doc.data();           
+            });
+            res.send(userEvents);
+          })
+          .catch( err => {
+            res.send(err);
+          });
+      })
+  });
+});
