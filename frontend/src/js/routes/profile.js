@@ -92,7 +92,7 @@ class Profile extends React.Component {
                 email: e.target[1].value,
                 major: e.target[2].value,
                 year: e.target[3].value,
-                subscriptions: e.target[4].value
+                subscriptions: this.state.user.subscriptions
             }
         })
         editUser(this.state.userId, this.state.user);
