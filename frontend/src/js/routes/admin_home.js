@@ -85,7 +85,7 @@ class AdminHome extends React.Component {
     componentDidMount() {
         // This code will get the admin's information to display on the page and store it in state
         db.auth().onAuthStateChanged(firebaseUser => {
-            if (firebaseUser) {
+            if (firebaseUser && firebaseUser.providerData[0].providerId === "password") {
                 this.setState({
                     org_id: firebaseUser.uid
                 });

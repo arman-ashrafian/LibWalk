@@ -54,7 +54,7 @@ class AdminLogin extends React.Component {
 				}
 			});
 			auth.onAuthStateChanged((user) => {
-				if(user){
+				if(user && user.providerData[0].providerId === "password"){
 					this.setState({ adminId: user.uid })
 					db.firestore().collection("Clubs").doc(user.uid).get()
 						.then((doc) => {

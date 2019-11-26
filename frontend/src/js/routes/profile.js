@@ -39,7 +39,7 @@ class Profile extends React.Component {
 
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
-            if (firebaseUser) {
+            if (firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
                 console.log(firebaseUser.uid)
                 // getUser using userId and populate this.state
                 getUser(firebaseUser.uid).then(json => {
