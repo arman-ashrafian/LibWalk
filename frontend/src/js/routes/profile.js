@@ -21,7 +21,7 @@ class Profile extends React.Component {
         super(props);
         this.initialState = {
             editMode: false,
-            userId:'',
+            userId: '',
             user: {
                 name: '',
                 email: '',
@@ -39,34 +39,49 @@ class Profile extends React.Component {
 
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
-            if( firebaseUser) {
+            if (firebaseUser) {
                 console.log(firebaseUser.uid)
                 // getUser using userId and populate this.state
                 getUser(firebaseUser.uid).then(json => {
-                    this.setState({
-                    userId: firebaseUser.uid,
-                    user: {
-                        name: json['name'],
-                        email: json['email'],
-                        major: json['major'],
-                        year: json['year'],
-                        subscriptions: json['subscriptions']
+                    if (json === undefined) {
+                        this.setState({
+                            userId: firebaseUser.uid,
+                            user: {
+                                name: 'Failure getUser()',
+                                email: 'Failure getUser()',
+                                major: 'Failure getUser()',
+                                year: 'Failure getUser()',
+                                subscriptions: 'Failure getUser()',
+                            }
+                        })
+
+                    } else {
+                        this.setState({
+                            userId: firebaseUser.uid,
+                            user: {
+                                name: json['name'],
+                                email: json['email'],
+                                major: json['major'],
+                                year: json['year'],
+                                subscriptions: json['subscriptions']
+                            }
+                        })
+
                     }
                 })
-        })
             } else {
                 console.log("Redirecting to login page")
             }
-        
+
         });
     }
 
     close() {
-        this.setState({ editMode: false});
+        this.setState({editMode: false});
     }
 
     open() {
-        this.setState({ editMode: true});
+        this.setState({editMode: true});
     }
 
     async handleEdit(e) {
@@ -77,7 +92,7 @@ class Profile extends React.Component {
                 email: e.target[1].value,
                 major: e.target[2].value,
                 year: e.target[3].value,
-                subscriptions: e.target[4].value
+                subscriptions: this.state.user.subscriptions
             }
         })
         editUser(this.state.userId, this.state.user);
@@ -87,89 +102,94 @@ class Profile extends React.Component {
     render() {
         return (
             <div>
-            <NavBar {...this.props}/>
-            <main className='mt-5 pt-5'>
-                <div className='container centerPage' >
-                    <div className="row centerPage">
+                <NavBar {...this.props}/>
+                <main className='mt-5 pt-5'>
+                    <div className='container centerPage'>
+                        <div className="row centerPage">
 
-                        {/*Display User Information*/}
-                        <div className="col-sm-12 text-center">
-                            <Image src={"https://www.jacobsschool.ucsd.edu/faculty/faculty_bios/photos/300.jpg"} height="150" width="150" roundedCircle />
-                        </div>
-                        <div className="div-centered ">
-                            <h3>
-                                <FaUser /> Name : {this.state.user.name}
-                            </h3>
-                            <h3>
-                                <MdEmail /> Email : {this.state.user.email}
-                            </h3>
-                            <h3>
-                                <FaGraduationCap /> Major : {this.state.user.major}
-                            </h3>
-                            <h3>
-                                <FaSchool /> Year : {this.state.user.year}
-                            </h3>
+                            {/*Display User Information*/}
+                            <div className="col-sm-12 text-center">
+                                <Image src={"https://www.jacobsschool.ucsd.edu/faculty/faculty_bios/photos/300.jpg"}
+                                       height="150" width="150" roundedCircle/>
+                            </div>
+                            <div className="div-centered ">
+                                <h3>
+                                    <FaUser/> Name : {this.state.user.name}
+                                </h3>
+                                <h3>
+                                    <MdEmail/> Email : {this.state.user.email}
+                                </h3>
+                                <h3>
+                                    <FaGraduationCap/> Major : {this.state.user.major}
+                                </h3>
+                                <h3>
+                                    <FaSchool/> Year : {this.state.user.year}
+                                </h3>
 
-                        </div>
-                        <div className="col-sm-12">
-                        <Button variant="outline-primary" size="lg" onClick={this.open}> 
-                            Edit 
-                        </Button>
-                        </div>
-                        <div className="col-sm-12">
-                        <Button variant="primary" size="m" onClick={this.switch_view_logout}> 
-                            Log Out
-                        </Button>
+                            </div>
+                            <div className="col-sm-12">
+                                <Button variant="outline-primary" size="lg" onClick={this.open}>
+                                    Edit
+                                </Button>
+                            </div>
+                            <div className="col-sm-12">
+                                <Button variant="primary" size="m" onClick={this.switch_view_logout}>
+                                    Log Out
+                                </Button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <Modal show={this.state.editMode} onHide={this.close} size="m">
-                    <Modal.Header closeButton>
-                        <Modal.Title > Edit Profile </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div>
-                        <Form onSubmit={this.handleEdit}>
-                            <Form.Group controlId="formName">
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter Name" defaultValue={this.state.user.name}/>
-                            </Form.Group>
+                    <Modal show={this.state.editMode} onHide={this.close} size="m">
+                        <Modal.Header closeButton>
+                            <Modal.Title> Edit Profile </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div>
+                                <Form onSubmit={this.handleEdit}>
+                                    <Form.Group controlId="formName">
+                                        <Form.Label>Name</Form.Label>
+                                        <Form.Control type="name" placeholder="Enter Name"
+                                                      defaultValue={this.state.user.name}/>
+                                    </Form.Group>
 
-                            <Form.Group controlId="formEmail">
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Enter Email" defaultValue={this.state.user.email}/>
+                                    <Form.Group controlId="formEmail">
+                                        <Form.Label>Email</Form.Label>
+                                        <Form.Control type="email" placeholder="Enter Email"
+                                                      defaultValue={this.state.user.email}/>
 
-                            </Form.Group>
+                                    </Form.Group>
 
-                            <Form.Group controlId="formMajor">
-                                <Form.Label>Major</Form.Label>
-                                <Form.Control type="major" placeholder="Enter Major" defaultValue={this.state.user.major}/>
-                            </Form.Group>
+                                    <Form.Group controlId="formMajor">
+                                        <Form.Label>Major</Form.Label>
+                                        <Form.Control type="major" placeholder="Enter Major"
+                                                      defaultValue={this.state.user.major}/>
+                                    </Form.Group>
 
-                            <Form.Group controlId="formYear">
-                                <Form.Label>Year</Form.Label>
-                                <Form.Control type="year" placeholder="Enter Year" defaultValue={this.state.user.year}/>
-                            </Form.Group>
-                            <Button variant="primary" type="submit" >
-                                Submit
-                            </Button>
-                        </Form>
+                                    <Form.Group controlId="formYear">
+                                        <Form.Label>Year</Form.Label>
+                                        <Form.Control type="year" placeholder="Enter Year"
+                                                      defaultValue={this.state.user.year}/>
+                                    </Form.Group>
+                                    <Button variant="primary" type="submit">
+                                        Submit
+                                    </Button>
+                                </Form>
 
-                        </div>
-                    </Modal.Body>
-                </Modal>
-            </main>
+                            </div>
+                        </Modal.Body>
+                    </Modal>
+                </main>
             </div>);
     }
 
     switch_view_logout = () => {
         console.log('Onclick');
-		auth.signOut().then((result) => {
-			this.setState({
-				user: null
-			})
-		});
+        auth.signOut().then((result) => {
+            this.setState({
+                user: null
+            })
+        });
         this.props.history.push('/home');
     }
 
