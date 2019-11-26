@@ -6,7 +6,7 @@ import NavBar from "../navbar";
 import Button from "react-bootstrap/Button";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Card from "react-bootstrap/Card";
-import {getClub, getUser, editUser} from "../cloud";
+import {getClub, changeClub, getUser, editUser} from "../cloud";
 import db from "../../firebase";
 import { Divider } from "@material-ui/core";
 
@@ -62,14 +62,21 @@ class Orgs extends React.Component {
     async handleSubscribe() {
         if(!this.state.subscribed) {
             this.state.user.subscriptions.push(this.state.club_id)
+            this.state.club.emailList.push(this.state.user_id)
         }
         else {
             const newSubs = this.state.user.subscriptions.filter(item => item !== this.state.club_id)
+            const newEmailList = this.state.club.emailList.filter(item => item !== this.state.user_id);
+            console.log(newEmailList)
             await this.setState(
             {
                 user: {
                     ...this.state.user,
                     subscriptions: newSubs
+                },
+                club: {
+                    ...this.state.club,
+                    emailList: newEmailList
                 }
             });
         }
@@ -77,6 +84,7 @@ class Orgs extends React.Component {
             subscribed: !this.state.subscribed
         })
         editUser(this.state.user_id, this.state.user)
+        changeClub(this.state.club_id, this.state.club)
     }
 
     render() {

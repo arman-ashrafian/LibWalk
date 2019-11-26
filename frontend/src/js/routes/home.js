@@ -228,13 +228,13 @@ let org_grid_component = org => {
     return (
         <div>
             {/*<Card style={{width: '18rem'}}>*/}
-            <Card style={{width: "20rem", height: "36rem"}} className="text-center">
+            <Card style={{width: "20rem", height: "20rem"}} className="text-center">
                 <Card.Img variant="top" src={org.img}/>
                 <Card.Img
                     src={org.img}
                     style={{
                         width: '100%',
-                        height: '15vw',
+                        height: '10vw',
                         'object-fit': 'cover'
                     }}/>
                 <Card.Body>
@@ -244,9 +244,6 @@ let org_grid_component = org => {
               {org.description.slice(0, 450)}
             </small>
           </Card.Text> */}
-                    <Button variant="primary" href={org.pageURL}>
-                        Org Home
-                    </Button>
                 </Card.Body>
             </Card>
         </div>
