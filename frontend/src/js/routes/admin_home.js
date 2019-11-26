@@ -1,7 +1,7 @@
 import React from 'react'
 import NavBar from "../navbar";
 import {getClubs} from "../cloud";
-import {changeClub, getClub, getEvent, changeEvent, changeTag, getTag} from "../cloud";
+import {createAnnouncements, changeClub, getClub, getEvent, changeEvent, changeTag, getTag} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -28,6 +28,7 @@ class AdminHome extends React.Component {
             editTag: false,
             editEvent: false,
             createEvent: false,
+            createAnn: false,
             org_id: "",
             tag: "",
             org: {
@@ -45,7 +46,7 @@ class AdminHome extends React.Component {
                 eventReference: '',
                 description: '',
                 eventName: '',
-                locaction: '',
+                location: '',
                 pictureURL: '',
                 rsvpForm: '',
                 time: ''
@@ -53,12 +54,19 @@ class AdminHome extends React.Component {
             tagInfo: {
                 clubs: [],
                 tagID: ''
+            },
+            announcement: {
+                annDetail: '',
+                time: '',
+                annReference: ''
             }
         };
 
         this.closeInfo = this.closeInfo.bind(this);
         this.closeTag = this.closeTag.bind(this);
         this.closeEvent = this.closeEvent.bind(this);
+        this.closeAnn = this.closeAnn.bind(this);
+        this.handleCreateAnn = this.handleCreateAnn.bind(this);
         this.handleEditInfo = this.handleEditInfo.bind(this);
         this.handleEditTag = this.handleEditTag.bind(this);
         this.handleEditEvent = this.handleEditEvent.bind(this);
@@ -67,6 +75,7 @@ class AdminHome extends React.Component {
         this.editHandleEditEvent = this.editHandleEditEvent.bind(this);
         this.editHandleCreateEvent = this.editHandleCreateEvent.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
+        this.editHandleCreateAnn = this.editHandleCreateAnn.bind(this);
     };
 
     /**
@@ -93,6 +102,7 @@ class AdminHome extends React.Component {
                             tags: 'Failure getClub()',
                             pageURL: 'Failure getClub()',
                             emailList: 'Failure getClub()',
+                            announcements: 'Failure getClub()'
 
                         })
 
@@ -106,7 +116,8 @@ class AdminHome extends React.Component {
                                 pictureURL: clubInfo['pictureURL'],
                                 tags: clubInfo['tags'],
                                 pageURL: clubInfo['pageURL'],
-                                emailList: clubInfo['emailList']
+                                emailList: clubInfo['emailList'],
+                                announcements: clubInfo['announcements']
                             }
                         })
 
@@ -279,6 +290,35 @@ class AdminHome extends React.Component {
             });
     }
 
+    async editHandleCreateAnn(e) {
+        e.preventDefault();
+        if (!e.target[0].value || !e.target[1].value) {
+            alert('Please make sure to have announcement, and time');
+            return;
+        }
+        await this.setState({
+            announcement: {
+                annDetail: e.target[0].value,
+                time: e.target[1].value,
+                annReference: this.state.org.clubReference + e.target[0].value + e.target[1].value
+            }
+
+        })
+        console.log(this.state.annReference);
+        await db.firestore().collection("Announcements").doc(this.state.announcement.annReference).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    alert('You already have an announcement like this');
+                    return;
+                }
+                else {
+                    createAnnouncements(this.state.announcement.annReference, this.state.announcement);
+                    alert('Announcement Created');
+                    this.closeAnn();
+                }
+            });
+    }
+
     /**
      * Handles the authorization logic for logging out
      */
@@ -314,6 +354,10 @@ class AdminHome extends React.Component {
 
     handleCreateEvent = () => {
         this.setState({createEvent: true})
+    };
+
+    handleCreateAnn = () => {
+        this.setState({createAnn: true})
     };
 
     // Action Methods
@@ -354,6 +398,12 @@ class AdminHome extends React.Component {
         })
     };
 
+    closeAnn = () => {
+        this.setState({
+            createAnn: false
+        })
+    };
+
     // container components
     /**
      * Creates a container for the Settings panel for the admin.
@@ -366,6 +416,7 @@ class AdminHome extends React.Component {
                 {this.modal_edit_tag()}
                 {this.modal_edit_event()}
                 {this.modal_create_event()}
+                {this.modal_create_ann()}
 
                 {/*Card that contains the buttons*/}
                 <Card>
@@ -381,10 +432,10 @@ class AdminHome extends React.Component {
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleCreateEvent}>Create Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateAnn}>Create Announcement</Card.Link></ListGroup.Item>
+                        <ListGroup.Item>
                             <Card.Link onClick={this.handleLogOut}>Log Out</Card.Link></ListGroup.Item>
                     </ListGroup>
-
-
                 </Card>
             </div>
         )
@@ -592,6 +643,44 @@ class AdminHome extends React.Component {
                                 <Form.Label>RSVP</Form.Label>
                                 <Form.Control type="rsvp" placeholder="Enter RSVP URL"/>
                             </Form.Group>
+                            {/*todo add form verification*/}
+                            <Button variant="primary" type="submit">
+                                Submit
+                            </Button>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+            </div>
+        )
+    };
+
+    modal_create_ann = () => {
+        return (
+            <div>
+                <Modal
+                    size="lg"
+                    show={this.state.createAnn}
+                    onHide={this.closeAnn}
+                    aria-labelledby="example-modal-sizes-title-lg"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title id="example-modal-sizes-title-lg">
+                            Create Announcement
+                        </Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <Form onSubmit={this.editHandleCreateAnn}>
+                            <Form.Group controlId="formName">
+                                <Form.Label>Announcement</Form.Label>
+                                <Form.Control type="name" placeholder="Enter Announcement"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formTime">
+                                <Form.Label>Time</Form.Label>
+                                <Form.Control type="timeS" placeholder="I.e. Nov 19, 2019"/>
+                            </Form.Group>
+
                             {/*todo add form verification*/}
                             <Button variant="primary" type="submit">
                                 Submit
