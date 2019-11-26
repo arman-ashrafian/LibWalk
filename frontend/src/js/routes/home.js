@@ -80,8 +80,9 @@ class Home extends React.Component {
             <div>
                 <NavBar {...this.props} />
                 <main className="mt-3 pt-3">
-                <div className="container centerPage">  
-                        {/*<div className="row centerPage" >
+                 <div class="container-fluid centerPage" > 
+                        {/*
+                        <div className="row centerPage" >
                         </div>*/}
                       <div className="home_grid_container parent">
                          {this.org_grid(currentClubs)}
@@ -239,6 +240,8 @@ class Home extends React.Component {
   }
 }
 
+//brent yee
+
 //TAKEN FROM ONLINE FOR THE CAROUSEL
 
 $(document).ready(function () {
@@ -246,8 +249,26 @@ $(document).ready(function () {
    var itemsMainDiv = ('.MultiCarousel');
     var itemsDiv = ('.MultiCarousel-inner');
     var itemWidth = "";
-
-    $('.leftLst, .rightLst').click(function () {
+    var down = false;
+  /*  $(document).mousedown(function() {
+        down = true;
+    }).mouseup(function() {
+        down = false;  
+    });
+    $('.leftLst, .rightLst').mouseout(function() {
+        if(down) {
+        var condition = $(this).hasClass("leftLst");
+            if (condition)
+                click(0, this);
+            else
+                click(1, this);
+                console.log("down");  
+        } 
+        else {
+            console.log("up");   
+        }
+    });*/
+    $('.leftLst, .rightLst').mousedown(function () {
         var condition = $(this).hasClass("leftLst");
         if (condition)
             click(0, this);
@@ -321,7 +342,6 @@ $(document).ready(function () {
         if (e == 0) {
             translateXval = parseInt(xds) - parseInt(itemWidth * s);
             $(el + ' ' + rightBtn).removeClass("over");
-
             if (translateXval <= itemWidth / 2) {
                 translateXval = 0;
                 $(el + ' ' + leftBtn).addClass("over");
@@ -359,8 +379,8 @@ function org_multi_item_carousel(tag, tagList) {
                         )
                       }
                       </div>
-                    <button class="btn btn-primary leftLst"> &lt; </button>
-                    <button class="btn btn-primary rightLst">&gt; </button>
+                    <button class="leftLst btn-circle btn-md">&lt;</button>
+                    <button class="rightLst btn-circle btn-md">&gt;</button>
               </div>
               </div>
         );
@@ -389,7 +409,7 @@ let org_grid_component = org => {
                             {org.description.slice(0, 450)}
                           </small>
                         </Card.Text> */}
-                          <Button variant="primary" href={org.pageURL}>
+                          <Button href={org.pageURL}>
                               Org Home
                           </Button>
                       </Card.Body>

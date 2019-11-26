@@ -429,15 +429,14 @@ exports.getAnnouncements = functions.https.onRequest((req, res) => {
 
 exports.createAnnouncements = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        const ann_id = req.body.club_id;
-        const ann_info = req.body.announcements;
-
+        const annID = req.body.ann_id;
+        const ann_info = req.body.announcement;
         admin
             .firestore()
-            .collection("Clubs")
-            .doc(ann_id)
+            .collection("Announcements")
+            .doc(annID)
             .set(ann_info)
-            .then(() => res.send({ announcements: "create announcement" + ann_info }))
-            .catch(err => res.send(err));
+            .then(() => res.send({ message: "created announcement" + annID }))
+            .catch(err => res.send({ message: err }));
     });
 });
