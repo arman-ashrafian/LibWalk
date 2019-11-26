@@ -1,7 +1,6 @@
 import React from "react";
 import NavBar from "../navbar";
 import "../../css/subs.css";
-import Info from "../../components/clubInfo";
 import EachSub from "./eachSub";
 import Pagination from "react-bootstrap/Pagination";
 import {getUser} from "../cloud";
