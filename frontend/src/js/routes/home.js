@@ -234,7 +234,7 @@ let org_grid_component = org => {
                     src={org.img}
                     style={{
                         width: '100%',
-                        height: '10vw',
+                        height: '10rem',
                         'object-fit': 'cover'
                     }}/>
                 <Card.Body>
