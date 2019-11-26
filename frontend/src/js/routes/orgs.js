@@ -8,7 +8,7 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import Card from "react-bootstrap/Card";
 import {getClub, changeClub, getUser, editUser} from "../cloud";
 import db from "../../firebase";
-import { Divider } from "@material-ui/core";
+import EachEvent from "./eachEvent";
 
 class Orgs extends React.Component {
     constructor(props) {
@@ -88,6 +88,10 @@ class Orgs extends React.Component {
     }
 
     render() {
+        let showEvents = [];
+        showEvents = this.state.club.eventList.map(event => {
+            return <EachEvent eventId={event} {...this.props} />;
+        });
         return (
             <div>
                 <NavBar {...this.props} />
@@ -118,13 +122,9 @@ class Orgs extends React.Component {
                                 <Card.Text>
                                     {this.state.club.description}
                                 </Card.Text>
-                                <Card.Subtitle className="mb-2 text-muted" style={{fontSize:"20px"}}>
-                                        {this.state.club.eventList.map(event => (
-                                            <Button size="sm">
-                                                {event}
-                                            </Button>
-                                        ))}
-                                </Card.Subtitle>
+                                <div style={{display: "flex"}}>
+                                    {showEvents}
+                                </div>
                             </Card.Body>
                         </Card>
                     </div>
