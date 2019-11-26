@@ -24,242 +24,269 @@ class AdminHome extends React.Component {
         super(props);
 
         this.state = {
-			editInfo: false,
-			editTag: false,
-			editEvent: false,
-			createEvent: false,
-			org_id: "",
-			tag: "",
-			org: {
-				clubReference: '',
-				clubName: '',
-				contactEmail: '',
-				description: '',
-				pictureURL: '',
-				tags: [],
-				pageURL: '',
-				announcements: [],
-				emailList: []
-			},
-			event: {
-				eventReference: '',
-				description: '',
-				eventName: '',
-				locaction: '',
-				pictureURL: '',
-				rsvpForm: '',
-				time: ''
-			},
-			tagInfo: {
-				clubs: [],
-				tagID: ''
-			}
-		};
+            editInfo: false,
+            editTag: false,
+            editEvent: false,
+            createEvent: false,
+            org_id: "",
+            tag: "",
+            org: {
+                clubReference: '',
+                clubName: '',
+                contactEmail: '',
+                description: '',
+                pictureURL: '',
+                tags: [],
+                pageURL: '',
+                announcements: [],
+                emailList: []
+            },
+            event: {
+                eventReference: '',
+                description: '',
+                eventName: '',
+                locaction: '',
+                pictureURL: '',
+                rsvpForm: '',
+                time: ''
+            },
+            tagInfo: {
+                clubs: [],
+                tagID: ''
+            }
+        };
 
-		this.closeInfo = this.closeInfo.bind(this);
-		this.closeTag = this.closeTag.bind(this);
-		this.closeEvent = this.closeEvent.bind(this);
-		this.handleEditInfo = this.handleEditInfo.bind(this);
-		this.handleEditTag = this.handleEditTag.bind(this);
-		this.handleEditEvent = this.handleEditEvent.bind(this);
-		this.editHandleClub = this.editHandleClub.bind(this);
-		this.editHandleTag = this.editHandleTag.bind(this);
-		this.editHandleEditEvent = this.editHandleEditEvent.bind(this);
-		this.editHandleCreateEvent = this.editHandleCreateEvent.bind(this);
-		this.handleLogOut = this.handleLogOut.bind(this);
+        this.closeInfo = this.closeInfo.bind(this);
+        this.closeTag = this.closeTag.bind(this);
+        this.closeEvent = this.closeEvent.bind(this);
+        this.handleEditInfo = this.handleEditInfo.bind(this);
+        this.handleEditTag = this.handleEditTag.bind(this);
+        this.handleEditEvent = this.handleEditEvent.bind(this);
+        this.editHandleClub = this.editHandleClub.bind(this);
+        this.editHandleTag = this.editHandleTag.bind(this);
+        this.editHandleEditEvent = this.editHandleEditEvent.bind(this);
+        this.editHandleCreateEvent = this.editHandleCreateEvent.bind(this);
+        this.handleLogOut = this.handleLogOut.bind(this);
     };
 
-	/**
-	 * Set-up function that is called when the user is first directed to the
-	 * admin home page
-	 */
-	componentDidMount() {
-		// This code will get the admin's information to display on the page and store it in state
-		db.auth().onAuthStateChanged(firebaseUser => {
-			if(firebaseUser) {
-				this.setState({
-					org_id: firebaseUser.uid
-				});
-				getClub(firebaseUser.uid).then(clubInfo => {
-					console.log(clubInfo);
-					this.setState({
-						org: {
-							clubReference: clubInfo['clubReference'],
-							clubName: clubInfo['clubName'],
-							contactEmail: clubInfo['contactEmail'],
-							description: clubInfo['description'],
-							pictureURL: clubInfo['pictureURL'],
-							tags: clubInfo['tags'],
-							pageURL: clubInfo['pageURL'],
-							emailList: clubInfo['emailList']
-						}
-					})
-					
-				})
-			}
-		})
-		
-		// This code will fetch events for the admin based on the event id
-		getEvent('event_id_00').then(eventInfo => {
-			this.setState({
-				event: {
-					eventReference: eventInfo['eventReference'],
-					description: eventInfo['description'],
-					eventName: eventInfo['eventName'],
-					location: eventInfo['location'],
-					pictureURL: eventInfo['pictureURL'],
-					rsvpForm: eventInfo['rsvpForm'],
-					time: eventInfo['time'],
-				}
-			})
-		})
-	}
-
-	// routing functions
-	/**
-     * If the user is not authorized as an admin, then we just take them to the home page.
+    /**
+     * Set-up function that is called when the user is first directed to the
+     * admin home page
      */
-    view_switch_login = () => {
-        console.log('WARN: Unauthorized user tried to access admin page.');
-        this.props.history.push('/home');
-    };
+    componentDidMount() {
+        // This code will get the admin's information to display on the page and store it in state
+        db.auth().onAuthStateChanged(firebaseUser => {
+            if (firebaseUser) {
+                this.setState({
+                    org_id: firebaseUser.uid
+                });
+                getClub(firebaseUser.uid).then(clubInfo => {
+                    console.log(clubInfo);
+
+                    if (clubInfo === undefined) {
+                        this.setState({
+                            clubReference: 'Failure getClub()',
+                            clubName: 'Failure getClub()',
+                            contactEmail: 'Failure getClub()',
+                            description: 'Failure getClub()',
+                            pictureURL: 'Failure getClub()',
+                            tags: 'Failure getClub()',
+                            pageURL: 'Failure getClub()',
+                            emailList: 'Failure getClub()',
+
+                        })
+
+                    } else {
+                        this.setState({
+                            org: {
+                                clubReference: clubInfo['clubReference'],
+                                clubName: clubInfo['clubName'],
+                                contactEmail: clubInfo['contactEmail'],
+                                description: clubInfo['description'],
+                                pictureURL: clubInfo['pictureURL'],
+                                tags: clubInfo['tags'],
+                                pageURL: clubInfo['pageURL'],
+                                emailList: clubInfo['emailList']
+                            }
+                        })
+
+                    }
+
+                })
+            }
+        });
+
+        // This code will fetch events for the admin based on the event id
+        getEvent('event_id_00').then(eventInfo => {
+            if (typeof eventInfo !== "undefined") {
+                this.setState({
+                    event: {
+                        eventReference: eventInfo['eventReference'],
+                        description: eventInfo['description'],
+                        eventName: eventInfo['eventName'],
+                        location: eventInfo['location'],
+                        pictureURL: eventInfo['pictureURL'],
+                        rsvpForm: eventInfo['rsvpForm'],
+                        time: eventInfo['time'],
+                    }
+                })
+
+            } else {
+                this.setState({
+                    event: {
+                        eventReference: "Failure getEvent()",
+                        description: "Failure getEvent()",
+                        eventName: "Failure getEvent()",
+                        location: "Failure getEvent()",
+                        pictureURL: "Failure getEvent()",
+                        rsvpForm: "Failure getEvent()",
+                        time: "Failure getEvent()",
+                    }
+                })
+
+            }
+        })
+    }
 
     // Handler Methods
     /**
      * Handles what happens when you change a club's details.
      */
-	async editHandleClub(e) {
-		e.preventDefault();
-		await this.setState({
-			org: {
-				clubName: e.target[0].value,
-				contactEmail: e.target[1].value,
-				pictureURL: e.target[2].value,
-				description: e.target[3].value,
-				clubReference: this.state.org.ref,
-				tags: this.state.org.tags,
-				announcements: this.state.org.announcements,
-				pageURL: this.state.org.pageURL
-			}
-		})
-		await changeClub(this.state.org.clubReference, this.state.org);
-		alert('Updated');
-		this.closeInfo();
-	};
+    async editHandleClub(e) {
+        e.preventDefault();
+        await this.setState({
+            org: {
+                clubName: e.target[0].value,
+                contactEmail: e.target[1].value,
+                pictureURL: e.target[2].value,
+                description: e.target[3].value,
+                clubReference: this.state.org.ref,
+                tags: this.state.org.tags,
+                announcements: this.state.org.announcements,
+                pageURL: this.state.org.pageURL
+            }
+        });
+        await changeClub(this.state.org.clubReference, this.state.org);
+        alert('Updated');
+        this.closeInfo();
+    };
 
-	/**
-	 * Handles what happens when you change a club tag
-	 * 
-	 */
-	async editHandleTag(e) {
-		e.preventDefault();
-		if(e) {
-			alert('Please Enter a Tag');
-			return;
-		}
-		await this.setState({
-			tag: e.target[0].value.toLowerCase()
-		});
-		db.firestore().collection("Tags").doc(this.state.tag).get()
-			.then((doc) => {
-				if(doc.exists) {
-					getTag(this.state.tag).then(tagClubs => {
-						this.setState({
-							tagInfo: {
-								clubs: tagClubs['clubs'],
-								tagID: tagClubs['tagID']
-							}
-						})
-					})
-					if(this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
-						this.state.tagInfo.clubs.push(this.state.org.clubReference);
-						changeTag(this.state.tag, this.tagInfo);
-					}
-				}
-				else {
-					this.setState({
-						tagInfo: {
-							clubs: [this.state.org.clubReference],
-							tagID: this.state.tag
-						}
-					})
-					changeTag(this.state.tag, this.state.tagInfo);
-				}
-			});
-		
-		if(this.state.org.tags.includes(this.state.tag) === false) {
-			this.state.org.tags.push(this.state.tag);
-			changeClub(this.state.org.clubReference, this.state.org);
-		}
-		console.log(this.state.clubReference);
-		alert('Updated');
-		this.closeTag();
-	};
+    /**
+     * Handles what happens when you change a club tag
+     *
+     */
+    async editHandleTag(e) {
+        e.preventDefault();
+        if (e) {
+            alert('Please Enter a Tag');
+            return;
+        }
+        await this.setState({
+            tag: e.target[0].value.toLowerCase()
+        });
+        db.firestore().collection("Tags").doc(this.state.tag).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    getTag(this.state.tag).then(tagClubs => {
+                        this.setState({
+                            tagInfo: {
+                                clubs: tagClubs['clubs'],
+                                tagID: tagClubs['tagID']
+                            }
+                        })
+                    })
+                    if (this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
+                        this.state.tagInfo.clubs.push(this.state.org.clubReference);
+                        changeTag(this.state.tag, this.tagInfo);
+                    }
+                } else {
+                    this.setState({
+                        tagInfo: {
+                            clubs: [this.state.org.clubReference],
+                            tagID: this.state.tag
+                        }
+                    })
+                    changeTag(this.state.tag, this.state.tagInfo);
+                }
+            });
 
-	/**
-	 * Handles what happens when you change a clubs event details
-	 *  
-	 */
-	async editHandleEditEvent(e) {
-		e.preventDefault();
-		await this.setState({
-			event: {
-				eventName: e.target[0].value,
-				location: e.target[1].value,
-				time: e.target[2].value,
-				pictureURL: e.target[3].value,
-				description: e.target[4].value,
-				rsvpForm: e.target[5].value,
-				eventReference: this.state.eventReference
-			}
-		})
-		await changeEvent(this.state.event.eventReference, this.state.event);
-		alert('Updated');
-		this.closeEvent();
-	}
+        if (this.state.org.tags.includes(this.state.tag) === false) {
+            this.state.org.tags.push(this.state.tag);
+            changeClub(this.state.org.clubReference, this.state.org);
+        }
+        console.log(this.state.clubReference);
+        alert('Updated');
+        this.closeTag();
+    };
 
-	async editHandleCreateEvent(e) {
-		e.preventDefault();
-		if(!e.target[0].value || !e.target[1].value || !e.target[2].value ||
-		   !e.target[4].value) {
-			alert('Please make sure to have name, location, time, and description');
-			return;
-		}
-		await this.setState({
-			event: {
-				eventName: e.target[0].value,
-				location: e.target[1].value,
-				time: e.target[2].value,
-				pictureURL: e.target[3].value,
-				description: e.target[4].value,
-				rsvpForm: e.target[5].value,
-				eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value
-			}
-		})
-		console.log(this.state.eventReference);
-		await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
-			.then((doc) => {
-				if(doc.exists) {
-					alert('You already have an event like this');
-					return;
-				}
-				else {
-					changeEvent(this.state.event.eventReference, this.state.event);
-					alert('Event Created');
-					this.closeCEvent();
-				}
-			});
-	}
+    /**
+     * Handles what happens when you change a clubs event details
+     *
+     */
+    async editHandleEditEvent(e) {
+        e.preventDefault();
+        await this.setState({
+            event: {
+                eventName: e.target[0].value,
+                location: e.target[1].value,
+                time: e.target[2].value,
+                pictureURL: e.target[3].value,
+                description: e.target[4].value,
+                rsvpForm: e.target[5].value,
+                eventReference: this.state.eventReference
+            }
+        })
+        await changeEvent(this.state.event.eventReference, this.state.event);
+        alert('Updated');
+        this.closeEvent();
+    }
 
-	/**
-	 * Handles the authorization logic for logging out
-	 */
-	handleLogOut() {
-		db.auth().signOut().then((result) => {
-			this.setState({
-				org: null
-			})
-		});
+    /**
+     * Handles what happens when you create an event for a club.
+     *
+     */
+    async editHandleCreateEvent(e) {
+        e.preventDefault();
+        if (!e.target[0].value || !e.target[1].value || !e.target[2].value ||
+            !e.target[4].value) {
+            alert('Please make sure to have name, location, time, and description');
+            return;
+        }
+        await this.setState({
+            event: {
+                eventName: e.target[0].value,
+                location: e.target[1].value,
+                time: e.target[2].value,
+                pictureURL: e.target[3].value,
+                description: e.target[4].value,
+                rsvpForm: e.target[5].value,
+                eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value
+            }
+        });
+
+        console.log(this.state.eventReference);
+        await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    alert('You already have an event like this');
+                    return;
+                } else {
+                    changeEvent(this.state.event.eventReference, this.state.event);
+                    alert('Event Created');
+                    this.closeCEvent();
+                }
+            });
+    }
+
+    /**
+     * Handles the authorization logic for logging out
+     */
+    handleLogOut() {
+        db.auth().signOut().then((result) => {
+            this.setState({
+                org: null
+            })
+        });
         this.props.history.push('/admin_login');
     };
 
@@ -282,11 +309,11 @@ class AdminHome extends React.Component {
      */
     handleEditEvent = () => {
         this.setState({editEvent: true})
-	};
-	
-	handleCreateEvent = () => {
-		this.setState({createEvent: true})
-	};
+    };
+
+    handleCreateEvent = () => {
+        this.setState({createEvent: true})
+    };
 
     // Action Methods
     /**
@@ -315,16 +342,16 @@ class AdminHome extends React.Component {
         this.setState({
             editEvent: false
         })
-	};
-	
-	/**
-	 * Changes the state for helping render certain elements
-	 */
-	closeCEvent = () => {
-		this.setState({
-			createEvent: false
-		})
-	}
+    };
+
+    /**
+     * Changes the state for helping render certain elements
+     */
+    closeCEvent = () => {
+        this.setState({
+            createEvent: false
+        })
+    };
 
     // container components
     /**
@@ -336,8 +363,8 @@ class AdminHome extends React.Component {
                 {/*Code for button modals*/}
                 {this.modal_edit_clubs()}
                 {this.modal_edit_tag()}
-				{this.modal_edit_event()}
-				{this.modal_create_event()}
+                {this.modal_edit_event()}
+                {this.modal_create_event()}
 
                 {/*Card that contains the buttons*/}
                 <Card>
@@ -350,7 +377,7 @@ class AdminHome extends React.Component {
                             <Card.Link onClick={this.handleEditTag}>Add Tags</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditEvent}>Edit Event</Card.Link></ListGroup.Item>
-						<ListGroup.Item>
+                        <ListGroup.Item>
                             <Card.Link onClick={this.handleCreateEvent}>Create Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleLogOut}>Log Out</Card.Link></ListGroup.Item>
@@ -362,62 +389,6 @@ class AdminHome extends React.Component {
         )
     };
 
-	modal_create_event = () => {
-		return (
-			<div>
-				<Modal
-				size="lg"
-				show={this.state.createEvent}
-				onHide={this.closeCEvent}
-				aria-labelledby="example-modal-sizes-title-lg"
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title id="example-modal-sizes-title-lg">
-                            Create Event
-                        </Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        <Form onSubmit={this.editHandleCreateEvent}>
-                            <Form.Group controlId="formName">
-                                <Form.Label>Event Name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter Event Name"/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formPlace">
-                                <Form.Label>Location</Form.Label>
-                                <Form.Control type="place" placeholder="Enter Location"/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formTime">
-                                <Form.Label>Time</Form.Label>
-                                <Form.Control type="timeS" placeholder="Enter Time"/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formPic">
-                                <Form.Label>Picture</Form.Label>
-                                <Form.Control type="pic" placeholder="Enter Picture URL"/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formDetails">
-                                <Form.Label>Details</Form.Label>
-                                <Form.Control type="details" placeholder="Enter Details"/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formRSVP">
-                                <Form.Label>RSVP</Form.Label>
-                                <Form.Control type="rsvp" placeholder="Enter RSVP URL"/>
-                            </Form.Group>
-                            {/*todo add form verification*/}
-                            <Button variant="primary" type="submit">
-                                Submit
-                            </Button>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
-			</div>
-		)
-	}
     // modals
     /**
      * Generates the jsx code to create and handle logic for a modal component to edit a clubs events.
@@ -427,10 +398,10 @@ class AdminHome extends React.Component {
         return (
             <div>
                 <Modal
-				size="lg"
-				show={this.state.editEvent}
-				onHide={this.closeEvent}
-				aria-labelledby="example-modal-sizes-title-lg"
+                    size="lg"
+                    show={this.state.editEvent}
+                    onHide={this.closeEvent}
+                    aria-labelledby="example-modal-sizes-title-lg"
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id="example-modal-sizes-title-lg">
@@ -571,6 +542,67 @@ class AdminHome extends React.Component {
     };
 
     /**
+     * Generates the jsx code to create and handle logic for a modal component to create an event.
+     * @returns {*}
+     */
+    modal_create_event = () => {
+        return (
+            <div>
+                <Modal
+                    size="lg"
+                    show={this.state.createEvent}
+                    onHide={this.closeCEvent}
+                    aria-labelledby="example-modal-sizes-title-lg"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title id="example-modal-sizes-title-lg">
+                            Create Event
+                        </Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <Form onSubmit={this.editHandleCreateEvent}>
+                            <Form.Group controlId="formName">
+                                <Form.Label>Event Name</Form.Label>
+                                <Form.Control type="name" placeholder="Enter Event Name"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formPlace">
+                                <Form.Label>Location</Form.Label>
+                                <Form.Control type="place" placeholder="Enter Location"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formTime">
+                                <Form.Label>Time</Form.Label>
+                                <Form.Control type="timeS" placeholder="Enter Time"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formPic">
+                                <Form.Label>Picture</Form.Label>
+                                <Form.Control type="pic" placeholder="Enter Picture URL"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formDetails">
+                                <Form.Label>Details</Form.Label>
+                                <Form.Control type="details" placeholder="Enter Details"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formRSVP">
+                                <Form.Label>RSVP</Form.Label>
+                                <Form.Control type="rsvp" placeholder="Enter RSVP URL"/>
+                            </Form.Group>
+                            {/*todo add form verification*/}
+                            <Button variant="primary" type="submit">
+                                Submit
+                            </Button>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+            </div>
+        )
+    };
+
+    /**
      * Element for the main organization view.
      */
     admin_panel_view = () => {
@@ -598,14 +630,14 @@ class AdminHome extends React.Component {
                             <ListGroupItem>
                                 <Card.Link href={this.state.org.pageURL}>Official Website</Card.Link>
                             </ListGroupItem>
-							<ListGroupItem>
-								Tags
-								{this.state.org.tags.map(tag => (
-										<Button size="sm">
-											{tag}
-										</Button>
-								))}
-							</ListGroupItem>
+                            <ListGroupItem>
+                                Tags
+                                {this.state.org.tags.map(tag => (
+                                    <Button size="sm">
+                                        {tag}
+                                    </Button>
+                                ))}
+                            </ListGroupItem>
                             <ListGroupItem>Put Upcoming Events Here</ListGroupItem>
                         </ListGroup>
 
@@ -617,7 +649,7 @@ class AdminHome extends React.Component {
     };
 
     next_upcoming_events = () => {
-      console.log('event data', this.state.event)
+        console.log('event data', this.state.event)
     };
 
     render() {
@@ -652,6 +684,6 @@ class AdminHome extends React.Component {
     }
 
 
-};
+}
 
 export default AdminHome;

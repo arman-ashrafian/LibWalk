@@ -1,10 +1,10 @@
 import React from "react";
 import NavBar from "../navbar";
 import "../../css/subs.css";
-import Info from "../../components/clubInfo";
 import EachSub from "./eachSub";
 import Pagination from "react-bootstrap/Pagination";
 import {getUser} from "../cloud";
+import db from "../../firebase";
 
 class Subs extends React.Component {
     constructor(props) {
@@ -14,7 +14,7 @@ class Subs extends React.Component {
             currentPage: 1,
             userId: "",
             subscriptions: [],
-            clubList: 0,
+            clubList: [],
             totalPages: 0
         };
 
@@ -29,50 +29,56 @@ class Subs extends React.Component {
      * Called when the subs page is first created, do setup here.
      */
     componentDidMount() {
-        getUser("07Yn93n0wkUD0kEI7X4Q0NYuq9j1").then(json => {
-            this.setState({
-                userId: "07Yn93n0wkUD0kEI7X4Q0NYuq9j1",
-                subscriptions: json["subscriptions"]
-            });
-            const len = Object.keys(this.state.subscriptions).length;
-            let pages = 0;
-            if (Math.ceil(len / 3) < 1) {
-                pages = 1;
-            } else {
-                pages = Math.ceil(len / 3);
-            }
-            this.setState({
-                totalPages: pages
-            });
-            //console.log(Object.keys(this.state.subscriptions).length);
-        });
-        /*db.auth().onAuthStateChanged(firebaseUser => {
+        // getUser("07Yn93n0wkUD0kEI7X4Q0NYuq9j1").then(json => {
+        //     this.setState({
+        //         userId: "07Yn93n0wkUD0kEI7X4Q0NYuq9j1",
+        //         subscriptions: json["subscriptions"]
+        //     });
+        //     const len = Object.keys(this.state.subscriptions).length;
+        //     let pages = 0;
+        //     if (Math.ceil(len / 3) < 1) {
+        //         pages = 1;
+        //     } else {
+        //         pages = Math.ceil(len / 3);
+        //     }
+        //     this.setState({
+        //         totalPages: pages
+        //     });
+        //     //console.log(Object.keys(this.state.subscriptions).length);
+        // });
+        db.auth().onAuthStateChanged(firebaseUser => {
             if( firebaseUser) {
-                this.setState({ userId: firebaseUser.uid });
                 // getUser using userId and populate this.state
-                getUser({this.state.userId}).then(json => {
+                getUser(firebaseUser.uid).then(json => {
                     this.setState({
-                    user: {
-                        name: json['name'],
-                        email: json['email'],
-                        major: json['major'],
-                        year: json['year']
+                        userId: firebaseUser.uid,
+                        subscriptions: json["subscriptions"]
+                    });
+
+                    const len = Object.keys(this.state.subscriptions).length;
+                    let pages = 0;
+                    if (Math.ceil(len / 3) < 1) {
+                        pages = 1;
+                    } else {
+                        pages = Math.ceil(len / 3);
                     }
+                    this.setState({
+                        totalPages: pages
+                    });
                 })
-        })
             } else {
-                alert("Not logged in")
+                console.log("Not logged in")
             }
 
-        });*/
+        });
     }
 
     /**
      *  Check if the user is subcribe to any clubs
      */
     noClub() {
-        if (this.state.clubList.length === 0) {
-            return <div>You are currently not following any clubs</div>;
+        if (this.state.subscriptions.length === 0) {
+            return <div>You are not subscribed to any orgs</div>;
         }
     }
 
@@ -157,65 +163,73 @@ class Subs extends React.Component {
         console.log("Do nothing");
     }
 
+    showClubs() {
+        
+    }
+
     render() {
-        // Update the current page number and the current clubs that will be shown in each page
-        const {currentPage, clubPerPage, totalPages} = this.state;
-        const endIndex = currentPage * clubPerPage;
-        const firstIndex = endIndex - clubPerPage;
-        const currentClubs = this.state.subscriptions.slice(firstIndex, endIndex);
-
-        // Function to render the clubs
-        const showClubs = currentClubs.map(club => {
-            return <EachSub {...club} />;
-        });
-
-        // Find how many pages for the clubs
-        let pageNumber = [];
-        if (totalPages <= 5) {
-            for (let i = 1; i <= totalPages; i++) {
-                pageNumber.push(i);
-            }
-        } else {
-            pageNumber = this.pagination(currentPage, totalPages);
-        }
-
-        // Load the pagination with the number of page
+        let showClubs = [];
         let loadPageNumber;
-        if (totalPages <= 5) {
-            loadPageNumber = pageNumber.map(page => {
-                return (
-                    <div>
-                        <Pagination.Item
-                            key={page}
-                            id={page}
-                            active={page === currentPage}
-                            onClick={this.setPage}
-                        >
-                            {page}
-                        </Pagination.Item>
-                    </div>
-                );
+        if (this.state.subscriptions.length !== 0) {
+            // Update the current page number and the current clubs that will be shown in each page
+            const {currentPage, clubPerPage, totalPages} = this.state;
+            const endIndex = currentPage * clubPerPage;
+            const firstIndex = endIndex - clubPerPage;
+            const currentClubs = this.state.subscriptions.slice(firstIndex, endIndex);
+            // Function to render the clubs
+            showClubs = currentClubs.map(club => {
+                console.log(club)
+                return <EachSub clubId={club} {...this.props} />;
             });
-        } else {
-            loadPageNumber = pageNumber.map(page => {
-                return (
-                    <div>
-                        <Pagination.Item
-                            key={page}
-                            id={page}
-                            active={page === currentPage}
-                            onClick={page === "..." ? this.doNothing : this.setPage}
-                        >
-                            {(page = page === "..." ? <Pagination.Ellipsis/> : page)}
-                        </Pagination.Item>
-                    </div>
-                );
-            });
+
+            // Find how many pages for the clubs
+            let pageNumber = [];
+            if (totalPages <= 5) {
+                for (let i = 1; i <= totalPages; i++) {
+                    pageNumber.push(i);
+                }
+            } else {
+                pageNumber = this.pagination(currentPage, totalPages);
+            }
+
+            // Load the pagination with the number of page
+            if (totalPages <= 5) {
+                loadPageNumber = pageNumber.map(page => {
+                    return (
+                        <div>
+                            <Pagination.Item
+                                key={page}
+                                id={page}
+                                active={page === currentPage}
+                                onClick={this.setPage}
+                            >
+                                {page}
+                            </Pagination.Item>
+                        </div>
+                    );
+                });
+            } else {
+                loadPageNumber = pageNumber.map(page => {
+                    return (
+                        <div>
+                            <Pagination.Item
+                                key={page}
+                                id={page}
+                                active={page === currentPage}
+                                onClick={page === "..." ? this.doNothing : this.setPage}
+                            >
+                                {(page = page === "..." ? <Pagination.Ellipsis/> : page)}
+                            </Pagination.Item>
+                        </div>
+                    );
+                });
+            }
         }
 
         return (
+            <div>
+            <NavBar {...this.props} />
             <main>
-                <NavBar {...this.props} />
                 <h1 className="h1 text-center mb-5" id="header">
                     {" "}
                     Subscriptions
@@ -233,6 +247,7 @@ class Subs extends React.Component {
                     <Pagination.Last onClick={this.moveLastPage}/>
                 </Pagination>
             </main>
+            </div>
         );
     }
 }
