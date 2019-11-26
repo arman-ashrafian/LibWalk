@@ -2,7 +2,7 @@ import React from "react";
 import NavBar from "../navbar";
 //import Carousel from "react-bootstrap/Carousel";
 //import Carousel from 'react-multi-carousel';
-//import 'react-multi-carousel/lib/styles.css';
+// import 'react-multi-carousel/lib/styles.css';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";

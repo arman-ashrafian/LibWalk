@@ -80,12 +80,12 @@ export function editAnnouncements() {
   return null;
 }
 
-export function createAnnouncements(clubReference, announcementData) {
-  let data = {
-    club_ref: clubReference,
-    announcements: announcementData
-  }
-  return postRequest(createAnnounceURL, data);
+export function createAnnouncements(annId, annData) {
+    let data = {
+        ann_id: annId,
+        announcement: annData
+    }
+    return postRequest(createAnnounceURL, data);
 }
 
 export function getAnnouncements(clubId) {
