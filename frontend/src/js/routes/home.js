@@ -49,10 +49,6 @@ class Home extends React.Component {
   }
 
     render() {
-
-        /*getTag("CS").then(tagInfo => {
-            console.log(tagInfo)
-        })*/
         /* Update the number of clubs to show per page and from what range to what range */
         const {clubPerPage, currentPage, orgs, totalPages} = this.state;
         const endInd = currentPage * clubPerPage;

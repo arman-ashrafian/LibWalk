@@ -8,6 +8,8 @@ const getEventURL =
   "https://us-central1-libwalk-721c2.cloudfunctions.net/getEvent";
 const getAnnounceURL =
   "https://us-central1-libwalk-721c2.cloudfunctions.net/getAnnouncements";
+const createAnnounceURL =
+    "https://us-central1-libwalk-721c2.cloudfunctions.net/createAnnouncements";
 const getClubURL =
   "https://us-central1-libwalk-721c2.cloudfunctions.net/getClub";
 const getTagURL = 
@@ -58,7 +60,6 @@ export async function getClubs() {
   });
 }
 
-// Get user
 export function getUser(userId) {
   console.log('calling /getUser');
   let data = {
@@ -77,6 +78,14 @@ export function editUser(userId, userData) {
 
 export function editAnnouncements() {
   return null;
+}
+
+export function createAnnouncements(clubReference, announcementData) {
+  let data = {
+    club_ref: clubReference,
+    announcements: announcementData
+  }
+  return postRequest(createAnnounceURL, data);
 }
 
 export function getAnnouncements(clubId) {

@@ -10,8 +10,8 @@
 }
 
 .sub_img {
-  width: 550px;
-  height: 330px;
+  width: 200px;
+  height: 200px;
   margin-left: 0;
 }
 
@@ -21,32 +21,36 @@
 }
 
 .information {
-  margin-left: 100px;
+  margin-left: 0px;
 }
 
 .clubName {
+  margin-left: 20px;
   text-align: left;
-  font-size: 50px;
+  font-size: 30px;
   font-weight: bold;
 }
 
 .description {
-  text-align: left;
+  margin-left: 20px;
+  text-align: justify;
   margin-top: 10px;
-  font-size: 30px;
+  font-size: 15px;
+  max-width: 800px;
+  word-wrap:break-word;
 }
 
 .tags {
+  margin-left: 20px;
   width: 600px;
-  margin: 0;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
 }
 
 .tag {
-  width: 160px;
-  height: 50px;
+  width: auto;
+  height: 30px;
 }
 
 .pagination {
