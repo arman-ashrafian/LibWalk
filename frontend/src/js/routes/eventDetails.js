@@ -50,7 +50,7 @@ class Events extends React.Component {
 									<strong>{this.state.eventName}</strong>
 								</Card.Title>
 								<Card.Subtitle className="mb-2 text-muted" style={{fontSize:"20px"}}>
-									📍 {this.state.location} | 🕔 {this.state.time}
+									📍 {this.state.location} | 🕔 
 								</Card.Subtitle>
 								<Card.Text>
 									{this.state.description}

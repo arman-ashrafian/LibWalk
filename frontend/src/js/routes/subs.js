@@ -1,7 +1,6 @@
 import React from "react";
 import NavBar from "../navbar";
 import "../../css/subs.css";
-import Info from "../../components/clubInfo";
 import EachSub from "./eachSub";
 import Pagination from "react-bootstrap/Pagination";
 import {getUser} from "../cloud";
@@ -30,25 +29,8 @@ class Subs extends React.Component {
      * Called when the subs page is first created, do setup here.
      */
     componentDidMount() {
-        // getUser("07Yn93n0wkUD0kEI7X4Q0NYuq9j1").then(json => {
-        //     this.setState({
-        //         userId: "07Yn93n0wkUD0kEI7X4Q0NYuq9j1",
-        //         subscriptions: json["subscriptions"]
-        //     });
-        //     const len = Object.keys(this.state.subscriptions).length;
-        //     let pages = 0;
-        //     if (Math.ceil(len / 3) < 1) {
-        //         pages = 1;
-        //     } else {
-        //         pages = Math.ceil(len / 3);
-        //     }
-        //     this.setState({
-        //         totalPages: pages
-        //     });
-        //     //console.log(Object.keys(this.state.subscriptions).length);
-        // });
         db.auth().onAuthStateChanged(firebaseUser => {
-            if( firebaseUser) {
+            if( firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
                 // getUser using userId and populate this.state
                 getUser(firebaseUser.uid).then(json => {
                     this.setState({
@@ -180,7 +162,7 @@ class Subs extends React.Component {
             // Function to render the clubs
             showClubs = currentClubs.map(club => {
                 console.log(club)
-                return <EachSub clubId={club} />;
+                return <EachSub clubId={club} {...this.props} />;
             });
 
             // Find how many pages for the clubs
