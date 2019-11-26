@@ -260,7 +260,8 @@ class AdminHome extends React.Component {
                 pictureURL: e.target[3].value,
                 description: e.target[4].value,
                 rsvpForm: e.target[5].value,
-                eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value
+                eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value,
+				eventRef: this.state.org.clubReference
             }
         });
 

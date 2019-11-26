@@ -126,7 +126,7 @@ function MakeCard() {
                 </Card.Header>
                 <Card.Body>Official Announcement</Card.Body>
                 <Card.Footer>
-                    <strong>Last posted <TimeAgo date="Nov 19, 2019"/></strong>
+                    <strong>Last posted <TimeAgo date="Nov 25, 2019"/></strong>
                 </Card.Footer>
             </Card>
             <br/>
