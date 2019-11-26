@@ -6,7 +6,7 @@ import NavBar from "../navbar";
 import Button from "react-bootstrap/Button";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Card from "react-bootstrap/Card";
-import {getClub, getUser} from "../cloud";
+import {getClub, getUser, editUser} from "../cloud";
 import db from "../../firebase";
 import { Divider } from "@material-ui/core";
 
@@ -27,7 +27,9 @@ class Orgs extends React.Component {
                 announcements: [],
                 tags: []
             },
-            subscribed: false
+            subscribed: false,
+            user_id: "",
+            user: {}
         }
 
         this.handleSubscribe = this.handleSubscribe.bind(this)
@@ -46,8 +48,9 @@ class Orgs extends React.Component {
                 // getUser using userId and check if they're already subscribed
                 getUser(firebaseUser.uid).then(json => {
                     this.setState({
-                        userId: firebaseUser.uid,
-                        subscribed: json['subscriptions'].includes(this.state.club_id)
+                        user_id: firebaseUser.uid,
+                        subscribed: json['subscriptions'].includes(this.state.club_id),
+                        user: json
                     });
                 })
             } else {
@@ -56,10 +59,24 @@ class Orgs extends React.Component {
         });
     }
 
-    handleSubscribe() {
+    async handleSubscribe() {
+        if(!this.state.subscribed) {
+            this.state.user.subscriptions.push(this.state.club_id)
+        }
+        else {
+            const newSubs = this.state.user.subscriptions.filter(item => item !== this.state.club_id)
+            await this.setState(
+            {
+                user: {
+                    ...this.state.user,
+                    subscriptions: newSubs
+                }
+            });
+        }
         this.setState( {
             subscribed: !this.state.subscribed
         })
+        editUser(this.state.user_id, this.state.user)
     }
 
     render() {
