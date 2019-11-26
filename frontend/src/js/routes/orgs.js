@@ -1,14 +1,10 @@
 import React from "react";
-import "../../css/bootstrap.min.css";
-import "../../css/mdb.lite.min.css";
-import "../../css/style.min.css";
+import "../../css/orgs.css";
 import NavBar from "../navbar";
 import Button from "react-bootstrap/Button";
-import ToggleButton from "react-bootstrap/ToggleButton";
 import Card from "react-bootstrap/Card";
 import { getClub, getUser, editUser } from "../cloud";
 import db from "../../firebase";
-import { Divider } from "@material-ui/core";
 
 class Orgs extends React.Component {
   constructor(props) {
@@ -80,57 +76,65 @@ class Orgs extends React.Component {
   }
 
   render() {
+    const title_style = {
+      fontSize: "80px"
+    };
     return (
       <div>
         <NavBar {...this.props} />
-        <main className="mt-5 pt-5">
-          <div className="container">
-            <Card style={{ displaye: "flex" }}>
-              <Card.Img variant="top" src={this.state.club.pictureURL} />
-              <Card.Body>
-                <Card.Title style={{ fontSize: "80px" }}>
-                  <strong> {this.state.club.clubName} </strong>
-                </Card.Title>
-                {this.state.subscribed ? (
-                  <Button
-                    variant="danger"
-                    size="lg"
-                    block
-                    onClick={this.handleSubscribe}
-                  >
-                    Unsubscribe
-                  </Button>
-                ) : (
-                  <Button
-                    variant="success"
-                    size="lg"
-                    block
-                    onClick={this.handleSubscribe}
-                  >
-                    Subscribe
-                  </Button>
-                )}
-                <Card.Subtitle
-                  className="mb-2 text-muted"
-                  style={{ fontSize: "20px" }}
+
+        <div className="container">
+          <Card style={{ displaye: "flex" }}>
+            <Card.Img
+              className="image"
+              variant="top"
+              src={this.state.club.pictureURL}
+            />
+            <Card.Body>
+              <Card.Title style={title_style}>
+                <h2>{this.state.club.clubName}</h2>
+              </Card.Title>
+
+              <Card.Subtitle
+                className="mb-2 text-muted"
+                style={{ fontSize: "20px" }}
+              >
+                {this.state.club.tags.map(tag => (
+                  <Button size="sm">{tag}</Button>
+                ))}
+              </Card.Subtitle>
+              <Card.Text>{this.state.club.description}</Card.Text>
+              <Card.Subtitle
+                className="mb-2 text-muted"
+                style={{ fontSize: "20px" }}
+              >
+                {this.state.club.eventList.map(event => (
+                  <Button size="sm">{event}</Button>
+                ))}
+              </Card.Subtitle>
+
+              {this.state.subscribed ? (
+                <Button
+                  variant="danger"
+                  size="lg"
+                  block
+                  onClick={this.handleSubscribe}
                 >
-                  {this.state.club.tags.map(tag => (
-                    <Button size="sm">{tag}</Button>
-                  ))}
-                </Card.Subtitle>
-                <Card.Text>{this.state.club.description}</Card.Text>
-                <Card.Subtitle
-                  className="mb-2 text-muted"
-                  style={{ fontSize: "20px" }}
+                  Unsubscribe
+                </Button>
+              ) : (
+                <Button
+                  variant="success"
+                  size="lg"
+                  block
+                  onClick={this.handleSubscribe}
                 >
-                  {this.state.club.eventList.map(event => (
-                    <Button size="sm">{event}</Button>
-                  ))}
-                </Card.Subtitle>
-              </Card.Body>
-            </Card>
-          </div>
-        </main>
+                  Subscribe
+                </Button>
+              )}
+            </Card.Body>
+          </Card>
+        </div>
       </div>
     );
   }
