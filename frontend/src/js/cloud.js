@@ -32,7 +32,6 @@ const getUserEventsURL =
 // Use these functions instead of calling fetch directly
 // so you don't have to set the params every time.
 const postRequest = function(url, data) {
-  console.log(data)
   // data argument should be json
   return fetch(url, {
     mode: "cors",

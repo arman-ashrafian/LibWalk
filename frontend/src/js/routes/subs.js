@@ -146,10 +146,6 @@ class Subs extends React.Component {
         console.log("Do nothing");
     }
 
-    showClubs() {
-        
-    }
-
     render() {
         let showClubs = [];
         let loadPageNumber;
