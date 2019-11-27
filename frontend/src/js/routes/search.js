@@ -5,8 +5,6 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import {MDBCol, MDBInput, MDBBtn, MDBSelect} from "mdbreact"
-import Pagination from "react-bootstrap/Pagination";
 import {club_list} from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
@@ -19,7 +17,7 @@ class Search extends React.Component {
         this.state = {
             orgs: club_list,
             search_mode: "Search By Name",
-            search_keyword : "",
+            search_keyword: "",
             results: [],
             searched: false,    //Remembers if we have searched before
         };
@@ -38,7 +36,7 @@ class Search extends React.Component {
 
 
     render() {
-        const { orgs } = this.state;
+        const {orgs} = this.state;
 
         return (
             <div>
@@ -53,11 +51,15 @@ class Search extends React.Component {
                                     </Col>
                                     <Col sm={12} md={8} lg={8}>
                                         <div className="input-group">
-                                            <input onChange={(e) => this.setState({ search_keyword :e.target.value})} className="form-control mr-sm-2" style={{fontSize:28}} type="text" placeholder={this.state.search_mode} />
+                                            <input onChange={(e) => this.setState({search_keyword: e.target.value})}
+                                                   className="form-control mr-sm-2" style={{fontSize: 28}} type="text"
+                                                   placeholder={this.state.search_mode}/>
                                             <Dropdown onSelect={(e) => this.handleSearchSelect(e)} as={ButtonGroup}>
-                                                <Button variant="primary" size="m" onClick={() => this.handleSearchSubmit(this.state.search_keyword)}>Search</Button>
-                                                <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" size="sm" />
-                                                <Dropdown.Menu >
+                                                <Button variant="primary" size="m"
+                                                        onClick={() => this.handleSearchSubmit(this.state.search_keyword)}>Search</Button>
+                                                <Dropdown.Toggle split variant="primary" id="dropdown-split-basic"
+                                                                 size="sm"/>
+                                                <Dropdown.Menu>
                                                     <Dropdown.Item eventKey="Search By Name">Name</Dropdown.Item>
                                                     <Dropdown.Item eventKey="Search By Tag">Tag</Dropdown.Item>
                                                 </Dropdown.Menu>
@@ -130,18 +132,17 @@ class Search extends React.Component {
     };
 
     handleSearchSubmit(e) {
-        if(this.state.search_mode === "Search By Tag") {
+        if (this.state.search_mode === "Search By Tag") {
             this.searchByTags(e)
-        }
-        else {
+        } else {
             this.searchByKeyword(e)
         }
     };
 
     handleSearchSelect(e) {
-        if(e) {
+        if (e) {
 
-            this.setState({ 
+            this.setState({
                 search_mode: e
             })
         }
@@ -224,12 +225,12 @@ let org_grid_component = org => {
         <div>
             {/*<Card style={{width: '18rem'}}>*/}
             <a onClick={console.log("click")}>
-            <Card style={{width: "20rem", height: '13rem'}} className="text-center">
-                <Card.Img variant="top" src={org.img}/>
-                <Card.Body className="text-center">
-                    <Card.Title>{org.clubName}</Card.Title>
-                </Card.Body>
-            </Card>
+                <Card style={{width: "20rem", height: '13rem'}} className="text-center">
+                    <Card.Img variant="top" src={org.img}/>
+                    <Card.Body className="text-center">
+                        <Card.Title>{org.clubName}</Card.Title>
+                    </Card.Body>
+                </Card>
             </a>
         </div>
     );

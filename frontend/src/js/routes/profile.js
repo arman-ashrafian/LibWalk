@@ -115,12 +115,12 @@ class Profile extends React.Component {
                             </div>
 
                             {/* Show spinner if user is not loaded */}
-                            {(this.state.user.name === '') ? 
-                                <div style={{padding: '1em'}} >
-                                    <Spinner animation="border" variant="info" />
+                            {(this.state.user.name === '') ?
+                                <div style={{padding: '1em'}}>
+                                    <Spinner animation="border" variant="info"/>
                                 </div>
-                            :
-                            // Show user info
+                                :
+                                // Show user info
                                 <div className="div-centered ">
                                     <h3>
                                         <FaUser/> Name : {this.state.user.name}
