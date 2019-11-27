@@ -46,28 +46,6 @@ class EachSub extends React.Component {
   }
 
   render() {
-    /*const random_color = () => {
-      var colors = [
-        "elegant",
-        "unique",
-        "pink",
-        "purple",
-        "deep-purple",
-        "indigo",
-        "light-blue",
-        "cyan",
-        "dark-green",
-        "light-green",
-        "yellow",
-        "amber",
-        "deep-orange",
-        "brown",
-        "blue-grey"
-      ];
-      var number = Math.floor(Math.random() * colors.length);
-      return colors[number];
-    };*/
-
     return (
       <div className="sub_container">
         <Divider variant="fullWidth" />
