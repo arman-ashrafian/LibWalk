@@ -266,14 +266,11 @@ org_grid_component(org) {
                           }}/>
                       <Card.Body>
                           <Card.Title> <a onClick={() => {this.redirectToClubDetails(org.clubReference)}}>{org.clubName}</a></Card.Title>
-                          {/* <Card.Text>
+                          { <Card.Text>
                           <small className="scroll-box">
-                            {org.description.slice(0, 450)}
+                            {org.description.slice(0, 100) + "..."}
                           </small>
-                        </Card.Text> */}
-                          <Button href={org.pageURL}>
-                              Org Home
-                          </Button>
+                        </Card.Text> }
                       </Card.Body>
               </Card>
        
