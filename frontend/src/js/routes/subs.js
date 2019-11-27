@@ -30,7 +30,7 @@ class Subs extends React.Component {
      */
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
-            if( firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
+            if (firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
                 // getUser using userId and populate this.state
                 getUser(firebaseUser.uid).then(json => {
                     this.setState({
@@ -207,25 +207,25 @@ class Subs extends React.Component {
 
         return (
             <div>
-            <NavBar {...this.props} />
-            <main>
-                <h1 className="h1 text-center mb-5" id="header">
-                    {" "}
-                    Subscriptions
-                </h1>
-                {this.noClub()}
-                <div className="container">
-                    {/*Display each sub container*/}
-                    {showClubs}
-                </div>
-                <Pagination className="pagination" size="lg">
-                    <Pagination.First onClick={this.moveFirstPage}/>
-                    <Pagination.Prev onClick={this.setPagePrev}/>
-                    {loadPageNumber}
-                    <Pagination.Next onClick={this.setPageNext}/>
-                    <Pagination.Last onClick={this.moveLastPage}/>
-                </Pagination>
-            </main>
+                <NavBar {...this.props} />
+                <main>
+                    <h1 className="h1 text-center mb-5" id="header">
+                        {" "}
+                        Subscriptions
+                    </h1>
+                    {this.noClub()}
+                    <div className="container">
+                        {/*Display each sub container*/}
+                        {showClubs}
+                    </div>
+                    <Pagination className="pagination" size="lg">
+                        <Pagination.First onClick={this.moveFirstPage}/>
+                        <Pagination.Prev onClick={this.setPagePrev}/>
+                        {loadPageNumber}
+                        <Pagination.Next onClick={this.setPageNext}/>
+                        <Pagination.Last onClick={this.moveLastPage}/>
+                    </Pagination>
+                </main>
             </div>
         );
     }
