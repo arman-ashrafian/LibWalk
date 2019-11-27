@@ -429,15 +429,62 @@ exports.getAnnouncements = functions.https.onRequest((req, res) => {
 
 exports.createAnnouncements = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        const ann_id = req.body.club_id;
-        const ann_info = req.body.announcements;
-
+        const annID = req.body.ann_id;
+        const ann_info = req.body.announcement;
         admin
             .firestore()
-            .collection("Clubs")
-            .doc(ann_id)
+            .collection("Announcements")
+            .doc(annID)
             .set(ann_info)
-            .then(() => res.send({ announcements: "create announcement" + ann_info }))
-            .catch(err => res.send(err));
+            .then(() => res.send({ message: "created announcement" + annID }))
+            .catch(err => res.send({ message: err }));
     });
+});
+
+exports.accessAnnouncements = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        admin
+            .firestore()
+            .collection("Announcements")
+            .doc(req.body.ann_id)
+            .get()
+            .then(doc => {
+                res.send(doc.data());
+            })
+            .catch(err => {
+                res.send(err);
+            });
+    });
+});
+
+
+/* ================== /getUserEvents ==================
+ * request:
+ *  {uid: <user id>}
+ *
+ * response:
+ * 
+ */
+exports.getUserEvents = functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    const UID = req.body.uid;
+    const fs = admin.firestore()
+    
+    fs.collection("Users")
+      .doc(UID).get().then( user => {
+        let subs = user.data().subscriptions
+        let userEvents = {};
+
+        fs.collection("Events").where("clubsHosting", "array-contains-any", subs).get()
+          .then( querySnapshot => {
+            querySnapshot.forEach( doc => {
+              userEvents[doc.id] = doc.data();           
+            });
+            res.send(userEvents);
+          })
+          .catch( err => {
+            res.send(err);
+          });
+      })
+  });
 });

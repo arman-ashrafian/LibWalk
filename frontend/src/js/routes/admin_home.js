@@ -85,7 +85,7 @@ class AdminHome extends React.Component {
     componentDidMount() {
         // This code will get the admin's information to display on the page and store it in state
         db.auth().onAuthStateChanged(firebaseUser => {
-            if (firebaseUser) {
+            if (firebaseUser && firebaseUser.providerData[0].providerId === "password") {
                 this.setState({
                     org_id: firebaseUser.uid
                 });
@@ -271,8 +271,7 @@ class AdminHome extends React.Component {
                 pictureURL: e.target[3].value,
                 description: e.target[4].value,
                 rsvpForm: e.target[5].value,
-                eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value,
-				eventRef: this.state.org.clubReference
+                eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value
             }
         });
 
@@ -290,6 +289,10 @@ class AdminHome extends React.Component {
             });
     }
 
+    /**
+     * Handles what happens when you create an announcement for a club.
+     *
+     */
     async editHandleCreateAnn(e) {
         e.preventDefault();
         if (!e.target[0].value || !e.target[1].value) {
@@ -300,7 +303,7 @@ class AdminHome extends React.Component {
             announcement: {
                 annDetail: e.target[0].value,
                 time: e.target[1].value,
-                annReference: this.state.org.clubReference + e.target[0].value + e.target[1].value
+                annReference: this.state.org.clubReference + e.target[0].value
             }
 
         })
@@ -313,9 +316,21 @@ class AdminHome extends React.Component {
                 }
                 else {
                     createAnnouncements(this.state.announcement.annReference, this.state.announcement);
+                    if (this.state.org.announcements === undefined) {
+                        this.state.org = {
+                            announcements: ''
+                        }
+                    }
+                    else {
+                        if (this.state.org.announcements.includes(this.state.announcement.annReference) === false) {
+                            this.state.org.announcements.push(this.state.announcement.annReference);
+                          changeClub(this.state.org.clubReference, this.state.org);
+                        }
+                    }
                     alert('Announcement Created');
                     this.closeAnn();
                 }
+
             });
     }
 
@@ -356,6 +371,9 @@ class AdminHome extends React.Component {
         this.setState({createEvent: true})
     };
 
+    /**
+     * Handles the state change when you edit and org's announcement.
+     */
     handleCreateAnn = () => {
         this.setState({createAnn: true})
     };
@@ -398,6 +416,9 @@ class AdminHome extends React.Component {
         })
     };
 
+    /**
+     * Changes the state for helping render certain elements
+     */
     closeAnn = () => {
         this.setState({
             createAnn: false
@@ -678,7 +699,8 @@ class AdminHome extends React.Component {
 
                             <Form.Group controlId="formTime">
                                 <Form.Label>Time</Form.Label>
-                                <Form.Control type="timeS" placeholder="I.e. Nov 19, 2019"/>
+                                <Form.Control type="timeS" placeholder="I.e. Nov 19, 2019"
+                                              defaultValue={new Date()}/>
                             </Form.Group>
 
                             {/*todo add form verification*/}

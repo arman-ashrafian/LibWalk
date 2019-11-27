@@ -5,60 +5,74 @@ import "../../css/style.min.css";
 import NavBar from "../navbar";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { getEvent } from "../cloud";
+import Row from "react-bootstrap/Row";
+import { getUserEvents, getUser } from "../cloud";
+import db from "../../firebase";
+
+import { Divider } from "@material-ui/core";
 
 class Events extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      eventReference: "",
-      eventName: "",
-      pictureURL: "",
-      description: "",
-      location: "",
-      time: "",
-      rsvpForm: ""
+      userId: "",
+      events: {}
     };
   }
 
   componentDidMount() {
-    getEvent("event_id_00").then(eventInfo => {
-      this.setState({
-        eventName: eventInfo["eventName"],
-        pictureURL: eventInfo["pictureURL"],
-        description: eventInfo["description"],
-        location: eventInfo["location"],
-        time: eventInfo["time"],
-        rsvpForm: eventInfo["rsvpForm"],
-        eventReference: eventInfo["eventReference"]
-      });
+    db.auth().onAuthStateChanged(firebaseUser => {
+      if (
+        firebaseUser &&
+        firebaseUser.providerData[0].providerId === "google.com"
+      ) {
+        console.log(firebaseUser.uid);
+        // getUser using userId and populate this.state
+        getUserEvents(firebaseUser.uid).then(events => {
+          this.setState({
+            userId: firebaseUser.uid,
+            events: events
+          });
+        });
+      } else {
+        console.log("Redirecting to login page");
+      }
     });
   }
 
   render() {
+    // render the events
+    let event = {};
+    let eventHTML = [];
+    for (const eventKey in this.state.events) {
+      event = this.state.events[eventKey];
+      eventHTML.push(
+        <Card key={eventKey} style={{ width: "20rem" }}>
+          <Card.Img variant="top" src={event.pictureURL} />
+          <Card.Body>
+            <Card.Title>
+              <strong>{event.eventName}</strong>
+            </Card.Title>
+            <Card.Subtitle className="mb-2 text-muted">
+              📍 {event.location} | 🕔
+            </Card.Subtitle>
+            <Card.Text>{event.description}</Card.Text>
+            <Button variant="primary" onClick={event.rsvpForm}>
+              RSVP
+            </Button>
+          </Card.Body>
+        </Card>
+      );
+    }
+
     return (
       <div>
         <NavBar {...this.props} />
         <main className="mt-5 pt-5">
           <div className="container">
-            <Card style={{ display: "flex" }}>
-              <Card.Img variant="top" src={this.state.pictureURL} />
-              <Card.Body>
-                <Card.Title style={{ fontSize: "80px" }}>
-                  <strong>{this.state.eventName}</strong>
-                </Card.Title>
-                <Card.Subtitle
-                  className="mb-2 text-muted"
-                  style={{ fontSize: "20px" }}
-                >
-                  📍 {this.state.location} | 🕔 {this.state.time}
-                </Card.Subtitle>
-                <Card.Text>{this.state.description}</Card.Text>
-                <Button variant="primary" onClick={this.state.rsvpForm}>
-                  RSVP
-                </Button>
-              </Card.Body>
-            </Card>
+            <h1>Events</h1>
+            <h4>Upcoming events from the clubs you are subscribed to</h4>
+            <Row>{eventHTML}</Row>
           </div>
         </main>
       </div>

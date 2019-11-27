@@ -2,15 +2,15 @@ import React from "react";
 import NavBar from "../navbar";
 //import Carousel from "react-bootstrap/Carousel";
 //import Carousel from 'react-multi-carousel';
-import "react-multi-carousel/lib/styles.css";
+// import 'react-multi-carousel/lib/styles.css';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import CardDeck from "react-bootstrap/CardDeck";
 import { club_list, getTag } from "../cloud";
 import Pagination from "react-bootstrap/Pagination";
-
-//import '../../css/multiCarousel.css';
+//import { fa-chevron-right } from '@fortawesome/free-brands-svg-icons';
+import "../../css/multiCarousel.css";
 import $ from "jquery";
 class Home extends React.Component {
   constructor(props) {
@@ -79,13 +79,13 @@ class Home extends React.Component {
     return (
       <div>
         <NavBar {...this.props} />
-        <main className="mt-5 pt-5">
-          <div className="container centerPage">
-            <div className="row centerPage">
-              {/*Rest of the page here*/}
-              <div className="home_grid_container">
-                {this.org_grid(currentClubs)}
-              </div>
+        <main className="mt-3 pt-3">
+          <div class="container-fluid centerPage">
+            {/*
+                        <div className="row centerPage" >
+                        </div>*/}
+            <div className="home_grid_container parent">
+              {this.org_grid(currentClubs)}
             </div>
           </div>
         </main>
@@ -112,7 +112,6 @@ class Home extends React.Component {
         });
         
         let grid = [];
-
         for (let i = 0; i <= numrows; i++) {
             let row = [];
             for (let j = 0; j < numcols; j++) {
@@ -127,7 +126,6 @@ class Home extends React.Component {
             }
             grid.push(row);
         }
-
         return (
             <div>
                 <CardDeck> {grid} </CardDeck>
@@ -139,9 +137,12 @@ class Home extends React.Component {
     let tagMap = this.state.tagDict;
     return (
       <div>
-        {Object.keys(tagMap).map(tag =>
-          org_multi_item_carousel(tag, tagMap[tag])
-        )}
+        {Object.keys(tagMap).map(
+          tag => org_multi_item_carousel(tag, tagMap[tag])
+          //org_multi_item_carousel("Cultural", tagMap["Cultural"])
+        )
+        //org_multi_item_carousel("Cultural", tagMap["Cultural"])
+        }
       </div>
     );
   };
@@ -236,13 +237,35 @@ class Home extends React.Component {
   }
 }
 
+//brent yee
+
 //TAKEN FROM ONLINE FOR THE CAROUSEL
+
 $(document).ready(function() {
+  //setTimeout(function() {
   var itemsMainDiv = ".MultiCarousel";
   var itemsDiv = ".MultiCarousel-inner";
   var itemWidth = "";
-
-  $(".leftLst, .rightLst").click(function() {
+  var down = false;
+  /*  $(document).mousedown(function() {
+        down = true;
+    }).mouseup(function() {
+        down = false;  
+    });
+    $('.leftLst, .rightLst').mouseout(function() {
+        if(down) {
+        var condition = $(this).hasClass("leftLst");
+            if (condition)
+                click(0, this);
+            else
+                click(1, this);
+                console.log("down");  
+        } 
+        else {
+            console.log("up");   
+        }
+    });*/
+  $(".leftLst, .rightLst").mousedown(function() {
     var condition = $(this).hasClass("leftLst");
     if (condition) click(0, this);
     else click(1, this);
@@ -252,10 +275,13 @@ $(document).ready(function() {
 
   $(window).resize(function() {
     ResCarouselSize();
+    // }, 5000);
   });
 
   //this function define the size of the items
+  // YO BODY WIDTH IS 820.8
   function ResCarouselSize() {
+    //console.log( $(itemsMainDiv).width());
     var incno = 0;
     var dataItems = "data-items";
     var itemClass = ".item";
@@ -263,7 +289,7 @@ $(document).ready(function() {
     var btnParentSb = "";
     var itemsSplit = "";
     var sampwidth = $(itemsMainDiv).width();
-    var bodyWidth = $("body").width();
+    var bodyWidth = $("main").width();
     $(itemsDiv).each(function() {
       id = id + 1;
       var itemNumbers = $(this).find(itemClass).length;
@@ -279,13 +305,13 @@ $(document).ready(function() {
         incno = itemsSplit[3];
         itemWidth = sampwidth / incno;
       } else if (bodyWidth >= 992) {
-        incno = itemsSplit[2];
+        incno = itemsSplit[3];
         itemWidth = sampwidth / incno;
       } else if (bodyWidth >= 768) {
-        incno = itemsSplit[1];
+        incno = itemsSplit[3];
         itemWidth = sampwidth / incno;
       } else {
-        incno = itemsSplit[0];
+        incno = itemsSplit[3];
         itemWidth = sampwidth / incno;
       }
       $(this).css({
@@ -300,6 +326,7 @@ $(document).ready(function() {
 
       $(".leftLst").addClass("over");
       $(".rightLst").removeClass("over");
+      // alert("Finished or whateva");
     });
   }
 
@@ -314,7 +341,6 @@ $(document).ready(function() {
     if (e == 0) {
       translateXval = parseInt(xds) - parseInt(itemWidth * s);
       $(el + " " + rightBtn).removeClass("over");
-
       if (translateXval <= itemWidth / 2) {
         translateXval = 0;
         $(el + " " + leftBtn).addClass("over");
@@ -352,18 +378,20 @@ $(document).ready(function() {
 function org_multi_item_carousel(tag, tagList) {
   let itemsInCarousel = [];
   return (
-    <div class="row">
+    <div class="container">
       <h3>{tag}</h3>
       <div
         class="MultiCarousel"
-        data-items="1,3,5,6"
+        data-items="1,3,4,4"
         data-slide="1"
         id="MultiCarousel"
         data-interval="1000"
       >
-        {tagList.map(clubItem => org_grid_component(clubItem))}
-        <button class="btn btn-primary leftLst"> &larr; </button>
-        <button class="btn btn-primary rightLst"> &rarr; </button>
+        <div class="MultiCarousel-inner">
+          {tagList.map(clubItem => org_grid_component(clubItem))}
+        </div>
+        <button class="leftLst btn-circle btn-md">&lt;</button>
+        <button class="rightLst btn-circle btn-md">&gt;</button>
       </div>
     </div>
   );
@@ -371,37 +399,30 @@ function org_multi_item_carousel(tag, tagList) {
 
 let org_grid_component = org => {
   org = Object.values(org)[0];
-  console.log(JSON.stringify(org));
+  // console.log(JSON.stringify(org));
   org.img = "https://picsum.photos/150/50";
   return (
-    <div class="MultiCarousel-inner">
-      <div class="item">
-        <Card
-          style={{ width: "20rem", height: "36rem" }}
-          className="text-center"
-        >
-          {/*<Card.Img variant="top" src={org.img}/>*/}
-          <Card.Img
-            src={org.img}
-            style={{
-              width: "100%",
-              height: "15vw",
-              "object-fit": "cover"
-            }}
-          />
-          <Card.Body>
-            <Card.Title>{org.clubName}</Card.Title>
-            {/* <Card.Text>
+    <div class="item">
+      <Card style={{ width: "16rem", height: "20rem" }} className="text-center">
+        {/*<Card.Img variant="top" src={org.img}/>*/}
+        <Card.Img
+          src={org.img}
+          style={{
+            width: "100%",
+            height: "15vw",
+            "object-fit": "cover"
+          }}
+        />
+        <Card.Body>
+          <Card.Title>{org.clubName}</Card.Title>
+          {/* <Card.Text>
                           <small className="scroll-box">
                             {org.description.slice(0, 450)}
                           </small>
                         </Card.Text> */}
-            <Button variant="primary" href={org.pageURL}>
-              Org Home
-            </Button>
-          </Card.Body>
-        </Card>
-      </div>
+          <Button href={org.pageURL}>Org Home</Button>
+        </Card.Body>
+      </Card>
     </div>
   );
 };
