@@ -4,7 +4,7 @@ import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
 import TimeAgo from "@jshimko/react-time-ago";
-import {getUser} from "../cloud";
+import {getUser, club_list} from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import CardDeck from "react-bootstrap/CardDeck";
@@ -17,7 +17,7 @@ class Announcements extends React.Component {
 
         this.state = {
             userId: "",
-            orgs: []
+            orgs: club_list
         };
     }
 
@@ -26,10 +26,11 @@ class Announcements extends React.Component {
             if (firebaseUser) {
                 this.setState({userId: firebaseUser.uid});
                 getUser(firebaseUser.uid).then(json => {
-                    if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
+                    if ((json.subscriptions === undefined) || (json.subscriptions.length === 0)) {
                         alert("YOU HAVE NO SUBSCRIPTIONS DUMMY")
                     }
-                    this.setState({orgs: json.subscriptions});
+                    //ADD THIS BACK LATER
+                    // this.setState({orgs: json.subscriptions});
                 })
             } else {
                 console.log("Redirecting to login page");
@@ -101,6 +102,7 @@ class Announcements extends React.Component {
 }
 
 let club_grid = org => {
+    org = Object.values(org)[0];
     return (
         <Card style={{width: "80rem", height: "20rem"}} className="text-center">
             <Card.Header>
@@ -146,7 +148,7 @@ function MakeCard() {
                 </Card.Header>
                 <Card.Body>Official Announcement</Card.Body>
                 <Card.Footer>
-                    <strong>Last posted <TimeAgo date="Nov 19, 2019"/></strong>
+                    <strong>Last posted <TimeAgo date="Tue Nov 26 2019 22:30:14 GMT-0800 (Pacific Standard Time)"/></strong>
                 </Card.Footer>
             </Card>
         </Row>

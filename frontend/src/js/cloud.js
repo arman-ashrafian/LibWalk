@@ -1202,6 +1202,7 @@ export let club_list = [
         },
         {
             "7udUJPGbD4bAaxAdjzq7JCGnqI42": {
+                "announcements": [],
                 "emailList": [],
                 "clubName": "A Cappella Choir",
                 "pictureURL": "",
