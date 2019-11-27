@@ -138,7 +138,7 @@ class Home extends React.Component {
     return (
       <div>
         {Object.keys(tagMap).map(
-          tag => org_multi_item_carousel(tag, tagMap[tag])
+          tag => this.org_multi_item_carousel(tag, tagMap[tag])
           //org_multi_item_carousel("Cultural", tagMap["Cultural"])
         )
         //org_multi_item_carousel("Cultural", tagMap["Cultural"])
@@ -234,6 +234,79 @@ class Home extends React.Component {
       });
     });
     //console.log(this.state.tagDict)
+  }
+
+  redirectToClubDetails(club_id) {
+    this.props.history.push({
+      pathname: "/orgs",
+      state: {
+        club_id: club_id
+      }
+    });
+  }
+
+  org_grid_component(org) {
+    org = Object.values(org)[0];
+    // console.log(JSON.stringify(org));
+    org.img = "https://picsum.photos/150/50";
+    return (
+      <div class="item">
+        <Card
+          style={{ width: "16rem", height: "20rem" }}
+          className="text-center"
+        >
+          {/*<Card.Img variant="top" src={org.img}/>*/}
+          <Card.Img
+            src={org.img}
+            style={{
+              width: "100%",
+              height: "15vw",
+              "object-fit": "cover"
+            }}
+          />
+          <Card.Body>
+            <Card.Title>
+              {" "}
+              <a
+                onClick={() => {
+                  this.redirectToClubDetails(org.clubReference);
+                }}
+              >
+                {org.clubName}
+              </a>
+            </Card.Title>
+            {/* <Card.Text>
+                          <small className="scroll-box">
+                            {org.description.slice(0, 450)}
+                          </small>
+                        </Card.Text> */}
+            <Button href={org.pageURL}>Org Home</Button>
+          </Card.Body>
+        </Card>
+      </div>
+    );
+  }
+
+  org_multi_item_carousel(tag, tagList) {
+    let itemsInCarousel = [];
+    return (
+      <div class="container">
+        <h3>{tag}</h3>
+        <div
+          class="MultiCarousel"
+          data-items="1,3,4,4"
+          data-slide="1"
+          id="MultiCarousel"
+          data-interval="1000"
+        >
+          <div class="MultiCarousel-inner">
+            {tagList.map(clubItem => this.org_grid_component(clubItem))}
+          </div>
+          <button class="leftLst btn-circle btn-md">&lt;</button>
+          <button class="rightLst btn-circle btn-md">&gt;</button>
+        </div>
+      </div>
+    );
   }
 }
 
@@ -375,56 +448,5 @@ $(document).ready(function() {
     ResCarousel(ell, Parent, slide);
   }
 });
-function org_multi_item_carousel(tag, tagList) {
-  let itemsInCarousel = [];
-  return (
-    <div class="container">
-      <h3>{tag}</h3>
-      <div
-        class="MultiCarousel"
-        data-items="1,3,4,4"
-        data-slide="1"
-        id="MultiCarousel"
-        data-interval="1000"
-      >
-        <div class="MultiCarousel-inner">
-          {tagList.map(clubItem => org_grid_component(clubItem))}
-        </div>
-        <button class="leftLst btn-circle btn-md">&lt;</button>
-        <button class="rightLst btn-circle btn-md">&gt;</button>
-      </div>
-    </div>
-  );
-}
-
-let org_grid_component = org => {
-  org = Object.values(org)[0];
-  // console.log(JSON.stringify(org));
-  org.img = "https://picsum.photos/150/50";
-  return (
-    <div class="item">
-      <Card style={{ width: "16rem", height: "20rem" }} className="text-center">
-        {/*<Card.Img variant="top" src={org.img}/>*/}
-        <Card.Img
-          src={org.img}
-          style={{
-            width: "100%",
-            height: "15vw",
-            "object-fit": "cover"
-          }}
-        />
-        <Card.Body>
-          <Card.Title>{org.clubName}</Card.Title>
-          {/* <Card.Text>
-                          <small className="scroll-box">
-                            {org.description.slice(0, 450)}
-                          </small>
-                        </Card.Text> */}
-          <Button href={org.pageURL}>Org Home</Button>
-        </Card.Body>
-      </Card>
-    </div>
-  );
-};
 
 export default Home;
