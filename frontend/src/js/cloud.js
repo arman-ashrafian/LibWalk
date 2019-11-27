@@ -10,6 +10,8 @@ const getAnnounceURL =
   "https://us-central1-libwalk-721c2.cloudfunctions.net/getAnnouncements";
 const createAnnounceURL =
     "https://us-central1-libwalk-721c2.cloudfunctions.net/createAnnouncements";
+const accessAnnounceURL =
+    "https://us-central1-libwalk-721c2.cloudfunctions.net/accessAnnouncements";
 const getClubURL =
   "https://us-central1-libwalk-721c2.cloudfunctions.net/getClub";
 const getTagURL = 
@@ -77,10 +79,7 @@ export function editUser(userId, userData) {
   return postRequest(editUserURL, data);
 }
 
-export function editAnnouncements() {
-  return null;
-}
-
+//This function creates an announcement with all the details inside Announcements collection
 export function createAnnouncements(annId, annData) {
     let data = {
         ann_id: annId,
@@ -89,12 +88,20 @@ export function createAnnouncements(annId, annData) {
     return postRequest(createAnnounceURL, data);
 }
 
+//This function gets the "announcements" field inside Clubs collection
 export function getAnnouncements(clubId) {
   let data = {
     club_id: clubId
   };
-  // add getTime function
   return postRequest(getAnnounceURL, data);
+}
+
+//This functions gets an annoucement's details inside Announcements collection
+export function accessAnnouncements(annId) {
+    let data = {
+        ann_id: annId
+    };
+    return postRequest(accessAnnounceURL, data)
 }
 
 export function changeClub(clubId, clubData) {
@@ -1202,7 +1209,11 @@ export let club_list = [
         },
         {
             "7udUJPGbD4bAaxAdjzq7JCGnqI42": {
-                "announcements": [],
+                "announcements": ["7udUJPGbD4bAaxAdjzq7JCGnqI42Lead Singer Application Is Open",
+                "7udUJPGbD4bAaxAdjzq7JCGnqI42Principal Members Recruitment",
+                "7udUJPGbD4bAaxAdjzq7JCGnqI42Looking For Guitarist",
+                "7udUJPGbD4bAaxAdjzq7JCGnqI42Acapella Recruit"],
+
                 "emailList": [],
                 "clubName": "A Cappella Choir",
                 "pictureURL": "",

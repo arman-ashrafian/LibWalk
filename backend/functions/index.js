@@ -441,6 +441,23 @@ exports.createAnnouncements = functions.https.onRequest((req, res) => {
     });
 });
 
+exports.accessAnnouncements = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        admin
+            .firestore()
+            .collection("Announcements")
+            .doc(req.body.ann_id)
+            .get()
+            .then(doc => {
+                res.send(doc.data());
+            })
+            .catch(err => {
+                res.send(err);
+            });
+    });
+});
+
+
 /* ================== /getUserEvents ==================
  * request:
  *  {uid: <user id>}
