@@ -19,14 +19,14 @@ class Home extends React.Component {
             totalPages: Math.ceil(club_list.length / 9)
         };
 
-        this.setClubPerPage = this.setClubPerPage.bind(this);
-        this.setPageNext = this.setPageNext.bind(this);
-        this.setPagePrev = this.setPagePrev.bind(this);
-        this.moveFirstPage = this.moveFirstPage.bind(this);
-        this.moveLastPage = this.moveLastPage.bind(this);
-        this.generateTagList = this.generateTagList.bind(this);
+        this.set_club_per_page = this.set_club_per_page.bind(this);
+        this.set_page_next = this.set_page_next.bind(this);
+        this.set_page_prev = this.set_page_prev.bind(this);
+        this.move_first_page = this.move_first_page.bind(this);
+        this.move_last_page = this.move_last_page.bind(this);
+        this.generate_tag_list = this.generate_tag_list.bind(this);
 
-        this.generateTagList();
+        this.generate_tag_list();
 
         if (this.state.orgs === undefined) {
             this.state = {
@@ -55,7 +55,7 @@ class Home extends React.Component {
                         key={page}
                         id={page}
                         active={page === currentPage}
-                        onClick={page === "..." ? this.doNothing : this.setClubPerPage}
+                        onClick={page === "..." ? this.doNothing : this.set_club_per_page}
                     >
                         {(page = page === "..." ? <Pagination.Ellipsis/> : page)}
                     </Pagination.Item>
@@ -78,16 +78,15 @@ class Home extends React.Component {
 
                 </main>
                 <Pagination className="pagination" size="lg">
-                    <Pagination.First onClick={this.moveFirstPage}/>
-                    <Pagination.Prev onClick={this.setPagePrev}/>
+                    <Pagination.First onClick={this.move_first_page}/>
+                    <Pagination.Prev onClick={this.set_page_prev}/>
                     {loadPageNumber}
-                    <Pagination.Next onClick={this.setPageNext}/>
-                    <Pagination.Last onClick={this.moveLastPage}/>
+                    <Pagination.Next onClick={this.set_page_next}/>
+                    <Pagination.Last onClick={this.move_last_page}/>
                 </Pagination>
             </div>
         );
     }
-
 
     org_grid = orgs => {
         let tagMap = this.state.tagDict;
@@ -103,14 +102,14 @@ class Home extends React.Component {
         );
     }
 
-    setClubPerPage(event) {
+    set_club_per_page(event) {
         this.setState({
             currentPage: Number(event.target.id)
         });
     }
 
     /* Function to move to the next page */
-    setPageNext(event) {
+    set_page_next(event) {
         //currentPage += 1;
         if (this.state.currentPage < this.state.totalPages) {
             this.setState({
@@ -120,7 +119,7 @@ class Home extends React.Component {
     }
 
     /* Function to move to the previous page */
-    setPagePrev(event) {
+    set_page_prev(event) {
         if (this.state.currentPage > 1) {
             this.setState({
                 currentPage: this.state.currentPage - 1
@@ -129,7 +128,7 @@ class Home extends React.Component {
     }
 
     /* Function to move to the first page */
-    moveFirstPage(event) {
+    move_first_page(event) {
         if (this.state.currentPage > 1) {
             this.setState({
                 currentPage: 1
@@ -138,7 +137,7 @@ class Home extends React.Component {
     }
 
     /* Function to move to the last page */
-    moveLastPage(event) {
+    move_last_page(event) {
         if (this.state.currentPage < this.state.totalPages) {
             this.setState({
                 currentPage: this.state.totalPages
@@ -178,7 +177,7 @@ class Home extends React.Component {
     }
 
     //Creates a hash map of tags
-    generateTagList() {
+    generate_tag_list() {
         this.state.orgs.forEach((org) => {
             let org_values = Object.values(org)[0];
             org_values.tags.forEach((tag) => {
@@ -193,7 +192,7 @@ class Home extends React.Component {
         //console.log(this.state.tagDict)
     }
 
-    redirectToClubDetails(club_id) {
+    redirect_to_club_details(club_id) {
         this.props.history.push({
             pathname: "/orgs",
             state: {
@@ -220,7 +219,7 @@ class Home extends React.Component {
                         }}/>
                     <Card.Body>
                         <Card.Title> <a onClick={() => {
-                            this.redirectToClubDetails(org.clubReference)
+                            this.redirect_to_club_details(org.clubReference)
                         }}>{org.clubName}</a></Card.Title>
                         {/* <Card.Text>
                           <small className="scroll-box">
@@ -292,16 +291,16 @@ $(document).ready(function () {
             click(1, this);
     });
 
-    ResCarouselSize();
+    res_carousel_size();
 
     $(window).resize(function () {
-        ResCarouselSize();
+        res_carousel_size();
         // }, 5000);
     });
 
     //this function define the size of the items
     // YO BODY WIDTH IS 820.8
-    function ResCarouselSize() {
+    function res_carousel_size() {
         //console.log( $(itemsMainDiv).width());
         var incno = 0;
         var dataItems = ("data-items");
@@ -345,7 +344,7 @@ $(document).ready(function () {
 
 
     //this function used to move the items
-    function ResCarousel(e, el, s) {
+    function res_carousel(e, el, s) {
         var leftBtn = ('.leftLst');
         var rightBtn = ('.rightLst');
         var translateXval = '';
@@ -376,7 +375,7 @@ $(document).ready(function () {
     function click(ell, ee) {
         var Parent = "#" + $(ee).parent().attr("id");
         var slide = $(Parent).attr("data-slide");
-        ResCarousel(ell, Parent, slide);
+        res_carousel(ell, Parent, slide);
     }
 });
 
