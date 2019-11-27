@@ -76,9 +76,6 @@ class Orgs extends React.Component {
   }
 
   render() {
-    const title_style = {
-      fontSize: "80px"
-    };
     return (
       <div>
         <NavBar {...this.props} />
@@ -91,7 +88,7 @@ class Orgs extends React.Component {
               src={this.state.club.pictureURL}
             />
             <Card.Body>
-              <Card.Title style={title_style}>
+              <Card.Title className="clubName">
                 <h2>{this.state.club.clubName}</h2>
               </Card.Title>
 
