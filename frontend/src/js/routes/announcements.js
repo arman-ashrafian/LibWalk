@@ -4,7 +4,7 @@ import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
 import TimeAgo from "@jshimko/react-time-ago";
-import {getUser} from "../cloud";
+import {getUser, club_list, getAnnouncements, accessAnnouncements} from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import CardDeck from "react-bootstrap/CardDeck";
@@ -17,7 +17,11 @@ class Announcements extends React.Component {
 
         this.state = {
             userId: "",
-            orgs: []
+            orgs: [],
+            announcements: [],
+            annDetail: "",
+            time: "",
+            annReference: ""
         };
     }
 
@@ -26,16 +30,50 @@ class Announcements extends React.Component {
             if (firebaseUser) {
                 this.setState({userId: firebaseUser.uid});
                 getUser(firebaseUser.uid).then(json => {
-                    if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
-                        alert("YOU HAVE NO SUBSCRIPTIONS DUMMY")
+                    if ((json.subscriptions === undefined) || (json.subscriptions.length === 0)) {
+                        alert("You haven't yet subscribed to any organizations!")
                     }
+                    //ADD THIS BACK LATER
                     this.setState({orgs: json.subscriptions});
-                })
+                    console.log(this.state.orgs)
+                });
+                //This function get the "announcements" field inside Clubs
+                getAnnouncements(this.state.orgs).then(anns => {
+                    if ((anns === undefined)) {
+                        this.setState({
+                            announcements: ''
+                        })
+                    }
+                    else {
+                        this.setState({
+                            announcements: anns['announcements']
+                        })
+                    }
+                });
+                //This function get the announcement details inside Announcements
+                accessAnnouncements(this.state.announcements).then(annInfo => {
+                    if ((annInfo === undefined)) {
+                        this.setState({
+                            annDetail: '',
+                            time: '',
+                            annReference: ''
+                        })
+                    }
+                    else {
+                        this.setState({
+                            annDetail: annInfo['annDetail'],
+                            time: annInfo['time'],
+                            annReference: annInfo['annReference']
+                        })
+                    }
+                    console.log(this.state.annDetail)
+                });
             } else {
                 console.log("Redirecting to login page");
             }
         });
     }
+
 
     render() {
         if (this.state.orgs === undefined) {
@@ -101,6 +139,7 @@ class Announcements extends React.Component {
 }
 
 let club_grid = org => {
+    // org = Object.values(org)[0];
     return (
         <Card style={{width: "80rem", height: "20rem"}} className="text-center">
             <Card.Header>
@@ -124,7 +163,7 @@ function MakeCard() {
                 <Card.Header>
                     <strong className="mr-auto" style={{fontSize: 24}}>📢</strong>
                 </Card.Header>
-                <Card.Body>Official Announcement</Card.Body>
+                <Card.Body>{111}</Card.Body>
                 <Card.Footer>
                     <strong>Last posted <TimeAgo date="Nov 25, 2019"/></strong>
                 </Card.Footer>
@@ -134,7 +173,7 @@ function MakeCard() {
                 <Card.Header>
                     <strong className="mr-auto" style={{fontSize: 24}}>📣</strong>
                 </Card.Header>
-                <Card.Body>Officer Application Is Up</Card.Body>
+                <Card.Body>{222}</Card.Body>
                 <Card.Footer>
                     <strong>Last posted <TimeAgo date="Nov 19, 2019"/></strong>
                 </Card.Footer>
@@ -144,9 +183,9 @@ function MakeCard() {
                 <Card.Header>
                     <strong className="mr-auto" style={{fontSize: 24}}>📌</strong>
                 </Card.Header>
-                <Card.Body>Official Announcement</Card.Body>
+                <Card.Body>{333}</Card.Body>
                 <Card.Footer>
-                    <strong>Last posted <TimeAgo date="Nov 19, 2019"/></strong>
+                    <strong>Last posted <TimeAgo date="Tue Nov 26 2019 22:30:14 GMT-0800 (Pacific Standard Time)"/></strong>
                 </Card.Footer>
             </Card>
         </Row>

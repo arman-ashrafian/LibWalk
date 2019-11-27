@@ -49,7 +49,7 @@ class Login extends React.Component {
                 })
 
             auth.onAuthStateChanged((user) => {
-                if (user) {
+                if (user && user.providerData[0].providerId === "google.com") {
                     this.setState({userId: user.uid});
                     console.log(user.uid)
                     db.firestore().collection("Users").doc(user.uid).get()

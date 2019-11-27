@@ -6,9 +6,9 @@ import NavBar from "../navbar";
 import Button from "react-bootstrap/Button";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Card from "react-bootstrap/Card";
-import {getClub, getUser, editUser} from "../cloud";
+import {getClub, changeClub, getUser, editUser} from "../cloud";
 import db from "../../firebase";
-import { Divider } from "@material-ui/core";
+import EachEvent from "./eachEvent";
 
 class Orgs extends React.Component {
     constructor(props) {
@@ -62,14 +62,21 @@ class Orgs extends React.Component {
     async handleSubscribe() {
         if(!this.state.subscribed) {
             this.state.user.subscriptions.push(this.state.club_id)
+            this.state.club.emailList.push(this.state.user_id)
         }
         else {
             const newSubs = this.state.user.subscriptions.filter(item => item !== this.state.club_id)
+            const newEmailList = this.state.club.emailList.filter(item => item !== this.state.user_id);
+            console.log(newEmailList)
             await this.setState(
             {
                 user: {
                     ...this.state.user,
                     subscriptions: newSubs
+                },
+                club: {
+                    ...this.state.club,
+                    emailList: newEmailList
                 }
             });
         }
@@ -77,9 +84,14 @@ class Orgs extends React.Component {
             subscribed: !this.state.subscribed
         })
         editUser(this.state.user_id, this.state.user)
+        changeClub(this.state.club_id, this.state.club)
     }
 
     render() {
+        let showEvents = [];
+        showEvents = this.state.club.eventList.map(event => {
+            return <EachEvent eventId={event} {...this.props} />;
+        });
         return (
             <div>
                 <NavBar {...this.props} />
@@ -110,13 +122,9 @@ class Orgs extends React.Component {
                                 <Card.Text>
                                     {this.state.club.description}
                                 </Card.Text>
-                                <Card.Subtitle className="mb-2 text-muted" style={{fontSize:"20px"}}>
-                                        {this.state.club.eventList.map(event => (
-                                            <Button size="sm">
-                                                {event}
-                                            </Button>
-                                        ))}
-                                </Card.Subtitle>
+                                <div style={{display: "flex"}}>
+                                    {showEvents}
+                                </div>
                             </Card.Body>
                         </Card>
                     </div>

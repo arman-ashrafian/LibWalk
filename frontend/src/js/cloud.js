@@ -10,6 +10,8 @@ const getAnnounceURL =
   "https://us-central1-libwalk-721c2.cloudfunctions.net/getAnnouncements";
 const createAnnounceURL =
     "https://us-central1-libwalk-721c2.cloudfunctions.net/createAnnouncements";
+const accessAnnounceURL =
+    "https://us-central1-libwalk-721c2.cloudfunctions.net/accessAnnouncements";
 const getClubURL =
   "https://us-central1-libwalk-721c2.cloudfunctions.net/getClub";
 const getTagURL = 
@@ -22,14 +24,15 @@ const changeEventURL =
   'https://us-central1-libwalk-721c2.cloudfunctions.net/changeEvent';
 const changeTagURL = 
   'https://us-central1-libwalk-721c2.cloudfunctions.net/changeTag';
+const getUserEventsURL = 
+  'https://us-central1-libwalk-721c2.cloudfunctions.net/getUserEvents';
 
-const CACHE_TIMEOUT_MS = 120000000000000000000000000; // only make API request if last call was over 120,000 ms == 120 seconds
-let cache = {};
 
 /* ============ fetch() wrappers ==================== */
 // Use these functions instead of calling fetch directly
 // so you don't have to set the params every time.
 const postRequest = function(url, data) {
+  console.log(data)
   // data argument should be json
   return fetch(url, {
     mode: "cors",
@@ -76,10 +79,7 @@ export function editUser(userId, userData) {
   return postRequest(editUserURL, data);
 }
 
-export function editAnnouncements() {
-  return null;
-}
-
+//This function creates an announcement with all the details inside Announcements collection
 export function createAnnouncements(annId, annData) {
     let data = {
         ann_id: annId,
@@ -88,12 +88,20 @@ export function createAnnouncements(annId, annData) {
     return postRequest(createAnnounceURL, data);
 }
 
+//This function gets the "announcements" field inside Clubs collection
 export function getAnnouncements(clubId) {
   let data = {
     club_id: clubId
   };
-  // add getTime function
   return postRequest(getAnnounceURL, data);
+}
+
+//This functions gets an annoucement's details inside Announcements collection
+export function accessAnnouncements(annId) {
+    let data = {
+        ann_id: annId
+    };
+    return postRequest(accessAnnounceURL, data)
 }
 
 export function changeClub(clubId, clubData) {
@@ -126,6 +134,13 @@ export function changeTag(tagID, tagData) {
         tag: tagData
     }
     return postRequest(changeTagURL, data);
+}
+
+export function getUserEvents(userId) {
+    let data = {
+        uid: userId
+    }
+    return postRequest(getUserEventsURL, data);
 }
 
 export let club_list = [
@@ -1194,6 +1209,11 @@ export let club_list = [
         },
         {
             "7udUJPGbD4bAaxAdjzq7JCGnqI42": {
+                "announcements": ["7udUJPGbD4bAaxAdjzq7JCGnqI42Lead Singer Application Is Open",
+                "7udUJPGbD4bAaxAdjzq7JCGnqI42Principal Members Recruitment",
+                "7udUJPGbD4bAaxAdjzq7JCGnqI42Looking For Guitarist",
+                "7udUJPGbD4bAaxAdjzq7JCGnqI42Acapella Recruit"],
+
                 "emailList": [],
                 "clubName": "A Cappella Choir",
                 "pictureURL": "",
