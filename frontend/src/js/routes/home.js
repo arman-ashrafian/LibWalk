@@ -37,24 +37,24 @@ class Home extends React.Component {
 
     render() {
         /* Update the number of clubs to show per page and from what range to what range */
-        const {clubPerPage, currentPage, orgs, totalPages} = this.state;
-        const endInd = currentPage * clubPerPage;
-        const startInd = endInd - clubPerPage;
+        const {club_per_page, current_page, orgs, total_pages} = this.state;
+        const end_ind = current_page * club_per_page;
+        const start_ind = end_ind - club_per_page;
 
-        // Choose the subarray of clubs to show in orgs array
-        const currentClubs = orgs.slice(startInd, endInd);
+        // _choose the subarray of clubs to show in orgs array
+        const current_clubs = orgs.slice(start_ind, end_ind);
 
-        // Call pagination function to get all the pages for pagination
-        const pageNumber = this.pagination(currentPage, totalPages);
+        // _call pagination function to get all the pages for pagination
+        const page_number = this.pagination(current_page, total_pages);
 
         // Load pagination
-        const loadPageNumber = pageNumber.map(page => {
+        const load_page_number = page_number.map(page => {
             return (
                 <div>
                     <Pagination.Item
                         key={page}
                         id={page}
-                        active={page === currentPage}
+                        active={page === current_page}
                         onClick={page === "..." ? this.doNothing : this.set_club_per_page}
                     >
                         {(page = page === "..." ? <Pagination.Ellipsis/> : page)}
@@ -72,7 +72,7 @@ class Home extends React.Component {
                         <div className="row centerPage" >
                         </div>*/}
                         <div className="home_grid_container parent">
-                            {this.org_grid(currentClubs)}
+                            {this.org_grid(current_clubs)}
                         </div>
                     </div>
 
@@ -80,7 +80,7 @@ class Home extends React.Component {
                 <Pagination className="pagination" size="lg">
                     <Pagination.First onClick={this.move_first_page}/>
                     <Pagination.Prev onClick={this.set_page_prev}/>
-                    {loadPageNumber}
+                    {load_page_number}
                     <Pagination.Next onClick={this.set_page_next}/>
                     <Pagination.Last onClick={this.move_last_page}/>
                 </Pagination>
@@ -268,7 +268,7 @@ $(document).ready(function () {
     /*  $(document).mousedown(function() {
           down = true;
       }).mouseup(function() {
-          down = false;  
+          down = false;
       });
       $('.leftLst, .rightLst').mouseout(function() {
           if(down) {
@@ -277,10 +277,10 @@ $(document).ready(function () {
                   click(0, this);
               else
                   click(1, this);
-                  console.log("down");  
-          } 
+                  console.log("down");
+          }
           else {
-              console.log("up");   
+              console.log("up");
           }
       });*/
     $('.leftLst, .rightLst').mousedown(function () {
@@ -302,37 +302,38 @@ $(document).ready(function () {
     // YO BODY WIDTH IS 820.8
     function res_carousel_size() {
         //console.log( $(itemsMainDiv).width());
-        var incno = 0;
-        var dataItems = ("data-items");
-        var itemClass = ('.item');
-        var id = 0;
-        var btnParentSb = '';
-        var itemsSplit = '';
-        var sampwidth = $(itemsMainDiv).width();
-        var bodyWidth = $('main').width();
+        let incno = 0;
+        let data_items = ("data-items");
+        let item_class = ('.item');
+        let id = 0;
+        let button_parent_sub = '';
+        let itemsSplit = '';
+        let samp_width = $(itemsMainDiv).width();
+        let body_width = $('main').width();
+
         $(itemsDiv).each(function () {
             id = id + 1;
-            var itemNumbers = $(this).find(itemClass).length;
-            btnParentSb = $(this).parent().attr(dataItems);
-            itemsSplit = btnParentSb.split(',');
+            var itemNumbers = $(this).find(item_class).length;
+            button_parent_sub = $(this).parent().attr(data_items);
+            itemsSplit = button_parent_sub.split(',');
             $(this).parent().attr("id", "MultiCarousel" + id);
 
 
-            if (bodyWidth >= 1200) {
+            if (body_width >= 1200) {
                 incno = itemsSplit[3];
-                itemWidth = sampwidth / incno;
-            } else if (bodyWidth >= 992) {
+                itemWidth = samp_width / incno;
+            } else if (body_width >= 992) {
                 incno = itemsSplit[3];
-                itemWidth = sampwidth / incno;
-            } else if (bodyWidth >= 768) {
+                itemWidth = samp_width / incno;
+            } else if (body_width >= 768) {
                 incno = itemsSplit[3];
-                itemWidth = sampwidth / incno;
+                itemWidth = samp_width / incno;
             } else {
                 incno = itemsSplit[3];
-                itemWidth = sampwidth / incno;
+                itemWidth = samp_width / incno;
             }
             $(this).css({'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers});
-            $(this).find(itemClass).each(function () {
+            $(this).find(item_class).each(function () {
                 $(this).outerWidth(itemWidth);
             });
 
