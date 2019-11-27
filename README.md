@@ -20,3 +20,11 @@ When you are ready to make a pull request just go to GitHub because its easier t
 
 Here is a useful [link](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) on creating pull requests in Github. 
 
+# Coding Stuff
+
+### Events Page
+
+The Events Page will query for events using the `getUserEvents(userId)` cloud function. That function will query the events collection based on the user's subscriptions. This means that in order for the page to display some events:
+
+1. The user must have some subscriptions
+2. There must exist some Events where the `event.clubsHosting` array contains at least one of the orgs that the user is subscribed to 
