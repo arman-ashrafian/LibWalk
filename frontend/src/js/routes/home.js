@@ -1,52 +1,39 @@
 import React from "react";
 import NavBar from "../navbar";
-//import Carousel from "react-bootstrap/Carousel";
-//import Carousel from 'react-multi-carousel';
-// import 'react-multi-carousel/lib/styles.css';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import CardDeck from "react-bootstrap/CardDeck";
-import {club_list, getTag} from "../cloud";
+import {club_list} from "../cloud";
 import Pagination from "react-bootstrap/Pagination";
-//import { fa-chevron-right } from '@fortawesome/free-brands-svg-icons';
 import '../../css/multiCarousel.css';
-import $ from 'jquery'; 
+import $ from 'jquery';
+
 class Home extends React.Component {
-  constructor(props) {
-      super(props);
+    constructor(props) {
+        super(props);
 
-      this.state = {
-          orgs: club_list,
-          currentPage: 1,
-          clubPerPage: 9,
-          tagDict: {},
-          totalPages: Math.ceil(club_list.length / 9)
-      };
+        this.state = {
+            orgs: club_list,
+            currentPage: 1,
+            clubPerPage: 9,
+            tagDict: {},
+            totalPages: Math.ceil(club_list.length / 9)
+        };
 
-      this.setClubPerPage = this.setClubPerPage.bind(this);
-      this.setPageNext = this.setPageNext.bind(this);
-      this.setPagePrev = this.setPagePrev.bind(this);
-      this.moveFirstPage = this.moveFirstPage.bind(this);
-      this.moveLastPage = this.moveLastPage.bind(this);
-      this.generateTagList = this.generateTagList.bind(this);
+        this.setClubPerPage = this.setClubPerPage.bind(this);
+        this.setPageNext = this.setPageNext.bind(this);
+        this.setPagePrev = this.setPagePrev.bind(this);
+        this.moveFirstPage = this.moveFirstPage.bind(this);
+        this.moveLastPage = this.moveLastPage.bind(this);
+        this.generateTagList = this.generateTagList.bind(this);
 
-      this.generateTagList();
+        this.generateTagList();
 
-      // GET /getClubs & set the state when the api response is recieved
-      /*getClubs().then(json => {
-            this.setState({
-              orgs: json.clubs,
-              totalPages: Math.ceil(json.clubs.length / 9)
-            });
-          });*/
-
-      if (this.state.orgs === undefined) {
-          this.state = {
-              orgs: []
-          };
-      }
-  }
+        if (this.state.orgs === undefined) {
+            this.state = {
+                orgs: []
+            };
+        }
+    }
 
     render() {
         /* Update the number of clubs to show per page and from what range to what range */
@@ -80,13 +67,13 @@ class Home extends React.Component {
             <div>
                 <NavBar {...this.props} />
                 <main className="mt-3 pt-3">
-                 <div class="container-fluid centerPage" > 
+                    <div class="container-fluid centerPage">
                         {/*
                         <div className="row centerPage" >
                         </div>*/}
-                      <div className="home_grid_container parent">
-                         {this.org_grid(currentClubs)}
-                    </div>
+                        <div className="home_grid_container parent">
+                            {this.org_grid(currentClubs)}
+                        </div>
                     </div>
 
                 </main>
@@ -101,50 +88,16 @@ class Home extends React.Component {
         );
     }
 
-    //OG KAUS' CODE
-   /* org_grid = orgs => {
-        let grid_items = [];
-        let numcols = 4;
-        let numrows = orgs.length / numcols;
-        numrows = Math.ceil(numrows);
-        
-        orgs.forEach(function (e) {
-            grid_items.push(org_grid_component(e));
-        });
-        
-        let grid = [];
 
-        for (let i = 0; i <= numrows; i++) {
-            let row = [];
-            for (let j = 0; j < numcols; j++) {
-                row.push(
-                    <div className="home_grid_component">
-                        <Col>{grid_items[i * numcols + j]}</Col>
-                        <div>
-                            <br/>
-                        </div>
-                    </div>
-                );
-            }
-            grid.push(row);
-        }
-
-        return (
-            <div>
-                <CardDeck> {grid} </CardDeck>
-            </div>
-        );
-    };
-*/
     org_grid = orgs => {
         let tagMap = this.state.tagDict;
         return (
             <div>
-                { Object.keys(tagMap).map( tag => 
-                   this.org_multi_item_carousel(tag, tagMap[tag])
-                   //org_multi_item_carousel("Cultural", tagMap["Cultural"])
-                  )
-                //org_multi_item_carousel("Cultural", tagMap["Cultural"])
+                {Object.keys(tagMap).map(tag =>
+                        this.org_multi_item_carousel(tag, tagMap[tag])
+                    //org_multi_item_carousel("Cultural", tagMap["Cultural"])
+                )
+                    //org_multi_item_carousel("Cultural", tagMap["Cultural"])
                 }
             </div>
         );
@@ -155,6 +108,7 @@ class Home extends React.Component {
             currentPage: Number(event.target.id)
         });
     }
+
     /* Function to move to the next page */
     setPageNext(event) {
         //currentPage += 1;
@@ -223,81 +177,83 @@ class Home extends React.Component {
         return pageNumber;
     }
 
-  //Creates a hash map of tags
-  generateTagList(){
-    this.state.orgs.forEach( (org) => {
-      let org_values = Object.values(org)[0];
-      org_values.tags.forEach((tag)=>{
-        let dict = this.state.tagDict;
-        if(!dict[tag]){
-          dict[tag] = [];
-        }
-        dict[tag].push(org);
-        this.setState({tagDict: dict})
-      })
-    })
-    //console.log(this.state.tagDict)
-  }
+    //Creates a hash map of tags
+    generateTagList() {
+        this.state.orgs.forEach((org) => {
+            let org_values = Object.values(org)[0];
+            org_values.tags.forEach((tag) => {
+                let dict = this.state.tagDict;
+                if (!dict[tag]) {
+                    dict[tag] = [];
+                }
+                dict[tag].push(org);
+                this.setState({tagDict: dict})
+            })
+        })
+        //console.log(this.state.tagDict)
+    }
 
-redirectToClubDetails(club_id) {
-    this.props.history.push({
-        pathname:"/orgs",
-        state:{
-            club_id: club_id,
-        }
-    })
-};
+    redirectToClubDetails(club_id) {
+        this.props.history.push({
+            pathname: "/orgs",
+            state: {
+                club_id: club_id,
+            }
+        })
+    };
 
-org_grid_component(org) {
-    org = Object.values(org)[0];
-   // console.log(JSON.stringify(org));
-    org.img = "https://picsum.photos/150/50";
-    return (
-       
-          <div class="item">
-              <Card style={{width: "16rem", height: "20rem"}} className="text-center">
-                      {/*<Card.Img variant="top" src={org.img}/>*/}
-                      <Card.Img
-                          src={org.img}
-                          style={{
-                              width: '100%',
-                              height: '15vw',
-                              'object-fit': 'cover'
-                          }}/>
-                      <Card.Body>
-                          <Card.Title> <a onClick={() => {this.redirectToClubDetails(org.clubReference)}}>{org.clubName}</a></Card.Title>
-                          {/* <Card.Text>
+    org_grid_component(org) {
+        org = Object.values(org)[0];
+        // console.log(JSON.stringify(org));
+        org.img = "https://picsum.photos/150/50";
+        return (
+
+            <div class="item">
+                <Card style={{width: "16rem", height: "20rem"}} className="text-center">
+                    {/*<Card.Img variant="top" src={org.img}/>*/}
+                    <Card.Img
+                        src={org.img}
+                        style={{
+                            width: '100%',
+                            height: '15vw',
+                            'object-fit': 'cover'
+                        }}/>
+                    <Card.Body>
+                        <Card.Title> <a onClick={() => {
+                            this.redirectToClubDetails(org.clubReference)
+                        }}>{org.clubName}</a></Card.Title>
+                        {/* <Card.Text>
                           <small className="scroll-box">
                             {org.description.slice(0, 450)}
                           </small>
                         </Card.Text> */}
-                          <Button href={org.pageURL}>
-                              Org Home
-                          </Button>
-                      </Card.Body>
-              </Card>
-       
-        </div>
-    );
-};
+                        <Button href={org.pageURL}>
+                            Org Home
+                        </Button>
+                    </Card.Body>
+                </Card>
 
-org_multi_item_carousel(tag, tagList) {
-    let itemsInCarousel = [];
-    return (
-          <div class = "container">
-           <h3>{tag}</h3>
-            <div class="MultiCarousel" data-items="1,3,4,4" data-slide="1" id="MultiCarousel"  data-interval="1000">
-               <div class="MultiCarousel-inner">
-                    {tagList.map( clubItem => 
-                        this.org_grid_component(clubItem)
-                    )}
+            </div>
+        );
+    };
+
+    org_multi_item_carousel(tag, tagList) {
+        let itemsInCarousel = [];
+        return (
+            <div class="container">
+                <h3>{tag}</h3>
+                <div class="MultiCarousel" data-items="1,3,4,4" data-slide="1" id="MultiCarousel" data-interval="1000">
+                    <div class="MultiCarousel-inner">
+                        {tagList.map(clubItem =>
+                            this.org_grid_component(clubItem)
+                        )}
                     </div>
-                  <button class="leftLst btn-circle btn-md">&lt;</button>
-                  <button class="rightLst btn-circle btn-md">&gt;</button>
+                    <button class="leftLst btn-circle btn-md">&lt;</button>
+                    <button class="rightLst btn-circle btn-md">&gt;</button>
+                </div>
             </div>
-            </div>
-      );
-  };
+        );
+    };
 }
 
 //brent yee
@@ -305,29 +261,29 @@ org_multi_item_carousel(tag, tagList) {
 //TAKEN FROM ONLINE FOR THE CAROUSEL
 
 $(document).ready(function () {
-  //setTimeout(function() {
-   var itemsMainDiv = ('.MultiCarousel');
+    //setTimeout(function() {
+    var itemsMainDiv = ('.MultiCarousel');
     var itemsDiv = ('.MultiCarousel-inner');
     var itemWidth = "";
     var down = false;
-  /*  $(document).mousedown(function() {
-        down = true;
-    }).mouseup(function() {
-        down = false;  
-    });
-    $('.leftLst, .rightLst').mouseout(function() {
-        if(down) {
-        var condition = $(this).hasClass("leftLst");
-            if (condition)
-                click(0, this);
-            else
-                click(1, this);
-                console.log("down");  
-        } 
-        else {
-            console.log("up");   
-        }
-    });*/
+    /*  $(document).mousedown(function() {
+          down = true;
+      }).mouseup(function() {
+          down = false;  
+      });
+      $('.leftLst, .rightLst').mouseout(function() {
+          if(down) {
+          var condition = $(this).hasClass("leftLst");
+              if (condition)
+                  click(0, this);
+              else
+                  click(1, this);
+                  console.log("down");  
+          } 
+          else {
+              console.log("up");   
+          }
+      });*/
     $('.leftLst, .rightLst').mousedown(function () {
         var condition = $(this).hasClass("leftLst");
         if (condition)
@@ -340,13 +296,13 @@ $(document).ready(function () {
 
     $(window).resize(function () {
         ResCarouselSize();
- // }, 5000);
+        // }, 5000);
     });
 
     //this function define the size of the items
     // YO BODY WIDTH IS 820.8
     function ResCarouselSize() {
-      //console.log( $(itemsMainDiv).width());
+        //console.log( $(itemsMainDiv).width());
         var incno = 0;
         var dataItems = ("data-items");
         var itemClass = ('.item');
@@ -366,27 +322,24 @@ $(document).ready(function () {
             if (bodyWidth >= 1200) {
                 incno = itemsSplit[3];
                 itemWidth = sampwidth / incno;
-            }
-            else if (bodyWidth >= 992) {
+            } else if (bodyWidth >= 992) {
+                incno = itemsSplit[3];
+                itemWidth = sampwidth / incno;
+            } else if (bodyWidth >= 768) {
+                incno = itemsSplit[3];
+                itemWidth = sampwidth / incno;
+            } else {
                 incno = itemsSplit[3];
                 itemWidth = sampwidth / incno;
             }
-            else if (bodyWidth >= 768) {
-                incno = itemsSplit[3];
-                itemWidth = sampwidth / incno;
-            }
-            else {
-                incno = itemsSplit[3];
-                itemWidth = sampwidth / incno;
-            }
-            $(this).css({ 'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers });
+            $(this).css({'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers});
             $(this).find(itemClass).each(function () {
                 $(this).outerWidth(itemWidth);
             });
 
             $(".leftLst").addClass("over");
             $(".rightLst").removeClass("over");
-           // alert("Finished or whateva");
+            // alert("Finished or whateva");
         });
     }
 
@@ -406,8 +359,7 @@ $(document).ready(function () {
                 translateXval = 0;
                 $(el + ' ' + leftBtn).addClass("over");
             }
-        }
-        else if (e == 1) {
+        } else if (e == 1) {
             var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
             translateXval = parseInt(xds) + parseInt(itemWidth * s);
             $(el + ' ' + leftBtn).removeClass("over");
