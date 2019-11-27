@@ -5,7 +5,7 @@ import "../../css/style.min.css";
 import NavBar from "../navbar";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import Row from "react-bootstrap/Row"
+import Row from "react-bootstrap/Row";
 import { getUserEvents, getUser } from "../cloud";
 import db from "../../firebase";
 
@@ -47,7 +47,7 @@ class Events extends React.Component {
     for (const eventKey in this.state.events) {
       event = this.state.events[eventKey];
       eventHTML.push(
-        <Card key={eventKey} style={{ width: '20rem'}} >
+        <Card key={eventKey} style={{ width: "20rem" }}>
           <Card.Img variant="top" src={event.pictureURL} />
           <Card.Body>
             <Card.Title>
@@ -72,9 +72,7 @@ class Events extends React.Component {
           <div className="container">
             <h1>Events</h1>
             <h4>Upcoming events from the clubs you are subscribed to</h4>
-			<Row>
-				{eventHTML}	
-			</Row>
+            <Row>{eventHTML}</Row>
           </div>
         </main>
       </div>
