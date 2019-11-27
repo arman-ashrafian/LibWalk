@@ -22,14 +22,15 @@ const changeEventURL =
   'https://us-central1-libwalk-721c2.cloudfunctions.net/changeEvent';
 const changeTagURL = 
   'https://us-central1-libwalk-721c2.cloudfunctions.net/changeTag';
+const getUserEventsURL = 
+  'https://us-central1-libwalk-721c2.cloudfunctions.net/getUserEvents';
 
-const CACHE_TIMEOUT_MS = 120000000000000000000000000; // only make API request if last call was over 120,000 ms == 120 seconds
-let cache = {};
 
 /* ============ fetch() wrappers ==================== */
 // Use these functions instead of calling fetch directly
 // so you don't have to set the params every time.
 const postRequest = function(url, data) {
+  console.log(data)
   // data argument should be json
   return fetch(url, {
     mode: "cors",
@@ -126,6 +127,13 @@ export function changeTag(tagID, tagData) {
         tag: tagData
     }
     return postRequest(changeTagURL, data);
+}
+
+export function getUserEvents(userId) {
+    let data = {
+        uid: userId
+    }
+    return postRequest(getUserEventsURL, data);
 }
 
 export let club_list = [
