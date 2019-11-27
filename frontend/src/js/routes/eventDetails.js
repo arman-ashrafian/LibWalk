@@ -30,7 +30,7 @@ class Events extends React.Component {
 				pictureURL: eventInfo['pictureURL'],
 				description: eventInfo['description'],
 				location: eventInfo['location'],
-				time: eventInfo['time'],
+				time: eventInfo['time'].toString(),
 				rsvpForm: eventInfo['rsvpForm'],
 				eventReference: eventInfo['eventReference']
 			})
