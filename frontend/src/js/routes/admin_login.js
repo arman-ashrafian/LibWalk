@@ -6,7 +6,6 @@ import '../../css/mdb.min.css'
 import '../../css/dopeStyle.css'
 import Container from 'react-bootstrap/Container'
 import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import db from "../../firebase";
 
