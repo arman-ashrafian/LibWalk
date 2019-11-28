@@ -11,6 +11,8 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
+import InputGroup from "react-bootstrap/InputGroup";
+import FormControl from "react-bootstrap/FormControl";
 
 
 /**
@@ -168,52 +170,65 @@ class AdminHome extends React.Component {
         this.closeInfo();
     };
 
+    async deleteTag(e) {
+        await this.setState({
+            tag: e
+        })
+        // Remove tag from club
+        const newTags = [...this.state.org.tags]
+        const index = newTags.indexOf(this.state.tag.toLowerCase())
+        if (index > -1) {
+            newTags.splice(index, 1);
+        }
+        
+        await this.setState({
+            org: {
+                ...this.state.org,
+                tags: newTags
+            }
+        })
+
+        // Remove club from tag
+        const newTagClubs = [...this.state.tagInfo.clubs]
+        const clubIndex = newTagClubs.indexOf(this.state.org.clubReference)
+        if (clubIndex > -1) {
+            newTagClubs.splice(clubIndex, 1);
+        }
+
+        await this.setState({
+            tagInfo: {
+                clubs: newTagClubs,
+                tagID: this.state.tag
+            }
+        })
+
+    }
+
+    async addTag(e) {
+        e.preventDefault();
+        await this.setState({
+            tag: e.target[0].value.toLowerCase()
+        })
+
+        //add tag to club
+        if (this.state.org.tags.includes(this.state.tag) === false) {
+            this.state.org.tags.push(this.state.tag);
+        }
+
+        //add club to tag
+        if (this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
+            this.state.tagInfo.clubs.push(this.state.org.clubReference)
+        }
+
+        console.log(this.state.org.tags)
+    }
     /**
      * Handles what happens when you change a club tag
      *
      */
-    async editHandleTag(e) {
-        e.preventDefault();
-        console.log(e.target[0].value)
-        if (e.target[0].value === "") {
-            alert('Please Enter a Tag');
-            return;
-        }
-        await this.setState({
-            tag: e.target[0].value.toLowerCase()
-        });
-        db.firestore().collection("Tags").doc(this.state.tag).get()
-            .then((doc) => {
-                if (doc.exists) {
-                    getTag(this.state.tag).then(tagClubs => {
-                        this.setState({
-                            tagInfo: {
-                                clubs: tagClubs['clubs'],
-                                tagID: tagClubs['tagID']
-                            }
-                        })
-                    })
-                    if (this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
-                        this.state.tagInfo.clubs.push(this.state.org.clubReference);
-                        changeTag(this.state.tag, this.tagInfo);
-                    }
-                } else {
-                    this.setState({
-                        tagInfo: {
-                            clubs: [this.state.org.clubReference],
-                            tagID: this.state.tag
-                        }
-                    })
-                    changeTag(this.state.tag, this.state.tagInfo);
-                }
-            });
-
-        if (this.state.org.tags.includes(this.state.tag) === false) {
-            this.state.org.tags.push(this.state.tag);
-            changeClub(this.state.org.clubReference, this.state.org);
-        }
-        console.log(this.state.clubReference);
-        alert('Updated');
+    async editHandleTag() {
+        await changeTag(this.state.tag, this.state.tagInfo)
+        await changeClub(this.state.org.clubReference, this.state.org);
         this.closeTag();
     };
 
@@ -530,19 +545,24 @@ class AdminHome extends React.Component {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="example-modal-sizes-title-sm">
-                        Tag Info
+                        Edit Tags
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-
-                    <Form onSubmit={this.editHandleTag}>
-                        <Form.Group controlId="formName">
-                            <Form.Control type="name" placeholder="Add Tag" defaultValue={this.state.org.tags}/>
-                        </Form.Group>
-                        <Button variant="success" type="submit">
-                            Submit
+                    {this.state.org.tags.map(tag => (
+                        <Button size="sm" variant="danger" onClick={() => this.deleteTag(tag)}>
+                            {tag}
                         </Button>
+                    ))}
+
+                    <Form onSubmit={(e) => this.addTag(e)}>
+                        <Form.Group controlId="formName">
+                            <Form.Control type="name" placeholder="Add Tag"/>
+                        </Form.Group>
                     </Form>
+                    <Button variant="success" type="button" onClick={this.editHandleTag}>
+                        Done
+                    </Button>
                 </Modal.Body>
             </Modal>
 
@@ -703,11 +723,10 @@ class AdminHome extends React.Component {
      * Element for the main organization view.
      */
     admin_panel_view = () => {
-        console.log('Org Data' + JSON.stringify(this.state.org));
+        //console.log('Org Data' + JSON.stringify(this.state.org));
         let showEvents = [];
         if (this.state.org.eventList !== undefined) {
             showEvents = this.state.org.eventList.map(event => {
-                console.log(event)
                 return <EachEvent eventId={event} {...this.props} />;
             });
         }
