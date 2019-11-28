@@ -4,7 +4,7 @@ import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
 import TimeAgo from "@jshimko/react-time-ago";
-import {getUser, club_list, getAnnouncements, accessAnnouncements} from "../cloud";
+import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import CardDeck from "react-bootstrap/CardDeck";
@@ -43,8 +43,7 @@ class Announcements extends React.Component {
                         this.setState({
                             announcements: ''
                         })
-                    }
-                    else {
+                    } else {
                         this.setState({
                             announcements: anns['announcements']
                         })
@@ -58,8 +57,7 @@ class Announcements extends React.Component {
                             time: '',
                             annReference: ''
                         })
-                    }
-                    else {
+                    } else {
                         this.setState({
                             annDetail: annInfo['annDetail'],
                             time: annInfo['time'],
@@ -185,7 +183,8 @@ function MakeCard() {
                 </Card.Header>
                 <Card.Body>{333}</Card.Body>
                 <Card.Footer>
-                    <strong>Last posted <TimeAgo date="Tue Nov 26 2019 22:30:14 GMT-0800 (Pacific Standard Time)"/></strong>
+                    <strong>Last posted <TimeAgo
+                        date="Tue Nov 26 2019 22:30:14 GMT-0800 (Pacific Standard Time)"/></strong>
                 </Card.Footer>
             </Card>
         </Row>

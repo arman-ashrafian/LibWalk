@@ -1,7 +1,5 @@
 import React from 'react'
-import NavBar from "../navbar";
-import {getClubs} from "../cloud";
-import {createAnnouncements, changeClub, getClub, getEvent, changeEvent, changeTag, getTag} from "../cloud";
+import {changeClub, changeEvent, changeTag, createAnnouncements, getClub, getEvent, getTag} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -302,18 +300,16 @@ class AdminHome extends React.Component {
                 if (doc.exists) {
                     alert('You already have an announcement like this');
                     return;
-                }
-                else {
+                } else {
                     createAnnouncements(this.state.announcement.annReference, this.state.announcement);
                     if (this.state.org.announcements === undefined) {
                         this.state.org = {
                             announcements: ''
                         }
-                    }
-                    else {
+                    } else {
                         if (this.state.org.announcements.includes(this.state.announcement.annReference) === false) {
                             this.state.org.announcements.push(this.state.announcement.annReference);
-                          changeClub(this.state.org.clubReference, this.state.org);
+                            changeClub(this.state.org.clubReference, this.state.org);
                         }
                     }
                     alert('Announcement Created');

@@ -8,10 +8,10 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
-import {FaUser, FaGraduationCap, FaSchool} from 'react-icons/fa';
+import {FaGraduationCap, FaSchool, FaUser} from 'react-icons/fa';
 import {MdEmail} from 'react-icons/md';
 import db from "../../firebase";
-import {getUser, editUser} from "../cloud";
+import {editUser, getUser} from "../cloud";
 
 import * as firebase from "firebase";
 
@@ -115,12 +115,12 @@ class Profile extends React.Component {
                             </div>
 
                             {/* Show spinner if user is not loaded */}
-                            {(this.state.user.name === '') ? 
-                                <div style={{padding: '1em'}} >
-                                    <Spinner animation="border" variant="info" />
+                            {(this.state.user.name === '') ?
+                                <div style={{padding: '1em'}}>
+                                    <Spinner animation="border" variant="info"/>
                                 </div>
-                            :
-                            // Show user info
+                                :
+                                // Show user info
                                 <div className="div-centered ">
                                     <h3>
                                         <FaUser/> Name : {this.state.user.name}
