@@ -154,27 +154,27 @@ class Home extends React.Component {
         const dummyArray = [];
         const pageNumber = [];
 
-        // Generate the dummyArray
-        for (let i = 1; i <= totalPages; i++) {
-            if (i === 1 || i === totalPages || (i >= left && i < right)) {
-                dummyArray.push(i);
-            }
-        }
-
-        // Generate the pageNumber array
-        for (let i of dummyArray) {
-            if (dummyValue) {
-                if (i - dummyValue === offset) {
-                    pageNumber.push(dummyValue + 1);
-                } else if (i - dummyValue !== 1) {
-                    pageNumber.push("...");
-                }
-            }
-            pageNumber.push(i);
-            dummyValue = i;
-        }
-        return pageNumber;
+    // Generate the dummyArray
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === 1 || i === totalPages || (i >= left && i < right)) {
+        dummyArray.push(i);
+      }
     }
+
+    // Generate the pageNumber array
+    for (let i of dummyArray) {
+      if (dummyValue) {
+        if (i - dummyValue === offset) {
+          pageNumber.push(dummyValue + 1);
+        } else if (i - dummyValue !== 1) {
+          pageNumber.push("...");
+        }
+      }
+      pageNumber.push(i);
+      dummyValue = i;
+    }
+    return pageNumber;
+  }
 
     //Creates a hash map of tags
     generate_tag_list() {
@@ -290,6 +290,35 @@ $(document).ready(function () {
         else
             click(1, this);
     });
+$(document).ready(function() {
+  //setTimeout(function() {
+  var itemsMainDiv = ".MultiCarousel";
+  var itemsDiv = ".MultiCarousel-inner";
+  var itemWidth = "";
+  var down = false;
+  /*  $(document).mousedown(function() {
+        down = true;
+    }).mouseup(function() {
+        down = false;
+    });
+    $('.leftLst, .rightLst').mouseout(function() {
+        if(down) {
+        var condition = $(this).hasClass("leftLst");
+            if (condition)
+                click(0, this);
+            else
+                click(1, this);
+                console.log("down");
+        }
+        else {
+            console.log("up");
+        }
+    });*/
+  $(".leftLst, .rightLst").mousedown(function() {
+    var condition = $(this).hasClass("leftLst");
+    if (condition) click(0, this);
+    else click(1, this);
+  });
 
     res_carousel_size();
 
@@ -364,13 +393,16 @@ $(document).ready(function () {
             translateXval = parseInt(xds) + parseInt(itemWidth * s);
             $(el + ' ' + leftBtn).removeClass("over");
 
-            if (translateXval >= itemsCondition - itemWidth / 2) {
-                translateXval = itemsCondition;
-                $(el + ' ' + rightBtn).addClass("over");
-            }
-        }
-        $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
+      if (translateXval >= itemsCondition - itemWidth / 2) {
+        translateXval = itemsCondition;
+        $(el + " " + rightBtn).addClass("over");
+      }
     }
+    $(el + " " + itemsDiv).css(
+      "transform",
+      "translateX(" + -translateXval + "px)"
+    );
+  }
 
     //It is used to get some elements from btn
     function click(ell, ee) {
