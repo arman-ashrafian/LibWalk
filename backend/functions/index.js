@@ -129,7 +129,7 @@ exports.changeEvent = functions.https.onRequest((req, res) => {
  *  }
  */
 exports.getClubs = functions.https.onRequest((req, res) => {
-    /*cors(req, res, () => {
+    cors(req, res, () => {
       admin
         .firestore()
         .collection("Clubs")
@@ -149,8 +149,7 @@ exports.getClubs = functions.https.onRequest((req, res) => {
           // db query fail
           res.send(err);
         });
-    });*/
-    return "";
+    });
 });
 
 /* ================== /getEvent ==================
