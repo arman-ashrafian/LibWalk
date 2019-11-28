@@ -229,8 +229,8 @@ class Search extends React.Component {
         } else {
           var match = false;
           org.tags.forEach(function(orgTag) {
-            //Check non case sensitive
-            if (orgTag.toLowerCase() == tag.toLowerCase()) {
+            //Check non case sensitive and remove whitespace from the ends of the string
+            if (orgTag.toLowerCase() == tag.toLowerCase().trim()) {
               match = true;
               console.log("match");
             }
