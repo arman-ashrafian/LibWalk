@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Alatsi|Libre+Baskerville|Roboto:400,400i&display=swap");
 .container {
   padding-top: 1cm;
 }
@@ -5,11 +6,17 @@
 .image {
   padding-top: 2px;
   height: 450px;
-  width: 500px;
-  margin-left: 8cm;
-  margin-right: 8cm;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 
 .clubName {
-  font-size: medium;
+  text-align: center;
+  font-family: "Alatsi", sans-serif;
+}
+
+.sub {
+  font-family: "Libre Baskerville", serif;
 }

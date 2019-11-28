@@ -1,7 +1,4 @@
 import React from "react";
-import "../../css/bootstrap.min.css";
-import "../../css/mdb.lite.min.css";
-import "../../css/style.min.css";
 import "../../css/orgs.css";
 import NavBar from "../navbar";
 import Button from "react-bootstrap/Button";
@@ -35,6 +32,7 @@ class Orgs extends React.Component {
     this.handleSubscribe = this.handleSubscribe.bind(this);
   }
 
+  /* Update user data from Firebase*/
   componentDidMount() {
     getClub(this.props.location.state.club_id).then(clubInfo => {
       this.setState({
@@ -43,6 +41,7 @@ class Orgs extends React.Component {
       });
     });
 
+    /* Authentication */
     db.auth().onAuthStateChanged(firebaseUser => {
       if (firebaseUser) {
         // getUser using userId and check if they're already subscribed
@@ -59,6 +58,7 @@ class Orgs extends React.Component {
     });
   }
 
+  /* Check what clubs user subcribe to */
   async handleSubscribe() {
     if (!this.state.subscribed) {
       this.state.user.subscriptions.push(this.state.club_id);
@@ -90,54 +90,79 @@ class Orgs extends React.Component {
   }
 
   render() {
+    /* Show all the clubs that user subcribe to */
     let showEvents = [];
     showEvents = this.state.club.eventList.map(event => {
       return <EachEvent eventId={event} {...this.props} />;
     });
+
+    /* Styling the club discription */
+    const clubDescription = {
+      fontFamily: "Roboto, sans-serif",
+      textAlign: "left",
+      fontWeight: "bold",
+      fontSize: "16px",
+      fontStyle: "italic",
+      paddingLeft: "50px",
+      paddingRight: "50px"
+    };
+
     return (
       <div>
         <NavBar {...this.props} />
-        <main className="mt-5 pt-5">
-          <div className="container">
-            <Card style={{ displaye: "flex" }}>
-              <Card.Img variant="top" src={this.state.club.pictureURL} />
-              <Card.Body>
-                <Card.Title style={{ fontSize: "80px" }}>
-                  <strong> {this.state.club.clubName} </strong>
-                </Card.Title>
-                {this.state.subscribed ? (
-                  <Button
-                    variant="danger"
-                    size="lg"
-                    block
-                    onClick={this.handleSubscribe}
-                  >
-                    Unsubscribe
-                  </Button>
-                ) : (
-                  <Button
-                    variant="success"
-                    size="lg"
-                    block
-                    onClick={this.handleSubscribe}
-                  >
-                    Subscribe
-                  </Button>
-                )}
-                <Card.Subtitle
-                  className="mb-2 text-muted"
-                  style={{ fontSize: "20px" }}
+        <div className="container">
+          <Card>
+            {/*Show club photo*/}
+            <Card.Img
+              variant="top"
+              className="image"
+              src={this.state.club.pictureURL}
+            />
+            <Card.Body>
+              {/*Show club name*/}
+              <Card.Title>
+                <h2 className="clubName"> {this.state.club.clubName} </h2>
+              </Card.Title>
+
+              <Card.Subtitle style={{ fontSize: "20px" }}>
+                {this.state.club.tags.map(tag => (
+                  <Button size="sm">{tag}</Button>
+                ))}
+              </Card.Subtitle>
+
+              {/* show club description*/}
+              <Card.Text style={clubDescription}>
+                {this.state.club.description}
+              </Card.Text>
+
+              {/*show the subcribe button */}
+              {this.state.subscribed ? (
+                <Button
+                  variant="danger"
+                  size="lg"
+                  block
+                  onClick={this.handleSubscribe}
+                  className="sub"
                 >
-                  {this.state.club.tags.map(tag => (
-                    <Button size="sm">{tag}</Button>
-                  ))}
-                </Card.Subtitle>
-                <Card.Text>{this.state.club.description}</Card.Text>
-                <div style={{ display: "flex" }}>{showEvents}</div>
-              </Card.Body>
-            </Card>
-          </div>
-        </main>
+                  Unsubscribe
+                </Button>
+              ) : (
+                <Button
+                  variant="success"
+                  size="lg"
+                  block
+                  onClick={this.handleSubscribe}
+                  className="sub"
+                >
+                  Subscribe
+                </Button>
+              )}
+
+              {/*Show events from the clubs */}
+              <div style={{ display: "flex" }}>{showEvents}</div>
+            </Card.Body>
+          </Card>
+        </div>
       </div>
     );
   }
