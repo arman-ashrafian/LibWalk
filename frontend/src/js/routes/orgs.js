@@ -4,7 +4,6 @@ import "../../css/mdb.lite.min.css";
 import "../../css/style.min.css";
 import NavBar from "../navbar";
 import Button from "react-bootstrap/Button";
-import ToggleButton from "react-bootstrap/ToggleButton";
 import Card from "react-bootstrap/Card";
 import { getClub, changeClub, getUser, editUser } from "../cloud";
 import db from "../../firebase";

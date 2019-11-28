@@ -273,7 +273,7 @@ class Home extends React.Component {
                 <small className="scroll-box">
                 {org.description.slice(0, 100) + "..."}
                 </small>
-            </Card.Text> }
+            </Card.Text>
             </Card.Body>
         </Card>
        

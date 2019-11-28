@@ -68,13 +68,14 @@ class Events extends React.Component {
     return (
       <div>
         <NavBar {...this.props} />
-        <main className="mt-5 pt-5">
-          <div className="container">
-            <h1><strong>Events</strong></h1>
+        <main>
+          <h1 className="h1 text-center mb-5" id="header">
+            {" "}
+            Events
+          </h1>
 			<Row>
 				{eventHTML}	
 			</Row>
-          </div>
         </main>
       </div>
     );

@@ -5,7 +5,7 @@ import {createAnnouncements, changeClub, getClub, getEvent, changeEvent, changeT
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-
+import EachEvent from "./eachEvent"
 import db from "../../firebase.js";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -90,8 +90,6 @@ class AdminHome extends React.Component {
                     org_id: firebaseUser.uid
                 });
                 getClub(firebaseUser.uid).then(clubInfo => {
-                    console.log(clubInfo);
-
                     if (clubInfo === undefined) {
                         this.setState({
                             clubReference: 'Failure getClub()',
@@ -108,17 +106,7 @@ class AdminHome extends React.Component {
 
                     } else {
                         this.setState({
-                            org: {
-                                clubReference: clubInfo['clubReference'],
-                                clubName: clubInfo['clubName'],
-                                contactEmail: clubInfo['contactEmail'],
-                                description: clubInfo['description'],
-                                pictureURL: clubInfo['pictureURL'],
-                                tags: clubInfo['tags'],
-                                pageURL: clubInfo['pageURL'],
-                                emailList: clubInfo['emailList'],
-                                announcements: clubInfo['announcements']
-                            }
+                            org: clubInfo
                         })
 
                     }
@@ -188,7 +176,8 @@ class AdminHome extends React.Component {
      */
     async editHandleTag(e) {
         e.preventDefault();
-        if (e) {
+        console.log(e.target[0].value)
+        if (e.target[0].value === "") {
             alert('Please Enter a Tag');
             return;
         }
@@ -447,7 +436,7 @@ class AdminHome extends React.Component {
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditInfo}>Edit Club</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleEditTag}>Add Tags</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleEditTag}>Edit Tags</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditEvent}>Edit Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
@@ -535,7 +524,7 @@ class AdminHome extends React.Component {
      * Generates the jsx code to create and handle logic for a modal component to edit a club's profile data.
      * @returns {*}
      */
-    modal_edit_clubs = () => {
+    modal_edit_tag = () => {
         return (<div>
             <Modal
                 size="sm"
@@ -549,12 +538,12 @@ class AdminHome extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+
                     <Form onSubmit={this.editHandleTag}>
                         <Form.Group controlId="formName">
-                            <Form.Label>Tag Name</Form.Label>
-                            <Form.Control type="name" placeholder="Enter Tag Name"/>
+                            <Form.Control type="name" placeholder="Add Tag" defaultValue={this.state.org.tags}/>
                         </Form.Group>
-                        <Button variant="primary" type="submit">
+                        <Button variant="success" type="submit">
                             Submit
                         </Button>
                     </Form>
@@ -568,7 +557,7 @@ class AdminHome extends React.Component {
      * Generates the jsx code to create and handle logic for a modal component to edit a club's tag.
      * @returns {*}
      */
-    modal_edit_tag = () => {
+    modal_edit_clubs = () => {
         return (<div>
             <Modal
                 size="lg"
@@ -719,6 +708,13 @@ class AdminHome extends React.Component {
      */
     admin_panel_view = () => {
         console.log('Org Data' + JSON.stringify(this.state.org));
+        let showEvents = [];
+        if (this.state.org.eventList !== undefined) {
+            showEvents = this.state.org.eventList.map(event => {
+                console.log(event)
+                return <EachEvent eventId={event} {...this.props} />;
+            });
+        }
         return (
             <div>
                 <Card style={{width: 'flex'}}>
@@ -726,9 +722,9 @@ class AdminHome extends React.Component {
                     <Card.Img src={this.state.org.pictureURL} style={{
                         width: '100%',
                         height: '15vw',
-                        'object-fit': 'cover'
+                        objectFit: 'cover'
                     }}/>
-                    <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>About Your Club</Card.Header>
+                    {/* <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>About Your Club</Card.Header> */}
 
                     <Card.Body>
 
@@ -750,7 +746,10 @@ class AdminHome extends React.Component {
                                     </Button>
                                 ))}
                             </ListGroupItem>
-                            <ListGroupItem>Put Upcoming Events Here</ListGroupItem>
+                            <ListGroupItem>
+                                Events
+                                {showEvents}
+                            </ListGroupItem>
                         </ListGroup>
 
                     </Card.Body>
@@ -758,10 +757,6 @@ class AdminHome extends React.Component {
                 </Card>
             </div>
         )
-    };
-
-    next_upcoming_events = () => {
-        console.log('event data', this.state.event)
     };
 
     render() {
