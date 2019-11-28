@@ -22,7 +22,6 @@ class EachEvent extends React.Component {
 
     componentDidMount() {
         getEvent(this.props.eventId).then(json => {
-            console.log(json)
             this.setState({
                 event_id: this.props.clubId,
                 eventName: json['eventName'],
@@ -36,7 +35,6 @@ class EachEvent extends React.Component {
     }
 
     redirectToEventDetail() {
-        console.log(this.state.club_id)
         this.props.history.push({
             pathname: "/events",
             state: {

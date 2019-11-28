@@ -411,14 +411,14 @@ $(document).ready(function() {
     var divStyle = $(el + " " + itemsDiv).css("transform");
     var values = divStyle.match(/-?[\d\.]+/g);
     var xds = Math.abs(values[4]);
-    if (e == 0) {
+    if (e === 0) {
       translateXval = parseInt(xds) - parseInt(itemWidth * s);
       $(el + " " + rightBtn).removeClass("over");
       if (translateXval <= itemWidth / 2) {
         translateXval = 0;
         $(el + " " + leftBtn).addClass("over");
       }
-    } else if (e == 1) {
+    } else if (e === 1) {
       var itemsCondition =
         $(el)
           .find(itemsDiv)

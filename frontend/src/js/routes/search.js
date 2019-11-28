@@ -103,7 +103,7 @@ class Search extends React.Component {
             <div className="home_grid_container">
               {/*Displays a message if there are no results found*/}
               {this.state.searched ? (
-                this.state.results.length == 0 ? (
+                this.state.results.length === 0 ? (
                   <p>No Results Found</p>
                 ) : (
                   this.org_grid(this.state.results)
@@ -188,7 +188,7 @@ class Search extends React.Component {
     var searchedOrgs = [];
 
     //If the keyword is empty, do not do anything
-    if (keyword.length == 0) {
+    if (keyword.length === 0) {
       return;
     }
 
@@ -214,7 +214,7 @@ class Search extends React.Component {
     var tags = tagString.split(",");
     console.log(tags);
     //If the keyword is empty, do not do anything
-    if (tags.length == 0 || tagString.length == 0) {
+    if (tags.length === 0 || tagString.length === 0) {
       return;
     }
 
@@ -230,7 +230,7 @@ class Search extends React.Component {
           var match = false;
           org.tags.forEach(function(orgTag) {
             //Check non case sensitive
-            if (orgTag.toLowerCase() == tag.toLowerCase()) {
+            if (orgTag.toLowerCase() === tag.toLowerCase()) {
               match = true;
               console.log("match");
             }

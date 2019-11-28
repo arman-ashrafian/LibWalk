@@ -27,7 +27,7 @@ class Announcements extends React.Component {
 
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
-            if (firebaseUser) {
+            if (firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
                 this.setState({userId: firebaseUser.uid});
                 getUser(firebaseUser.uid).then(json => {
                     if ((json.subscriptions === undefined) || (json.subscriptions.length === 0)) {
