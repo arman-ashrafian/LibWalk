@@ -42,6 +42,7 @@ class EachSub extends React.Component {
   }
 
   render() {
+    //this.componentDidMount();
     return (
       <div className="sub_container">
         <Divider variant="fullWidth" />
