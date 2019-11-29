@@ -15,7 +15,7 @@ class EachSub extends React.Component {
       clubPicture: "",
       clubTags: []
     };
-    console.log(this.state.club_id);
+    console.log("show club id inside eachSub: ", this.state.club_id);
     this.redirectToClubDetail = this.redirectToClubDetail.bind(this);
   }
 
@@ -46,11 +46,14 @@ class EachSub extends React.Component {
       <div className="sub_container">
         <Divider variant="fullWidth" />
         <View
-          className="small_container"
-          style={{ flexDirection: "row", justifyContent: "center" }}
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            marginBottom: "40px",
+            marginTop: "40px"
+          }}
         >
           <View>
-            {/*Featured image*/}
             <img src={this.state.clubPicture} className="sub_img" />
           </View>
 
@@ -63,9 +66,9 @@ class EachSub extends React.Component {
                 {this.state.clubDescription.slice(0, 200) + "..."}
               </p>
               <div className="tags">
-                {this.state.clubTags.map(tag => (
+                {this.state.clubTags.map((tag, i) => (
                   // add club tag stuff here
-                  <Button className="tag" size="sm">
+                  <Button key={i} className="tag" size="sm">
                     {tag}
                   </Button>
                 ))}
