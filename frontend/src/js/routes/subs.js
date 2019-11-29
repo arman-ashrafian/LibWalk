@@ -14,7 +14,8 @@ class Subs extends React.Component {
       currentPage: 1,
       userId: "",
       subscriptions: [],
-      totalPages: 0
+      totalPages: 0,
+      loadClub: false
     };
 
     this.setPage = this.setPage.bind(this);
@@ -61,7 +62,7 @@ class Subs extends React.Component {
    *  Check if the user is subcribe to any clubs
    */
   noClub() {
-    if (this.state.subscriptions.length === 0) {
+    if (this.state.subscriptions.length === 0 && this.state.loadClub === true) {
       return <div>You are not subscribed to any orgs</div>;
     }
   }
@@ -156,13 +157,14 @@ class Subs extends React.Component {
       const { currentPage, clubPerPage, totalPages } = this.state;
       const endIndex = currentPage * clubPerPage;
       const firstIndex = endIndex - clubPerPage;
-      const currentClubs = this.state.subscriptions.slice(firstIndex, endIndex);
+      const currentClubs = this.state
+        .subscriptions; /*.slice(firstIndex, endIndex);*/
 
       console.log(currentPage, firstIndex, endIndex);
       // Function to render the clubs
-      showClubs = currentClubs.map(club => {
+      showClubs = currentClubs.map((club, i) => {
         console.log("inside sub page", club);
-        return <EachSub clubId={club} {...this.props} />;
+        return <EachSub key={i} clubId={club} {...this.props} />;
       });
 
       // Find how many pages for the clubs
@@ -176,12 +178,12 @@ class Subs extends React.Component {
       }
 
       // Load the pagination with the number of page
-      if (totalPages <= 5) {
-        loadPageNumber = pageNumber.map(page => {
+      /*if (totalPages <= 5) {
+        loadPageNumber = pageNumber.map((page, i) => {
           return (
             <div>
               <Pagination.Item
-                key={page}
+                key={i}
                 id={page}
                 active={page === currentPage}
                 onClick={this.setPage}
@@ -192,11 +194,11 @@ class Subs extends React.Component {
           );
         });
       } else {
-        loadPageNumber = pageNumber.map(page => {
+        loadPageNumber = pageNumber.map((page, i) => {
           return (
             <div>
               <Pagination.Item
-                key={page}
+                key={i}
                 id={page}
                 active={page === currentPage}
                 onClick={page === "..." ? this.doNothing : this.setPage}
@@ -206,40 +208,30 @@ class Subs extends React.Component {
             </div>
           );
         });
-      }
-      return (
-        <div>
-          <NavBar {...this.props} />
-          <main>
-            <h1 className="h1 text-center mb-5" id="header">
-              {" "}
-              Subscriptions
-            </h1>
-            <div className="container">
-              {/*Display each sub container*/}
-              {showClubs}
-            </div>
-            <Pagination className="pagination" size="lg">
-              <Pagination.First onClick={this.moveFirstPage} />
-              <Pagination.Prev onClick={this.setPagePrev} />
-              {loadPageNumber}
-              <Pagination.Next onClick={this.setPageNext} />
-              <Pagination.Last onClick={this.moveLastPage} />
-            </Pagination>
-          </main>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <NavBar {...this.props} />
+      }*/
+    }
+    return (
+      <div>
+        <NavBar {...this.props} />
+        <main>
           <h1 className="h1 text-center mb-5" id="header">
             {" "}
             Subscriptions
           </h1>
-        </div>
-      );
-    }
+          <div className="container">
+            {/*Display each sub container*/}
+            {showClubs}
+          </div>
+          {/*<Pagination className="pagination" size="lg">
+            <Pagination.First onClick={this.moveFirstPage} />
+            <Pagination.Prev onClick={this.setPagePrev} />
+            {loadPageNumber}
+            <Pagination.Next onClick={this.setPageNext} />
+            <Pagination.Last onClick={this.moveLastPage} />
+    </Pagination>*/}
+        </main>
+      </div>
+    );
   }
 }
 
