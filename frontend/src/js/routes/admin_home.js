@@ -1,11 +1,9 @@
 import React from 'react'
-import NavBar from "../navbar";
-import {getClubs} from "../cloud";
-import {createAnnouncements, changeClub, getClub, getEvent, changeEvent, changeTag, getTag} from "../cloud";
+import {changeClub, changeEvent, changeTag, createAnnouncements, getClub, getEvent, getTag} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-
+import EachEvent from "./eachEvent"
 import db from "../../firebase.js";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -13,6 +11,8 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
+import InputGroup from "react-bootstrap/InputGroup";
+import FormControl from "react-bootstrap/FormControl";
 
 
 /**
@@ -40,7 +40,8 @@ class AdminHome extends React.Component {
                 tags: [],
                 pageURL: '',
                 announcements: [],
-                emailList: []
+                emailList: [],
+                eventList: []
             },
             event: {
                 eventReference: '',
@@ -90,8 +91,6 @@ class AdminHome extends React.Component {
                     org_id: firebaseUser.uid
                 });
                 getClub(firebaseUser.uid).then(clubInfo => {
-                    console.log(clubInfo);
-
                     if (clubInfo === undefined) {
                         this.setState({
                             clubReference: 'Failure getClub()',
@@ -108,17 +107,7 @@ class AdminHome extends React.Component {
 
                     } else {
                         this.setState({
-                            org: {
-                                clubReference: clubInfo['clubReference'],
-                                clubName: clubInfo['clubName'],
-                                contactEmail: clubInfo['contactEmail'],
-                                description: clubInfo['description'],
-                                pictureURL: clubInfo['pictureURL'],
-                                tags: clubInfo['tags'],
-                                pageURL: clubInfo['pageURL'],
-                                emailList: clubInfo['emailList'],
-                                announcements: clubInfo['announcements']
-                            }
+                            org: clubInfo
                         })
 
                     }
@@ -182,51 +171,66 @@ class AdminHome extends React.Component {
         this.closeInfo();
     };
 
+    async deleteTag(e) {
+        await this.setState({
+            tag: e
+        })
+        // Remove tag from club
+        const newTags = [...this.state.org.tags]
+        const index = newTags.indexOf(this.state.tag.toLowerCase())
+        if (index > -1) {
+            newTags.splice(index, 1);
+        }
+        
+        await this.setState({
+            org: {
+                ...this.state.org,
+                tags: newTags
+            }
+        })
+
+        // Remove club from tag
+        const newTagClubs = [...this.state.tagInfo.clubs]
+        const clubIndex = newTagClubs.indexOf(this.state.org.clubReference)
+        if (clubIndex > -1) {
+            newTagClubs.splice(clubIndex, 1);
+        }
+
+        await this.setState({
+            tagInfo: {
+                clubs: newTagClubs,
+                tagID: this.state.tag
+            }
+        })
+
+    }
+
+    async addTag(e) {
+        e.preventDefault();
+        console.log(e)
+        await this.setState({
+            tag: e.target[0].value.toLowerCase()
+        })
+
+        //add tag to club
+        if (this.state.org.tags.includes(this.state.tag) === false) {
+            await this.state.org.tags.push(this.state.tag);
+        }
+
+        //add club to tag
+        if (this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
+            await this.state.tagInfo.clubs.push(this.state.org.clubReference)
+        }
+
+        console.log(this.state.org.tags)
+    }
     /**
      * Handles what happens when you change a club tag
      *
      */
-    async editHandleTag(e) {
-        e.preventDefault();
-        if (e) {
-            alert('Please Enter a Tag');
-            return;
-        }
-        await this.setState({
-            tag: e.target[0].value.toLowerCase()
-        });
-        db.firestore().collection("Tags").doc(this.state.tag).get()
-            .then((doc) => {
-                if (doc.exists) {
-                    getTag(this.state.tag).then(tagClubs => {
-                        this.setState({
-                            tagInfo: {
-                                clubs: tagClubs['clubs'],
-                                tagID: tagClubs['tagID']
-                            }
-                        })
-                    })
-                    if (this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
-                        this.state.tagInfo.clubs.push(this.state.org.clubReference);
-                        changeTag(this.state.tag, this.tagInfo);
-                    }
-                } else {
-                    this.setState({
-                        tagInfo: {
-                            clubs: [this.state.org.clubReference],
-                            tagID: this.state.tag
-                        }
-                    })
-                    changeTag(this.state.tag, this.state.tagInfo);
-                }
-            });
-
-        if (this.state.org.tags.includes(this.state.tag) === false) {
-            this.state.org.tags.push(this.state.tag);
-            changeClub(this.state.org.clubReference, this.state.org);
-        }
-        console.log(this.state.clubReference);
-        alert('Updated');
+    async editHandleTag() {
+        await changeTag(this.state.tag, this.state.tagInfo)
+        await changeClub(this.state.org.clubReference, this.state.org);
         this.closeTag();
     };
 
@@ -258,19 +262,20 @@ class AdminHome extends React.Component {
      */
     async editHandleCreateEvent(e) {
         e.preventDefault();
-        if (!e.target[0].value || !e.target[1].value || !e.target[2].value ||
-            !e.target[4].value) {
-            alert('Please make sure to have name, location, time, and description');
+        if (!e.target[0].value || !e.target[1].value || !e.target[2].value || !e.target[3].value ||
+            !e.target[5].value) {
+            alert('Please make sure to have name, location, date, time, and description');
             return;
         }
         await this.setState({
             event: {
                 eventName: e.target[0].value,
                 location: e.target[1].value,
-                time: e.target[2].value,
-                pictureURL: e.target[3].value,
-                description: e.target[4].value,
-                rsvpForm: e.target[5].value,
+                date: e.target[2].value,
+                time: e.target[3].value,
+                pictureURL: e.target[4].value,
+                description: e.target[5].value,
+                rsvpForm: e.target[6].value,
                 eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value
             }
         });
@@ -287,6 +292,16 @@ class AdminHome extends React.Component {
                     this.closeCEvent();
                 }
             });
+
+        const newEventList = [...this.state.org.eventList]
+        newEventList.push(this.state.event.eventReference)
+        this.setState({
+            org: {
+                ...this.state.org,
+                eventList: newEventList
+            }
+        })
+        await changeClub(this.state.org.clubReference, this.state.org)
     }
 
     /**
@@ -313,25 +328,23 @@ class AdminHome extends React.Component {
                 if (doc.exists) {
                     alert('You already have an announcement like this');
                     return;
-                }
-                else {
+                } else {
                     createAnnouncements(this.state.announcement.annReference, this.state.announcement);
-                    if (this.state.org.announcements === undefined) {
-                        this.state.org = {
-                            announcements: ''
-                        }
-                    }
-                    else {
-                        if (this.state.org.announcements.includes(this.state.announcement.annReference) === false) {
-                            this.state.org.announcements.push(this.state.announcement.annReference);
-                          changeClub(this.state.org.clubReference, this.state.org);
-                        }
-                    }
                     alert('Announcement Created');
                     this.closeAnn();
                 }
 
             });
+
+        const newAnnList = [...this.state.org.announcements]
+        newAnnList.push(this.state.announcement.annReference)
+        this.setState({
+            org: {
+                ...this.state.org,
+                announcements: newAnnList
+            }
+        })
+        await changeClub(this.state.org.clubReference, this.state.org)
     }
 
     /**
@@ -447,7 +460,7 @@ class AdminHome extends React.Component {
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditInfo}>Edit Club</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleEditTag}>Add Tags</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleEditTag}>Edit Tags</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditEvent}>Edit Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
@@ -535,7 +548,7 @@ class AdminHome extends React.Component {
      * Generates the jsx code to create and handle logic for a modal component to edit a club's profile data.
      * @returns {*}
      */
-    modal_edit_clubs = () => {
+    modal_edit_tag = () => {
         return (<div>
             <Modal
                 size="sm"
@@ -545,19 +558,37 @@ class AdminHome extends React.Component {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="example-modal-sizes-title-sm">
-                        Tag Info
+                        Edit Tags
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={this.editHandleTag}>
-                        <Form.Group controlId="formName">
-                            <Form.Label>Tag Name</Form.Label>
-                            <Form.Control type="name" placeholder="Enter Tag Name"/>
-                        </Form.Group>
-                        <Button variant="primary" type="submit">
-                            Submit
+                    {this.state.org.tags.map(tag => (
+                        <Button size="sm" variant="danger" onClick={() => this.deleteTag(tag)}>
+                            {tag}
                         </Button>
+                    ))}
+
+                {/* <InputGroup className="mb-3" >
+                    <Form onSubmit={(e) => this.addTag(e)}>
+                    <FormControl
+                    placeholder="Add Tag"
+                    aria-label="Add Tag"
+                    aria-describedby="basic-addon2"
+                    />
+                    <InputGroup.Append>
+                        <Button variant="light" type="submit" size="sm">Add</Button>
+                    </InputGroup.Append>
                     </Form>
+                </InputGroup> */}
+
+                    <Form onSubmit={(e) => this.addTag(e)}>
+                        <Form.Group controlId="formName">
+                            <Form.Control type="name" placeholder="Add Tag"/>
+                        </Form.Group>
+                    </Form>
+                    <Button variant="success" type="button" onClick={this.editHandleTag}>
+                        Done
+                    </Button>
                 </Modal.Body>
             </Modal>
 
@@ -568,7 +599,7 @@ class AdminHome extends React.Component {
      * Generates the jsx code to create and handle logic for a modal component to edit a club's tag.
      * @returns {*}
      */
-    modal_edit_tag = () => {
+    modal_edit_clubs = () => {
         return (<div>
             <Modal
                 size="lg"
@@ -636,33 +667,38 @@ class AdminHome extends React.Component {
                     <Modal.Body>
                         <Form onSubmit={this.editHandleCreateEvent}>
                             <Form.Group controlId="formName">
-                                <Form.Label>Event Name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter Event Name"/>
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control type="text" placeholder="Enter Event Name"/>
                             </Form.Group>
 
                             <Form.Group controlId="formPlace">
                                 <Form.Label>Location</Form.Label>
-                                <Form.Control type="place" placeholder="Enter Location"/>
+                                <Form.Control type="text" placeholder="Enter Event Location"/>
                             </Form.Group>
 
                             <Form.Group controlId="formTime">
-                                <Form.Label>Time</Form.Label>
-                                <Form.Control type="timeS" placeholder="Enter Time"/>
+                                <Form.Label>Date</Form.Label>
+                                <Form.Control type="date"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formTime">
+                                <Form.Label>Time (12-hr format) </Form.Label>
+                                <Form.Control type="time"/>
                             </Form.Group>
 
                             <Form.Group controlId="formPic">
                                 <Form.Label>Picture</Form.Label>
-                                <Form.Control type="pic" placeholder="Enter Picture URL"/>
+                                <Form.Control type="url" placeholder="Enter Event Picture URL"/>
                             </Form.Group>
 
                             <Form.Group controlId="formDetails">
-                                <Form.Label>Details</Form.Label>
-                                <Form.Control type="details" placeholder="Enter Details"/>
+                                <Form.Label>Description</Form.Label>
+                                <Form.Control type="text" placeholder="Enter Event Descriptions"/>
                             </Form.Group>
 
                             <Form.Group controlId="formRSVP">
-                                <Form.Label>RSVP</Form.Label>
-                                <Form.Control type="rsvp" placeholder="Enter RSVP URL"/>
+                                <Form.Label>RSVP (Google Form, TypeForm, SurveyMonkey, others...)</Form.Label>
+                                <Form.Control type="url" placeholder="Enter RSVP URL"/>
                             </Form.Group>
                             {/*todo add form verification*/}
                             <Button variant="primary" type="submit">
@@ -698,9 +734,8 @@ class AdminHome extends React.Component {
                             </Form.Group>
 
                             <Form.Group controlId="formTime">
-                                <Form.Label>Time</Form.Label>
-                                <Form.Control type="timeS" placeholder="I.e. Nov 19, 2019"
-                                              defaultValue={new Date()}/>
+                                <Form.Label>Time Created (this will be auto-generated for you)</Form.Label>
+                                <Form.Control type="timeS" defaultValue={new Date()}/>
                             </Form.Group>
 
                             {/*todo add form verification*/}
@@ -718,7 +753,13 @@ class AdminHome extends React.Component {
      * Element for the main organization view.
      */
     admin_panel_view = () => {
-        console.log('Org Data' + JSON.stringify(this.state.org));
+        //console.log('Org Data' + JSON.stringify(this.state.org));
+        let showEvents = [];
+        if (this.state.org.eventList !== undefined) {
+            showEvents = this.state.org.eventList.map(event => {
+                return <EachEvent eventId={event} admin={true} {...this.props} />;
+            });
+        }
         return (
             <div>
                 <Card style={{width: 'flex'}}>
@@ -726,9 +767,9 @@ class AdminHome extends React.Component {
                     <Card.Img src={this.state.org.pictureURL} style={{
                         width: '100%',
                         height: '15vw',
-                        'object-fit': 'cover'
+                        objectFit: 'cover'
                     }}/>
-                    <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>About Your Club</Card.Header>
+                    {/* <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>About Your Club</Card.Header> */}
 
                     <Card.Body>
 
@@ -750,7 +791,10 @@ class AdminHome extends React.Component {
                                     </Button>
                                 ))}
                             </ListGroupItem>
-                            <ListGroupItem>Put Upcoming Events Here</ListGroupItem>
+                            <ListGroupItem>
+                                Events
+                                {showEvents}
+                            </ListGroupItem>
                         </ListGroup>
 
                     </Card.Body>
@@ -758,10 +802,6 @@ class AdminHome extends React.Component {
                 </Card>
             </div>
         )
-    };
-
-    next_upcoming_events = () => {
-        console.log('event data', this.state.event)
     };
 
     render() {

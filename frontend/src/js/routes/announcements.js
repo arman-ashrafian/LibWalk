@@ -4,7 +4,7 @@ import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
 import TimeAgo from "@jshimko/react-time-ago";
-import {getUser, club_list, getAnnouncements, accessAnnouncements} from "../cloud";
+import {accessAnnouncements, getAnnouncements, getUser, getClub} from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import CardDeck from "react-bootstrap/CardDeck";
@@ -23,51 +23,47 @@ class Announcements extends React.Component {
             time: "",
             annReference: ""
         };
-    }
+        this.club_grid_loop = this.club_grid_loop.bind(this);
+    };
 
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
-            if (firebaseUser) {
+            if (firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
                 this.setState({userId: firebaseUser.uid});
                 getUser(firebaseUser.uid).then(json => {
-                    if ((json.subscriptions === undefined) || (json.subscriptions.length === 0)) {
+                    if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
                         alert("You haven't yet subscribed to any organizations!")
                     }
                     //ADD THIS BACK LATER
                     this.setState({orgs: json.subscriptions});
                     console.log(this.state.orgs)
+
                 });
-                //This function get the "announcements" field inside Clubs
-                getAnnouncements(this.state.orgs).then(anns => {
-                    if ((anns === undefined)) {
-                        this.setState({
-                            announcements: ''
-                        })
+                getAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42").then(anns => {
+                    if ((anns === undefined) || (anns.length === 0)) {
+                        this.setState({announcements: ''});
                     }
-                    else {
-                        this.setState({
-                            announcements: anns['announcements']
-                        })
-                    }
+                    this.setState({announcements: anns});
+                    console.log(this.state.announcements)
                 });
-                //This function get the announcement details inside Announcements
-                accessAnnouncements(this.state.announcements).then(annInfo => {
+
+                accessAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42Acapella Recruit").then(annInfo => {
                     if ((annInfo === undefined)) {
                         this.setState({
                             annDetail: '',
                             time: '',
                             annReference: ''
-                        })
-                    }
-                    else {
-                        this.setState({
-                            annDetail: annInfo['annDetail'],
-                            time: annInfo['time'],
-                            annReference: annInfo['annReference']
-                        })
+                    })
+                    } else {
+                         this.setState({
+                             annDetail: annInfo['annDetail'],
+                             time: annInfo['time'],
+                             annReference: annInfo['annReference']
+                         })
                     }
                     console.log(this.state.annDetail)
                 });
+
             } else {
                 console.log("Redirecting to login page");
             }
@@ -105,11 +101,22 @@ class Announcements extends React.Component {
     club_grid_loop = orgs => {
         let grid_items = [];
         let numcols = 4;
-        let numrows = 4; //orgs.length / numcols;
+        let numrows = orgs.length / numcols;
         numrows = Math.ceil(numrows);
 
-        orgs.forEach(function (e) {
+        orgs.forEach(function(e) {
             grid_items.push(club_grid(e));
+            console.log(e);
+
+            getAnnouncements(e).then(anns => {
+                if ((anns === undefined) || (anns.length === 0)) {
+                    this.setState({announcements: ''});
+                }
+                else {
+                    this.setState({announcements: anns});
+                    console.log(this.state.announcements)
+                }
+            });
         });
 
         let grid = [];
@@ -149,47 +156,71 @@ let club_grid = org => {
             </Card.Header>
             <Card.Body>
                 <div className="div-centered">
-                    <MakeCard/>
+                    <Row>
+                        <Card border="info" style={{fontSize: 12}}>
+                            <Card.Header>
+                                <strong className="mr-auto" style={{fontSize: 24}}>📢</strong>
+                            </Card.Header>
+                            <Card.Body>{111}</Card.Body>
+                            <Card.Footer>
+                                <strong>Last posted <TimeAgo date="Nov 25, 2019"/></strong>
+                            </Card.Footer>
+                        </Card>
+                        <br/>
+                        <Card border="warning" style={{fontSize: 12}}>
+                            <Card.Header>
+                                <strong className="mr-auto" style={{fontSize: 24}}>📣</strong>
+                            </Card.Header>
+                            <Card.Body>{222}</Card.Body>
+                            <Card.Footer>
+                                <strong>Last posted <TimeAgo date="Nov 19, 2019"/></strong>
+                            </Card.Footer>
+                        </Card>
+                        <br/>
+                        <Card border="danger" style={{fontSize: 12}}>
+                            <Card.Header>
+                                <strong className="mr-auto" style={{fontSize: 24}}>📌</strong>
+                            </Card.Header>
+                            <Card.Body>{333}</Card.Body>
+                            <Card.Footer>
+                                <strong>Last posted <TimeAgo
+                                    date="Tue Nov 26 2019 22:30:14 GMT-0800 (Pacific Standard Time)"/></strong>
+                            </Card.Footer>
+                        </Card>
+                    </Row>
                 </div>
             </Card.Body>
         </Card>
     );
 };
 
-function MakeCard() {
-    return (
-        <Row>
-            <Card border="info" style={{fontSize: 12}}>
-                <Card.Header>
-                    <strong className="mr-auto" style={{fontSize: 24}}>📢</strong>
-                </Card.Header>
-                <Card.Body>{111}</Card.Body>
-                <Card.Footer>
-                    <strong>Last posted <TimeAgo date="Nov 25, 2019"/></strong>
-                </Card.Footer>
-            </Card>
-            <br/>
-            <Card border="warning" style={{fontSize: 12}}>
-                <Card.Header>
-                    <strong className="mr-auto" style={{fontSize: 24}}>📣</strong>
-                </Card.Header>
-                <Card.Body>{222}</Card.Body>
-                <Card.Footer>
-                    <strong>Last posted <TimeAgo date="Nov 19, 2019"/></strong>
-                </Card.Footer>
-            </Card>
-            <br/>
-            <Card border="danger" style={{fontSize: 12}}>
-                <Card.Header>
-                    <strong className="mr-auto" style={{fontSize: 24}}>📌</strong>
-                </Card.Header>
-                <Card.Body>{333}</Card.Body>
-                <Card.Footer>
-                    <strong>Last posted <TimeAgo date="Tue Nov 26 2019 22:30:14 GMT-0800 (Pacific Standard Time)"/></strong>
-                </Card.Footer>
-            </Card>
-        </Row>
-    );
-}
-
 export default Announcements;
+
+//This function get the "announcements" field inside Clubs
+// getAnnouncements(this.state.orgs).then(anns => {
+//     if ((anns === undefined)) {
+//         this.setState({
+//             announcements: ''
+//         })
+//     } else {
+//         this.setState({
+//             announcements: anns['announcements']
+//         })
+//     }
+// });
+// //This function get the announcement details inside Announcements
+// accessAnnouncements(this.state.orgs.announcements).then(annInfo => {
+//     if ((annInfo === undefined)) {
+//         this.setState({
+//             annDetail: '',
+//             time: '',
+//             annReference: ''
+//         })
+//     } else {
+//         this.setState({
+//             annDetail: annInfo['annDetail'],
+//             time: annInfo['time'],
+//             annReference: annInfo['annReference']
+//         })
+//     }
+// });

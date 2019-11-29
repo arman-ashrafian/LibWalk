@@ -1,35 +1,35 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const cors = require("cors")({ origin: true });
+const cors = require("cors")({origin: true});
 
 admin.initializeApp();
 
 // test function
 exports.helloWorld = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    res.send("HIIIII");
-  });
+    cors(req, res, () => {
+        res.send("HIIIII");
+    });
 });
 
 // test function
 // This function demonstrates how to get a document and read a particular attribute from the database
 exports.testDb = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    admin
-      .firestore()
-      .collection("Test")
-      .doc("Arman")
-      .get()
-      .then(doc => {
-        // db query success
-        let age = doc.data().Age; // doc.data() returns a JSON object
-        res.send({ age: age }); // res.send() parameter must be JSON !!
-      })
-      .catch(err => {
-        // db query fail
-        res.send(err);
-      });
-  });
+    cors(req, res, () => {
+        admin
+            .firestore()
+            .collection("Test")
+            .doc("Arman")
+            .get()
+            .then(doc => {
+                // db query success
+                let age = doc.data().Age; // doc.data() returns a JSON object
+                res.send({age: age}); // res.send() parameter must be JSON !!
+            })
+            .catch(err => {
+                // db query fail
+                res.send(err);
+            });
+    });
 });
 
 /* ================== /getUser ==================
@@ -45,20 +45,20 @@ exports.testDb = functions.https.onRequest((req, res) => {
  *    }
  */
 exports.getUser = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    const UID = req.body.uid; // user ID
-    admin
-      .firestore()
-      .collection("Users")
-      .doc("" + UID)
-      .get()
-      .then(doc => {
-        res.send(doc.data());
-      })
-      .catch(err => {
-        res.send(err);
-      });
-  });
+    cors(req, res, () => {
+        const UID = req.body.uid; // user ID
+        admin
+            .firestore()
+            .collection("Users")
+            .doc("" + UID)
+            .get()
+            .then(doc => {
+                res.send(doc.data());
+            })
+            .catch(err => {
+                res.send(err);
+            });
+    });
 });
 
 /* ================= /changeEvent  ====================
@@ -83,17 +83,17 @@ exports.getUser = functions.https.onRequest((req, res) => {
  *
  */
 exports.changeEvent = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    const eventId = req.body.event_id;
-    const eventJson = req.body.event;
-    admin
-      .firestore()
-      .collection("Events")
-      .doc(eventId)
-      .set(eventJson)
-      .then(() => res.send({ message: "changed event " + eventId }))
-      .catch(err => res.send({ message: err }));
-  });
+    cors(req, res, () => {
+        const eventId = req.body.event_id;
+        const eventJson = req.body.event;
+        admin
+            .firestore()
+            .collection("Events")
+            .doc(eventId)
+            .set(eventJson)
+            .then(() => res.send({message: "changed event " + eventId}))
+            .catch(err => res.send({message: err}));
+    });
 });
 
 /* ================= /getClubs ====================
@@ -129,28 +129,27 @@ exports.changeEvent = functions.https.onRequest((req, res) => {
  *  }
  */
 exports.getClubs = functions.https.onRequest((req, res) => {
-  /*cors(req, res, () => {
-    admin
-      .firestore()
-      .collection("Clubs")
-      .get()
-      .then(querySnapshot => {
-        let json_data = { clubs: [] };
-        querySnapshot.forEach(doc => {
-          let json = {}
-          json[doc.id] = doc.data();
-          json_data.clubs.push(json);
+    cors(req, res, () => {
+      admin
+        .firestore()
+        .collection("Clubs")
+        .get()
+        .then(querySnapshot => {
+          let json_data = { clubs: [] };
+          querySnapshot.forEach(doc => {
+            let json = {}
+            json[doc.id] = doc.data();
+            json_data.clubs.push(json);
+          });
+          // cache the content in browser for 5 minutes & CDN for 10 minutes
+          res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
+          res.send(json_data);
+        })
+        .catch(err => {
+          // db query fail
+          res.send(err);
         });
-        // cache the content in browser for 5 minutes & CDN for 10 minutes
-        res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
-        res.send(json_data);
-      })
-      .catch(err => {
-        // db query fail
-        res.send(err);
-      });
-  });*/
-  return "";
+    });
 });
 
 /* ================== /getEvent ==================
@@ -172,20 +171,20 @@ exports.getClubs = functions.https.onRequest((req, res) => {
  * 	}
  */
 exports.getEvent = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    let event_id = req.body.event_id;
-    admin
-      .firestore()
-      .collection("Events")
-      .doc(event_id)
-      .get()
-      .then(doc => {
-        res.send(doc.data());
-      })
-      .catch(err => {
-        res.send(err);
-      });
-  });
+    cors(req, res, () => {
+        let event_id = req.body.event_id;
+        admin
+            .firestore()
+            .collection("Events")
+            .doc(event_id)
+            .get()
+            .then(doc => {
+                res.send(doc.data());
+            })
+            .catch(err => {
+                res.send(err);
+            });
+    });
 });
 
 /* ================== /getEvents ==================
@@ -200,22 +199,22 @@ exports.getEvent = functions.https.onRequest((req, res) => {
  * 	}
  */
 exports.getEvents = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    const markers = [];
-    admin
-      .firestore()
-      .collection("Events")
-      .get()
-      .then(cols => {
-        cols.docs.forEach(doc => {
-          markers.push(doc.data());
-        });
-        res.send(markers);
-      })
-      .catch(err => {
-        res.send(err);
-      });
-  });
+    cors(req, res, () => {
+        const markers = [];
+        admin
+            .firestore()
+            .collection("Events")
+            .get()
+            .then(cols => {
+                cols.docs.forEach(doc => {
+                    markers.push(doc.data());
+                });
+                res.send(markers);
+            })
+            .catch(err => {
+                res.send(err);
+            });
+    });
 });
 
 /* ================== /getTag ==================
@@ -228,20 +227,20 @@ exports.getEvents = functions.https.onRequest((req, res) => {
  * 	}
  */
 exports.getTag = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    let tag_id = req.body.tag_id;
-    admin
-      .firestore()
-      .collection("Tags")
-      .doc(tag_id)
-      .get()
-      .then(doc => {
-        res.send(doc.data());
-      })
-      .catch(err => {
-        res.send(err);
-      });
-  });
+    cors(req, res, () => {
+        let tag_id = req.body.tag_id;
+        admin
+            .firestore()
+            .collection("Tags")
+            .doc(tag_id)
+            .get()
+            .then(doc => {
+                res.send(doc.data());
+            })
+            .catch(err => {
+                res.send(err);
+            });
+    });
 });
 
 /* ================== /getTags ==================
@@ -256,22 +255,22 @@ exports.getTag = functions.https.onRequest((req, res) => {
  * 	}
  */
 exports.getTags = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    const markers = [];
-    admin
-      .firestore()
-      .collection("Tags")
-      .get()
-      .then(cols => {
-        cols.docs.forEach(doc => {
-          markers.push(doc.data());
-        });
-        res.send(markers);
-      })
-      .catch(err => {
-        res.send(err);
-      });
-  });
+    cors(req, res, () => {
+        const markers = [];
+        admin
+            .firestore()
+            .collection("Tags")
+            .get()
+            .then(cols => {
+                cols.docs.forEach(doc => {
+                    markers.push(doc.data());
+                });
+                res.send(markers);
+            })
+            .catch(err => {
+                res.send(err);
+            });
+    });
 });
 
 /* ================= /getClub  ====================
@@ -291,21 +290,21 @@ exports.getTags = functions.https.onRequest((req, res) => {
  *   }
  */
 exports.getClub = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    admin
-      .firestore()
-      .collection("Clubs")
-      .doc(req.body.club_id)
-      .get()
-      .then(doc => {
-        res.send(doc.data());
-      })
+    cors(req, res, () => {
+        admin
+            .firestore()
+            .collection("Clubs")
+            .doc(req.body.club_id)
+            .get()
+            .then(doc => {
+                res.send(doc.data());
+            })
 
-      .catch(err => {
-        // db query fail
-        res.send(err);
-      });
-  });
+            .catch(err => {
+                // db query fail
+                res.send(err);
+            });
+    });
 });
 
 /* ================== /changeUser  ====================
@@ -326,17 +325,17 @@ exports.getClub = functions.https.onRequest((req, res) => {
 *   }
 */
 exports.changeUser = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    user_id = req.body.user_id;
-    user_info = req.body.user;
-    admin
-      .firestore()
-      .collection("Users")
-      .doc(user_id)
-      .set(user_info)
-      .then(() => res.send({ message: "changed user " + user_id }))
-      .catch(err => res.send(err));
-  });
+    cors(req, res, () => {
+        user_id = req.body.user_id;
+        user_info = req.body.user;
+        admin
+            .firestore()
+            .collection("Users")
+            .doc(user_id)
+            .set(user_info)
+            .then(() => res.send({message: "changed user " + user_id}))
+            .catch(err => res.send(err));
+    });
 });
 
 /* ================== /changeClub ====================
@@ -360,17 +359,17 @@ exports.changeUser = functions.https.onRequest((req, res) => {
 *   }
 */
 exports.changeClub = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    const club_id = req.body.club_id;
-    const club_info = req.body.club;
-    admin
-      .firestore()
-      .collection("Clubs")
-      .doc(club_id)
-      .set(club_info)
-      .then(() => res.send({ message: "changed club " + club_id }))
-      .catch(err => res.send({ message: err }));
-  });
+    cors(req, res, () => {
+        const club_id = req.body.club_id;
+        const club_info = req.body.club;
+        admin
+            .firestore()
+            .collection("Clubs")
+            .doc(club_id)
+            .set(club_info)
+            .then(() => res.send({message: "changed club " + club_id}))
+            .catch(err => res.send({message: err}));
+    });
 });
 
 /* ================== /changeTag ==================
@@ -388,18 +387,18 @@ exports.changeClub = functions.https.onRequest((req, res) => {
  */
 
 exports.changeTag = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    const tag_id = req.body.tag_id;
-    const tag_info = req.body.tag;
+    cors(req, res, () => {
+        const tag_id = req.body.tag_id;
+        const tag_info = req.body.tag;
 
-    admin
-      .firestore()
-      .collection("Tags")
-      .doc(tag_id)
-      .set(tag_info)
-      .then(() => res.send({ message: "changed tag " + tag_id }))
-      .catch(err => res.send(err));
-  });
+        admin
+            .firestore()
+            .collection("Tags")
+            .doc(tag_id)
+            .set(tag_info)
+            .then(() => res.send({message: "changed tag " + tag_id}))
+            .catch(err => res.send(err));
+    });
 });
 
 /* ================== /getAnnouncements ==================
@@ -412,19 +411,19 @@ exports.changeTag = functions.https.onRequest((req, res) => {
  *      }
  */
 exports.getAnnouncements = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    admin
-      .firestore()
-      .collection("Clubs")
-      .doc(req.body.club_id)
-      .get()
-      .then(doc => {
-        res.send(doc.data().announcements);
-      })
-      .catch(err => {
-        res.send(err);
-      });
-  });
+    cors(req, res, () => {
+        admin
+            .firestore()
+            .collection("Clubs")
+            .doc(req.body.club_id)
+            .get()
+            .then(doc => {
+                res.send(doc.data().announcements);
+            })
+            .catch(err => {
+                res.send(err);
+            });
+    });
 });
 
 exports.createAnnouncements = functions.https.onRequest((req, res) => {
@@ -436,8 +435,8 @@ exports.createAnnouncements = functions.https.onRequest((req, res) => {
             .collection("Announcements")
             .doc(annID)
             .set(ann_info)
-            .then(() => res.send({ message: "created announcement" + annID }))
-            .catch(err => res.send({ message: err }));
+            .then(() => res.send({message: "created announcement" + annID}))
+            .catch(err => res.send({message: err}));
     });
 });
 
@@ -466,25 +465,25 @@ exports.accessAnnouncements = functions.https.onRequest((req, res) => {
  * 
  */
 exports.getUserEvents = functions.https.onRequest((req, res) => {
-  cors(req, res, () => {
-    const UID = req.body.uid;
-    const fs = admin.firestore()
-    
-    fs.collection("Users")
-      .doc(UID).get().then( user => {
-        let subs = user.data().subscriptions
-        let userEvents = {};
+    cors(req, res, () => {
+        const UID = req.body.uid;
+        const fs = admin.firestore()
 
-        fs.collection("Events").where("clubsHosting", "array-contains-any", subs).get()
-          .then( querySnapshot => {
-            querySnapshot.forEach( doc => {
-              userEvents[doc.id] = doc.data();           
-            });
-            res.send(userEvents);
-          })
-          .catch( err => {
-            res.send(err);
-          });
-      })
-  });
+        fs.collection("Users")
+            .doc(UID).get().then(user => {
+            let subs = user.data().subscriptions
+            let userEvents = {};
+
+            fs.collection("Events").where("clubsHosting", "array-contains-any", subs).get()
+                .then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        userEvents[doc.id] = doc.data();
+                    });
+                    res.send(userEvents);
+                })
+                .catch(err => {
+                    res.send(err);
+                });
+        })
+    });
 });
