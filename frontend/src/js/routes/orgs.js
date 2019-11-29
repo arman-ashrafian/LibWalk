@@ -93,7 +93,7 @@ class Orgs extends React.Component {
     /* Show all the clubs that user subcribe to */
     let showEvents = [];
     showEvents = this.state.club.eventList.map(event => {
-      return <EachEvent eventId={event} {...this.props} />;
+      return <EachEvent eventId={event} admin={false} {...this.props} />;
     });
 
     /* Styling the club discription */
