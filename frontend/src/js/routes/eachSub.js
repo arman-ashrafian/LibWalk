@@ -2,7 +2,6 @@ import React from "react";
 import "../../css/subs.css";
 import { Divider } from "@material-ui/core";
 import { View } from "react-native-web";
-//import { MDBBtn } from "mdbreact";
 import Button from "react-bootstrap/Button";
 import { getClub } from "../cloud";
 
@@ -11,20 +10,18 @@ class EachSub extends React.Component {
     super(props);
     this.state = {
       club_id: this.props.clubId,
-      startIndex: 0,
-      endIndex: 3,
       clubName: "",
       clubDescription: "",
       clubPicture: "",
       clubTags: []
     };
-
+    console.log("show club id inside eachSub: ", this.state.club_id);
     this.redirectToClubDetail = this.redirectToClubDetail.bind(this);
   }
 
   componentDidMount() {
     getClub(this.props.clubId).then(json => {
-      console.log(json);
+      console.log("inside eachSub", json);
       this.setState({
         club_id: this.props.clubId,
         clubName: json["clubName"],
@@ -36,7 +33,6 @@ class EachSub extends React.Component {
   }
 
   redirectToClubDetail() {
-    console.log(this.state.club_id);
     this.props.history.push({
       pathname: "/orgs",
       state: {
@@ -50,12 +46,15 @@ class EachSub extends React.Component {
       <div className="sub_container">
         <Divider variant="fullWidth" />
         <View
-          className="small_container"
-          style={{ flexDirection: "row", justifyContent: "center" }}
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            marginBottom: "40px",
+            marginTop: "40px"
+          }}
         >
           <View>
-            {/*Featured image*/}
-            <img src={this.state.clubPicture} className="sub_img" alt="" />
+            <img src={this.state.clubPicture} className="sub_img" />
           </View>
 
           <View>
@@ -67,9 +66,9 @@ class EachSub extends React.Component {
                 {this.state.clubDescription.slice(0, 200) + "..."}
               </p>
               <div className="tags">
-                {this.state.clubTags.map(tag => (
+                {this.state.clubTags.map((tag, i) => (
                   // add club tag stuff here
-                  <Button className="tag" /*color={random_color()}*/ size="sm">
+                  <Button key={i} className="tag" size="sm">
                     {tag}
                   </Button>
                 ))}

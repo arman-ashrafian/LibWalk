@@ -263,7 +263,7 @@ class AdminHome extends React.Component {
     async editHandleCreateEvent(e) {
         e.preventDefault();
         if (!e.target[0].value || !e.target[1].value || !e.target[2].value || !e.target[3].value ||
-            !e.target[4].value) {
+            !e.target[5].value) {
             alert('Please make sure to have name, location, date, time, and description');
             return;
         }
@@ -330,21 +330,21 @@ class AdminHome extends React.Component {
                     return;
                 } else {
                     createAnnouncements(this.state.announcement.annReference, this.state.announcement);
-                    if (this.state.org.announcements === undefined) {
-                        this.state.org = {
-                            announcements: ''
-                        }
-                    } else {
-                        if (this.state.org.announcements.includes(this.state.announcement.annReference) === false) {
-                            this.state.org.announcements.push(this.state.announcement.annReference);
-                            changeClub(this.state.org.clubReference, this.state.org);
-                        }
-                    }
                     alert('Announcement Created');
                     this.closeAnn();
                 }
 
             });
+
+        const newAnnList = [...this.state.org.announcements]
+        newAnnList.push(this.state.announcement.annReference)
+        this.setState({
+            org: {
+                ...this.state.org,
+                announcements: newAnnList
+            }
+        })
+        await changeClub(this.state.org.clubReference, this.state.org)
     }
 
     /**
@@ -734,9 +734,8 @@ class AdminHome extends React.Component {
                             </Form.Group>
 
                             <Form.Group controlId="formTime">
-                                <Form.Label>Time</Form.Label>
-                                <Form.Control type="timeS" placeholder="I.e. Nov 19, 2019"
-                                              defaultValue={new Date()}/>
+                                <Form.Label>Time Created (this will be auto-generated for you)</Form.Label>
+                                <Form.Control type="timeS" defaultValue={new Date()}/>
                             </Form.Group>
 
                             {/*todo add form verification*/}
