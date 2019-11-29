@@ -108,15 +108,15 @@ class Announcements extends React.Component {
             grid_items.push(club_grid(e));
             console.log(e);
 
-            // getAnnouncements(e).then(anns => {
-            //     if ((anns === undefined) || (anns.length === 0)) {
-            //         this.setState({announcements: ''});
-            //     }
-            //     else {
-            //         this.setState({announcements: anns});
-            //         console.log(this.state.announcements)
-            //     }
-            // });
+            getAnnouncements(e).then(anns => {
+                if ((anns === undefined) || (anns.length === 0)) {
+                    this.setState({announcements: ''});
+                }
+                else {
+                    this.setState({announcements: anns});
+                    console.log(this.state.announcements)
+                }
+            });
         });
 
         let grid = [];
