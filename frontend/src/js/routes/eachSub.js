@@ -2,7 +2,6 @@ import React from "react";
 import "../../css/subs.css";
 import { Divider } from "@material-ui/core";
 import { View } from "react-native-web";
-//import { MDBBtn } from "mdbreact";
 import Button from "react-bootstrap/Button";
 import { getClub } from "../cloud";
 
@@ -55,7 +54,7 @@ class EachSub extends React.Component {
         >
           <View>
             {/*Featured image*/}
-            <img src={this.state.clubPicture} className="sub_img" alt="" />
+            <img src={this.state.clubPicture} className="sub_img" />
           </View>
 
           <View>
@@ -69,7 +68,7 @@ class EachSub extends React.Component {
               <div className="tags">
                 {this.state.clubTags.map(tag => (
                   // add club tag stuff here
-                  <Button className="tag" /*color={random_color()}*/ size="sm">
+                  <Button className="tag" size="sm">
                     {tag}
                   </Button>
                 ))}
