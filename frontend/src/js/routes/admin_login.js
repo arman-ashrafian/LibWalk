@@ -28,13 +28,6 @@ class AdminLogin extends React.Component {
         this.registerTime = this.registerTime.bind(this);
     }
 
-    /*const handleSignIn = (event) => {
-        alert("Pressed Sign In ")
-        event.preventDefault();
-        const{email, password} = event.target.elements;
-
-    }*/
-
     async handleLoginWithEmail(e) {
         try {
             e.preventDefault();
@@ -118,25 +111,9 @@ class AdminLogin extends React.Component {
                                     <a onClick={this.view_switch_user_login} style={{color: "#4169E1"}}> Student Log
                                         In</a>
                                 </p>
-                                {/*
-								<p>or sign in with:</p>
-								<a href="#" className="mx-2" role="button"><i
-									className="fab fa-facebook-f light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i className="fab fa-twitter light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i
-									className="fab fa-linkedin-in light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i className="fab fa-github light-blue-text"/></a>
-								*/}
                             </Form>
                         </Container>
                     </Modal.Body>
-
-                    {/*
-					<Modal.Footer>
-						<Button variant="secondary">Register</Button>
-						<Button variant="primary">Login</Button>
-					</Modal.Footer>
-					*/}
                 </Modal.Dialog>
 
                 <Modal.Dialog style={{display: this.state.login ? 'none' : 'block'}}>
@@ -170,25 +147,9 @@ class AdminLogin extends React.Component {
                                 <p>Already registered?
                                     <a onClick={this.loginTime}> Login</a>
                                 </p>
-                                {/*
-								<p>or sign in with:</p>
-								<a href="#" className="mx-2" role="button"><i
-									className="fab fa-facebook-f light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i className="fab fa-twitter light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i
-									className="fab fa-linkedin-in light-blue-text"/></a>
-								<a href="#" className="mx-2" role="button"><i className="fab fa-github light-blue-text"/></a>
-								*/}
                             </Form>
                         </Container>
                     </Modal.Body>
-
-                    {/*
-					<Modal.Footer>
-						<Button variant="secondary">Register</Button>
-						<Button variant="primary">Login</Button>
-					</Modal.Footer>
-					*/}
                 </Modal.Dialog>
             </div>);
 
