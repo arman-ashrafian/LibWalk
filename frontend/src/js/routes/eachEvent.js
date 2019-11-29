@@ -51,7 +51,6 @@ class EachEvent extends React.Component {
 
     showEventDetail = () => {
         this.setState({showEventDetail: true})
-        console.log(this.showEventDetail)
     };
 
     // Action Methods
