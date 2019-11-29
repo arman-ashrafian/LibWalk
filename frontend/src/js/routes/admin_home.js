@@ -40,7 +40,8 @@ class AdminHome extends React.Component {
                 tags: [],
                 pageURL: '',
                 announcements: [],
-                emailList: []
+                emailList: [],
+                eventList: []
             },
             event: {
                 eventReference: '',
@@ -206,18 +207,19 @@ class AdminHome extends React.Component {
 
     async addTag(e) {
         e.preventDefault();
+        console.log(e)
         await this.setState({
             tag: e.target[0].value.toLowerCase()
         })
 
         //add tag to club
         if (this.state.org.tags.includes(this.state.tag) === false) {
-            this.state.org.tags.push(this.state.tag);
+            await this.state.org.tags.push(this.state.tag);
         }
 
         //add club to tag
         if (this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
-            this.state.tagInfo.clubs.push(this.state.org.clubReference)
+            await this.state.tagInfo.clubs.push(this.state.org.clubReference)
         }
 
         console.log(this.state.org.tags)
@@ -260,19 +262,20 @@ class AdminHome extends React.Component {
      */
     async editHandleCreateEvent(e) {
         e.preventDefault();
-        if (!e.target[0].value || !e.target[1].value || !e.target[2].value ||
+        if (!e.target[0].value || !e.target[1].value || !e.target[2].value || !e.target[3].value ||
             !e.target[4].value) {
-            alert('Please make sure to have name, location, time, and description');
+            alert('Please make sure to have name, location, date, time, and description');
             return;
         }
         await this.setState({
             event: {
                 eventName: e.target[0].value,
                 location: e.target[1].value,
-                time: e.target[2].value,
-                pictureURL: e.target[3].value,
-                description: e.target[4].value,
-                rsvpForm: e.target[5].value,
+                date: e.target[2].value,
+                time: e.target[3].value,
+                pictureURL: e.target[4].value,
+                description: e.target[5].value,
+                rsvpForm: e.target[6].value,
                 eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value
             }
         });
@@ -289,6 +292,16 @@ class AdminHome extends React.Component {
                     this.closeCEvent();
                 }
             });
+
+        const newEventList = [...this.state.org.eventList]
+        newEventList.push(this.state.event.eventReference)
+        this.setState({
+            org: {
+                ...this.state.org,
+                eventList: newEventList
+            }
+        })
+        await changeClub(this.state.org.clubReference, this.state.org)
     }
 
     /**
@@ -555,6 +568,19 @@ class AdminHome extends React.Component {
                         </Button>
                     ))}
 
+                {/* <InputGroup className="mb-3" >
+                    <Form onSubmit={(e) => this.addTag(e)}>
+                    <FormControl
+                    placeholder="Add Tag"
+                    aria-label="Add Tag"
+                    aria-describedby="basic-addon2"
+                    />
+                    <InputGroup.Append>
+                        <Button variant="light" type="submit" size="sm">Add</Button>
+                    </InputGroup.Append>
+                    </Form>
+                </InputGroup> */}
+
                     <Form onSubmit={(e) => this.addTag(e)}>
                         <Form.Group controlId="formName">
                             <Form.Control type="name" placeholder="Add Tag"/>
@@ -641,33 +667,38 @@ class AdminHome extends React.Component {
                     <Modal.Body>
                         <Form onSubmit={this.editHandleCreateEvent}>
                             <Form.Group controlId="formName">
-                                <Form.Label>Event Name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter Event Name"/>
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control type="text" placeholder="Enter Event Name"/>
                             </Form.Group>
 
                             <Form.Group controlId="formPlace">
                                 <Form.Label>Location</Form.Label>
-                                <Form.Control type="place" placeholder="Enter Location"/>
+                                <Form.Control type="text" placeholder="Enter Event Location"/>
                             </Form.Group>
 
                             <Form.Group controlId="formTime">
-                                <Form.Label>Time</Form.Label>
-                                <Form.Control type="timeS" placeholder="Enter Time"/>
+                                <Form.Label>Date</Form.Label>
+                                <Form.Control type="date"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="formTime">
+                                <Form.Label>Time (12-hr format) </Form.Label>
+                                <Form.Control type="time"/>
                             </Form.Group>
 
                             <Form.Group controlId="formPic">
                                 <Form.Label>Picture</Form.Label>
-                                <Form.Control type="pic" placeholder="Enter Picture URL"/>
+                                <Form.Control type="url" placeholder="Enter Event Picture URL"/>
                             </Form.Group>
 
                             <Form.Group controlId="formDetails">
-                                <Form.Label>Details</Form.Label>
-                                <Form.Control type="details" placeholder="Enter Details"/>
+                                <Form.Label>Description</Form.Label>
+                                <Form.Control type="text" placeholder="Enter Event Descriptions"/>
                             </Form.Group>
 
                             <Form.Group controlId="formRSVP">
-                                <Form.Label>RSVP</Form.Label>
-                                <Form.Control type="rsvp" placeholder="Enter RSVP URL"/>
+                                <Form.Label>RSVP (Google Form, TypeForm, SurveyMonkey, others...)</Form.Label>
+                                <Form.Control type="url" placeholder="Enter RSVP URL"/>
                             </Form.Group>
                             {/*todo add form verification*/}
                             <Button variant="primary" type="submit">
@@ -727,7 +758,7 @@ class AdminHome extends React.Component {
         let showEvents = [];
         if (this.state.org.eventList !== undefined) {
             showEvents = this.state.org.eventList.map(event => {
-                return <EachEvent eventId={event} {...this.props} />;
+                return <EachEvent eventId={event} admin={true} {...this.props} />;
             });
         }
         return (
