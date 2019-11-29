@@ -2,7 +2,6 @@ import React from "react";
 import "../../css/subs.css";
 import { Divider } from "@material-ui/core";
 import { View } from "react-native-web";
-//import { MDBBtn } from "mdbreact";
 import Button from "react-bootstrap/Button";
 import { getClub } from "../cloud";
 
@@ -11,20 +10,18 @@ class EachSub extends React.Component {
     super(props);
     this.state = {
       club_id: this.props.clubId,
-      startIndex: 0,
-      endIndex: 3,
       clubName: "",
       clubDescription: "",
       clubPicture: "",
       clubTags: []
     };
-
+    console.log(this.state.club_id);
     this.redirectToClubDetail = this.redirectToClubDetail.bind(this);
   }
 
   componentDidMount() {
     getClub(this.props.clubId).then(json => {
-      console.log(json);
+      console.log("inside eachSub", json);
       this.setState({
         club_id: this.props.clubId,
         clubName: json["clubName"],
@@ -36,7 +33,6 @@ class EachSub extends React.Component {
   }
 
   redirectToClubDetail() {
-    console.log(this.state.club_id);
     this.props.history.push({
       pathname: "/orgs",
       state: {
