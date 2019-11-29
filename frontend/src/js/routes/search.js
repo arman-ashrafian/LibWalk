@@ -43,7 +43,6 @@ class Search extends React.Component {
       <div>
         <NavBar {...this.props} />
         <main className="mt-5 pt-5">
-          {/* <SearchBars nameSearch={this.searchByKeyword} tagSearch={this.searchByTags} orgs={this.state.orgs} searchSelect={this.handleSearchSelect}/> */}
           <Container className="mt-0">
             <Row className={"SearchBar"} style={{ marginBottom: "10px" }}>
               <Col sm={12} md={12} lg={12}>
@@ -81,10 +80,10 @@ class Search extends React.Component {
                           size="sm"
                         />
                         <Dropdown.Menu>
-                          <Dropdown.Item eventKey="Search By Name">
+                          <Dropdown.Item eventKey="Search By Name (Ex: Alpha)">
                             Name
                           </Dropdown.Item>
-                          <Dropdown.Item eventKey="Search By Tag">
+                          <Dropdown.Item eventKey="Search By Tag (Ex: Educational, Service)">
                             Tag
                           </Dropdown.Item>
                         </Dropdown.Menu>
