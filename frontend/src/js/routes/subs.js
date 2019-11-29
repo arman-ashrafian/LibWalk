@@ -233,7 +233,6 @@ class Subs extends React.Component {
       return (
         <div>
           <NavBar {...this.props} />
-
           <h1 className="h1 text-center mb-5" id="header">
             {" "}
             Subscriptions
