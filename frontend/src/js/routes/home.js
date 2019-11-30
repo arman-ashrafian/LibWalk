@@ -107,7 +107,8 @@ class Home extends React.Component {
         // console.log(JSON.stringify(org));
         org.img = "https://picsum.photos/150/50";
         return (
-            <div className="item">
+            <div className="item"                     key={org.clubName}
+            >
                 <Card
                     style={{width: "16rem", height: "20rem"}}
                     className="text-center"
@@ -118,18 +119,18 @@ class Home extends React.Component {
                         style={{
                             width: "100%",
                             height: "15vw",
-                            "object-fit": "cover"
+                            "objectFit": "cover"
                         }}
                     />
                     <Card.Body>
                         <Card.Title>
                             {" "}
-                            <button className={'Link'} href={'#'} onClick={() => {
+                            <Card.Link href={'#'} onClick={() => {
                                 this.redirectToClubDetails(org.clubReference);
                             }}
                             >
                                 {org.clubName}
-                            </button>
+                            </Card.Link>
                         </Card.Title>
                         {/* <Card.Text>
                           <small className="scroll-box">
@@ -145,7 +146,7 @@ class Home extends React.Component {
 
     org_multi_item_carousel(tag, tagList) {
         return (
-            <div className="container">
+            <div className="container" key={tag}>
                 <h3>{tag}</h3>
                 <div
                     className="MultiCarousel"
