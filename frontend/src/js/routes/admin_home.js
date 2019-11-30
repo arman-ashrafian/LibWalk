@@ -438,7 +438,7 @@ class AdminHome extends React.Component {
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditTag} href={'#'}>Edit Tags</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleCreateEvent}>Create Event</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateEvent} href={'#'}>Create Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleCreateAnn} href={'#'}>Create Announcement</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
