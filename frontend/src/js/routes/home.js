@@ -22,14 +22,6 @@ class Home extends React.Component {
 
         this.generateTagList();
 
-        // GET /getClubs & set the state when the api response is recieved
-        /*getClubs().then(json => {
-                this.setState({
-                  orgs: json.clubs,
-                  totalPages: Math.ceil(json.clubs.length / 9)
-                });
-              });*/
-
         if (this.state.orgs === undefined) {
             this.state = {
                 orgs: []
@@ -93,7 +85,6 @@ class Home extends React.Component {
                 }
             });
         });
-        //console.log(this.state.tagDict)
     }
 
     redirectToClubDetails(club_id) {
@@ -174,12 +165,12 @@ class Home extends React.Component {
 
 $(document).ready(function () {
     //setTimeout(function() {
-    var itemsMainDiv = ".MultiCarousel";
-    var itemsDiv = ".MultiCarousel-inner";
-    var itemWidth = "";
+    let itemsMainDiv = ".MultiCarousel";
+    let itemsDiv = ".MultiCarousel-inner";
+    let itemWidth = "";
 
     $(".leftLst, .rightLst").mousedown(function () {
-        var condition = $(this).hasClass("leftLst");
+        let condition = $(this).hasClass("leftLst");
         if (condition) click(0, this);
         else click(1, this);
     });
@@ -195,17 +186,17 @@ $(document).ready(function () {
     // YO BODY WIDTH IS 820.8
     function ResCarouselSize() {
         //console.log( $(itemsMainDiv).width());
-        var incno = 0;
-        var dataItems = "data-items";
-        var itemClass = ".item";
-        var id = 0;
-        var btnParentSb = "";
-        var itemsSplit = "";
-        var sampwidth = $(itemsMainDiv).width();
-        var bodyWidth = $("main").width();
+        let incno = 0;
+        let dataItems = "data-items";
+        let itemClass = ".item";
+        let id = 0;
+        let btnParentSb = "";
+        let itemsSplit = "";
+        let sampwidth = $(itemsMainDiv).width();
+        let bodyWidth = $("main").width();
         $(itemsDiv).each(function () {
             id = id + 1;
-            var itemNumbers = $(this).find(itemClass).length;
+            let itemNumbers = $(this).find(itemClass).length;
             btnParentSb = $(this)
                 .parent()
                 .attr(dataItems);
@@ -245,12 +236,12 @@ $(document).ready(function () {
 
     //this function used to move the items
     function ResCarousel(e, el, s) {
-        var leftBtn = ".leftLst";
-        var rightBtn = ".rightLst";
-        var translateXval = "";
-        var divStyle = $(el + " " + itemsDiv).css("transform");
-        var values = divStyle.match(/-?[\d.]+/g);
-        var xds = Math.abs(values[4]);
+        let leftBtn = ".leftLst";
+        let rightBtn = ".rightLst";
+        let translateXval = "";
+        let divStyle = $(el + " " + itemsDiv).css("transform");
+        let values = divStyle.match(/-?[\d.]+/g);
+        let xds = Math.abs(values[4]);
         if (e === 0) {
             translateXval = parseInt(xds) - parseInt(itemWidth * s);
             $(el + " " + rightBtn).removeClass("over");
@@ -259,7 +250,7 @@ $(document).ready(function () {
                 $(el + " " + leftBtn).addClass("over");
             }
         } else if (e === 1) {
-            var itemsCondition =
+            let itemsCondition =
                 $(el)
                     .find(itemsDiv)
                     .width() - $(el).width();
@@ -279,12 +270,12 @@ $(document).ready(function () {
 
     //It is used to get some elements from btn
     function click(ell, ee) {
-        var Parent =
+        let Parent =
             "#" +
             $(ee)
                 .parent()
                 .attr("id");
-        var slide = $(Parent).attr("data-slide");
+        let slide = $(Parent).attr("data-slide");
         ResCarousel(ell, Parent, slide);
     }
 });
