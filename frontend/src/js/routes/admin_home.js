@@ -110,37 +110,6 @@ class AdminHome extends React.Component {
                 })
             }
         });
-
-        // This code will fetch events for the admin based on the event id
-        getEvent('event_id_00').then(eventInfo => {
-            if (typeof eventInfo !== "undefined") {
-                this.setState({
-                    event: {
-                        eventReference: eventInfo['eventReference'],
-                        description: eventInfo['description'],
-                        eventName: eventInfo['eventName'],
-                        location: eventInfo['location'],
-                        pictureURL: eventInfo['pictureURL'],
-                        rsvpForm: eventInfo['rsvpForm'],
-                        time: eventInfo['time'],
-                    }
-                })
-
-            } else {
-                this.setState({
-                    event: {
-                        eventReference: "Failure getEvent()",
-                        description: "Failure getEvent()",
-                        eventName: "Failure getEvent()",
-                        location: "Failure getEvent()",
-                        pictureURL: "Failure getEvent()",
-                        rsvpForm: "Failure getEvent()",
-                        time: "Failure getEvent()",
-                    }
-                })
-
-            }
-        })
     }
 
     // Handler Methods
@@ -155,10 +124,11 @@ class AdminHome extends React.Component {
                 contactEmail: e.target[1].value,
                 pictureURL: e.target[2].value,
                 description: e.target[3].value,
-                clubReference: this.state.org.ref,
+                clubReference: this.state.org.clubReference,
                 tags: this.state.org.tags,
                 announcements: this.state.org.announcements,
-                pageURL: this.state.org.pageURL
+                pageURL: this.state.org.pageURL,
+                eventList: this.state.org.eventList
             }
         });
         await changeClub(this.state.org.clubReference, this.state.org);
@@ -234,7 +204,6 @@ class AdminHome extends React.Component {
      *
      */
     async editHandleTag() {
-	console.log("DONE");
         await changeTag(this.state.tag, this.state.tagInfo)
         await changeClub(this.state.org.clubReference, this.state.org);
         this.closeTag();
@@ -438,7 +407,7 @@ class AdminHome extends React.Component {
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditTag} href={'#'}>Edit Tags</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleCreateEvent}>Create Event</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateEvent} href={'#'}>Create Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleCreateAnn} href={'#'}>Create Announcement</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
@@ -479,19 +448,6 @@ class AdminHome extends React.Component {
                             {tag}
                         </Button>
                     ))}
-
-                    {/* <InputGroup className="mb-3" >
-                    <Form onSubmit={(e) => this.addTag(e)}>
-                    <FormControl
-                    placeholder="Add Tag"
-                    aria-label="Add Tag"
-                    aria-describedby="basic-addon2"
-                    />
-                    <InputGroup.Append>
-                        <Button variant="light" type="submit" size="sm">Add</Button>
-                    </InputGroup.Append>
-                    </Form>
-                </InputGroup> */}
 
                     <Form onSubmit={(e) => this.addTag(e) & this.editHandleTag}>
                         <Form.Group controlId="formName">
@@ -685,29 +641,22 @@ class AdminHome extends React.Component {
                     <Card.Body>
 
                         <Card.Title style={{fontSize:"2rem"}}>{this.state.org.clubName}</Card.Title>
+
                         <Card.Subtitle>{this.state.org.contactEmail} </Card.Subtitle>
+
+                        {this.state.org.tags.map(tag => (
+                            <Button size="sm">
+                                {tag}
+                            </Button>
+                        ))}
+
                         <Card.Text>
                             {this.state.org.description}
                         </Card.Text>
 
-                        <ListGroup className="list-group-flush">
-                            <ListGroupItem>
-                                Tags
-                                <br />
-                                {this.state.org.tags.map(tag => (
-                                    <Button size="sm">
-                                        {tag}
-                                    </Button>
-                                ))}
-                            </ListGroupItem>
-                            <ListGroupItem>
-                                Events
-                                <br/>
-                                <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
+                        <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
                                     {showEvents}
-                                </div>
-                            </ListGroupItem>
-                        </ListGroup>
+                        </div>
 
                     </Card.Body>
 
