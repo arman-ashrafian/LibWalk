@@ -158,7 +158,7 @@ class Subs extends React.Component {
       const endIndex = currentPage * clubPerPage;
       const firstIndex = endIndex - clubPerPage;
       const currentClubs = this.state
-        .subscriptions; /*.slice(firstIndex, endIndex);*/
+        .subscriptions;
 
       console.log(currentPage, firstIndex, endIndex);
       // Function to render the clubs
@@ -176,40 +176,7 @@ class Subs extends React.Component {
       } else {
         pageNumber = this.pagination(currentPage, totalPages);
       }
-
-      // Load the pagination with the number of page
-      /*if (totalPages <= 5) {
-        loadPageNumber = pageNumber.map((page, i) => {
-          return (
-            <div>
-              <Pagination.Item
-                key={i}
-                id={page}
-                active={page === currentPage}
-                onClick={this.setPage}
-              >
-                {page}
-              </Pagination.Item>
-            </div>
-          );
-        });
-      } else {
-        loadPageNumber = pageNumber.map((page, i) => {
-          return (
-            <div>
-              <Pagination.Item
-                key={i}
-                id={page}
-                active={page === currentPage}
-                onClick={page === "..." ? this.doNothing : this.setPage}
-              >
-                {(page = page === "..." ? <Pagination.Ellipsis /> : page)}
-              </Pagination.Item>
-            </div>
-          );
-        });
-      }*/
-    }
+   }
     return (
       <div>
         <NavBar {...this.props} />
@@ -219,17 +186,9 @@ class Subs extends React.Component {
             Subscriptions
           </h1>
           <div className="container">
-            {/*Display each sub container*/}
             {showClubs}
           </div>
-          {/*<Pagination className="pagination" size="lg">
-            <Pagination.First onClick={this.moveFirstPage} />
-            <Pagination.Prev onClick={this.setPagePrev} />
-            {loadPageNumber}
-            <Pagination.Next onClick={this.setPageNext} />
-            <Pagination.Last onClick={this.moveLastPage} />
-    </Pagination>*/}
-        </main>
+       </main>
       </div>
     );
   }
