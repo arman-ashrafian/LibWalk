@@ -82,9 +82,9 @@ class Announcements extends React.Component {
 
     render() {
         if (this.state.orgs === undefined) {
-            this.state = {
+            this.setState({
                 orgs: []
-            };
+            });
         }
 
         return (
