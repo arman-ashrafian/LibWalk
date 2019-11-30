@@ -36,15 +36,12 @@ class Announcements extends React.Component {
                         console.warn('Firebase was unable to get user from database.');
                         alert("You haven't yet subscribed to any organizations!")
                         this.setState({orgs: []})
-                    }
-
-                    if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
+                    } else if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
                         alert("You haven't yet subscribed to any organizations!")
+                    } else {
+                        //ADD THIS BACK LATER
+                        this.setState({orgs: json.subscriptions});
                     }
-
-                    //ADD THIS BACK LATER
-                    this.setState({orgs: json.subscriptions});
-
                 });
 
                 getAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42").then(anns => {
