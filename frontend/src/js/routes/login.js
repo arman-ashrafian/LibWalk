@@ -163,7 +163,7 @@ class Login extends React.Component {
                                               placeholder="Major"/>
                                 {/* Year */}
                                 <Form.Control required type="year" className="form-control mb-4"
-                                              placeholder="Year"/>
+                                              placeholder="Expected Graduation Year"/>
 
                                 {/* Sign in button */}
                                 <button className="btn btn-info btn-block my-4" type="submit">Create Account</button>
