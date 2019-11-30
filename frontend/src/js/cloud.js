@@ -7320,4 +7320,4 @@ export let club_list = [
         }
     }
 ];
-let club_data = {clubs: club_list};
+

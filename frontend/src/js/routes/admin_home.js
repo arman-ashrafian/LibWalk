@@ -1,5 +1,5 @@
 import React from 'react'
-import {changeClub, changeEvent, changeTag, createAnnouncements, getClub, getEvent, getTag} from "../cloud";
+import {changeClub, changeEvent, changeTag, createAnnouncements, getClub, getEvent} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -11,8 +11,6 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
 
 
 /**
@@ -178,7 +176,7 @@ class AdminHome extends React.Component {
         if (index > -1) {
             newTags.splice(index, 1);
         }
-        
+
         await this.setState({
             org: {
                 ...this.state.org,
@@ -204,28 +202,39 @@ class AdminHome extends React.Component {
 
     async addTag(e) {
         e.preventDefault();
-        console.log(e)
+        //console.log(e)
         await this.setState({
             tag: e.target[0].value.toLowerCase()
         })
 
+        console.log(this.state.org.tags)
+	
+
         //add tag to club
-        if (this.state.org.tags.includes(this.state.tag) === false) {
+        if ( this.state.org.tags.includes(this.state.tag) === false) {
             await this.state.org.tags.push(this.state.tag);
+		console.log("TWO");
         }
 
         //add club to tag
-        if (this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
-            await this.state.tagInfo.clubs.push(this.state.org.clubReference)
-        }
+        if ( this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
+            await this.state.tagInfo.clubs.push(this.state.org.clubReference);
+		console.log("THREE");
+	}
+
+        await this.setState({
+	    tags: [...this.state.tagInfo.clubs]
+        })
 
         console.log(this.state.org.tags)
     }
+
     /**
      * Handles what happens when you change a club tag
      *
      */
     async editHandleTag() {
+	console.log("DONE");
         await changeTag(this.state.tag, this.state.tagInfo)
         await changeClub(this.state.org.clubReference, this.state.org);
         this.closeTag();
@@ -425,15 +434,15 @@ class AdminHome extends React.Component {
 
                     <ListGroup variant="flush">
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleEditInfo}>Edit Club</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleEditInfo} href={'#'}>Edit Club</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleEditTag}>Edit Tags</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleEditTag} href={'#'}>Edit Tags</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleCreateEvent}>Create Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleCreateAnn}>Create Announcement</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateAnn} href={'#'}>Create Announcement</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleLogOut}>Log Out</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleLogOut}  href={'#'}>Log Out</Card.Link></ListGroup.Item>
                     </ListGroup>
                 </Card>
             </div>
@@ -471,7 +480,7 @@ class AdminHome extends React.Component {
                         </Button>
                     ))}
 
-                {/* <InputGroup className="mb-3" >
+                    {/* <InputGroup className="mb-3" >
                     <Form onSubmit={(e) => this.addTag(e)}>
                     <FormControl
                     placeholder="Add Tag"
@@ -484,7 +493,7 @@ class AdminHome extends React.Component {
                     </Form>
                 </InputGroup> */}
 
-                    <Form onSubmit={(e) => this.addTag(e)}>
+                    <Form onSubmit={(e) => this.addTag(e) & this.editHandleTag}>
                         <Form.Group controlId="formName">
                             <Form.Control type="name" placeholder="Add Tag"/>
                         </Form.Group>

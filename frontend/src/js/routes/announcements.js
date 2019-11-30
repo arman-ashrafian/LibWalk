@@ -4,7 +4,7 @@ import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
 import TimeAgo from "@jshimko/react-time-ago";
-import {accessAnnouncements, getAnnouncements, getUser, getClub} from "../cloud";
+import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import CardDeck from "react-bootstrap/CardDeck";
@@ -23,6 +23,7 @@ class Announcements extends React.Component {
             time: "",
             annReference: ""
         };
+
         this.club_grid_loop = this.club_grid_loop.bind(this);
     };
 
@@ -31,20 +32,27 @@ class Announcements extends React.Component {
             if (firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
                 this.setState({userId: firebaseUser.uid});
                 getUser(firebaseUser.uid).then(json => {
-                    if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
+                    // failure check
+                    if (json === undefined) {
+                        console.warn('Firebase was unable to get user from database.');
                         alert("You haven't yet subscribed to any organizations!")
+                        this.setState({orgs: []})
+                    } else if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
+                        alert("You haven't yet subscribed to any organizations!")
+                    } else {
+                        //ADD THIS BACK LATER
+                        this.setState({orgs: json.subscriptions});
                     }
-                    //ADD THIS BACK LATER
-                    this.setState({orgs: json.subscriptions});
-                    console.log(this.state.orgs)
-
                 });
+
                 getAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42").then(anns => {
                     if ((anns === undefined) || (anns.length === 0)) {
+                        console.warn('Firebase was unable to get announcements from database.');
+
                         this.setState({announcements: ''});
                     }
                     this.setState({announcements: anns});
-                    console.log(this.state.announcements)
+                    console.log('Announcements for club:' + this.state.announcements);
                 });
 
                 accessAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42Acapella Recruit").then(annInfo => {
@@ -53,29 +61,28 @@ class Announcements extends React.Component {
                             annDetail: '',
                             time: '',
                             annReference: ''
-                    })
+                        })
                     } else {
-                         this.setState({
-                             annDetail: annInfo['annDetail'],
-                             time: annInfo['time'],
-                             annReference: annInfo['annReference']
-                         })
+                        this.setState({
+                            annDetail: annInfo['annDetail'],
+                            time: annInfo['time'],
+                            annReference: annInfo['annReference']
+                        })
                     }
-                    console.log(this.state.annDetail)
+                    console.log('annDetail: ' + this.state.annDetail)
                 });
 
             } else {
-                console.log("Redirecting to login page");
+                // console.log("Redirecting to login page");
             }
         });
     }
 
-
     render() {
         if (this.state.orgs === undefined) {
-            this.state = {
+            this.setState({
                 orgs: []
-            };
+            });
         }
 
         return (
@@ -98,25 +105,24 @@ class Announcements extends React.Component {
         );
     }
 
-    club_grid_loop = orgs => {
+    club_grid_loop = (clubs) => {
         let grid_items = [];
         let numcols = 4;
-        let numrows = orgs.length / numcols;
+        let numrows = clubs.length / numcols;
         numrows = Math.ceil(numrows);
 
-        orgs.forEach(function(e) {
+        clubs.forEach(function (e) {
             grid_items.push(club_grid(e));
-            console.log(e);
+            console.log('club pushed in announcements' + e);
 
-            // getAnnouncements(e).then(anns => {
-            //     if ((anns === undefined) || (anns.length === 0)) {
-            //         this.setState({announcements: ''});
-            //     }
-            //     else {
-            //         this.setState({announcements: anns});
-            //         console.log(this.state.announcements)
-            //     }
-            // });
+            getAnnouncements(e).then(anns => {
+                if ((anns === undefined) || (anns.length === 0)) {
+                    this.setState({announcements: ''});
+                } else {
+                    this.setState({announcements: anns});
+                    console.log('got announcements' + this.state.announcements)
+                }
+            });
         });
 
         let grid = [];
@@ -138,7 +144,7 @@ class Announcements extends React.Component {
         }
 
         return (
-            <div>
+            <div key={grid.length}>
                 <CardDeck> {grid} </CardDeck>
             </div>
         );
@@ -148,49 +154,51 @@ class Announcements extends React.Component {
 let club_grid = org => {
     // org = Object.values(org)[0];
     return (
-        <Card style={{width: "80rem", height: "20rem"}} className="text-center">
-            <Card.Header>
-                <strong style={{fontSize: 24}}> {org.clubName}</strong>
-                <br/>
-                <small style={{fontSize: 16}}>{org.clubDescription}</small>
-            </Card.Header>
-            <Card.Body>
-                <div className="div-centered">
-                    <Row>
-                        <Card border="info" style={{fontSize: 12}}>
-                            <Card.Header>
-                                <strong className="mr-auto" style={{fontSize: 24}}>📢</strong>
-                            </Card.Header>
-                            <Card.Body>{111}</Card.Body>
-                            <Card.Footer>
-                                <strong>Last posted <TimeAgo date="Nov 25, 2019"/></strong>
-                            </Card.Footer>
-                        </Card>
-                        <br/>
-                        <Card border="warning" style={{fontSize: 12}}>
-                            <Card.Header>
-                                <strong className="mr-auto" style={{fontSize: 24}}>📣</strong>
-                            </Card.Header>
-                            <Card.Body>{222}</Card.Body>
-                            <Card.Footer>
-                                <strong>Last posted <TimeAgo date="Nov 19, 2019"/></strong>
-                            </Card.Footer>
-                        </Card>
-                        <br/>
-                        <Card border="danger" style={{fontSize: 12}}>
-                            <Card.Header>
-                                <strong className="mr-auto" style={{fontSize: 24}}>📌</strong>
-                            </Card.Header>
-                            <Card.Body>{333}</Card.Body>
-                            <Card.Footer>
-                                <strong>Last posted <TimeAgo
-                                    date="Tue Nov 26 2019 22:30:14 GMT-0800 (Pacific Standard Time)"/></strong>
-                            </Card.Footer>
-                        </Card>
-                    </Row>
-                </div>
-            </Card.Body>
-        </Card>
+        <div key={org.clubName}>
+            <Card style={{width: "80rem", height: "20rem"}} className="text-center">
+                <Card.Header>
+                    <strong style={{fontSize: 24}}> {org.clubName}</strong>
+                    <br/>
+                    <small style={{fontSize: 16}}>{org.clubDescription}</small>
+                </Card.Header>
+                <Card.Body>
+                    <div className="div-centered">
+                        <Row>
+                            <Card border="info" style={{fontSize: 12}}>
+                                <Card.Header>
+                                    <strong className="mr-auto" style={{fontSize: 24}}>📢</strong>
+                                </Card.Header>
+                                <Card.Body>{111}</Card.Body>
+                                <Card.Footer>
+                                    <strong>Last posted <TimeAgo date="Nov 25, 2019"/></strong>
+                                </Card.Footer>
+                            </Card>
+                            <br/>
+                            <Card border="warning" style={{fontSize: 12}}>
+                                <Card.Header>
+                                    <strong className="mr-auto" style={{fontSize: 24}}>📣</strong>
+                                </Card.Header>
+                                <Card.Body>{222}</Card.Body>
+                                <Card.Footer>
+                                    <strong>Last posted <TimeAgo date="Nov 19, 2019"/></strong>
+                                </Card.Footer>
+                            </Card>
+                            <br/>
+                            <Card border="danger" style={{fontSize: 12}}>
+                                <Card.Header>
+                                    <strong className="mr-auto" style={{fontSize: 24}}>📌</strong>
+                                </Card.Header>
+                                <Card.Body>{333}</Card.Body>
+                                <Card.Footer>
+                                    <strong>Last posted <TimeAgo
+                                        date="Tue Nov 26 2019 22:30:14 GMT-0800 (Pacific Standard Time)"/></strong>
+                                </Card.Footer>
+                            </Card>
+                        </Row>
+                    </div>
+                </Card.Body>
+            </Card>
+        </div>
     );
 };
 
