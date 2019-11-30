@@ -87,7 +87,10 @@ class Home extends React.Component {
                     dict[tag] = [];
                 }
                 dict[tag].push(org);
-                this.setState({tagDict: dict});
+                if (this._isMounted) {
+                    this.setState({tagDict: dict});
+
+                }
             });
         });
         //console.log(this.state.tagDict)
@@ -157,6 +160,14 @@ class Home extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
+    componentDidMount() {
+        this._isMounted = true;
     }
 }
 
