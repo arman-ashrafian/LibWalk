@@ -9,7 +9,11 @@ import Row from "react-bootstrap/Row"
 import {getUserEvents} from "../cloud";
 import db from "../../firebase";
 
+/**
+ * This class defines the Events component.
+ */
 class Events extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
