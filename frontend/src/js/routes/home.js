@@ -125,16 +125,13 @@ class Home extends React.Component {
                     />
                     <Card.Body>
                         <Card.Title>
-                            {" "}
-                            <Card.Link href={'#'} onClick={() => {
-                                this.redirectToClubDetails(org.clubReference);
-                            }}
-                            >
                                 {org.clubName}
-                            </Card.Link>
                         </Card.Title>
+                        <Card.Subtitle><Card.Link src={org.pageURL}>Website</Card.Link></Card.Subtitle>
 
-                        <Button href={org.pageURL}>Org Home</Button>
+                        <Button  onClick={() => {
+                            this.redirectToClubDetails(org.clubReference);
+                        }}>Learn More</Button>
                     </Card.Body>
                 </Card>
             </div>

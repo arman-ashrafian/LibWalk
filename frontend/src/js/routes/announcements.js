@@ -23,6 +23,7 @@ class Announcements extends React.Component {
             time: "",
             annReference: ""
         };
+
         this.club_grid_loop = this.club_grid_loop.bind(this);
     };
 
