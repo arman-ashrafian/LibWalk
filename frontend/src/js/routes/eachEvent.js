@@ -77,7 +77,7 @@ class EachEvent extends React.Component {
                             </a>
                         ) : null}
                         <Card.Title style={{fontSize: "30px"}}>
-                            <a onClick={this.showEventDetail}>{this.state.eventName}</a>
+                            <Card.Link onClick={this.showEventDetail}>{this.state.eventName}</Card.Link>
                         </Card.Title>
                     </Card.Header>
                     <Card.Body>

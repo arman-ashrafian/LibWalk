@@ -7,20 +7,15 @@ import Form from "react-bootstrap/Form";
 
 class NavBar extends React.Component {
 
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
 
     constructor(props) {
         super(props);
 
-        if (this._isMounted) {
-            this.state = {
-                userId: '',
-                loggedIn: false,
-                some: ''
-            };
-        }
+        this.state = {
+            userId: '',
+            loggedIn: false,
+            some: ''
+        };
 
 
         this.setState(props);
@@ -39,7 +34,6 @@ class NavBar extends React.Component {
      * buttons (login, ...) by setting the application state.
      */
     componentDidMount() {
-        this._isMounted = true;
 
         db.auth().onAuthStateChanged(firebaseUser => {
             if (firebaseUser) {
