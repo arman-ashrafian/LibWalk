@@ -204,21 +204,30 @@ class AdminHome extends React.Component {
     }
 
     async addTag(e) {
-        //e.preventDefault();
-        console.log(e)
+        e.preventDefault();
+        //console.log(e)
         await this.setState({
             tag: e.target[0].value.toLowerCase()
         })
 
+        console.log(this.state.org.tags)
+	
+
         //add tag to club
-        if (this.state.org.tags.includes(this.state.tag) === false) {
+        if ( this.state.org.tags.includes(this.state.tag) === false) {
             await this.state.org.tags.push(this.state.tag);
+		console.log("TWO");
         }
 
         //add club to tag
-        if (this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
-            await this.state.tagInfo.clubs.push(this.state.org.clubReference)
-        }
+        if ( this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
+            await this.state.tagInfo.clubs.push(this.state.org.clubReference);
+		console.log("THREE");
+	}
+
+        await this.setState({
+	    tags: [...this.state.tagInfo.clubs]
+        })
 
         console.log(this.state.org.tags)
     }
@@ -228,6 +237,7 @@ class AdminHome extends React.Component {
      *
      */
     async editHandleTag() {
+	console.log("DONE");
         await changeTag(this.state.tag, this.state.tagInfo)
         await changeClub(this.state.org.clubReference, this.state.org);
         this.closeTag();
@@ -580,7 +590,7 @@ class AdminHome extends React.Component {
                     </Form>
                 </InputGroup> */}
 
-                    <Form onSubmit={(e) => this.addTag(e)}>
+                    <Form onSubmit={(e) => this.addTag(e) & this.editHandleTag}>
                         <Form.Group controlId="formName">
                             <Form.Control type="name" placeholder="Add Tag"/>
                         </Form.Group>
