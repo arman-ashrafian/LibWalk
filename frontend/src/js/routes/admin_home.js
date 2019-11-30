@@ -24,7 +24,6 @@ class AdminHome extends React.Component {
         this.state = {
             editInfo: false,
             editTag: false,
-            editEvent: false,
             createEvent: false,
             createAnn: false,
             org_id: "",
@@ -68,10 +67,8 @@ class AdminHome extends React.Component {
         this.handleCreateAnn = this.handleCreateAnn.bind(this);
         this.handleEditInfo = this.handleEditInfo.bind(this);
         this.handleEditTag = this.handleEditTag.bind(this);
-        this.handleEditEvent = this.handleEditEvent.bind(this);
         this.editHandleClub = this.editHandleClub.bind(this);
         this.editHandleTag = this.editHandleTag.bind(this);
-        this.editHandleEditEvent = this.editHandleEditEvent.bind(this);
         this.editHandleCreateEvent = this.editHandleCreateEvent.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
         this.editHandleCreateAnn = this.editHandleCreateAnn.bind(this);
@@ -244,28 +241,6 @@ class AdminHome extends React.Component {
     };
 
     /**
-     * Handles what happens when you change a clubs event details
-     *
-     */
-    async editHandleEditEvent(e) {
-        e.preventDefault();
-        await this.setState({
-            event: {
-                eventName: e.target[0].value,
-                location: e.target[1].value,
-                time: e.target[2].value,
-                pictureURL: e.target[3].value,
-                description: e.target[4].value,
-                rsvpForm: e.target[5].value,
-                eventReference: this.state.eventReference
-            }
-        })
-        await changeEvent(this.state.event.eventReference, this.state.event);
-        alert('Updated');
-        this.closeEvent();
-    }
-
-    /**
      * Handles what happens when you create an event for a club.
      *
      */
@@ -382,13 +357,6 @@ class AdminHome extends React.Component {
         this.setState({editTag: true})
     };
 
-    /**
-     * Handles the state change when you edit and org's event.
-     */
-    handleEditEvent = () => {
-        this.setState({editEvent: true})
-    };
-
     handleCreateEvent = () => {
         this.setState({createEvent: true})
     };
@@ -457,7 +425,6 @@ class AdminHome extends React.Component {
                 {/*Code for button modals*/}
                 {this.modal_edit_clubs()}
                 {this.modal_edit_tag()}
-                {this.modal_edit_event()}
                 {this.modal_create_event()}
                 {this.modal_create_ann()}
 
@@ -471,9 +438,7 @@ class AdminHome extends React.Component {
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditTag} href={'#'}>Edit Tags</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleEditEvent} href={'#'}>Edit Event</Card.Link></ListGroup.Item>
-                        <ListGroup.Item>
-                            <Card.Link onClick={this.handleCreateEvent} href={'#'}>Create Event</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateEvent}>Create Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleCreateAnn} href={'#'}>Create Announcement</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
@@ -489,69 +454,7 @@ class AdminHome extends React.Component {
      * Generates the jsx code to create and handle logic for a modal component to edit a clubs events.
      * @returns {*}
      */
-    modal_edit_event = () => {
-        return (
-            <div>
-                <Modal
-                    size="lg"
-                    show={this.state.editEvent}
-                    onHide={this.closeEvent}
-                    aria-labelledby="example-modal-sizes-title-lg"
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title id="example-modal-sizes-title-lg">
-                            Event Info
-                        </Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        <Form onSubmit={this.editHandleEditEvent}>
-                            <Form.Group controlId="formName">
-                                <Form.Label>Event Name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter Event Name"
-                                              defaultValue={this.state.event.eventName}/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formPlace">
-                                <Form.Label>Location</Form.Label>
-                                <Form.Control type="place" placeholder="Enter Location"
-                                              defaultValue={this.state.event.locatioin}/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formTime">
-                                <Form.Label>Time</Form.Label>
-                                <Form.Control type="timeS" placeholder="Enter Time"
-                                              defaultValue={this.state.event.time}/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formPic">
-                                <Form.Label>Picture</Form.Label>
-                                <Form.Control type="pic" placeholder="Enter Picture URL"
-                                              defaultValue={this.state.event.pictureURL}/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formDetails">
-                                <Form.Label>Details</Form.Label>
-                                <Form.Control type="details" placeholder="Enter Details"
-                                              defaultValue={this.state.event.description}/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formRSVP">
-                                <Form.Label>RSVP</Form.Label>
-                                <Form.Control type="rsvp" placeholder="Enter RSVP URL"
-                                              defaultValue={this.state.event.rsvpForm}/>
-                            </Form.Group>
-                            {/*todo add form verification*/}
-                            <Button variant="primary" type="submit">
-                                Submit
-                            </Button>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
-
-            </div>
-        )
-    };
+    
 
     /**
      * Generates the jsx code to create and handle logic for a modal component to edit a club's profile data.
@@ -772,7 +675,6 @@ class AdminHome extends React.Component {
         return (
             <div>
                 <Card style={{width: 'flex'}}>
-
                     <Card.Img src={this.state.org.pictureURL} style={{
                         width: '100%',
                         height: '15vw',
@@ -782,7 +684,7 @@ class AdminHome extends React.Component {
 
                     <Card.Body>
 
-                        <Card.Title>{this.state.org.clubName}</Card.Title>
+                        <Card.Title style={{fontSize:"2rem"}}>{this.state.org.clubName}</Card.Title>
                         <Card.Subtitle>{this.state.org.contactEmail} </Card.Subtitle>
                         <Card.Text>
                             {this.state.org.description}
@@ -790,10 +692,8 @@ class AdminHome extends React.Component {
 
                         <ListGroup className="list-group-flush">
                             <ListGroupItem>
-                                <Card.Link href={this.state.org.pageURL}>Official Website</Card.Link>
-                            </ListGroupItem>
-                            <ListGroupItem>
                                 Tags
+                                <br />
                                 {this.state.org.tags.map(tag => (
                                     <Button size="sm">
                                         {tag}
@@ -802,7 +702,10 @@ class AdminHome extends React.Component {
                             </ListGroupItem>
                             <ListGroupItem>
                                 Events
-                                {showEvents}
+                                <br/>
+                                <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
+                                    {showEvents}
+                                </div>
                             </ListGroupItem>
                         </ListGroup>
 
@@ -822,7 +725,7 @@ class AdminHome extends React.Component {
         return (
             <div>
                 {/*start the rest of the page*/}
-                <main className='mt-5 pt-5'>
+                <main >
                     <Container>
                         {/*<Row style={{flex: 5}}>*/}
                         <Row>
