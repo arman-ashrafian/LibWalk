@@ -204,7 +204,7 @@ class AdminHome extends React.Component {
     }
 
     async addTag(e) {
-        e.preventDefault();
+        //e.preventDefault();
         console.log(e)
         await this.setState({
             tag: e.target[0].value.toLowerCase()
