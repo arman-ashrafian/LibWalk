@@ -36,7 +36,6 @@ class Search extends React.Component {
   }
 
   render() {
-    const { orgs } = this.state;
 
     return (
       <div>
@@ -118,8 +117,8 @@ class Search extends React.Component {
 
   org_grid = orgs => {
     let grid_items = [];
-    var numcols = 4;
-    var numrows = 1;
+    let numcols = 4;
+    let numrows = 1;
     //Change the number of cols to properly accomodate small results
     if (orgs.length < 4) {
       numcols = orgs.length;
@@ -183,7 +182,7 @@ class Search extends React.Component {
 
   //Go through the orgs and add a the found orgs to the results
   searchByKeyword(keyword) {
-    var searchedOrgs = [];
+    let searchedOrgs = [];
 
     //If the keyword is empty, do not do anything
     if (keyword.length === 0) {
@@ -191,7 +190,7 @@ class Search extends React.Component {
     }
 
     this.state.orgs.forEach(function(e) {
-      var org = Object.values(e)[0];
+      let org = Object.values(e)[0];
       if (org.clubName.toLowerCase().includes(keyword.toLowerCase())) {
         searchedOrgs.push(e);
       }
@@ -206,10 +205,10 @@ class Search extends React.Component {
 
   //Searches the clubs based on tags.  tags param is a string of tags
   searchByTags(tagString) {
-    var currentOrgs = [...this.state.orgs]; //Current orgs during the algorithm
+    let currentOrgs = [...this.state.orgs]; //Current orgs during the algorithm
 
     //First cut up the string into a list of strings
-    var tags = tagString.split(",");
+    let tags = tagString.split(",");
     console.log(tags);
     //If the keyword is empty, do not do anything
     if (tags.length === 0 || tagString.length === 0) {
@@ -219,13 +218,13 @@ class Search extends React.Component {
     //Iterate through each searched tag
     tags.forEach(function(tag) {
       //Iterate through all orgs still in the list
-      var i = currentOrgs.length;
+      let i = currentOrgs.length;
       while (i--) {
         let org = Object.values(currentOrgs[i])[0];
         if (!org.tags) {
           currentOrgs.splice(i, 1);
         } else {
-          var match = false;
+          let match = false;
           org.tags.forEach(function(orgTag) {
             //Check non case sensitive
             if (orgTag.toLowerCase() === tag.toLowerCase()) {
@@ -256,7 +255,7 @@ let org_grid_component = org => {
   return (
     <div>
       {/*<Card style={{width: '18rem'}}>*/}
-      <a onClick={console.log("click")}>
+      <a onClick={console.log("click")} href={'#'}>
         <Card
           style={{ width: "20rem", height: "13rem" }}
           className="text-center"
