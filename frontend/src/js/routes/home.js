@@ -49,7 +49,7 @@ class Home extends React.Component {
       <div>
         <NavBar {...this.props} />
         <main className="mt-3 pt-3">
-          <div class="container-fluid centerPage">
+          <div className="container-fluid centerPage">
             {/*
                         <div className="row centerPage" >
                         </div>*/}
@@ -106,7 +106,7 @@ class Home extends React.Component {
     // console.log(JSON.stringify(org));
     org.img = "https://picsum.photos/150/50";
     return (
-      <div class="item">
+      <div className="item">
         <Card
           style={{ width: "16rem", height: "20rem" }}
           className="text-center"
@@ -117,7 +117,7 @@ class Home extends React.Component {
             style={{
               width: "100%",
               height: "15vw",
-              "object-fit": "cover"
+              objectFit: "cover"
             }}
           />
           <Card.Body>
@@ -146,20 +146,20 @@ class Home extends React.Component {
   org_multi_item_carousel(tag, tagList) {
     let itemsInCarousel = [];
     return (
-      <div class="container">
+      <div className="container">
         <h3>{tag}</h3>
         <div
-          class="MultiCarousel"
+          className="MultiCarousel"
           data-items="1,3,4,4"
           data-slide="1"
           id="MultiCarousel"
           data-interval="1000"
         >
-          <div class="MultiCarousel-inner">
+          <div className="MultiCarousel-inner">
             {tagList.map(clubItem => this.org_grid_component(clubItem))}
           </div>
-          <button class="leftLst btn-circle btn-md">&lt;</button>
-          <button class="rightLst btn-circle btn-md">&gt;</button>
+          <button className="leftLst btn-circle btn-md">&lt;</button>
+          <button className="rightLst btn-circle btn-md">&gt;</button>
         </div>
       </div>
     );
