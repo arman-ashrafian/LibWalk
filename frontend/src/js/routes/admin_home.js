@@ -183,13 +183,11 @@ class AdminHome extends React.Component {
         //add tag to club
         if ( this.state.org.tags.includes(this.state.tag) === false) {
             await this.state.org.tags.push(this.state.tag);
-		console.log("TWO");
         }
 
         //add club to tag
         if ( this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
             await this.state.tagInfo.clubs.push(this.state.org.clubReference);
-		console.log("THREE");
 	}
 
         await this.setState({
@@ -233,7 +231,7 @@ class AdminHome extends React.Component {
             }
         });
 
-        console.log(this.state.eventReference);
+        console.log(this.state.event.eventReference);
         await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
             .then((doc) => {
                 if (doc.exists) {
@@ -399,7 +397,7 @@ class AdminHome extends React.Component {
 
                 {/*Card that contains the buttons*/}
                 <Card>
-                    <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>Your Settings</Card.Header>
+                    <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>Settings</Card.Header>
 
                     <ListGroup variant="flush">
                         <ListGroup.Item>
@@ -625,7 +623,7 @@ class AdminHome extends React.Component {
         let showEvents = [];
         if (this.state.org.eventList !== undefined) {
             showEvents = this.state.org.eventList.map(event => {
-                return <EachEvent eventId={event} admin={true} {...this.props} />;
+                return <EachEvent eventId={event} admin={true} clubId={this.state.org_id}{...this.props} />;
             });
         }
         return (
