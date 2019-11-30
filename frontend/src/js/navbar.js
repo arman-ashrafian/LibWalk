@@ -4,15 +4,25 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/FormControl";
 
 class NavBar extends React.Component {
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     constructor(props) {
         super(props);
-        this.state = {
-            userId: '',
-            loggedIn: false
-        };
+
+        if (this._isMounted) {
+            this.state = {
+                userId: '',
+                loggedIn: false,
+                some: ''
+            };
+        }
+
+
         this.setState(props);
 
         this.switch_view_admin_home = this.switch_view_admin_home.bind(this);
@@ -29,6 +39,8 @@ class NavBar extends React.Component {
      * buttons (login, ...) by setting the application state.
      */
     componentDidMount() {
+        this._isMounted = true;
+
         db.auth().onAuthStateChanged(firebaseUser => {
             if (firebaseUser) {
                 this.setState({userId: firebaseUser.uid, loggedIn: true});
