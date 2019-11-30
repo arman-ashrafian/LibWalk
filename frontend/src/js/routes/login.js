@@ -115,7 +115,7 @@ class Login extends React.Component {
                             <form className="text-center p-5" onSubmit={this.view_switch_login}>
 
                                 {/* Sign in with google */}
-                                <a onClick={this.handleLoginWithGoogle}><Image
+                                <a onClick={this.handleLoginWithGoogle} href={'#'}><Image
                                     src={require('../../img/google/btnNormal.png')} fluid/></a>
 
                                 <div>
@@ -127,10 +127,10 @@ class Login extends React.Component {
                                 </div>
                                 {/* Register */}
                                 <p> Not a member yet?
-                                    <a onClick={this.register} style={{color: "#4169E1"}}> Register</a>
+                                    <a  href={'#'} onClick={this.register} style={{color: "#4169E1"}}> Register</a>
                                 </p>
                                 <p> Logging in as a student org?
-                                    <a onClick={this.view_switch_admin_login} style={{color: "#4169E1"}}> Admin Log
+                                    <a  href={'#'} onClick={this.view_switch_admin_login} style={{color: "#4169E1"}}> Admin Log
                                         In </a>
                                 </p>
                             </form>
@@ -169,7 +169,7 @@ class Login extends React.Component {
                                 <button className="btn btn-info btn-block my-4" type="submit">Create Account</button>
                                 {/* Register */}
                                 <p>Already registered?
-                                    <a onClick={this.login}> Login</a>
+                                    <a href={'#'} onClick={this.login}> Login</a>
                                 </p>
                             </Form>
                         </Container>

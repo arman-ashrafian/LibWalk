@@ -150,7 +150,6 @@ class Subs extends React.Component {
 
     render() {
         let showClubs = [];
-        let loadPageNumber;
         if (this.state.subscriptions.length !== 0) {
             // Update the current page number and the current clubs that will be shown in each page
             const {currentPage, clubPerPage, totalPages} = this.state;
