@@ -102,13 +102,13 @@ class AdminLogin extends React.Component {
                                     </div>
                                 </div>
                                 {/* Sign in button */}
-                                <button className="btn btn-info btn-block my-4" type="submit">Sign in</button>
+                                <button className="btn btn-info btn-block my-4" type="submit"  href={'#'}>Sign in</button>
                                 {/* Register */}
                                 <p>Not a member?
-                                    <a onClick={this.registerTime} style={{color: "#4169E1"}}> Register</a>
+                                    <a onClick={this.registerTime} style={{color: "#4169E1"}}  href={'#'}> Register</a>
                                 </p>
                                 <p>Logging in as a student?
-                                    <a onClick={this.view_switch_user_login} style={{color: "#4169E1"}}> Student Log
+                                    <a onClick={this.view_switch_user_login} style={{color: "#4169E1"}}  href={'#'}> Student Log
                                         In</a>
                                 </p>
                             </Form>
@@ -145,7 +145,7 @@ class AdminLogin extends React.Component {
                                 <button className="btn btn-info btn-block my-4" type="submit">Create Account</button>
                                 {/* Register */}
                                 <p>Already registered?
-                                    <a onClick={this.loginTime}> Login</a>
+                                    <a onClick={this.loginTime}  href={'#'}> Login</a>
                                 </p>
                             </Form>
                         </Container>

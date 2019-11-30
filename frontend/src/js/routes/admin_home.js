@@ -1,5 +1,5 @@
 import React from 'react'
-import {changeClub, changeEvent, changeTag, createAnnouncements, getClub, getEvent, getTag} from "../cloud";
+import {changeClub, changeEvent, changeTag, createAnnouncements, getClub, getEvent} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -11,8 +11,6 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
 
 
 /**
@@ -181,7 +179,7 @@ class AdminHome extends React.Component {
         if (index > -1) {
             newTags.splice(index, 1);
         }
-        
+
         await this.setState({
             org: {
                 ...this.state.org,
@@ -224,6 +222,7 @@ class AdminHome extends React.Component {
 
         console.log(this.state.org.tags)
     }
+
     /**
      * Handles what happens when you change a club tag
      *
@@ -458,17 +457,17 @@ class AdminHome extends React.Component {
 
                     <ListGroup variant="flush">
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleEditInfo}>Edit Club</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleEditInfo} href={'#'}>Edit Club</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleEditTag}>Edit Tags</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleEditTag} href={'#'}>Edit Tags</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleEditEvent}>Edit Event</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleEditEvent} href={'#'}>Edit Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleCreateEvent}>Create Event</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateEvent} href={'#'}>Create Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleCreateAnn}>Create Announcement</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateAnn} href={'#'}>Create Announcement</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleLogOut}>Log Out</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleLogOut}  href={'#'}>Log Out</Card.Link></ListGroup.Item>
                     </ListGroup>
                 </Card>
             </div>
@@ -568,7 +567,7 @@ class AdminHome extends React.Component {
                         </Button>
                     ))}
 
-                {/* <InputGroup className="mb-3" >
+                    {/* <InputGroup className="mb-3" >
                     <Form onSubmit={(e) => this.addTag(e)}>
                     <FormControl
                     placeholder="Add Tag"

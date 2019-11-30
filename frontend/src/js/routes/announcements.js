@@ -4,7 +4,7 @@ import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
 import TimeAgo from "@jshimko/react-time-ago";
-import {accessAnnouncements, getAnnouncements, getUser, getClub} from "../cloud";
+import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import CardDeck from "react-bootstrap/CardDeck";
@@ -53,13 +53,13 @@ class Announcements extends React.Component {
                             annDetail: '',
                             time: '',
                             annReference: ''
-                    })
+                        })
                     } else {
-                         this.setState({
-                             annDetail: annInfo['annDetail'],
-                             time: annInfo['time'],
-                             annReference: annInfo['annReference']
-                         })
+                        this.setState({
+                            annDetail: annInfo['annDetail'],
+                            time: annInfo['time'],
+                            annReference: annInfo['annReference']
+                        })
                     }
                     console.log(this.state.annDetail)
                 });
@@ -69,7 +69,6 @@ class Announcements extends React.Component {
             }
         });
     }
-
 
     render() {
         if (this.state.orgs === undefined) {
@@ -98,23 +97,22 @@ class Announcements extends React.Component {
         );
     }
 
-    club_grid_loop = orgs => {
+    club_grid_loop = (clubs) => {
         let grid_items = [];
         let numcols = 4;
-        let numrows = orgs.length / numcols;
+        let numrows = clubs.length / numcols;
         numrows = Math.ceil(numrows);
 
-        orgs.forEach(function(e) {
+        clubs.forEach(function (e) {
             grid_items.push(club_grid(e));
-            console.log(e);
+            console.log('club pushed in announcements' + e);
 
             getAnnouncements(e).then(anns => {
                 if ((anns === undefined) || (anns.length === 0)) {
                     this.setState({announcements: ''});
-                }
-                else {
+                } else {
                     this.setState({announcements: anns});
-                    console.log(this.state.announcements)
+                    console.log('got announcements' + this.state.announcements)
                 }
             });
         });
