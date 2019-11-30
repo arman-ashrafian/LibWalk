@@ -104,16 +104,14 @@ class Home extends React.Component {
 
     org_grid_component(org) {
         org = Object.values(org)[0];
-        // console.log(JSON.stringify(org));
         org.img = "https://picsum.photos/150/50";
         return (
-            <div className="item"                     key={org.clubName}
+            <div className="item" key={org.clubName}
             >
                 <Card
                     style={{width: "16rem", height: "20rem"}}
                     className="text-center"
                 >
-                    {/*<Card.Img variant="top" src={org.img}/>*/}
                     <Card.Img
                         src={org.img}
                         style={{
@@ -132,11 +130,7 @@ class Home extends React.Component {
                                 {org.clubName}
                             </Card.Link>
                         </Card.Title>
-                        {/* <Card.Text>
-                          <small className="scroll-box">
-                            {org.description.slice(0, 450)}
-                          </small>
-                        </Card.Text> */}
+
                         <Button href={org.pageURL}>Org Home</Button>
                     </Card.Body>
                 </Card>
