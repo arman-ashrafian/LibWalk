@@ -110,37 +110,6 @@ class AdminHome extends React.Component {
                 })
             }
         });
-
-        // This code will fetch events for the admin based on the event id
-        getEvent('event_id_00').then(eventInfo => {
-            if (typeof eventInfo !== "undefined") {
-                this.setState({
-                    event: {
-                        eventReference: eventInfo['eventReference'],
-                        description: eventInfo['description'],
-                        eventName: eventInfo['eventName'],
-                        location: eventInfo['location'],
-                        pictureURL: eventInfo['pictureURL'],
-                        rsvpForm: eventInfo['rsvpForm'],
-                        time: eventInfo['time'],
-                    }
-                })
-
-            } else {
-                this.setState({
-                    event: {
-                        eventReference: "Failure getEvent()",
-                        description: "Failure getEvent()",
-                        eventName: "Failure getEvent()",
-                        location: "Failure getEvent()",
-                        pictureURL: "Failure getEvent()",
-                        rsvpForm: "Failure getEvent()",
-                        time: "Failure getEvent()",
-                    }
-                })
-
-            }
-        })
     }
 
     // Handler Methods
@@ -155,10 +124,11 @@ class AdminHome extends React.Component {
                 contactEmail: e.target[1].value,
                 pictureURL: e.target[2].value,
                 description: e.target[3].value,
-                clubReference: this.state.org.ref,
+                clubReference: this.state.org.clubReference,
                 tags: this.state.org.tags,
                 announcements: this.state.org.announcements,
-                pageURL: this.state.org.pageURL
+                pageURL: this.state.org.pageURL,
+                eventList: this.state.org.eventList
             }
         });
         await changeClub(this.state.org.clubReference, this.state.org);
@@ -213,13 +183,11 @@ class AdminHome extends React.Component {
         //add tag to club
         if ( this.state.org.tags.includes(this.state.tag) === false) {
             await this.state.org.tags.push(this.state.tag);
-		console.log("TWO");
         }
 
         //add club to tag
         if ( this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
             await this.state.tagInfo.clubs.push(this.state.org.clubReference);
-		console.log("THREE");
 	}
 
         await this.setState({
@@ -234,7 +202,6 @@ class AdminHome extends React.Component {
      *
      */
     async editHandleTag() {
-	console.log("DONE");
         await changeTag(this.state.tag, this.state.tagInfo)
         await changeClub(this.state.org.clubReference, this.state.org);
         this.closeTag();
@@ -264,7 +231,7 @@ class AdminHome extends React.Component {
             }
         });
 
-        console.log(this.state.eventReference);
+        console.log(this.state.event.eventReference);
         await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
             .then((doc) => {
                 if (doc.exists) {
@@ -430,7 +397,7 @@ class AdminHome extends React.Component {
 
                 {/*Card that contains the buttons*/}
                 <Card>
-                    <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>Your Settings</Card.Header>
+                    <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>Settings</Card.Header>
 
                     <ListGroup variant="flush">
                         <ListGroup.Item>
@@ -479,19 +446,6 @@ class AdminHome extends React.Component {
                             {tag}
                         </Button>
                     ))}
-
-                    {/* <InputGroup className="mb-3" >
-                    <Form onSubmit={(e) => this.addTag(e)}>
-                    <FormControl
-                    placeholder="Add Tag"
-                    aria-label="Add Tag"
-                    aria-describedby="basic-addon2"
-                    />
-                    <InputGroup.Append>
-                        <Button variant="light" type="submit" size="sm">Add</Button>
-                    </InputGroup.Append>
-                    </Form>
-                </InputGroup> */}
 
                     <Form onSubmit={(e) => this.addTag(e) & this.editHandleTag}>
                         <Form.Group controlId="formName">
@@ -669,7 +623,7 @@ class AdminHome extends React.Component {
         let showEvents = [];
         if (this.state.org.eventList !== undefined) {
             showEvents = this.state.org.eventList.map(event => {
-                return <EachEvent eventId={event} admin={true} {...this.props} />;
+                return <EachEvent eventId={event} admin={true} clubId={this.state.org_id}{...this.props} />;
             });
         }
         return (
@@ -685,29 +639,22 @@ class AdminHome extends React.Component {
                     <Card.Body>
 
                         <Card.Title style={{fontSize:"2rem"}}>{this.state.org.clubName}</Card.Title>
+
                         <Card.Subtitle>{this.state.org.contactEmail} </Card.Subtitle>
+
+                        {this.state.org.tags.map(tag => (
+                            <Button size="sm">
+                                {tag}
+                            </Button>
+                        ))}
+
                         <Card.Text>
                             {this.state.org.description}
                         </Card.Text>
 
-                        <ListGroup className="list-group-flush">
-                            <ListGroupItem>
-                                Tags
-                                <br />
-                                {this.state.org.tags.map(tag => (
-                                    <Button size="sm">
-                                        {tag}
-                                    </Button>
-                                ))}
-                            </ListGroupItem>
-                            <ListGroupItem>
-                                Events
-                                <br/>
-                                <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
+                        <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
                                     {showEvents}
-                                </div>
-                            </ListGroupItem>
-                        </ListGroup>
+                        </div>
 
                     </Card.Body>
 
