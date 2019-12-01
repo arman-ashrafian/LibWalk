@@ -19,9 +19,7 @@ class Announcements extends React.Component {
             userId: "",
             orgs: [],
             announcements: [],
-            annDetail: "",
-            time: "",
-            annReference: ""
+            eachAnnouncement: [],
         };
 
         this.club_grid_loop = this.club_grid_loop.bind(this);
@@ -41,7 +39,6 @@ class Announcements extends React.Component {
                     } else if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
                         alert("You haven't yet subscribed to any organizations!");
                     } else {
-                        //ADD THIS BACK LATER
                         this.setState({subs: json.subscriptions, user: json});
                         this._gotSubs = true;
                     }
@@ -65,19 +62,35 @@ class Announcements extends React.Component {
             this.state.subs.forEach(org => {
                 getAnnouncements(org).then(announcements => {
                     // go through each announcement
-                    if (announcements !== undefined) {
-                        announcements.forEach(announcement => {
-                            let accessed_announcements = accessAnnouncements(announcement);
-                            console.log('announcement content ' + JSON.stringify(announcement));
-                            console.log('accessed_announcement content ' + JSON.stringify(accessed_announcements));
+                    this.setState({
+                        announcements: announcements
+                    });
+                    if (this.state.announcements !== undefined) {
+                        this.state.announcements.forEach(announcement => {
+                            // let accessed_announcements = accessAnnouncements(announcement);
+
+                            accessAnnouncements(announcement).then(each => {
+                                console.log('accessed_Ann: ' + JSON.stringify(each))
+
+                                // Create a new array based on current state:
+                                let eachAnnouncement = [...this.state.eachAnnouncement];
+                                // Add item to it
+                                eachAnnouncement.push({value: each});
+                                // Set state
+                                this.setState({ eachAnnouncement });
+
+                                // this.setState({eachAnnouncement: [...this.state.eachAnnouncement, each]})
+                                // this.setState(prevState => ({eachAnnouncement: [...prevState.eachAnnouncement,each]}))
+                            });
                         })
+                        console.log('announcement_List: ' + JSON.stringify(this.state.announcements));
+                        console.log('announcement_Content: ' + JSON.stringify(this.state.eachAnnouncement));
                     } else {
                         console.log('No announcements for org ' + org + ' announcements: ' + announcements);
                     }
                 })
             })
         }
-
         return announcements;
     };
 
