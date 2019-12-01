@@ -83,7 +83,7 @@ class Search extends React.Component {
                           <Dropdown.Item eventKey="Search By Name">
                             Name
                           </Dropdown.Item>
-                          <Dropdown.Item eventKey="Search By Tag">
+                          <Dropdown.Item eventKey="Search By Tag (Ex: Music, Media)">
                             Tag
                           </Dropdown.Item>
                         </Dropdown.Menu>
@@ -160,7 +160,7 @@ class Search extends React.Component {
   };
 
   handleSearchSubmit(e) {
-    if (this.state.search_mode === "Search By Tag") {
+    if (this.state.search_mode === "Search By Tag (Ex: Music, Media)") {
       this.searchByTags(e);
     } else {
       this.searchByKeyword(e);
