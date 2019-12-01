@@ -70,20 +70,26 @@ class Announcements extends React.Component {
                             // let accessed_announcements = accessAnnouncements(announcement);
 
                             accessAnnouncements(announcement).then(each => {
+                                // This shows the content of each announcement
+                                // {annDetail, time, annReference} but wasn't able to push
+                                // this object to eachAnnouncement array
                                 console.log('accessed_Ann: ' + JSON.stringify(each))
 
-                                // Create a new array based on current state:
-                                let eachAnnouncement = [...this.state.eachAnnouncement];
-                                // Add item to it
-                                eachAnnouncement.push({value: each});
-                                // Set state
-                                this.setState({ eachAnnouncement });
+                                // // Create a new array based on current state:
+                                // let eachAnnouncement = [...this.state.eachAnnouncement];
+                                // // Add item to it
+                                // eachAnnouncement.push({value: each});
+                                // // Set state
+                                // this.setState({ eachAnnouncement });
 
                                 // this.setState({eachAnnouncement: [...this.state.eachAnnouncement, each]})
-                                // this.setState(prevState => ({eachAnnouncement: [...prevState.eachAnnouncement,each]}))
-                            });
+                                this.setState(prevState => ({eachAnnouncement: [...prevState.eachAnnouncement,each]}))
+                            }).then(this.forceUpdate()); //This doesn't cause re-render thus eachAnnouncement array is still blank
                         })
+
+                        //This shows the Announcement List
                         console.log('announcement_List: ' + JSON.stringify(this.state.announcements));
+                        //This shows the Details of each Announcement List item but currently blank :(
                         console.log('announcement_Content: ' + JSON.stringify(this.state.eachAnnouncement));
                     } else {
                         console.log('No announcements for org ' + org + ' announcements: ' + announcements);
