@@ -24,7 +24,6 @@ class AdminHome extends React.Component {
         this.state = {
             editInfo: false,
             editTag: false,
-            editEvent: false,
             createEvent: false,
             createAnn: false,
             org_id: "",
@@ -68,10 +67,8 @@ class AdminHome extends React.Component {
         this.handleCreateAnn = this.handleCreateAnn.bind(this);
         this.handleEditInfo = this.handleEditInfo.bind(this);
         this.handleEditTag = this.handleEditTag.bind(this);
-        this.handleEditEvent = this.handleEditEvent.bind(this);
         this.editHandleClub = this.editHandleClub.bind(this);
         this.editHandleTag = this.editHandleTag.bind(this);
-        this.editHandleEditEvent = this.editHandleEditEvent.bind(this);
         this.editHandleCreateEvent = this.editHandleCreateEvent.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
         this.editHandleCreateAnn = this.editHandleCreateAnn.bind(this);
@@ -113,37 +110,6 @@ class AdminHome extends React.Component {
                 })
             }
         });
-
-        // This code will fetch events for the admin based on the event id
-        getEvent('event_id_00').then(eventInfo => {
-            if (typeof eventInfo !== "undefined") {
-                this.setState({
-                    event: {
-                        eventReference: eventInfo['eventReference'],
-                        description: eventInfo['description'],
-                        eventName: eventInfo['eventName'],
-                        location: eventInfo['location'],
-                        pictureURL: eventInfo['pictureURL'],
-                        rsvpForm: eventInfo['rsvpForm'],
-                        time: eventInfo['time'],
-                    }
-                })
-
-            } else {
-                this.setState({
-                    event: {
-                        eventReference: "Failure getEvent()",
-                        description: "Failure getEvent()",
-                        eventName: "Failure getEvent()",
-                        location: "Failure getEvent()",
-                        pictureURL: "Failure getEvent()",
-                        rsvpForm: "Failure getEvent()",
-                        time: "Failure getEvent()",
-                    }
-                })
-
-            }
-        })
     }
 
     // Handler Methods
@@ -158,10 +124,11 @@ class AdminHome extends React.Component {
                 contactEmail: e.target[1].value,
                 pictureURL: e.target[2].value,
                 description: e.target[3].value,
-                clubReference: this.state.org.ref,
+                clubReference: this.state.org.clubReference,
                 tags: this.state.org.tags,
                 announcements: this.state.org.announcements,
-                pageURL: this.state.org.pageURL
+                pageURL: this.state.org.pageURL,
+                eventList: this.state.org.eventList
             }
         });
         await changeClub(this.state.org.clubReference, this.state.org);
@@ -205,20 +172,27 @@ class AdminHome extends React.Component {
 
     async addTag(e) {
         e.preventDefault();
-        console.log(e)
+        //console.log(e)
         await this.setState({
             tag: e.target[0].value.toLowerCase()
         })
 
+        console.log(this.state.org.tags)
+	
+
         //add tag to club
-        if (this.state.org.tags.includes(this.state.tag) === false) {
+        if ( this.state.org.tags.includes(this.state.tag) === false) {
             await this.state.org.tags.push(this.state.tag);
         }
 
         //add club to tag
-        if (this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
-            await this.state.tagInfo.clubs.push(this.state.org.clubReference)
-        }
+        if ( this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
+            await this.state.tagInfo.clubs.push(this.state.org.clubReference);
+	}
+
+        await this.setState({
+	    tags: [...this.state.tagInfo.clubs]
+        })
 
         console.log(this.state.org.tags)
     }
@@ -232,28 +206,6 @@ class AdminHome extends React.Component {
         await changeClub(this.state.org.clubReference, this.state.org);
         this.closeTag();
     };
-
-    /**
-     * Handles what happens when you change a clubs event details
-     *
-     */
-    async editHandleEditEvent(e) {
-        e.preventDefault();
-        await this.setState({
-            event: {
-                eventName: e.target[0].value,
-                location: e.target[1].value,
-                time: e.target[2].value,
-                pictureURL: e.target[3].value,
-                description: e.target[4].value,
-                rsvpForm: e.target[5].value,
-                eventReference: this.state.eventReference
-            }
-        })
-        await changeEvent(this.state.event.eventReference, this.state.event);
-        alert('Updated');
-        this.closeEvent();
-    }
 
     /**
      * Handles what happens when you create an event for a club.
@@ -279,7 +231,7 @@ class AdminHome extends React.Component {
             }
         });
 
-        console.log(this.state.eventReference);
+        console.log(this.state.event.eventReference);
         await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
             .then((doc) => {
                 if (doc.exists) {
@@ -372,13 +324,6 @@ class AdminHome extends React.Component {
         this.setState({editTag: true})
     };
 
-    /**
-     * Handles the state change when you edit and org's event.
-     */
-    handleEditEvent = () => {
-        this.setState({editEvent: true})
-    };
-
     handleCreateEvent = () => {
         this.setState({createEvent: true})
     };
@@ -447,21 +392,18 @@ class AdminHome extends React.Component {
                 {/*Code for button modals*/}
                 {this.modal_edit_clubs()}
                 {this.modal_edit_tag()}
-                {this.modal_edit_event()}
                 {this.modal_create_event()}
                 {this.modal_create_ann()}
 
                 {/*Card that contains the buttons*/}
                 <Card>
-                    <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>Your Settings</Card.Header>
+                    <Card.Header style={{backgroundColor: '#006A96', color: 'white'}}>Settings</Card.Header>
 
                     <ListGroup variant="flush">
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditInfo} href={'#'}>Edit Club</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditTag} href={'#'}>Edit Tags</Card.Link></ListGroup.Item>
-                        <ListGroup.Item>
-                            <Card.Link onClick={this.handleEditEvent} href={'#'}>Edit Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleCreateEvent} href={'#'}>Create Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
@@ -479,69 +421,7 @@ class AdminHome extends React.Component {
      * Generates the jsx code to create and handle logic for a modal component to edit a clubs events.
      * @returns {*}
      */
-    modal_edit_event = () => {
-        return (
-            <div>
-                <Modal
-                    size="lg"
-                    show={this.state.editEvent}
-                    onHide={this.closeEvent}
-                    aria-labelledby="example-modal-sizes-title-lg"
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title id="example-modal-sizes-title-lg">
-                            Event Info
-                        </Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        <Form onSubmit={this.editHandleEditEvent}>
-                            <Form.Group controlId="formName">
-                                <Form.Label>Event Name</Form.Label>
-                                <Form.Control type="name" placeholder="Enter Event Name"
-                                              defaultValue={this.state.event.eventName}/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formPlace">
-                                <Form.Label>Location</Form.Label>
-                                <Form.Control type="place" placeholder="Enter Location"
-                                              defaultValue={this.state.event.locatioin}/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formTime">
-                                <Form.Label>Time</Form.Label>
-                                <Form.Control type="timeS" placeholder="Enter Time"
-                                              defaultValue={this.state.event.time}/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formPic">
-                                <Form.Label>Picture</Form.Label>
-                                <Form.Control type="pic" placeholder="Enter Picture URL"
-                                              defaultValue={this.state.event.pictureURL}/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formDetails">
-                                <Form.Label>Details</Form.Label>
-                                <Form.Control type="details" placeholder="Enter Details"
-                                              defaultValue={this.state.event.description}/>
-                            </Form.Group>
-
-                            <Form.Group controlId="formRSVP">
-                                <Form.Label>RSVP</Form.Label>
-                                <Form.Control type="rsvp" placeholder="Enter RSVP URL"
-                                              defaultValue={this.state.event.rsvpForm}/>
-                            </Form.Group>
-                            {/*todo add form verification*/}
-                            <Button variant="primary" type="submit">
-                                Submit
-                            </Button>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
-
-            </div>
-        )
-    };
+    
 
     /**
      * Generates the jsx code to create and handle logic for a modal component to edit a club's profile data.
@@ -567,20 +447,7 @@ class AdminHome extends React.Component {
                         </Button>
                     ))}
 
-                    {/* <InputGroup className="mb-3" >
-                    <Form onSubmit={(e) => this.addTag(e)}>
-                    <FormControl
-                    placeholder="Add Tag"
-                    aria-label="Add Tag"
-                    aria-describedby="basic-addon2"
-                    />
-                    <InputGroup.Append>
-                        <Button variant="light" type="submit" size="sm">Add</Button>
-                    </InputGroup.Append>
-                    </Form>
-                </InputGroup> */}
-
-                    <Form onSubmit={(e) => this.addTag(e)}>
+                    <Form onSubmit={(e) => this.addTag(e) & this.editHandleTag}>
                         <Form.Group controlId="formName">
                             <Form.Control type="name" placeholder="Add Tag"/>
                         </Form.Group>
@@ -756,13 +623,12 @@ class AdminHome extends React.Component {
         let showEvents = [];
         if (this.state.org.eventList !== undefined) {
             showEvents = this.state.org.eventList.map(event => {
-                return <EachEvent eventId={event} admin={true} {...this.props} />;
+                return <EachEvent eventId={event} admin={true} clubId={this.state.org_id}{...this.props} />;
             });
         }
         return (
             <div>
                 <Card style={{width: 'flex'}}>
-
                     <Card.Img src={this.state.org.pictureURL} style={{
                         width: '100%',
                         height: '15vw',
@@ -772,29 +638,23 @@ class AdminHome extends React.Component {
 
                     <Card.Body>
 
-                        <Card.Title>{this.state.org.clubName}</Card.Title>
+                        <Card.Title style={{fontSize:"2rem"}}>{this.state.org.clubName}</Card.Title>
+
                         <Card.Subtitle>{this.state.org.contactEmail} </Card.Subtitle>
+
+                        {this.state.org.tags.map(tag => (
+                            <Button size="sm">
+                                {tag}
+                            </Button>
+                        ))}
+
                         <Card.Text>
                             {this.state.org.description}
                         </Card.Text>
 
-                        <ListGroup className="list-group-flush">
-                            <ListGroupItem>
-                                <Card.Link href={this.state.org.pageURL}>Official Website</Card.Link>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                                Tags
-                                {this.state.org.tags.map(tag => (
-                                    <Button size="sm">
-                                        {tag}
-                                    </Button>
-                                ))}
-                            </ListGroupItem>
-                            <ListGroupItem>
-                                Events
-                                {showEvents}
-                            </ListGroupItem>
-                        </ListGroup>
+                        <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
+                                    {showEvents}
+                        </div>
 
                     </Card.Body>
 
@@ -812,7 +672,7 @@ class AdminHome extends React.Component {
         return (
             <div>
                 {/*start the rest of the page*/}
-                <main className='mt-5 pt-5'>
+                <main >
                     <Container>
                         {/*<Row style={{flex: 5}}>*/}
                         <Row>

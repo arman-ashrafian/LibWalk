@@ -5,7 +5,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import {club_list} from "../cloud";
+import Pagination from "react-bootstrap/Pagination";
+import { club_list } from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -36,6 +37,7 @@ class Search extends React.Component {
   }
 
   render() {
+    const { orgs } = this.state;
 
     return (
       <div>
@@ -81,7 +83,7 @@ class Search extends React.Component {
                           <Dropdown.Item eventKey="Search By Name (Ex: Alpha)">
                             Name
                           </Dropdown.Item>
-                          <Dropdown.Item eventKey="Search By Tag (Ex: Educational, Service)">
+                          <Dropdown.Item eventKey="Search By Tag (Ex: media, social)">
                             Tag
                           </Dropdown.Item>
                         </Dropdown.Menu>
@@ -117,8 +119,8 @@ class Search extends React.Component {
 
   org_grid = orgs => {
     let grid_items = [];
-    let numcols = 4;
-    let numrows = 1;
+    var numcols = 4;
+    var numrows = 1;
     //Change the number of cols to properly accomodate small results
     if (orgs.length < 4) {
       numcols = orgs.length;
@@ -158,7 +160,7 @@ class Search extends React.Component {
   };
 
   handleSearchSubmit(e) {
-    if (this.state.search_mode === "Search By Tag") {
+    if (this.state.search_mode === "Search By Tag (Ex: media, social)") {
       this.searchByTags(e);
     } else {
       this.searchByKeyword(e);
@@ -182,7 +184,7 @@ class Search extends React.Component {
 
   //Go through the orgs and add a the found orgs to the results
   searchByKeyword(keyword) {
-    let searchedOrgs = [];
+    var searchedOrgs = [];
 
     //If the keyword is empty, do not do anything
     if (keyword.length === 0) {
@@ -190,7 +192,7 @@ class Search extends React.Component {
     }
 
     this.state.orgs.forEach(function(e) {
-      let org = Object.values(e)[0];
+      var org = Object.values(e)[0];
       if (org.clubName.toLowerCase().includes(keyword.toLowerCase())) {
         searchedOrgs.push(e);
       }
@@ -205,10 +207,10 @@ class Search extends React.Component {
 
   //Searches the clubs based on tags.  tags param is a string of tags
   searchByTags(tagString) {
-    let currentOrgs = [...this.state.orgs]; //Current orgs during the algorithm
+    var currentOrgs = [...this.state.orgs]; //Current orgs during the algorithm
 
     //First cut up the string into a list of strings
-    let tags = tagString.split(",");
+    var tags = tagString.split(",");
     console.log(tags);
     //If the keyword is empty, do not do anything
     if (tags.length === 0 || tagString.length === 0) {
@@ -218,13 +220,13 @@ class Search extends React.Component {
     //Iterate through each searched tag
     tags.forEach(function(tag) {
       //Iterate through all orgs still in the list
-      let i = currentOrgs.length;
+      var i = currentOrgs.length;
       while (i--) {
         let org = Object.values(currentOrgs[i])[0];
         if (!org.tags) {
           currentOrgs.splice(i, 1);
         } else {
-          let match = false;
+          var match = false;
           org.tags.forEach(function(orgTag) {
             //Check non case sensitive
             if (orgTag.toLowerCase() === tag.toLowerCase()) {
@@ -255,7 +257,7 @@ let org_grid_component = org => {
   return (
     <div>
       {/*<Card style={{width: '18rem'}}>*/}
-      <a onClick={console.log("click")} href={'#'}>
+      <a onClick={console.log("click")}>
         <Card
           style={{ width: "20rem", height: "13rem" }}
           className="text-center"

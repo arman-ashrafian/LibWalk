@@ -98,7 +98,7 @@ class Orgs extends React.Component {
 
     /* Styling the club discription */
     const clubDescription = {
-      fontFamily: "Roboto, sans-serif",
+      fontFamily: "Roboto",
       textAlign: "left",
       fontWeight: "bold",
       fontSize: "16px",
