@@ -4,7 +4,7 @@ import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
 import TimeAgo from "@jshimko/react-time-ago";
-import {getUser} from "../cloud";
+import {getAnnouncements, getUser} from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import CardDeck from "react-bootstrap/CardDeck";
@@ -14,7 +14,7 @@ class Announcements extends React.Component {
 
     constructor(props) {
         super(props);
-
+        this._gotSubs = false;
         this.state = {
             userId: "",
             orgs: [],
@@ -29,6 +29,7 @@ class Announcements extends React.Component {
 
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
+            // first get the user
             if (firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
                 this.setState({userId: firebaseUser.uid});
                 getUser(firebaseUser.uid).then(json => {
@@ -41,43 +42,36 @@ class Announcements extends React.Component {
                         alert("You haven't yet subscribed to any organizations!");
                     } else {
                         //ADD THIS BACK LATER
-                        this.setState({orgs: json.subscriptions});
-                        console.log('couldnt handle response' + json);
-
+                        this.setState({subs: json.subscriptions, user: json});
+                        this._gotSubs = true;
                     }
-                });
-                /*
-                                getAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42").then(anns => {
-                                    if ((anns === undefined) || (anns.length === 0)) {
-                                        console.warn('Firebase was unable to get announcements from database.');
-
-                                        this.setState({announcements: ''});
-                                    }
-                                    this.setState({announcements: anns});
-                                    console.log('Announcements for club:' + this.state.announcements);
-                                });
-
-                                accessAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42Acapella Recruit").then(annInfo => {
-                                    if ((annInfo === undefined)) {
-                                        this.setState({
-                                            annDetail: '',
-                                            time: '',
-                                            annReference: ''
-                                        })
-                                    } else {
-                                        this.setState({
-                                            annDetail: annInfo['annDetail'],
-                                            time: annInfo['time'],
-                                            annReference: annInfo['annReference']
-                                        })
-                                    }
-                                    console.log('annDetail: ' + this.state.annDetail)
-                                });*/
+                }).then(this.getAnnouncements);
             } else {
-                // console.log("Redirecting to login page");
+                console.log("Redirecting to login page, admin should not have announcements.");
             }
+
         });
     }
+
+    /**
+     * Once a user is logged in and we have their subs, get all their announcements.
+     */
+    getAnnouncements = () => {
+        let announcements = [];
+        console.log('this._gotSubs' +this._gotSubs)
+        if (this._gotSubs) {
+            // get the announcements for each sub
+            console.log('subs: ' + this.state.subs);
+            let announcements = {};
+            this.state.subs.forEach(org => {
+                getAnnouncements(org).then(announcements => {
+                    console.log(JSON.stringify('announcements for' + org + ' are ' + announcements));
+                })
+            })
+        }
+
+        return announcements;
+    };
 
     render() {
         if (this.state.orgs === undefined) {
@@ -85,6 +79,8 @@ class Announcements extends React.Component {
                 orgs: []
             });
         }
+
+        // let announcements = this.getAnnouncements();
 
         return (
             <div>
@@ -114,21 +110,7 @@ class Announcements extends React.Component {
         let currAnns = this;
         console.log(currAnns.orgs);
 
-        /*
-                clubs.forEach(function (e) {
-                    grid_items.push(club_grid(e));
-                    console.log('club pushed in announcements' + e);
 
-                    getAnnouncements(e).then(anns => {
-                        if ((anns === undefined) || (anns.length === 0)) {
-                            currAnns.setState({announcements: ''});
-                        } else {
-                            currAnns.setState({announcements: anns});
-                            console.log('ANNOUNCEMENTHERE' + currAnns.state.announcements + 'ENDHERE')
-                        }
-                    });
-                });
-        */
         let grid = [];
 
         for (let i = 0; i <= numrows; i++) {
@@ -207,32 +189,4 @@ let club_grid = org => {
 };
 
 
-//This function get the "announcements" field inside Clubs
-// getAnnouncements(this.state.orgs).then(anns => {
-//     if ((anns === undefined)) {
-//         this.setState({
-//             announcements: ''
-//         })
-//     } else {
-//         this.setState({
-//             announcements: anns['announcements']
-//         })
-//     }
-// });
-// //This function get the announcement details inside Announcements
-// accessAnnouncements(this.state.orgs.announcements).then(annInfo => {
-//     if ((annInfo === undefined)) {
-//         this.setState({
-//             annDetail: '',
-//             time: '',
-//             annReference: ''
-//         })
-//     } else {
-//         this.setState({
-//             annDetail: annInfo['annDetail'],
-//             time: annInfo['time'],
-//             annReference: annInfo['annReference']
-//         })
-//     }
-// });
 export default Announcements;

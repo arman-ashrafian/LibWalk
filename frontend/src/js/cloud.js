@@ -56,14 +56,12 @@ export function getClub(clubId) {
 }
 
 export async function getClubs() {
-    console.log('calling /getClubs');
     return getRequest(getClubsURL).then(json => {
         return json;
     });
 }
 
 export function getUser(userId) {
-    console.log('calling /getUser');
     let data = {
         uid: userId
     };
