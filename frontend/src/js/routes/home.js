@@ -19,6 +19,7 @@ class Home extends React.Component {
         };
 
         this.generateTagList = this.generateTagList.bind(this);
+	//this.org_grid_component = this.org_grid_component.bind(this);
 
         this.generateTagList();
 
@@ -105,7 +106,7 @@ class Home extends React.Component {
         });
     }
 
-    org_grid_component(org) {
+/*    org_grid_component(org) {
         org = Object.values(org)[0];
         org.img = "https://picsum.photos/150/50";
         return (
@@ -158,7 +159,7 @@ class Home extends React.Component {
             </div>
         );
     }
-
+*/
     componentWillUnmount() {
         this._isMounted = false;
     }
@@ -322,7 +323,7 @@ function org_multi_item_carousel(tag, tagList) {
     };
 
 // each club component card to be used in org_multi_item_carousel
-let org_grid_component = org => {
+function org_grid_component(org) {
     org = Object.values(org)[0];
     org.img = "https://picsum.photos/150/50";
     return (
@@ -344,7 +345,7 @@ let org_grid_component = org => {
                             {org.description.slice(0, 450)}
                           </small>
                         </Card.Text> */}
-                          <Button href={org.pageURL}>
+                          <Button href={org.pageURL}/*onClick={() => {this.redirectToClubDetails(org.clubReference)}}*/>
                               Org Home
                           </Button>
                       </Card.Body>
