@@ -5,7 +5,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import Pagination from "react-bootstrap/Pagination";
 import { club_list } from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
@@ -43,6 +42,7 @@ class Search extends React.Component {
       <div>
         <NavBar {...this.props} />
         <main className="mt-5 pt-5">
+          {/* <SearchBars nameSearch={this.searchByKeyword} tagSearch={this.searchByTags} orgs={this.state.orgs} searchSelect={this.handleSearchSelect}/> */}
           <Container className="mt-0">
             <Row className={"SearchBar"} style={{ marginBottom: "10px" }}>
               <Col sm={12} md={12} lg={12}>
@@ -80,10 +80,10 @@ class Search extends React.Component {
                           size="sm"
                         />
                         <Dropdown.Menu>
-                          <Dropdown.Item eventKey="Search By Name (Ex: Alpha)">
+                          <Dropdown.Item eventKey="Search By Name">
                             Name
                           </Dropdown.Item>
-                          <Dropdown.Item eventKey="Search By Tag (Ex: media, social)">
+                          <Dropdown.Item eventKey="Search By Tag">
                             Tag
                           </Dropdown.Item>
                         </Dropdown.Menu>
@@ -131,8 +131,8 @@ class Search extends React.Component {
       numrows = Math.ceil(numrows);
     }
 
-    orgs.forEach(function(e) {
-      grid_items.push(org_grid_component(e));
+    orgs.forEach((e) => {
+        grid_items.push(this.org_grid_component(e));
     });
 
     let grid = [];
@@ -160,7 +160,7 @@ class Search extends React.Component {
   };
 
   handleSearchSubmit(e) {
-    if (this.state.search_mode === "Search By Tag (Ex: media, social)") {
+    if (this.state.search_mode === "Search By Tag") {
       this.searchByTags(e);
     } else {
       this.searchByKeyword(e);
@@ -248,28 +248,40 @@ class Search extends React.Component {
       searched: true
     });
   }
+
+  redirectToClubDetails(club_id) {
+    this.props.history.push({
+      pathname: "/orgs",
+      state: {
+        club_id: club_id
+      }
+    });
+  }
+
+  org_grid_component = org => {
+    org = Object.values(org)[0];
+    org.img = "https://picsum.photos/150/50";
+  
+    return (
+      <div>
+        {/*<Card style={{width: '18rem'}}>*/}
+          <Card
+            style={{ width: "20rem", height: "13rem" }}
+            className="text-center"
+          >
+            <Card.Img variant="top" src={org.img} />
+            <Card.Body className="text-center">
+                <Card.Title>
+                    <a onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
+                        {org.clubName}
+                    </a>
+                </Card.Title>
+            </Card.Body>
+          </Card>
+      </div>
+    );
+  };
 }
 
-let org_grid_component = org => {
-  org = Object.values(org)[0];
-  org.img = "https://picsum.photos/150/50";
-
-  return (
-    <div>
-      {/*<Card style={{width: '18rem'}}>*/}
-      <a onClick={console.log("click")}>
-        <Card
-          style={{ width: "20rem", height: "13rem" }}
-          className="text-center"
-        >
-          <Card.Img variant="top" src={org.img} />
-          <Card.Body className="text-center">
-            <Card.Title>{org.clubName}</Card.Title>
-          </Card.Body>
-        </Card>
-      </a>
-    </div>
-  );
-};
 
 export default Search;
