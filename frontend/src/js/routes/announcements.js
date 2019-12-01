@@ -4,7 +4,7 @@ import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
 import TimeAgo from "@jshimko/react-time-ago";
-import {getAnnouncements, getUser} from "../cloud";
+import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import CardDeck from "react-bootstrap/CardDeck";
@@ -58,14 +58,22 @@ class Announcements extends React.Component {
      */
     getAnnouncements = () => {
         let announcements = [];
-        console.log('this._gotSubs' +this._gotSubs)
+        console.log('this._gotSubs' + this._gotSubs)
         if (this._gotSubs) {
             // get the announcements for each sub
             console.log('subs: ' + this.state.subs);
             let announcements = {};
             this.state.subs.forEach(org => {
                 getAnnouncements(org).then(announcements => {
-                    console.log(JSON.stringify('announcements for' + org + ' are ' + announcements));
+                    // go through each announcement
+                    if (announcements !== undefined) {
+                        announcements.forEach(announcement => {
+                            let accessed_announcements = accessAnnouncements(announcement);
+                            console.log('announcement content ' + JSON.stringify(announcement));
+                        })
+                    } else {
+                        console.log('No announcements for org ' + org + ' announcements: ' + announcements);
+                    }
                 })
             })
         }
