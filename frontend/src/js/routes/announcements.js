@@ -4,7 +4,7 @@ import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
 import TimeAgo from "@jshimko/react-time-ago";
-import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
+import {getUser} from "../cloud";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import CardDeck from "react-bootstrap/CardDeck";
@@ -38,39 +38,41 @@ class Announcements extends React.Component {
                         alert("You haven't yet subscribed to any organizations!")
                         this.setState({orgs: []})
                     } else if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
-                        alert("You haven't yet subscribed to any organizations!")
+                        alert("You haven't yet subscribed to any organizations!");
                     } else {
                         //ADD THIS BACK LATER
                         this.setState({orgs: json.subscriptions});
+                        console.log('couldnt handle response' + json);
+
                     }
                 });
-/*
-                getAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42").then(anns => {
-                    if ((anns === undefined) || (anns.length === 0)) {
-                        console.warn('Firebase was unable to get announcements from database.');
+                /*
+                                getAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42").then(anns => {
+                                    if ((anns === undefined) || (anns.length === 0)) {
+                                        console.warn('Firebase was unable to get announcements from database.');
 
-                        this.setState({announcements: ''});
-                    }
-                    this.setState({announcements: anns});
-                    console.log('Announcements for club:' + this.state.announcements);
-                });
+                                        this.setState({announcements: ''});
+                                    }
+                                    this.setState({announcements: anns});
+                                    console.log('Announcements for club:' + this.state.announcements);
+                                });
 
-                accessAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42Acapella Recruit").then(annInfo => {
-                    if ((annInfo === undefined)) {
-                        this.setState({
-                            annDetail: '',
-                            time: '',
-                            annReference: ''
-                        })
-                    } else {
-                        this.setState({
-                            annDetail: annInfo['annDetail'],
-                            time: annInfo['time'],
-                            annReference: annInfo['annReference']
-                        })
-                    }
-                    console.log('annDetail: ' + this.state.annDetail)
-                });*/
+                                accessAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42Acapella Recruit").then(annInfo => {
+                                    if ((annInfo === undefined)) {
+                                        this.setState({
+                                            annDetail: '',
+                                            time: '',
+                                            annReference: ''
+                                        })
+                                    } else {
+                                        this.setState({
+                                            annDetail: annInfo['annDetail'],
+                                            time: annInfo['time'],
+                                            annReference: annInfo['annReference']
+                                        })
+                                    }
+                                    console.log('annDetail: ' + this.state.annDetail)
+                                });*/
             } else {
                 // console.log("Redirecting to login page");
             }
@@ -109,24 +111,24 @@ class Announcements extends React.Component {
         let numcols = 4;
         let numrows = clubs.length / numcols;
         numrows = Math.ceil(numrows);
-	let currAnns = this;
-	    console.log(currAnns.orgs);
+        let currAnns = this;
+        console.log(currAnns.orgs);
 
-/*
-        clubs.forEach(function (e) {
-            grid_items.push(club_grid(e));
-            console.log('club pushed in announcements' + e);
+        /*
+                clubs.forEach(function (e) {
+                    grid_items.push(club_grid(e));
+                    console.log('club pushed in announcements' + e);
 
-            getAnnouncements(e).then(anns => {
-                if ((anns === undefined) || (anns.length === 0)) {
-                    currAnns.setState({announcements: ''});
-                } else {
-                    currAnns.setState({announcements: anns});
-                    console.log('ANNOUNCEMENTHERE' + currAnns.state.announcements + 'ENDHERE')
-                }
-            });
-        });
-*/
+                    getAnnouncements(e).then(anns => {
+                        if ((anns === undefined) || (anns.length === 0)) {
+                            currAnns.setState({announcements: ''});
+                        } else {
+                            currAnns.setState({announcements: anns});
+                            console.log('ANNOUNCEMENTHERE' + currAnns.state.announcements + 'ENDHERE')
+                        }
+                    });
+                });
+        */
         let grid = [];
 
         for (let i = 0; i <= numrows; i++) {
