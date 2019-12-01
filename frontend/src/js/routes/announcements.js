@@ -56,42 +56,29 @@ class Announcements extends React.Component {
     getAnnouncements = () => {
         let announcements = [];
         if (this.state.subs !== undefined) {
-            // get the announcements for each sub
             console.log('subs: ' + this.state.subs);
-            let announcements = {};
+            // get the announcements for each sub
             this.state.subs.forEach(org => {
                 getAnnouncements(org).then(announcements => {
-                    // go through each announcement
-                    this.setState({
-                        announcements: announcements
-                    });
-                    if (this.state.announcements !== undefined) {
-                        this.state.announcements.forEach(announcement => {
-                            // let accessed_announcements = accessAnnouncements(announcement);
-
+                    if (announcements !== undefined) {
+                        announcements.forEach(announcement => {
                             accessAnnouncements(announcement).then(each => {
-                                console.log('accessed_Ann: ' + JSON.stringify(each))
-
-                                // Create a new array based on current state:
-                                let eachAnnouncement = [...this.state.eachAnnouncement];
-                                // Add item to it
-                                eachAnnouncement.push({value: each});
-                                // Set state
-                                this.setState({ eachAnnouncement });
-
-                                // this.setState({eachAnnouncement: [...this.state.eachAnnouncement, each]})
-                                // this.setState(prevState => ({eachAnnouncement: [...prevState.eachAnnouncement,each]}))
+                                if (each !== undefined) {
+                                    announcements.push(each);
+                                } else {
+                                    console.warn('Got bad announcement from backend. ' + each);
+                                }
                             });
-                        })
-                        console.log('announcement_List: ' + JSON.stringify(this.state.announcements));
-                        console.log('announcement_Content: ' + JSON.stringify(this.state.eachAnnouncement));
+                        });
                     } else {
                         console.log('No announcements for org ' + org + ' announcements: ' + announcements);
                     }
                 })
             })
         }
-        return announcements;
+
+        this.setState({announcements: announcements});
+        console.log('Successfully updated announcements into state. ' + this.state.announcements);
     };
 
     render() {
@@ -101,7 +88,6 @@ class Announcements extends React.Component {
             });
         }
 
-        // let announcements = this.getAnnouncements();
 
         return (
             <div>
