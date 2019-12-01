@@ -50,14 +50,14 @@ class Home extends React.Component {
             <div>
                 <NavBar {...this.props} />
                 <main className="mt-3 pt-3">
-                    <div className="container-fluid centerPage">
+                 <div class="container-fluid centerPage"> 
                         {/*
                         <div className="row centerPage" >
                         </div>*/}
-                        <div className="home_grid_container parent">
-                            {this.org_grid(currentClubs)}
-                        </div>
-                    </div>
+                      {/*<div className="home_grid_container parent" style={{backgroundColor:'black', width:'100%'}}>*/}
+                          {this.org_grid(currentClubs)}
+                      {/*</div>*/}
+                  </div>
                 </main>
             </div>
         );
@@ -66,12 +66,12 @@ class Home extends React.Component {
     org_grid = orgs => {
         let tagMap = this.state.tagDict;
         return (
-            <div>
-                {Object.keys(tagMap).map(
-                    tag => this.org_multi_item_carousel(tag, tagMap[tag])
-                    //org_multi_item_carousel("Cultural", tagMap["Cultural"])
-                )
-                    //org_multi_item_carousel("Cultural", tagMap["Cultural"])
+            <div  style={{backgroundColor: "white", width:'85%'}}>
+                { Object.keys(tagMap).map( tag => 
+                   org_multi_item_carousel(tag, tagMap[tag])
+                   //org_multi_item_carousel("Cultural", tagMap["Cultural"])
+                  )
+                //org_multi_item_carousel("Cultural", tagMap["Cultural"])
                 }
             </div>
         );
@@ -168,8 +168,6 @@ class Home extends React.Component {
     }
 }
 
-//brent yee
-
 //TAKEN FROM ONLINE FOR THE CAROUSEL
 
 $(document).ready(function () {
@@ -177,19 +175,39 @@ $(document).ready(function () {
     var itemsMainDiv = ".MultiCarousel";
     var itemsDiv = ".MultiCarousel-inner";
     var itemWidth = "";
-
     $(".leftLst, .rightLst").mousedown(function () {
         var condition = $(this).hasClass("leftLst");
         if (condition) click(0, this);
         else click(1, this);
     });
-
+    $(".leftLst, .rightLst").mouseup(function () {
+        var condition = $(this).hasClass("leftLst");
+       // if (condition) click(0, this, 0);
+        //else click(1, this, 0);
+       // var condition = $(this).hasClass("leftLst");
+        //if (condition) click(0, this);
+        //else click(1, this);
+    });
     ResCarouselSize();
 
     $(window).resize(function () {
         ResCarouselSize();
         // }, 5000);
     });
+
+        //It is used to get some elements from btn
+    function click(ell, ee) {
+        //function(){
+            var Parent =
+            "#" +
+            $(ee)
+                .parent()
+                .attr("id");
+        var slide = $(Parent).attr("data-slide");
+        ResCarousel(ell, Parent, slide);
+        
+        //}
+    }
 
     //this function define the size of the items
     // YO BODY WIDTH IS 820.8
@@ -216,8 +234,11 @@ $(document).ready(function () {
 
             if (bodyWidth >= 1200) {
                 incno = itemsSplit[3];
+                //console.log(incno);
                 itemWidth = sampwidth / incno;
-            } else if (bodyWidth >= 992) {
+                //console.log(itemWidth);
+            }
+             else if (bodyWidth >= 992) {
                 incno = itemsSplit[3];
                 itemWidth = sampwidth / incno;
             } else if (bodyWidth >= 768) {
@@ -252,7 +273,9 @@ $(document).ready(function () {
         var values = divStyle.match(/-?[\d.]+/g);
         var xds = Math.abs(values[4]);
         if (e === 0) {
+
             translateXval = parseInt(xds) - parseInt(itemWidth * s);
+           // alert("left translate: " + translateXval);
             $(el + " " + rightBtn).removeClass("over");
             if (translateXval <= itemWidth / 2) {
                 translateXval = 0;
@@ -264,6 +287,7 @@ $(document).ready(function () {
                     .find(itemsDiv)
                     .width() - $(el).width();
             translateXval = parseInt(xds) + parseInt(itemWidth * s);
+             //alert("right translate: " + translateXval);
             $(el + " " + leftBtn).removeClass("over");
 
             if (translateXval >= itemsCondition - itemWidth / 2) {
@@ -276,17 +300,58 @@ $(document).ready(function () {
             "translateX(" + -translateXval + "px)"
         );
     }
-
-    //It is used to get some elements from btn
-    function click(ell, ee) {
-        var Parent =
-            "#" +
-            $(ee)
-                .parent()
-                .attr("id");
-        var slide = $(Parent).attr("data-slide");
-        ResCarousel(ell, Parent, slide);
-    }
 });
+
+function org_multi_item_carousel(tag, tagList) {
+      let itemsInCarousel = [];
+      return (
+            <div /*class = "container"*/  style={{backgroundColor: "#FFFFFF"}}>
+             <h3 style={{textAlign:'left', marginLeft:'45px'}}>{tag}</h3>
+              <div class="MultiCarousel" data-items="1,3,3,5" data-slide="2" id="MultiCarousel"  data-interval="1000"  style={{backgroundColor: "#FFFFFF"}}>
+                 <div class="MultiCarousel-inner" style={{backgroundColor: "#FFFFFF"}}>
+                      {tagList.map( clubItem => 
+                        org_grid_component(clubItem)
+                        )
+                      }
+                      </div>
+                    <button class="leftLst btn-circle btn-md">&lt;</button>
+                    <button class="rightLst btn-circle btn-md">&gt;</button>
+              </div>
+              </div>
+        );
+    };
+
+// each club component card to be used in org_multi_item_carousel
+let org_grid_component = org => {
+    org = Object.values(org)[0];
+    org.img = "https://picsum.photos/150/50";
+    return (
+       
+          <div class="item">
+              <Card style={{width: "14rem", height: "20rem"}} className="text-center">
+                      {/*<Card.Img variant="top" src={org.img}/>*/}
+                      <Card.Img
+                          src={org.img}
+                          style={{
+                              width: '100%',
+                              height: '15vw',
+                              'object-fit': 'cover'
+                          }}/>
+                      <Card.Body>
+                          <Card.Title>{org.clubName}</Card.Title>
+                          {/* <Card.Text>
+                          <small className="scroll-box">
+                            {org.description.slice(0, 450)}
+                          </small>
+                        </Card.Text> */}
+                          <Button href={org.pageURL}>
+                              Org Home
+                          </Button>
+                      </Card.Body>
+              </Card>
+       
+        </div>
+    );
+};
 
 export default Home;
