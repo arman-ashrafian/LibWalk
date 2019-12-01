@@ -178,7 +178,7 @@ class Profile extends React.Component {
 
                                     <Form.Group controlId="formYear">
                                         <Form.Label>Year</Form.Label>
-                                        <Form.Control type="year" placeholder="Enter Year"
+                                        <Form.Control type="year" placeholder="Enter Expected Graduation Year"
                                                       defaultValue={this.state.user.year}/>
                                     </Form.Group>
                                     <Button variant="primary" type="submit">

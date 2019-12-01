@@ -98,7 +98,7 @@ class Orgs extends React.Component {
 
     /* Styling the club discription */
     const clubDescription = {
-      fontFamily: "Roboto, sans-serif",
+      fontFamily: "Roboto",
       textAlign: "left",
       fontWeight: "bold",
       fontSize: "16px",
@@ -159,7 +159,7 @@ class Orgs extends React.Component {
               )}
 
               {/*Show events from the clubs */}
-              <div style={{ display: "flex" }}>{showEvents}</div>
+              <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>{showEvents}</div>
             </Card.Body>
           </Card>
         </div>

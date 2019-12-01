@@ -44,7 +44,7 @@ class Announcements extends React.Component {
                         this.setState({orgs: json.subscriptions});
                     }
                 });
-
+/*
                 getAnnouncements("7udUJPGbD4bAaxAdjzq7JCGnqI42").then(anns => {
                     if ((anns === undefined) || (anns.length === 0)) {
                         console.warn('Firebase was unable to get announcements from database.');
@@ -70,8 +70,7 @@ class Announcements extends React.Component {
                         })
                     }
                     console.log('annDetail: ' + this.state.annDetail)
-                });
-
+                });*/
             } else {
                 // console.log("Redirecting to login page");
             }
@@ -110,21 +109,24 @@ class Announcements extends React.Component {
         let numcols = 4;
         let numrows = clubs.length / numcols;
         numrows = Math.ceil(numrows);
+	let currAnns = this;
+	    console.log(currAnns.orgs);
 
+/*
         clubs.forEach(function (e) {
             grid_items.push(club_grid(e));
             console.log('club pushed in announcements' + e);
 
             getAnnouncements(e).then(anns => {
                 if ((anns === undefined) || (anns.length === 0)) {
-                    this.setState({announcements: ''});
+                    currAnns.setState({announcements: ''});
                 } else {
-                    this.setState({announcements: anns});
-                    console.log('got announcements' + this.state.announcements)
+                    currAnns.setState({announcements: anns});
+                    console.log('ANNOUNCEMENTHERE' + currAnns.state.announcements + 'ENDHERE')
                 }
             });
         });
-
+*/
         let grid = [];
 
         for (let i = 0; i <= numrows; i++) {
@@ -202,7 +204,6 @@ let club_grid = org => {
     );
 };
 
-export default Announcements;
 
 //This function get the "announcements" field inside Clubs
 // getAnnouncements(this.state.orgs).then(anns => {
@@ -232,3 +233,4 @@ export default Announcements;
 //         })
 //     }
 // });
+export default Announcements;
