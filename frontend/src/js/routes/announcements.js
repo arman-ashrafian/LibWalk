@@ -58,8 +58,7 @@ class Announcements extends React.Component {
      */
     getAnnouncements = () => {
         let announcements = [];
-        console.log('this._gotSubs' + this._gotSubs)
-        if (this._gotSubs) {
+        if (this.state.subs !== undefined) {
             // get the announcements for each sub
             console.log('subs: ' + this.state.subs);
             let announcements = {};
@@ -70,6 +69,7 @@ class Announcements extends React.Component {
                         announcements.forEach(announcement => {
                             let accessed_announcements = accessAnnouncements(announcement);
                             console.log('announcement content ' + JSON.stringify(announcement));
+                            console.log('accessed_announcement content ' + JSON.stringify(accessed_announcements));
                         })
                     } else {
                         console.log('No announcements for org ' + org + ' announcements: ' + announcements);
