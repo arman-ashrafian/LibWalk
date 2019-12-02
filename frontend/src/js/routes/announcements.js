@@ -79,7 +79,7 @@ class Announcements extends React.Component {
                         } else {
                             console.log('No announcements for org ' + org + ' announcements: ' + announcements);
                         }
-                    })
+                    });
                 })
             }
             this.setState({announcements: org_announcements});
@@ -87,6 +87,7 @@ class Announcements extends React.Component {
         } else {
             console.log('Announcements were already pulled, refresh page to re-load them, else using cache.');
         }
+        this.render();
     };
 
     /**
