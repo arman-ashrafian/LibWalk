@@ -133,10 +133,10 @@ org_grid_component(org) {
 		org.img = org.pictureURL;
 	} 
     return (
+          <div className="item" onClick={()=> {this.redirectToClubDetails(org.clubReference)}}>
+              <Card style={{width: "90%", height: "26vh"}} className="text-center">
        
-          <div className="item">
-            //<a onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
-	    <Card style={{width: "90%", height: "26vh",}} className="text-center">
+         
                       {/*<Card.Img variant="top" src={org.img}/>*/}
 					  <div style= {{}}> 
                       <Card.Img
@@ -161,7 +161,7 @@ org_grid_component(org) {
     );
 };
 
-    setUpCarousel(){
+    setUpCarousel() {
         //setTimeout(function() {
         let itemsMainDiv = ".MultiCarousel";
         let itemsDiv = ".MultiCarousel-inner";
@@ -201,9 +201,7 @@ org_grid_component(org) {
         }
 
         //this function define the size of the items
-        // YO BODY WIDTH IS 820.8
         function ResCarouselSize() {
-            //console.log( $(itemsMainDiv).width());
             let incno = 0;
             let dataItems = "data-items";
             let itemClass = ".item";
@@ -223,8 +221,8 @@ org_grid_component(org) {
                     .parent()
                     .attr("id", "MultiCarousel" + id);
 
-                var newWidthConst = bodyWidth/230;
-                itemWidth = bodyWidth*(1/newWidthConst);
+                var newWidthConst = bodyWidth / 230;
+                itemWidth = bodyWidth * (1 / newWidthConst);
                 $(this).css({
                     transform: "translateX(0px)",
                     width: itemWidth * itemNumbers
@@ -237,12 +235,10 @@ org_grid_component(org) {
 
                 $(".leftLst").addClass("over");
                 $(".rightLst").removeClass("over");
-                // alert("Finished or whateva");
+
             });
         }
 
-//920
-//184
         //this function used to move the items
         function ResCarousel(e, el, s) {
             let leftBtn = ".leftLst";
@@ -254,7 +250,6 @@ org_grid_component(org) {
             if (e === 0) {
 
                 translateXval = parseInt(xds) - parseInt(itemWidth * s);
-                // alert("left translate: " + translateXval);
                 $(el + " " + rightBtn).removeClass("over");
                 if (translateXval <= itemWidth / 2) {
                     translateXval = 0;
@@ -279,47 +274,8 @@ org_grid_component(org) {
                 "translateX(" + -translateXval + "px)"
             );
         }
-    };
-
-
-/*    org_grid_component(org) {
-        org = Object.values(org)[0];
-        org.img = "https://picsum.photos/150/50";
-        return (
-            <div className="item" key={org.clubName}  style={{flex:1}}>
-                <Card style={{width: "16rem", height: "20rem", flex: 1}} className="text-center">
-                    <Card.Header style={{flex: 1}}>{org.clubName}</Card.Header>
-                    <Card.Img src={org.img} style={{width: "100%", height: "15vw", "objectFit": "cover"}}/>
-                    <Card.Body style={{flex:5}}>
-                        <Button onClick={() => {
-                            this.redirectToClubDetails(org.clubReference);
-                        }}>Learn More</Button>
-                    </Card.Body>
-                </Card>
-            </div>
-        );
     }
-    org_multi_item_carousel(tag, tagList) {
-        return (
-            <div className="container" key={tag}>
-                <h3>{tag}</h3>
-                <div
-                    className="MultiCarousel"
-                    data-items="1,3,4,4"
-                    data-slide="1"
-                    id="MultiCarousel"
-                    data-interval="1000"
-                >
-                    <div className="MultiCarousel-inner">
-                        {tagList.map(clubItem => this.org_grid_component(clubItem))}
-                    </div>
-                    <button className="leftLst btn-circle btn-md">&lt;</button>
-                    <button className="rightLst btn-circle btn-md">&gt;</button>
-                </div>
-            </div>
-        );
-    }
-*/
+    
     componentWillUnmount() {
         this._isMounted = false;
     }
@@ -330,7 +286,4 @@ org_grid_component(org) {
     }
 }
 //TAKEN FROM ONLINE FOR THE CAROUSEL
-
-
-
 export default Home;
