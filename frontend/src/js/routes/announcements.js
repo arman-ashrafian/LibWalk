@@ -3,7 +3,7 @@ import "../cloud.js";
 import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
-import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
+import {accessAnnouncements, getAnnouncements, getUser, getClub} from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
 import TimeAgo from "@jshimko/react-time-ago";
@@ -108,12 +108,19 @@ class Announcements extends React.Component {
         let grid = [];
 
         Object.entries(grid_items).forEach((k, v) => {
-            grid.push(v);
+            grid.push(v)
+        });
+
+        getClub(Object.keys(grid_items)).then(clubInfo => {
+            if(clubInfo !== undefined) {
+                this.setState({clubName: clubInfo.clubName})
+            }
         });
 
         return (
             <div key={grid.length}>
-                <CardDeck> {Object.values(grid_items)} </CardDeck>
+                <h5 className="h5 text-center mt-5">{this.state.clubName}</h5>
+                <CardDeck>{Object.values(grid_items)}</CardDeck>
             </div>
         );
     };
@@ -126,9 +133,9 @@ class Announcements extends React.Component {
     announcement_card = (clubref, announcement) => {
         const elem = (<div key={announcement.annReference}>
             <Row>
-                <Card border="info" style={{fontSize: 12, width: "16rem", height: "10rem"}}>
+                <Card className="ml-5" border="warning" style={{fontSize: 12, width: "20rem", height: "10rem"}}>
                     <Card.Header>
-                        <strong className="mr-auto" style={{fontSize: 24}}> 📢 📢 📢 </strong>
+                        <strong className="mr-auto" style={{fontSize: 24}}> 📣 📣 📣 </strong>
                     </Card.Header>
                     <Card.Body>{announcement.annDetail}</Card.Body>
                     <Card.Footer>
@@ -137,6 +144,7 @@ class Announcements extends React.Component {
                 </Card>
             </Row>
         </div>);
+
         return elem;
     };
 
@@ -145,13 +153,13 @@ class Announcements extends React.Component {
         return (
             <div>
                 <NavBar {...this.props} />
-                <main className="mt-5 pt-5">
+                <main className="mt-1 pt-5">
                     <div className="container centerPage">
                         <div className="row centerPage">
                             {/*Display User Information*/}
                             <div className="col-sm-12 text-center">
-                                <h1 className="h1 text-center mb-5">Announcements</h1>
-                                <h5>Below are the announcements from organizations you subscribed to!</h5>
+                                <h1 className="h1 text-center mb-1">Announcements</h1>
+                                <h5>📢 Below Are The Announcements From Organizations You Subscribed To 📢</h5>
                             </div>
                             <div className="div-centered">
                                 {this.announcement_grid(this.state.announcements)}
