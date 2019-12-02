@@ -45,7 +45,7 @@ class EachEvent extends React.Component {
                     pictureURL: json["pictureURL"],
                     location: json["location"],
                     rsvpForm: json["rsvpForm"],
-                    time: new Date(json["time"]["_seconds"]*1000),
+                    time: new Date(json["time"]["seconds"]*1000),
                     //date: json["date"],
                     eventReference: json['eventReference']
                 }
@@ -104,13 +104,16 @@ class EachEvent extends React.Component {
     async handleSubmitEdit(e) {
         e.preventDefault();
         console.log("edit event")
+		let date = new Date(e.target[2].value + "T" + e.target[3].value + ":00");
+		var firebase = require('firebase');
+		let timeStamp = new firebase.firestore.Timestamp.fromDate(date);
         await this.setState({
             event: {
                 ...this.state.event,
                 eventName: e.target[0].value,
                 location: e.target[1].value,
                 //date: e.target[2].value,
-                time: e.target[2].value + e.target[3].value,
+                time: timeStamp,
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
                 rsvpForm: e.target[6].value,

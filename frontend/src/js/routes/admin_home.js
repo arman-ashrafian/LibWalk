@@ -219,25 +219,20 @@ class AdminHome extends React.Component {
             alert('Please make sure to have name, location, date, time, and description');
             return;
         }
-		console.log(e.target[2].value);
 		let date = new Date(e.target[2].value + "T" + e.target[3].value + ":00");
-		console.log(date.getTime()/1000);
-		console.log(date)
 		var firebase = require('firebase');
 		let timeStamp = new firebase.firestore.Timestamp.fromDate(date);
         await this.setState({
             event: {
                 eventName: e.target[0].value,
                 location: e.target[1].value,
-                //date: e.target[2].value,
-                time: timeStamp/*timeStamp*//*new db.firestore.Timestamp(new Date(e.target[2].value + " " + e.target[3].value).getTime()/1000, 0)*/,
+                time: timeStamp,
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
                 rsvpForm: e.target[6].value,
                 eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value
             }
         });
-		console.log(this.state.event.time)
         console.log(this.state.event.eventReference);
         await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
             .then((doc) => {
