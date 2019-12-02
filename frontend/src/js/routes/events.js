@@ -3,11 +3,12 @@ import "../../css/bootstrap.min.css";
 import "../../css/mdb.lite.min.css";
 import "../../css/style.min.css";
 import NavBar from "../navbar";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Row from "react-bootstrap/Row"
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import {getUserEvents} from "../cloud";
 import db from "../../firebase";
+import EventCard from "./eventCard";
+import Spinner from "react-bootstrap/Spinner";
 
 /**
  * This class defines the Events component.
@@ -18,7 +19,7 @@ class Events extends React.Component {
         super(props);
         this.state = {
             userId: "",
-            events: {}
+            events: null
         };
     }
 
@@ -41,6 +42,19 @@ class Events extends React.Component {
             }
         });
     }
+    
+    redirectToEventDetail() {
+    this.props.history.push({
+        pathname: "/events",
+        state: {
+            event_id: this.state.event.eventReference
+        }
+    });
+    }
+
+    showEventDetail = () => {
+        this.setState({showEventDetail: true})
+    };
 
     render() {
         // render the events
@@ -49,23 +63,14 @@ class Events extends React.Component {
         for (const eventKey in this.state.events) {
             event = this.state.events[eventKey];
             eventHTML.push(
-                <Card key={eventKey} style={{width: '20rem'}}>
-                    <Card.Img variant="top" src={event.pictureURL}/>
-                    <Card.Body>
-                        <Card.Title>
-                            <strong>{event.eventName}</strong>
-                        </Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">
-                            📍 {event.location} | 🕔
-                        </Card.Subtitle>
-                        <Card.Text>{event.description}</Card.Text>
-                        <Button variant="primary" onClick={event.rsvpForm}>
-                            RSVP
-                        </Button>
-                    </Card.Body>
-                </Card>
+            <Row style={{padding: '1em'}}>
+                <Col md={{ span: 6, offset: 3 }}>
+                <EventCard event={event} {...this.props} />
+                </Col>
+            </Row>
             );
         }
+
 
         return (
             <div>
@@ -75,9 +80,14 @@ class Events extends React.Component {
                         {" "}
                         Events
                     </h1>
-                    <Row>
-                        {eventHTML}
-                    </Row>
+                    {
+                        (this.state.events === null) ?
+                            <div style={{padding: '1em'}}>
+                                <Spinner animation="border" variant="info"/>
+                            </div>
+                        :
+                            eventHTML
+                    }
                 </main>
             </div>
         );
