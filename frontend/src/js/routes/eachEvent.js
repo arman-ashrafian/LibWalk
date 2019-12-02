@@ -45,7 +45,8 @@ class EachEvent extends React.Component {
                     rsvpForm: json["rsvpForm"],
                     time: json["time"],
                     date: json["date"],
-                    eventReference: json['eventReference']
+                    eventReference: json['eventReference'],
+                    clubHosting: json["clubHosting"]
                 }
             });
         });
@@ -111,7 +112,7 @@ class EachEvent extends React.Component {
                 time: e.target[3].value,
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
-                rsvpForm: e.target[6].value,
+                rsvpForm: e.target[6].value
             }
         })
         await changeEvent(this.state.event.eventReference, this.state.event);
