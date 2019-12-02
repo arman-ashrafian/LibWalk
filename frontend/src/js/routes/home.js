@@ -133,8 +133,8 @@ org_grid_component(org) {
 		org.img = org.pictureURL;
 	} 
     return (
-          <div className="item">
-              <Card style={{width: "90%", height: "40vh"}} className="text-center">
+          <div className="item" onClick={()=> {this.redirectToClubDetails(org.clubReference)}}>
+              <Card style={{width: "90%", height: "26vh"}} className="text-center">
                       {/*<Card.Img variant="top" src={org.img}/>*/}
 					  <div style= {{}}> 
                       <Card.Img
@@ -151,9 +151,6 @@ org_grid_component(org) {
 							{org.clubName}
                           </small>
                         </Card.Text>
-                          <button className=" coolDude btn " style = {{height: '6vh',fontSize: "1.6vh", fontWeight: "bold", borderRadius: "0.5vh", textAlign: "center",verticalAlign: "middle", textTransform: "none" }} onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
-							<div  style={{position: "relative", top: "50%",transform: "translateY(-50%)"}}>Learn More</div>
-                          </button>
                       </Card.Body>
               </Card>
        
