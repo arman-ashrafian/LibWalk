@@ -3,15 +3,16 @@ import "../cloud.js";
 import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
-import TimeAgo from "@jshimko/react-time-ago";
 import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
 import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
 
 class Announcements extends React.Component {
-
+    /**
+     * Called whenever this component is constructed.
+     * @param props parent component properties.
+     */
     constructor(props) {
         super(props);
         this._gotSubs = false;
@@ -24,6 +25,9 @@ class Announcements extends React.Component {
 
     };
 
+    /**
+     * Called whenever the component is first mounted, setup code.
+     */
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
             // first get the user
@@ -85,6 +89,63 @@ class Announcements extends React.Component {
         }
     };
 
+    /**
+     * Makes the entire grid of announcements for a user's subs.
+     * @param announcements
+     * @returns {*}
+     */
+    announcement_grid = (announcements) => {
+        let grid_items = [];
+        let numcols = 4;
+        let numrows = announcements.length / numcols;
+        numrows = Math.ceil(numrows);
+
+        announcements.forEach(a => {
+            grid_items.push(this.announcement_card(a));
+        });
+
+        let grid = [];
+
+        for (let i = 0; i <= numrows; i++) {
+            let row = [];
+            for (let j = 0; j < numcols; j++) {
+                row.push(
+                    <div className="club_grid_component">
+                        <Col>{grid_items[i * numcols + j]}</Col>
+                        <div>
+                            <br/>
+                            <br/>
+                        </div>
+                    </div>
+                );
+            }
+            grid.push(row);
+        }
+
+        return (
+            <div key={grid.length}>
+                <CardDeck> {grid} </CardDeck>
+            </div>
+        );
+    };
+
+    /**
+     * Displays one announcement by making a card.
+     * @param announcement
+     * @returns {*}
+     */
+    announcement_card = announcement => {
+        const elem = (<div key={announcement.annReference}>
+            <Card>
+                <Card.Header>{announcement.annDetail}</Card.Header>
+                <Card.Body>{announcement.details}</Card.Body>
+                <Card.Footer>{announcement.time}</Card.Footer>
+            </Card>
+        </div>);
+        return elem;
+    };
+
+
     render() {
         if (this.state.orgs === undefined) {
             this.setState({
@@ -114,105 +175,6 @@ class Announcements extends React.Component {
         );
     }
 
-    announcement_grid = (announcements) => {
-        let grid_items = [];
-        let numcols = 4;
-        let numrows = announcements.length / numcols;
-        numrows = Math.ceil(numrows);
-
-        announcements.forEach(a => {
-           grid_items.push(this.announcement_card(a));
-        });
-
-        let grid = [];
-
-        for (let i = 0; i <= numrows; i++) {
-            let row = [];
-            for (let j = 0; j < numcols; j++) {
-                row.push(
-                    <div className="club_grid_component">
-                        <Col>{grid_items[i * numcols + j]}</Col>
-                        <div>
-                            <br/>
-                            <br/>
-                        </div>
-                    </div>
-                );
-            }
-            grid.push(row);
-        }
-
-        return (
-            <div key={grid.length}>
-                <CardDeck> {grid} </CardDeck>
-            </div>
-        );
-    };
-
-    announcement_card = announcement => {
-        const elem = <div key={announcement.annReference}>
-            <Card>
-                <Card.Header>{announcement.annDetail}</Card.Header>
-                <Card.Body>{announcement.details}</Card.Body>
-                <Card.Footer>{announcement.time}</Card.Footer>
-            </Card>
-        </div>
-
-        return elem;
-
-    }
 }
-
-let club_grid = org => {
-    // org = Object.values(org)[0];
-    return (
-        <div key={org.clubName}>
-            <Card style={{width: "80rem", height: "20rem"}} className="text-center">
-                <Card.Header>
-                    <strong style={{fontSize: 24}}> {org.clubName}</strong>
-                    <br/>
-                    <small style={{fontSize: 16}}>{org.clubDescription}</small>
-                </Card.Header>
-                <Card.Body>
-                    <div className="div-centered">
-                        <Row>
-                            <Card border="info" style={{fontSize: 12}}>
-                                <Card.Header>
-                                    <strong className="mr-auto" style={{fontSize: 24}}>📢</strong>
-                                </Card.Header>
-                                <Card.Body>{111}</Card.Body>
-                                <Card.Footer>
-                                    <strong>Last posted <TimeAgo date="Nov 25, 2019"/></strong>
-                                </Card.Footer>
-                            </Card>
-                            <br/>
-                            <Card border="warning" style={{fontSize: 12}}>
-                                <Card.Header>
-                                    <strong className="mr-auto" style={{fontSize: 24}}>📣</strong>
-                                </Card.Header>
-                                <Card.Body>{222}</Card.Body>
-                                <Card.Footer>
-                                    <strong>Last posted <TimeAgo date="Nov 19, 2019"/></strong>
-                                </Card.Footer>
-                            </Card>
-                            <br/>
-                            <Card border="danger" style={{fontSize: 12}}>
-                                <Card.Header>
-                                    <strong className="mr-auto" style={{fontSize: 24}}>📌</strong>
-                                </Card.Header>
-                                <Card.Body>{333}</Card.Body>
-                                <Card.Footer>
-                                    <strong>Last posted <TimeAgo
-                                        date="Tue Nov 26 2019 22:30:14 GMT-0800 (Pacific Standard Time)"/></strong>
-                                </Card.Footer>
-                            </Card>
-                        </Row>
-                    </div>
-                </Card.Body>
-            </Card>
-        </div>
-    );
-};
-
 
 export default Announcements;
