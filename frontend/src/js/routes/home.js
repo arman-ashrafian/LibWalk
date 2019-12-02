@@ -35,14 +35,6 @@ class Home extends React.Component {
                 orgs: []
             };
         }
-/*window.onload = function() {
-    if(!window.location.hash) {
-        window.location = window.location + '#loaded';
-        window.location.reload();
-    }
-}
-
-window.onload();*/
 
     }
 
@@ -142,8 +134,8 @@ org_grid_component(org) {
 	} 
     return (
        
-          <div className="item">
-              <Card style={{width: "90%", height: "40vh",}} className="text-center">
+          <div className="item" onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
+              <Card style={{width: "90%", height: "26vh",}} className="text-center">
                       {/*<Card.Img variant="top" src={org.img}/>*/}
 					  <div style= {{}}> 
                       <Card.Img
@@ -160,14 +152,12 @@ org_grid_component(org) {
 							{org.clubName}
                           </small>
                         </Card.Text>
-                          <button className=" coolDude btn " style = {{height: '6vh',fontSize: "1.6vh", textAlign: "center",verticalAlign: "middle" }}  /*href={org.pageURL}*/onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
-							<div  style={{position: "relative", top: "50%",transform: "translateY(-15%)"}}>Learn More</div>
-                          </button>
                       </Card.Body>
               </Card>
        
         </div>
     );
+};
 
     setUpCarousel(){
         //setTimeout(function() {
@@ -194,10 +184,6 @@ org_grid_component(org) {
             // }, 5000);
         });
 
-<<<<<<< HEAD
-};
-
-=======
         //It is used to get some elements from btn
         function click(ell, ee) {
             //function(){
@@ -211,7 +197,6 @@ org_grid_component(org) {
 
             //}
         }
->>>>>>> 803b6ce08d2a639b168c460985817b2a525a9d42
 
         //this function define the size of the items
         // YO BODY WIDTH IS 820.8
@@ -303,7 +288,6 @@ org_grid_component(org) {
                 <Card style={{width: "16rem", height: "20rem", flex: 1}} className="text-center">
                     <Card.Header style={{flex: 1}}>{org.clubName}</Card.Header>
                     <Card.Img src={org.img} style={{width: "100%", height: "15vw", "objectFit": "cover"}}/>
-
                     <Card.Body style={{flex:5}}>
                         <Button onClick={() => {
                             this.redirectToClubDetails(org.clubReference);
@@ -313,7 +297,6 @@ org_grid_component(org) {
             </div>
         );
     }
-
     org_multi_item_carousel(tag, tagList) {
         return (
             <div className="container" key={tag}>
@@ -349,4 +332,3 @@ org_grid_component(org) {
 
 
 export default Home;
-
