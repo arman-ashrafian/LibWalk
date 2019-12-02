@@ -6,6 +6,8 @@ import db from "../../firebase";
 import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
+import TimeAgo from "@jshimko/react-time-ago";
+import Row from "react-bootstrap/Row"
 
 class Announcements extends React.Component {
     /**
@@ -88,7 +90,7 @@ class Announcements extends React.Component {
      * @returns {*}
      */
     announcement_grid = (announcements) => {
-        // dict of club:announcement pairs
+        // dict of club: announcement pairs
         let grid_items = {};
 
         Object.keys(announcements).forEach(clubname => {
@@ -123,11 +125,17 @@ class Announcements extends React.Component {
      */
     announcement_card = (clubref, announcement) => {
         const elem = (<div key={announcement.annReference}>
-            <Card>
-                <Card.Header>{clubref}</Card.Header>
-                <Card.Body>{announcement.annDetail}</Card.Body>
-                <Card.Footer>{announcement.time}</Card.Footer>
-            </Card>
+            <Row>
+                <Card border="info" style={{fontSize: 12, width: "16rem", height: "10rem"}}>
+                    <Card.Header>
+                        <strong className="mr-auto" style={{fontSize: 24}}> 📢 📢 📢 </strong>
+                    </Card.Header>
+                    <Card.Body>{announcement.annDetail}</Card.Body>
+                    <Card.Footer>
+                        <strong> Last posted <TimeAgo date={announcement.time}/> </strong>
+                    </Card.Footer>
+                </Card>
+            </Row>
         </div>);
         return elem;
     };
@@ -143,6 +151,7 @@ class Announcements extends React.Component {
                             {/*Display User Information*/}
                             <div className="col-sm-12 text-center">
                                 <h1 className="h1 text-center mb-5">Announcements</h1>
+                                <h5>Below are the announcements from organizations you subscribed to!</h5>
                             </div>
                             <div className="div-centered">
                                 {this.announcement_grid(this.state.announcements)}
