@@ -271,7 +271,7 @@ class Search extends React.Component {
 
   org_grid_component = org => {
     org = Object.values(org)[0];
-    org.img = "https://picsum.photos/150/50";
+    org.img = org.pictureURL;
   
     return (
       <div>
