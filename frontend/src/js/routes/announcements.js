@@ -22,7 +22,6 @@ class Announcements extends React.Component {
             eachAnnouncement: [],
         };
 
-        this.club_grid_loop = this.club_grid_loop.bind(this);
     };
 
     componentDidMount() {
@@ -54,31 +53,36 @@ class Announcements extends React.Component {
      * Once a user is logged in and we have their subs, get all their announcements.
      */
     getAnnouncements = () => {
-        let announcements = [];
-        if (this.state.subs !== undefined) {
-            console.log('subs: ' + this.state.subs);
-            // get the announcements for each sub
-            this.state.subs.forEach(org => {
-                getAnnouncements(org).then(announcements => {
-                    if (announcements !== undefined) {
-                        announcements.forEach(announcement => {
-                            accessAnnouncements(announcement).then(each => {
-                                if (each !== undefined) {
-                                    announcements.push(each);
-                                } else {
-                                    console.warn('Got bad announcement from backend. ' + each);
-                                }
-                            });
-                        });
-                    } else {
-                        console.log('No announcements for org ' + org + ' announcements: ' + announcements);
-                    }
-                })
-            })
-        }
+        if (this.state.announcements !== []) {
+            let org_announcements = [];
+            if (this.state.subs !== undefined) {
+                // get the announcements for each sub
+                this.state.subs.forEach(org => {
+                    getAnnouncements(org).then(announcements => {
+                        if (announcements !== undefined) {
 
-        this.setState({announcements: announcements});
-        console.log('Successfully updated announcements into state. ' + this.state.announcements);
+                            announcements.forEach(announcement => {
+                                accessAnnouncements(announcement).then(each => {
+                                    if (each !== undefined) {
+                                        org_announcements.push(each);
+                                        console.log('each ' + JSON.stringify(each) + ' curre announcements ' + JSON.stringify(this.state.announcements));
+
+                                    } else {
+                                        console.warn('Got bad announcement from backend. ' + each);
+                                    }
+                                })
+                            });
+                        } else {
+                            console.log('No announcements for org ' + org + ' announcements: ' + announcements);
+                        }
+                    })
+                })
+            }
+            this.setState({announcements: org_announcements});
+            console.log('Successfully updated announcements into state. ' + JSON.stringify(this.state.announcements));
+        } else {
+            console.log('Announcements were already pulled, refresh page to re-load them, else using cache.');
+        }
     };
 
     render() {
@@ -88,6 +92,7 @@ class Announcements extends React.Component {
             });
         }
 
+        console.log('render called ' + JSON.stringify(this.state.announcements));
 
         return (
             <div>
@@ -100,7 +105,7 @@ class Announcements extends React.Component {
                                 <h1 className="h1 text-center mb-5">Announcements</h1>
                             </div>
                             <div className="div-centered">
-                                {this.club_grid_loop(this.state.orgs)}
+                                {this.announcement_grid(this.state.announcements)}
                             </div>
                         </div>
                     </div>
@@ -109,14 +114,15 @@ class Announcements extends React.Component {
         );
     }
 
-    club_grid_loop = (clubs) => {
+    announcement_grid = (announcements) => {
         let grid_items = [];
         let numcols = 4;
-        let numrows = clubs.length / numcols;
+        let numrows = announcements.length / numcols;
         numrows = Math.ceil(numrows);
-        let currAnns = this;
-        console.log(currAnns.orgs);
 
+        announcements.forEach(a => {
+           grid_items.push(this.announcement_card(a));
+        });
 
         let grid = [];
 
@@ -142,6 +148,19 @@ class Announcements extends React.Component {
             </div>
         );
     };
+
+    announcement_card = announcement => {
+        const elem = <div key={announcement.annReference}>
+            <Card>
+                <Card.Header>{announcement.annDetail}</Card.Header>
+                <Card.Body>{announcement.details}</Card.Body>
+                <Card.Footer>{announcement.time}</Card.Footer>
+            </Card>
+        </div>
+
+        return elem;
+
+    }
 }
 
 let club_grid = org => {
