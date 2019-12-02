@@ -66,7 +66,7 @@ class EachSub extends React.Component {
                     }}
                 >
                     <View>
-                        <img src={this.state.clubPicture} className="sub_img"/>
+                        <img src={(this.state.clubPicture != "") ? this.state.clubPicture : "https://picsum.photos/150/50"} className="sub_img"/>
                     </View>
 
                     <View>
