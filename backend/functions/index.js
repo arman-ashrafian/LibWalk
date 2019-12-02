@@ -442,10 +442,11 @@ exports.createAnnouncements = functions.https.onRequest((req, res) => {
 
 exports.accessAnnouncements = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
+        let ann_id = req.body.ann_id;
         admin
             .firestore()
             .collection("Announcements")
-            .doc(req.body.ann_id)
+            .doc(ann_id)
             .get()
             .then(doc => {
                 res.send(doc.data());

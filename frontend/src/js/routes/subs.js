@@ -35,6 +35,13 @@ class Subs extends React.Component {
             ) {
                 // getUser using userId and populate this.state
                 getUser(firebaseUser.uid).then(json => {
+                    if (json === undefined) {
+                        this.setState({
+                            userId: 'UID error',
+                            subscriptions: []
+                        });
+                        return
+                    }
                     this.setState({
                         userId: firebaseUser.uid,
                         subscriptions: json["subscriptions"]
