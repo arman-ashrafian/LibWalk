@@ -111,16 +111,11 @@ class Announcements extends React.Component {
             grid.push(v)
         });
 
-        getClub(Object.keys(grid_items)).then(clubInfo => {
-            if(clubInfo !== undefined) {
-                this.setState({clubName: clubInfo.clubName})
-            }
-        });
-
         return (
-            <div key={grid.length}>
-                <h5 className="h5 text-center mt-5">{this.state.clubName}</h5>
-                <CardDeck>{Object.values(grid_items)}</CardDeck>
+            <div>
+                <div key={grid.length}>
+                    <CardDeck>{Object.values(grid_items)}</CardDeck>
+                </div>
             </div>
         );
     };
@@ -131,23 +126,26 @@ class Announcements extends React.Component {
      * @returns {*}
      */
     announcement_card = (clubref, announcement) => {
+        //This doesn't work lol
+        // let clubname;
+        // getClub(clubref).then(clubInfo => {
+        //     clubname = clubInfo.['clubName']
+        // })
         const elem = (<div key={announcement.annReference}>
-            <Row>
-                <Card className="ml-5" border="warning" style={{fontSize: 12, width: "20rem", height: "10rem"}}>
-                    <Card.Header>
-                        <strong className="mr-auto" style={{fontSize: 24}}> 📣 📣 📣 </strong>
-                    </Card.Header>
-                    <Card.Body>{announcement.annDetail}</Card.Body>
-                    <Card.Footer>
-                        <strong> Last posted <TimeAgo date={announcement.time}/> </strong>
-                    </Card.Footer>
-                </Card>
-            </Row>
+
+            <Card className="ml-5 mb-5" border="warning" style={{fontSize: 14, width: "20rem", height: "10rem"}}>
+                <Card.Header>
+                    <strong className="mr-auto"> 📣{clubref}📣 </strong>
+                </Card.Header>
+                <Card.Body>{announcement.annDetail}</Card.Body>
+                <Card.Footer>
+                    <strong> Last posted <TimeAgo date={announcement.time}/> </strong>
+                </Card.Footer>
+            </Card>
         </div>);
 
         return elem;
     };
-
 
     render() {
         return (
@@ -158,8 +156,8 @@ class Announcements extends React.Component {
                         <div className="row centerPage">
                             {/*Display User Information*/}
                             <div className="col-sm-12 text-center">
-                                <h1 className="h1 text-center mb-1">Announcements</h1>
-                                <h5>📢 Below Are The Announcements From Organizations You Subscribed To 📢</h5>
+                                <h1 className="h1 text-center mb-2">Announcements</h1>
+                                <h5 className="mb-5">📢 Below Are The Announcements From Organizations You Subscribed To 📢</h5>
                             </div>
                             <div className="div-centered">
                                 {this.announcement_grid(this.state.announcements)}

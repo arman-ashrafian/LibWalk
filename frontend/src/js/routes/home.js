@@ -134,8 +134,8 @@ org_grid_component(org) {
 	} 
     return (
        
-          <div className="item">
-              <Card style={{width: "90%", height: "40vh",}} className="text-center">
+          <div className="item" onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
+              <Card style={{width: "90%", height: "26vh",}} className="text-center">
                       {/*<Card.Img variant="top" src={org.img}/>*/}
 					  <div style= {{}}> 
                       <Card.Img
@@ -152,9 +152,6 @@ org_grid_component(org) {
 							{org.clubName}
                           </small>
                         </Card.Text>
-                          <button className=" coolDude btn " style = {{height: '6vh',fontSize: "1.6vh", textAlign: "center",verticalAlign: "middle" }}  /*href={org.pageURL}*/onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
-							<div  style={{position: "relative", top: "50%",transform: "translateY(-15%)"}}>Learn More</div>
-                          </button>
                       </Card.Body>
               </Card>
        
@@ -162,8 +159,125 @@ org_grid_component(org) {
     );
 };
 
+    setUpCarousel(){
+        //setTimeout(function() {
+        let itemsMainDiv = ".MultiCarousel";
+        let itemsDiv = ".MultiCarousel-inner";
+        let itemWidth = "";
+        $(".leftLst, .rightLst").mousedown(function () {
+            let condition = $(this).hasClass("leftLst");
+            if (condition) click(0, this);
+            else click(1, this);
+        });
+        $(".leftLst, .rightLst").mouseup(function () {
+            let condition = $(this).hasClass("leftLst");
+            // if (condition) click(0, this, 0);
+            //else click(1, this, 0);
+            // let condition = $(this).hasClass("leftLst");
+            //if (condition) click(0, this);
+            //else click(1, this);
+        });
+        ResCarouselSize();
 
+        $(window).resize(function () {
+            ResCarouselSize();
+            // }, 5000);
+        });
 
+        //It is used to get some elements from btn
+        function click(ell, ee) {
+            //function(){
+            let Parent =
+                "#" +
+                $(ee)
+                    .parent()
+                    .attr("id");
+            let slide = $(Parent).attr("data-slide");
+            ResCarousel(ell, Parent, slide);
+
+            //}
+        }
+
+        //this function define the size of the items
+        // YO BODY WIDTH IS 820.8
+        function ResCarouselSize() {
+            //console.log( $(itemsMainDiv).width());
+            let incno = 0;
+            let dataItems = "data-items";
+            let itemClass = ".item";
+            let id = 0;
+            let btnParentSb = "";
+            let itemsSplit = "";
+            let sampwidth = $(itemsMainDiv).width();
+            let bodyWidth = $("main").width();
+            $(itemsDiv).each(function () {
+                id = id + 1;
+                let itemNumbers = $(this).find(itemClass).length;
+                btnParentSb = $(this)
+                    .parent()
+                    .attr(dataItems);
+                itemsSplit = btnParentSb.split(",");
+                $(this)
+                    .parent()
+                    .attr("id", "MultiCarousel" + id);
+
+                var newWidthConst = bodyWidth/230;
+                itemWidth = bodyWidth*(1/newWidthConst);
+                $(this).css({
+                    transform: "translateX(0px)",
+                    width: itemWidth * itemNumbers
+                });
+                $(this)
+                    .find(itemClass)
+                    .each(function () {
+                        $(this).outerWidth(itemWidth);
+                    });
+
+                $(".leftLst").addClass("over");
+                $(".rightLst").removeClass("over");
+                // alert("Finished or whateva");
+            });
+        }
+
+//920
+//184
+        //this function used to move the items
+        function ResCarousel(e, el, s) {
+            let leftBtn = ".leftLst";
+            let rightBtn = ".rightLst";
+            let translateXval = "";
+            let divStyle = $(el + " " + itemsDiv).css("transform");
+            let values = divStyle.match(/-?[\d.]+/g);
+            let xds = Math.abs(values[4]);
+            if (e === 0) {
+
+                translateXval = parseInt(xds) - parseInt(itemWidth * s);
+                // alert("left translate: " + translateXval);
+                $(el + " " + rightBtn).removeClass("over");
+                if (translateXval <= itemWidth / 2) {
+                    translateXval = 0;
+                    $(el + " " + leftBtn).addClass("over");
+                }
+            } else if (e === 1) {
+                let itemsCondition =
+                    $(el)
+                        .find(itemsDiv)
+                        .width() - $(el).width();
+                translateXval = parseInt(xds) + parseInt(itemWidth * s);
+                //alert("right translate: " + translateXval);
+                $(el + " " + leftBtn).removeClass("over");
+
+                if (translateXval >= itemsCondition - itemWidth / 2) {
+                    translateXval = itemsCondition;
+                    $(el + " " + rightBtn).addClass("over");
+                }
+            }
+            $(el + " " + itemsDiv).css(
+                "transform",
+                "translateX(" + -translateXval + "px)"
+            );
+        }
+    };
 
 
 /*    org_grid_component(org) {
@@ -174,7 +288,6 @@ org_grid_component(org) {
                 <Card style={{width: "16rem", height: "20rem", flex: 1}} className="text-center">
                     <Card.Header style={{flex: 1}}>{org.clubName}</Card.Header>
                     <Card.Img src={org.img} style={{width: "100%", height: "15vw", "objectFit": "cover"}}/>
-
                     <Card.Body style={{flex:5}}>
                         <Button onClick={() => {
                             this.redirectToClubDetails(org.clubReference);
@@ -184,7 +297,6 @@ org_grid_component(org) {
             </div>
         );
     }
-
     org_multi_item_carousel(tag, tagList) {
         return (
             <div className="container" key={tag}>
@@ -212,129 +324,12 @@ org_grid_component(org) {
 
     componentDidMount() {
         this._isMounted = true;
+        this.setUpCarousel()
     }
 }
 //TAKEN FROM ONLINE FOR THE CAROUSEL
 
-$(document).ready(function () {
-    //setTimeout(function() {
-    let itemsMainDiv = ".MultiCarousel";
-    let itemsDiv = ".MultiCarousel-inner";
-    let itemWidth = "";
-    $(".leftLst, .rightLst").mousedown(function () {
-        let condition = $(this).hasClass("leftLst");
-        if (condition) click(0, this);
-        else click(1, this);
-    });
-    $(".leftLst, .rightLst").mouseup(function () {
-        let condition = $(this).hasClass("leftLst");
-       // if (condition) click(0, this, 0);
-        //else click(1, this, 0);
-       // let condition = $(this).hasClass("leftLst");
-        //if (condition) click(0, this);
-        //else click(1, this);
-    });
-    ResCarouselSize();
 
-    $(window).resize(function () {
-        ResCarouselSize();
-        // }, 5000);
-    });
-
-        //It is used to get some elements from btn
-    function click(ell, ee) {
-        //function(){
-            let Parent =
-            "#" +
-            $(ee)
-                .parent()
-                .attr("id");
-        let slide = $(Parent).attr("data-slide");
-        ResCarousel(ell, Parent, slide);
-        
-        //}
-    }
-
-    //this function define the size of the items
-    // YO BODY WIDTH IS 820.8
-    function ResCarouselSize() {
-        //console.log( $(itemsMainDiv).width());
-        let incno = 0;
-        let dataItems = "data-items";
-        let itemClass = ".item";
-        let id = 0;
-        let btnParentSb = "";
-        let itemsSplit = "";
-        let sampwidth = $(itemsMainDiv).width();
-        let bodyWidth = $("main").width();
-        $(itemsDiv).each(function () {
-            id = id + 1;
-            let itemNumbers = $(this).find(itemClass).length;
-            btnParentSb = $(this)
-                .parent()
-                .attr(dataItems);
-            itemsSplit = btnParentSb.split(",");
-            $(this)
-                .parent()
-                .attr("id", "MultiCarousel" + id);
-				
-			var newWidthConst = bodyWidth/230;
-			 itemWidth = bodyWidth*(1/newWidthConst);
-            $(this).css({
-                transform: "translateX(0px)",
-                width: itemWidth * itemNumbers
-            });
-            $(this)
-                .find(itemClass)
-                .each(function () {
-                    $(this).outerWidth(itemWidth);
-                });
-
-            $(".leftLst").addClass("over");
-            $(".rightLst").removeClass("over");
-            // alert("Finished or whateva");
-        });
-    }
-
-//920
-//184
-    //this function used to move the items
-    function ResCarousel(e, el, s) {
-       let leftBtn = ".leftLst";
-        let rightBtn = ".rightLst";
-        let translateXval = "";
-        let divStyle = $(el + " " + itemsDiv).css("transform");
-        let values = divStyle.match(/-?[\d.]+/g);
-        let xds = Math.abs(values[4]);
-        if (e === 0) {
-
-            translateXval = parseInt(xds) - parseInt(itemWidth * s);
-           // alert("left translate: " + translateXval);
-            $(el + " " + rightBtn).removeClass("over");
-            if (translateXval <= itemWidth / 2) {
-                translateXval = 0;
-                $(el + " " + leftBtn).addClass("over");
-            }
-        } else if (e === 1) {
-            let itemsCondition =
-                $(el)
-                    .find(itemsDiv)
-                    .width() - $(el).width();
-            translateXval = parseInt(xds) + parseInt(itemWidth * s);
-             //alert("right translate: " + translateXval);
-            $(el + " " + leftBtn).removeClass("over");
-
-            if (translateXval >= itemsCondition - itemWidth / 2) {
-                translateXval = itemsCondition;
-                $(el + " " + rightBtn).addClass("over");
-            }
-        }
-        $(el + " " + itemsDiv).css(
-            "transform",
-            "translateX(" + -translateXval + "px)"
-        );
-    }
-});
 
 function org_multi_item_carousel(tag, tagList) {
       let itemsInCarousel = [];
@@ -391,4 +386,3 @@ function org_grid_component(org) {
     );
 };
 export default Home;
-

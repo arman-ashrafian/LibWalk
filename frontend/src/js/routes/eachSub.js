@@ -49,6 +49,7 @@ class EachSub extends React.Component {
                 club_id: this.state.club_id
             }
         });
+        window.location.reload();
     }
 
     render() {
