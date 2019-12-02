@@ -108,7 +108,7 @@ class Orgs extends React.Component {
     };
 
     return (
-      <div>
+      <div className="body">
         <NavBar {...this.props} />
         <div className="container">
           <Card>
@@ -159,7 +159,15 @@ class Orgs extends React.Component {
               )}
 
               {/*Show events from the clubs */}
-              <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>{showEvents}</div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap"
+                }}
+              >
+                {showEvents}
+              </div>
             </Card.Body>
           </Card>
         </div>
