@@ -36,7 +36,16 @@ class EachEvent extends React.Component {
     async componentDidMount() {
         console.log(this.props.eventId)
         await getEvent(this.props.eventId).then(json => {
-            this.setState({
+            
+		if (json === undefined) {
+
+		    //console.warn(message: 'Firebase error returned undefined for getClub with arg ' + this.state.clubRef);
+		    alert('Firebase response was undefined.');
+		    return;
+
+		}
+
+		this.setState({
                 event: {
                     eventName: json["eventName"],
                     description: json["description"],
