@@ -111,16 +111,11 @@ class Announcements extends React.Component {
             grid.push(v)
         });
 
-        getClub(Object.keys(grid_items)).then(clubInfo => {
-            if(clubInfo !== undefined) {
-                this.setState({clubName: clubInfo.clubName})
-            }
-        });
-
         return (
-            <div key={grid.length}>
-                <h5 className="h5 text-center mt-5">{this.state.clubName}</h5>
-                <CardDeck>{Object.values(grid_items)}</CardDeck>
+            <div>
+                <div key={grid.length}>
+                    <CardDeck>{Object.values(grid_items)}</CardDeck>
+                </div>
             </div>
         );
     };
@@ -131,23 +126,22 @@ class Announcements extends React.Component {
      * @returns {*}
      */
     announcement_card = (clubref, announcement) => {
+
         const elem = (<div key={announcement.annReference}>
-            <Row>
-                <Card className="ml-5" border="warning" style={{fontSize: 12, width: "20rem", height: "10rem"}}>
-                    <Card.Header>
-                        <strong className="mr-auto" style={{fontSize: 24}}> 📣 📣 📣 </strong>
-                    </Card.Header>
-                    <Card.Body>{announcement.annDetail}</Card.Body>
-                    <Card.Footer>
-                        <strong> Last posted <TimeAgo date={announcement.time}/> </strong>
-                    </Card.Footer>
-                </Card>
-            </Row>
+            <h5 className="h5 text-center mt-5 ml-5">{clubref}</h5>
+            <Card className="ml-5" border="warning" style={{fontSize: 12, width: "20rem", height: "10rem"}}>
+                <Card.Header>
+                    <strong className="mr-auto" style={{fontSize: 24}}> 📣 📣 📣 </strong>
+                </Card.Header>
+                <Card.Body>{announcement.annDetail}</Card.Body>
+                <Card.Footer>
+                    <strong> Last posted <TimeAgo date={announcement.time}/> </strong>
+                </Card.Footer>
+            </Card>
         </div>);
 
         return elem;
     };
-
 
     render() {
         return (
