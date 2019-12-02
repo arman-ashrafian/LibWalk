@@ -6,7 +6,6 @@ import db from "../../firebase";
 import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
-import Row from "react-bootstrap/Row";
 
 class Announcements extends React.Component {
     /**
