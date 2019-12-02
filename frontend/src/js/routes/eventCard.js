@@ -96,13 +96,13 @@ class EventCard extends React.Component {
                         display: "flex",
                         justifyContent: "space-around",
                         alignItems: "center",
-                        fontSize: "25px"
+                        fontSize: "20px"
                     }}
                     >
                     📍 {this.state.event.location} &nbsp;&nbsp; 📅{" "}
                     {this.state.event.date} &nbsp;&nbsp; 🕔 {this.state.event.time}
                     </Card.Subtitle>
-                    <Card.Text style={{ textAlign: "justify" }}>
+                    <Card.Text style={{ textAlign: "center" }}>
                     {this.state.event.description}
                     </Card.Text>
                     <div style={{ textAlign: "center" }}>

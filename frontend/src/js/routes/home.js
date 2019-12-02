@@ -134,7 +134,7 @@ org_grid_component(org) {
 		org.img = org.pictureURL;
 	} 
     return (
-          <div className="item" onClick={()=> {this.redirectToClubDetails(org.clubReference)}}>
+          <div className="item" >
               <Card style={{width: "90%", height: "26vh"}} className="text-center">
        
          
@@ -151,7 +151,9 @@ org_grid_component(org) {
                       <Card.Body style={{width: "100%", height: "20vh"}}>
                           <Card.Text style = {{ whiteSpace: "nowrap" , overflow: "hidden", textOverflow: "ellipsis"}}>
                           <small style={{color:"#000000",fontSize: "2.2vh",fontWeight:"500"}}>
-							{org.clubName}
+                            <a onClick={()=> {this.redirectToClubDetails(org.clubReference)}}>
+                                {org.clubName}
+                            </a>
                           </small>
                         </Card.Text>
                       </Card.Body>
