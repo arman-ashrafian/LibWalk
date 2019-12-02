@@ -107,19 +107,12 @@ class Announcements extends React.Component {
         let grid = [];
 
         Object.entries(grid_items).forEach((k, v) => {
-            const e = (
-                <div>
-                    <Row>
-                        {v}
-                    </Row>
-                </div>
-            );
-            grid.push(e);
+            grid.push(v);
         });
 
         return (
             <div key={grid.length}>
-                <CardDeck> {grid} </CardDeck>
+                <CardDeck> {Object.values(grid_items)} </CardDeck>
             </div>
         );
     };
