@@ -52,7 +52,7 @@ class NavBar extends React.Component {
         //interesting
         return (
             <div>
-                <Navbar style={{backgroundColor: '#006A96'}} collapseOnSelect expand="lg" variant="dark">
+                <Navbar style={{backgroundColor: '#18314f'}} collapseOnSelect expand="lg" variant="dark">
                     {/* navbar.brand href is empty string so the cursor remains an arrow when hovering */}
                     <Navbar.Brand href=" " onClick={this.switch_view_home}>LibWalk</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
