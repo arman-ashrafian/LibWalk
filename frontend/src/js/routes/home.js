@@ -35,6 +35,14 @@ class Home extends React.Component {
                 orgs: []
             };
         }
+/*window.onload = function() {
+    if(!window.location.hash) {
+        window.location = window.location + '#loaded';
+        window.location.reload();
+    }
+}
+
+window.onload();*/
 
     }
 
@@ -160,8 +168,9 @@ org_grid_component(org) {
        
         </div>
     );
-};
 
+
+};
 
 
 
