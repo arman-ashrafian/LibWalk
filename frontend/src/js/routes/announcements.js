@@ -3,10 +3,11 @@ import "../cloud.js";
 import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
-import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
-import Col from "react-bootstrap/Col";
+import {accessAnnouncements, getAnnouncements, getUser, getClub} from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
+import TimeAgo from "@jshimko/react-time-ago";
+import Row from "react-bootstrap/Row"
 
 class Announcements extends React.Component {
     /**
@@ -17,8 +18,8 @@ class Announcements extends React.Component {
         super(props);
         this.state = {
             userId: "",
-            // orgs: [],
-            announcements: [],
+            orgs: [],
+            announcements: {},
         };
 
     };
@@ -40,7 +41,6 @@ class Announcements extends React.Component {
                         alert("You haven't yet subscribed to any organizations!");
                     } else {
                         this.setState({subs: json.subscriptions, user: json});
-                        this._gotSubs = true;
                     }
                 }).then(this.getAnnouncements);
             } else {
@@ -53,21 +53,19 @@ class Announcements extends React.Component {
      * Once a user is logged in and we have their subs, get all their announcements.
      */
     getAnnouncements = () => {
-        let announcements_list = [];
-        if (this.state.announcements !== []) {
+        let announcements_list = {};
+        if (this.state.announcements !== {}) {
             if (this.state.subs !== undefined) {
                 // get the announcements for each sub
                 this.state.subs.forEach(org => {
+                    announcements_list[org] = [];
                     getAnnouncements(org).then(announcements => {
                         if (announcements !== undefined) {
-
                             announcements.forEach(announcement => {
                                 accessAnnouncements(announcement).then(each => {
                                     if (each !== undefined) {
-                                        announcements_list.push(each);
-                                        this.setState({announcements : announcements_list});
-                                        console.log('Curr announcements ' + JSON.stringify(this.state.announcements));
-
+                                        announcements_list[org].push(each);
+                                        this.setState({announcements: announcements_list});
                                     } else {
                                         console.warn('Got bad announcement from backend. ' + each);
                                     }
@@ -86,44 +84,43 @@ class Announcements extends React.Component {
         this.render();
     };
 
-
     /**
      * Makes the entire grid of announcements for a user's subs.
      * @param announcements
      * @returns {*}
      */
     announcement_grid = (announcements) => {
-        console.log(this.state);
-        let grid_items = [];
-        let numcols = 4;
-        let numrows = announcements.length / numcols;
-        numrows = Math.ceil(numrows);
+        // dict of club: announcement pairs
+        let grid_items = {};
 
-        announcements.forEach(a => {
-            grid_items.push(this.announcement_card(a));
+        Object.keys(announcements).forEach(clubname => {
+            grid_items[clubname] = [];
         });
 
+        Object.keys(announcements).forEach((clubref) => {
+            // convert the first 3 announcements
+            announcements[clubref].slice(0, 3).forEach(ann => {
+                grid_items[clubref].push(this.announcement_card(clubref, ann));
+            });
+        });
+
+        // jsx rows to be rendered
         let grid = [];
 
-        for (let i = 0; i <= numrows; i++) {
-            let row = [];
-            for (let j = 0; j < numcols; j++) {
-                row.push(
-                    <div className="club_grid_component">
-                        <Col>{grid_items[i * numcols + j]}</Col>
-                        <div>
-                            <br/>
-                            <br/>
-                        </div>
-                    </div>
-                );
+        Object.entries(grid_items).forEach((k, v) => {
+            grid.push(v)
+        });
+
+        getClub(Object.keys(grid_items)).then(clubInfo => {
+            if(clubInfo !== undefined) {
+                this.setState({clubName: clubInfo.clubName})
             }
-            grid.push(row);
-        }
+        });
 
         return (
             <div key={grid.length}>
-                <CardDeck> {grid} </CardDeck>
+                <h5 className="h5 text-center mt-5">{this.state.clubName}</h5>
+                <CardDeck>{Object.values(grid_items)}</CardDeck>
             </div>
         );
     };
@@ -133,14 +130,21 @@ class Announcements extends React.Component {
      * @param announcement
      * @returns {*}
      */
-    announcement_card = announcement => {
+    announcement_card = (clubref, announcement) => {
         const elem = (<div key={announcement.annReference}>
-            <Card>
-                <Card.Header>{announcement.annDetail}</Card.Header>
-                <Card.Body>{announcement.details}</Card.Body>
-                <Card.Footer>{announcement.time}</Card.Footer>
-            </Card>
+            <Row>
+                <Card className="ml-5" border="warning" style={{fontSize: 12, width: "20rem", height: "10rem"}}>
+                    <Card.Header>
+                        <strong className="mr-auto" style={{fontSize: 24}}> 📣 📣 📣 </strong>
+                    </Card.Header>
+                    <Card.Body>{announcement.annDetail}</Card.Body>
+                    <Card.Footer>
+                        <strong> Last posted <TimeAgo date={announcement.time}/> </strong>
+                    </Card.Footer>
+                </Card>
+            </Row>
         </div>);
+
         return elem;
     };
 
@@ -149,12 +153,13 @@ class Announcements extends React.Component {
         return (
             <div>
                 <NavBar {...this.props} />
-                <main className="mt-5 pt-5">
+                <main className="mt-1 pt-5">
                     <div className="container centerPage">
                         <div className="row centerPage">
                             {/*Display User Information*/}
                             <div className="col-sm-12 text-center">
-                                <h1 className="h1 text-center mb-5">Announcements</h1>
+                                <h1 className="h1 text-center mb-1">Announcements</h1>
+                                <h5>📢 Below Are The Announcements From Organizations You Subscribed To 📢</h5>
                             </div>
                             <div className="div-centered">
                                 {this.announcement_grid(this.state.announcements)}

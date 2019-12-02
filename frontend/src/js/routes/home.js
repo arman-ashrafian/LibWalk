@@ -19,7 +19,6 @@ class Home extends React.Component {
         };
 
         this.generateTagList = this.generateTagList.bind(this);
-	//this.org_grid_component = this.org_grid_component.bind(this);
 
         this.generateTagList();
 
@@ -36,6 +35,7 @@ class Home extends React.Component {
                 orgs: []
             };
         }
+
     }
 
     render() {
@@ -69,7 +69,7 @@ class Home extends React.Component {
         return (
             <div  style={{backgroundColor: "white", width:'85%'}}>
                 { Object.keys(tagMap).map( tag => 
-                   org_multi_item_carousel(tag, tagMap[tag])
+                   this.org_multi_item_carousel(tag, tagMap[tag])
                    //org_multi_item_carousel("Cultural", tagMap["Cultural"])
                   )
                 //org_multi_item_carousel("Cultural", tagMap["Cultural"])
@@ -105,6 +105,66 @@ class Home extends React.Component {
             }
         });
     }
+
+
+org_multi_item_carousel(tag, tagList) {
+      let itemsInCarousel = [];
+      return (
+            <div /*className = "container"*/  style={{backgroundColor: "#FFFFFF"}}>
+             <h3 style={{fontSize: "3.2vh",textAlign:'left', marginLeft:'5vh', marginBottom:'-2vh', fontWeight:"400", zIndex:"20000000"}}>{tag}</h3>
+              <div className="MultiCarousel" data-items="1,3,3,5" data-slide="2" id="MultiCarousel"  data-interval="1000"  style={{backgroundColor: "rgba(0,0,0,0)"}}>
+                 <div className="MultiCarousel-inner" style={{backgroundColor: "#FFFFFF"}}>
+                      {tagList.map( clubItem => 
+                        this.org_grid_component(clubItem)
+                        )
+                      }
+                      </div>
+                    <button  style={{ borderWidth: "0px", width: "5.4vh", height: "5.4vh", borderRadius: "2.7vh", textAlign: "center"}} className="leftLst">&lt;</button>
+                    <button style={{ borderWidth: "0px",width: "5.4vh", height: "5.4vh", borderRadius: "2.7vh", textAlign: "center"}} className="rightLst">&gt;</button>
+              </div>
+              </div>
+        );
+    };
+// each club component card to be used in org_multi_item_carousel
+org_grid_component(org) {
+    org = Object.values(org)[0]; 
+	org.img = "https://picsum.photos/150/50";; 
+	if (org.pictureURL != "") {
+		org.img = org.pictureURL;
+	} 
+    return (
+       
+          <div className="item">
+              <Card style={{width: "90%", height: "40vh",}} className="text-center">
+                      {/*<Card.Img variant="top" src={org.img}/>*/}
+					  <div style= {{}}> 
+                      <Card.Img
+                          src={org.img}
+                          style={{
+                              width: '100%',
+                              height: '18vh',
+                              'object-fit': 'cover'
+                          }}/>
+						  </div> 
+                      <Card.Body style={{width: "100%", height: "20vh"}}>
+                          <Card.Text style = {{ whiteSpace: "nowrap" , overflow: "hidden", textOverflow: "ellipsis"}}>
+                          <small style={{color:"#000000",fontSize: "2.2vh",fontWeight:"500"}}>
+							{org.clubName}
+                          </small>
+                        </Card.Text>
+                          <button className=" coolDude btn " style = {{height: '6vh',fontSize: "1.6vh", textAlign: "center",verticalAlign: "middle" }}  /*href={org.pageURL}*/onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
+							<div  style={{position: "relative", top: "50%",transform: "translateY(-15%)"}}>Learn More</div>
+                          </button>
+                      </Card.Body>
+              </Card>
+       
+        </div>
+    );
+};
+
+
+
+
 
 /*    org_grid_component(org) {
         org = Object.values(org)[0];
@@ -154,7 +214,6 @@ class Home extends React.Component {
         this._isMounted = true;
     }
 }
-
 //TAKEN FROM ONLINE FOR THE CAROUSEL
 
 $(document).ready(function () {
@@ -331,6 +390,5 @@ function org_grid_component(org) {
         </div>
     );
 };
-
 export default Home;
 
