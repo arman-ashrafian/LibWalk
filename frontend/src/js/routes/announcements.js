@@ -15,12 +15,10 @@ class Announcements extends React.Component {
      */
     constructor(props) {
         super(props);
-        this._gotSubs = false;
         this.state = {
             userId: "",
             orgs: [],
             announcements: [],
-            eachAnnouncement: [],
         };
 
     };
@@ -36,8 +34,7 @@ class Announcements extends React.Component {
                 getUser(firebaseUser.uid).then(json => {
                     // failure check
                     if (json === undefined) {
-                        console.warn('Firebase was unable to get user from database.');
-                        alert("You haven't yet subscribed to any organizations!")
+                        alert("Firebase usage exceeded, refresh page in a minute.")
                         this.setState({orgs: []})
                     } else if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
                         alert("You haven't yet subscribed to any organizations!");
@@ -57,8 +54,8 @@ class Announcements extends React.Component {
      * Once a user is logged in and we have their subs, get all their announcements.
      */
     getAnnouncements = () => {
+        let announcements_list = [];
         if (this.state.announcements !== []) {
-            let org_announcements = [];
             if (this.state.subs !== undefined) {
                 // get the announcements for each sub
                 this.state.subs.forEach(org => {
@@ -68,8 +65,9 @@ class Announcements extends React.Component {
                             announcements.forEach(announcement => {
                                 accessAnnouncements(announcement).then(each => {
                                     if (each !== undefined) {
-                                        org_announcements.push(each);
-                                        console.log('each ' + JSON.stringify(each) + ' curre announcements ' + JSON.stringify(this.state.announcements));
+                                        announcements_list.push(each);
+                                        this.setState({announcements : announcements_list});
+                                        console.log('Curr announcements ' + JSON.stringify(this.state.announcements));
 
                                     } else {
                                         console.warn('Got bad announcement from backend. ' + each);
@@ -82,13 +80,13 @@ class Announcements extends React.Component {
                     });
                 })
             }
-            this.setState({announcements: org_announcements});
-            console.log('Successfully updated announcements into state. ' + JSON.stringify(this.state.announcements));
+            this.setState({});
         } else {
             console.log('Announcements were already pulled, refresh page to re-load them, else using cache.');
         }
         this.render();
     };
+
 
     /**
      * Makes the entire grid of announcements for a user's subs.
@@ -96,6 +94,7 @@ class Announcements extends React.Component {
      * @returns {*}
      */
     announcement_grid = (announcements) => {
+        console.log(this.state);
         let grid_items = [];
         let numcols = 4;
         let numrows = announcements.length / numcols;
@@ -148,14 +147,6 @@ class Announcements extends React.Component {
 
 
     render() {
-        if (this.state.orgs === undefined) {
-            this.setState({
-                orgs: []
-            });
-        }
-
-        console.log('render called ' + JSON.stringify(this.state.announcements));
-
         return (
             <div>
                 <NavBar {...this.props} />
