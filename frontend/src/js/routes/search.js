@@ -276,6 +276,7 @@ class Search extends React.Component {
     return (
       <div>
         {/*<Card style={{width: '18rem'}}>*/}
+        <a onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
           <Card
             style={{ width: "20rem", height: "13rem" }}
             className="text-center"
@@ -283,12 +284,11 @@ class Search extends React.Component {
             <Card.Img variant="top" src={org.img} />
             <Card.Body className="text-center">
                 <Card.Title>
-                    <a onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
-                        {org.clubName}
-                    </a>
+                  {org.clubName}
                 </Card.Title>
             </Card.Body>
           </Card>
+        </a>
       </div>
     );
   };
