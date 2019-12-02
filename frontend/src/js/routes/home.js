@@ -134,8 +134,9 @@ org_grid_component(org) {
 	} 
     return (
        
-          <div className="item" onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
-              <Card style={{width: "90%", height: "26vh",}} className="text-center">
+          <div className="item">
+            //<a onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
+	    <Card style={{width: "90%", height: "26vh",}} className="text-center">
                       {/*<Card.Img variant="top" src={org.img}/>*/}
 					  <div style= {{}}> 
                       <Card.Img
@@ -154,6 +155,7 @@ org_grid_component(org) {
                         </Card.Text>
                       </Card.Body>
               </Card>
+	    //</a>
        
         </div>
     );
