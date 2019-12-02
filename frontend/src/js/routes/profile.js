@@ -176,10 +176,16 @@ class Profile extends React.Component {
                                                       defaultValue={this.state.user.major}/>
                                     </Form.Group>
 
-                                    <Form.Group controlId="formYear">
-                                        <Form.Label>Year</Form.Label>
-                                        <Form.Control type="year" placeholder="Enter Expected Graduation Year"
-                                                      defaultValue={this.state.user.year}/>
+                                    <Form.Group>
+                                        <Form.Label>School Year</Form.Label>
+                                        <Form.Control as="select" required className="form-control mb-4"
+                                            defaultValue={this.state.user.year}>
+                                            <option>Freshman</option>
+                                            <option>Sophomore</option>
+                                            <option>Junior</option>
+                                            <option>Senior</option>
+                                            <option>Graduate</option>
+                                        </Form.Control>
                                     </Form.Group>
                                     <Button variant="primary" type="submit">
                                         Submit
