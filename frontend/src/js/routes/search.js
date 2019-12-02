@@ -240,7 +240,7 @@ class Search extends React.Component {
           var match = false;
           org.tags.forEach(function(orgTag) {
             //Check non case sensitive
-            if (orgTag.toLowerCase() === tag.toLowerCase()) {
+            if (orgTag.toLowerCase() === tag.toLowerCase().trim()) {
               match = true;
               console.log("match");
             }
