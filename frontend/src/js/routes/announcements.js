@@ -7,7 +7,8 @@ import {accessAnnouncements, getAnnouncements, getUser, getClub} from "../cloud"
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
 import TimeAgo from "@jshimko/react-time-ago";
-import Row from "react-bootstrap/Row"
+import Row from "react-bootstrap/Row";
+import EachAnn from "./eachAnn";
 
 class Announcements extends React.Component {
     /**
@@ -128,23 +129,10 @@ class Announcements extends React.Component {
     announcement_card = (clubref, announcement) => {
         //This doesn't work lol
         // let clubname;
-        // getClub(clubref).then(clubInfo => {
-        //     clubname = clubInfo.['clubName']
+        // await getClub(clubref).then(clubInfo => {
+        //     clubname = clubInfo['clubName']
         // })
-        const elem = (<div key={announcement.annReference}>
-
-            <Card className="ml-5 mb-5" border="warning" style={{fontSize: 14, width: "20rem", height: "10rem"}}>
-                <Card.Header>
-                    <strong className="mr-auto"> 📣{clubref}📣 </strong>
-                </Card.Header>
-                <Card.Body>{announcement.annDetail}</Card.Body>
-                <Card.Footer>
-                    <strong> Last posted <TimeAgo date={announcement.time}/> </strong>
-                </Card.Footer>
-            </Card>
-        </div>);
-
-        return elem;
+        return(<EachAnn announcement={announcement} clubRef={clubref} {...this.props} />);
     };
 
     render() {
