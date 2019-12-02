@@ -322,7 +322,7 @@ function org_grid_component(org) {
 							{org.clubName}
                           </small>
                         </Card.Text>
-                          <button className=" coolDude btn " style = {{height: '6vh',fontSize: "1.6vh", textAlign: "center",verticalAlign: "middle" }}  href={org.pageURL}/*onClick={() => {this.redirectToClubDetails(org.clubReference)}}*/>
+                          <button className=" coolDude btn " style = {{height: '6vh',fontSize: "1.6vh",borderRadius: "0.5vh", textAlign: "center",verticalAlign: "middle", textTransform: "none", fontWeight: "bold" }}  href={org.pageURL}/*onClick={() => {this.redirectToClubDetails(org.clubReference)}}*/>
 							<div  style={{position: "relative", top: "50%",transform: "translateY(-50%)"}}>Learn More</div>
                           </button>
                       </Card.Body>
