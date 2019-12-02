@@ -43,7 +43,7 @@ class Orgs extends React.Component {
 
     /* Authentication */
     db.auth().onAuthStateChanged(firebaseUser => {
-      if (firebaseUser) {
+      if (firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
         // getUser using userId and check if they're already subscribed
         getUser(firebaseUser.uid).then(json => {
           this.setState({
