@@ -17,7 +17,7 @@ class Announcements extends React.Component {
         super(props);
         this.state = {
             userId: "",
-            orgs: [],
+            // orgs: [],
             announcements: [],
         };
 
@@ -46,7 +46,6 @@ class Announcements extends React.Component {
             } else {
                 console.log("Redirecting to login page, admin should not have announcements.");
             }
-
         });
     }
 
