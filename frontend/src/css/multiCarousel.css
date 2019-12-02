@@ -8,15 +8,20 @@
 .MultiCarousel .leftLst, .MultiCarousel .rightLst { position:absolute; 
 	border-radius:50%;
 	top:calc(50% - 20px);
-	border-color: #F2C44C;
+	 background:#18314f;
+	 color:#ffffff;
 }
 .MultiCarousel .leftLst { left:0; }
 .MultiCarousel .rightLst { right:0; }
     
 .MultiCarousel .leftLst.over, .MultiCarousel .rightLst.over { pointer-events: none;
- background:#DAA520;
+ background:#f3efe0 ; color:#000000;
   }
-.tagName .h3{
+.coolDude {
+	background-color: #829191 !important;
+	color:#ffffff !important;
+	text-align: center;
+	vertical-align: middle;
 }
 .btn-circle {
    /* width: 30px;
