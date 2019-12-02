@@ -288,7 +288,7 @@ class AdminHome extends React.Component {
             });
 
         const newAnnList = [...this.state.org.announcements]
-        newAnnList.push(this.state.announcement.annReference)
+        newAnnList.unshift(this.state.announcement.annReference)
         this.setState({
             org: {
                 ...this.state.org,

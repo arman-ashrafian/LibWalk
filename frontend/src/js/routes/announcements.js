@@ -3,9 +3,11 @@ import "../cloud.js";
 import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
-import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
+import {accessAnnouncements, getAnnouncements, getUser, getClub} from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
+import TimeAgo from "@jshimko/react-time-ago";
+import Row from "react-bootstrap/Row"
 
 class Announcements extends React.Component {
     /**
@@ -88,7 +90,7 @@ class Announcements extends React.Component {
      * @returns {*}
      */
     announcement_grid = (announcements) => {
-        // dict of club:announcement pairs
+        // dict of club: announcement pairs
         let grid_items = {};
 
         Object.keys(announcements).forEach(clubname => {
@@ -106,12 +108,14 @@ class Announcements extends React.Component {
         let grid = [];
 
         Object.entries(grid_items).forEach((k, v) => {
-            grid.push(v);
+            grid.push(v)
         });
 
         return (
-            <div key={grid.length}>
-                <CardDeck> {Object.values(grid_items)} </CardDeck>
+            <div>
+                <div key={grid.length}>
+                    <CardDeck>{Object.values(grid_items)}</CardDeck>
+                </div>
             </div>
         );
     };
@@ -122,27 +126,38 @@ class Announcements extends React.Component {
      * @returns {*}
      */
     announcement_card = (clubref, announcement) => {
+        //This doesn't work lol
+        // let clubname;
+        // getClub(clubref).then(clubInfo => {
+        //     clubname = clubInfo.['clubName']
+        // })
         const elem = (<div key={announcement.annReference}>
-            <Card>
-                <Card.Header>{clubref}</Card.Header>
+
+            <Card className="ml-5 mb-5" border="warning" style={{fontSize: 14, width: "20rem", height: "10rem"}}>
+                <Card.Header>
+                    <strong className="mr-auto"> 📣{clubref}📣 </strong>
+                </Card.Header>
                 <Card.Body>{announcement.annDetail}</Card.Body>
-                <Card.Footer>{announcement.time}</Card.Footer>
+                <Card.Footer>
+                    <strong> Last posted <TimeAgo date={announcement.time}/> </strong>
+                </Card.Footer>
             </Card>
         </div>);
+
         return elem;
     };
-
 
     render() {
         return (
             <div>
                 <NavBar {...this.props} />
-                <main className="mt-5 pt-5">
+                <main className="mt-1 pt-5">
                     <div className="container centerPage">
                         <div className="row centerPage">
                             {/*Display User Information*/}
                             <div className="col-sm-12 text-center">
-                                <h1 className="h1 text-center mb-5">Announcements</h1>
+                                <h1 className="h1 text-center mb-2">Announcements</h1>
+                                <h5 className="mb-5">📢 Below Are The Announcements From Organizations You Subscribed To 📢</h5>
                             </div>
                             <div className="div-centered">
                                 {this.announcement_grid(this.state.announcements)}
