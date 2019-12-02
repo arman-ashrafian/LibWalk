@@ -179,20 +179,20 @@ class AdminHome extends React.Component {
         })
 
         console.log(this.state.org.tags)
-	
+
 
         //add tag to club
-        if ( this.state.org.tags.includes(this.state.tag) === false) {
+        if (this.state.org.tags.includes(this.state.tag) === false) {
             await this.state.org.tags.push(this.state.tag);
         }
 
         //add club to tag
-        if ( this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
+        if (this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
             await this.state.tagInfo.clubs.push(this.state.org.clubReference);
-	}
+        }
 
         await this.setState({
-	    tags: [...this.state.tagInfo.clubs]
+            tags: [...this.state.tagInfo.clubs]
         })
 
         console.log(this.state.org.tags)
@@ -407,11 +407,13 @@ class AdminHome extends React.Component {
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditTag} href={'#'}>Edit Tags</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleCreateEvent} href={'#'}>Create Event</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateEvent} href={'#'}>Create
+                                Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleCreateAnn} href={'#'}>Create Announcement</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateAnn} href={'#'}>Create
+                                Announcement</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleLogOut}  href={'#'}>Log Out</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleLogOut} href={'#'}>Log Out</Card.Link></ListGroup.Item>
                     </ListGroup>
                 </Card>
             </div>
@@ -419,11 +421,7 @@ class AdminHome extends React.Component {
     };
 
     // modals
-    /**
-     * Generates the jsx code to create and handle logic for a modal component to edit a clubs events.
-     * @returns {*}
-     */
-    
+
 
     /**
      * Generates the jsx code to create and handle logic for a modal component to edit a club's profile data.
@@ -579,6 +577,10 @@ class AdminHome extends React.Component {
         )
     };
 
+    /**
+     * Generates the jsx code to create and handle logic for a modal component to edit a clubs events.
+     * @returns {*}
+     */
     modal_create_ann = () => {
         return (
             <div>
@@ -640,7 +642,7 @@ class AdminHome extends React.Component {
 
                     <Card.Body>
 
-                        <Card.Title style={{fontSize:"2rem"}}>{this.state.org.clubName}</Card.Title>
+                        <Card.Title style={{fontSize: "2rem"}}>{this.state.org.clubName}</Card.Title>
 
                         <Card.Subtitle>{this.state.org.contactEmail} </Card.Subtitle>
 
@@ -654,8 +656,8 @@ class AdminHome extends React.Component {
                             {this.state.org.description}
                         </Card.Text>
 
-                        <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
-                                    {showEvents}
+                        <div style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
+                            {showEvents}
                         </div>
 
                     </Card.Body>
@@ -674,7 +676,7 @@ class AdminHome extends React.Component {
         return (
             <div>
                 {/*start the rest of the page*/}
-                <main >
+                <main>
                     <Container>
                         {/*<Row style={{flex: 5}}>*/}
                         <Row>
