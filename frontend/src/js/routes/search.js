@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { club_list } from "../cloud";
+import { club_list, getClubs } from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -15,7 +15,7 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      orgs: club_list,
+      orgs: [],
       search_mode: "Search By Name",
       search_keyword: "",
       results: [],
@@ -25,14 +25,25 @@ class Search extends React.Component {
     if (this.state.orgs === undefined) {
       this.state = {
         orgs: []
-      };
+      }
     }
+
+
 
     this.searchByKeyword = this.searchByKeyword.bind(this);
     this.searchByTags = this.searchByTags.bind(this);
     this.handleSearchSelect = this.handleSearchSelect.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.enterKey = this.enterKey.bind(this);
+  }
+
+  componentDidMount() {
+    getClubs().then(clubList =>{
+      this.setState({
+        orgs: clubList["clubs"]
+      })
+    })
+
   }
 
   render() {
