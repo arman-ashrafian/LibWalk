@@ -7,6 +7,8 @@ import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
 import Col from "react-bootstrap/Col";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
+import TimeAgo from "@jshimko/react-time-ago";
+import Row from "react-bootstrap/Row";
 
 class Announcements extends React.Component {
     /**
@@ -133,11 +135,17 @@ class Announcements extends React.Component {
      */
     announcement_card = announcement => {
         const elem = (<div key={announcement.annReference}>
-            <Card>
-                <Card.Header>{announcement.annDetail}</Card.Header>
-                <Card.Body>{announcement.details}</Card.Body>
-                <Card.Footer>{announcement.time}</Card.Footer>
-            </Card>
+            <Row>
+                <Card>
+                    {/*<Card.Header>{announcement.annDetail}</Card.Header>*/}
+                    <Card.Body>{announcement.annDetail}</Card.Body>
+                    <Card.Footer>
+                        <strong>
+                            Last posted <TimeAgo date={announcement.time}/>
+                        </strong>
+                    </Card.Footer>
+                </Card>
+            </Row>
         </div>);
         return elem;
     };
