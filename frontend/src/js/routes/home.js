@@ -155,7 +155,6 @@ org_grid_component(org) {
                         </Card.Text>
                       </Card.Body>
               </Card>
-	    //</a>
        
         </div>
     );
