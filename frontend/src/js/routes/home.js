@@ -20,7 +20,6 @@ class Home extends React.Component {
 
         this.generateTagList = this.generateTagList.bind(this);
 
-        this.generateTagList();
 
         // GET /getClubs & set the state when the api response is recieved
         /*getClubs().then(json => {
@@ -80,20 +79,21 @@ class Home extends React.Component {
 
     //Creates a hash map of tags
     generateTagList() {
+        let dict = {};
         this.state.orgs.forEach(org => {
             let org_values = Object.values(org)[0];
             org_values.tags.forEach(tag => {
-                let dict = this.state.tagDict;
                 if (!dict[tag]) {
                     dict[tag] = [];
                 }
                 dict[tag].push(org);
-                if (this._isMounted) {
-                    this.setState({tagDict: dict});
 
-                }
             });
         });
+
+        if (this._isMounted) {
+            this.setState({tagDict: dict});
+        }
         //console.log(this.state.tagDict)
     }
 
@@ -281,16 +281,17 @@ org_grid_component(org) {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         getClubs().then(clubList =>{
             this.setState({
                 orgs: clubList["clubs"]
             })
+
             this.generateTagList();
-            this.forceUpdate()
             this.setUpCarousel()
         })
 
-        this._isMounted = true;
+
     }
 }
 //TAKEN FROM ONLINE FOR THE CAROUSEL
