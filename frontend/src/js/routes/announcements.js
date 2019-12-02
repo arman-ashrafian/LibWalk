@@ -126,12 +126,16 @@ class Announcements extends React.Component {
      * @returns {*}
      */
     announcement_card = (clubref, announcement) => {
-
+        //This doesn't work lol
+        // let clubname;
+        // getClub(clubref).then(clubInfo => {
+        //     clubname = clubInfo.['clubName']
+        // })
         const elem = (<div key={announcement.annReference}>
-            <h5 className="h5 text-center mt-5 ml-5">{clubref}</h5>
-            <Card className="ml-5" border="warning" style={{fontSize: 12, width: "20rem", height: "10rem"}}>
+
+            <Card className="ml-5 mb-5" border="warning" style={{fontSize: 14, width: "20rem", height: "10rem"}}>
                 <Card.Header>
-                    <strong className="mr-auto" style={{fontSize: 24}}> 📣 📣 📣 </strong>
+                    <strong className="mr-auto"> 📣{clubref}📣 </strong>
                 </Card.Header>
                 <Card.Body>{announcement.annDetail}</Card.Body>
                 <Card.Footer>
@@ -152,8 +156,8 @@ class Announcements extends React.Component {
                         <div className="row centerPage">
                             {/*Display User Information*/}
                             <div className="col-sm-12 text-center">
-                                <h1 className="h1 text-center mb-1">Announcements</h1>
-                                <h5>📢 Below Are The Announcements From Organizations You Subscribed To 📢</h5>
+                                <h1 className="h1 text-center mb-2">Announcements</h1>
+                                <h5 className="mb-5">📢 Below Are The Announcements From Organizations You Subscribed To 📢</h5>
                             </div>
                             <div className="div-centered">
                                 {this.announcement_grid(this.state.announcements)}
