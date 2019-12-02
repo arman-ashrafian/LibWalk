@@ -19,7 +19,8 @@ class Events extends React.Component {
         super(props);
         this.state = {
             userId: "",
-            events: null
+            events: null,
+            querying: false,
         };
     }
 
@@ -31,10 +32,12 @@ class Events extends React.Component {
             ) {
                 console.log(firebaseUser.uid);
                 // getUser using userId and populate this.state
+                this.setState({querying: true});
                 getUserEvents(firebaseUser.uid).then(events => {
                     this.setState({
                         userId: firebaseUser.uid,
-                        events: events
+                        events: events,
+                        querying: false,
                     });
                 });
             } else {
@@ -76,12 +79,14 @@ class Events extends React.Component {
             <div>
                 <NavBar {...this.props} />
                 <main>
-                    <h1 className="h1 text-center mb-5" id="header">
-                        {" "}
+                <div className="col-sm-12 text-center">
+                    <h1 className="h1 text-center mb-2" id="header">
                         Events
                     </h1>
+                    <h5 className="mb-5">🗓 Below Are The Events From Organizations You Subscribed To 🗓</h5>
+                </div>
                     {
-                        (this.state.events === null) ?
+                        (this.state.events === null && this.state.querying === true) ?
                             <div style={{padding: '1em'}}>
                                 <Spinner animation="border" variant="info"/>
                             </div>
