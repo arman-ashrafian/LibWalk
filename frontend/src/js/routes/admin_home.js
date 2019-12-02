@@ -1,5 +1,5 @@
 import React from 'react'
-import {changeClub, changeEvent, changeTag, createAnnouncements, getClub, getEvent} from "../cloud";
+import {changeClub, changeEvent, changeTag, createAnnouncements, getClub} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -47,7 +47,8 @@ class AdminHome extends React.Component {
                 location: '',
                 pictureURL: '',
                 rsvpForm: '',
-                time: ''
+                time: '',
+                clubHosting: ''
             },
             tagInfo: {
                 clubs: [],
@@ -227,7 +228,8 @@ class AdminHome extends React.Component {
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
                 rsvpForm: e.target[6].value,
-                eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value
+                eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value,
+                clubHosting: this.state.org_id
             }
         });
 
