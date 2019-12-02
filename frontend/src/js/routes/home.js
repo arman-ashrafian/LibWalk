@@ -2,7 +2,7 @@ import React from "react";
 import NavBar from "../navbar";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import {club_list} from "../cloud";
+import {club_list, getClubs} from "../cloud";
 import "../../css/multiCarousel.css";
 import $ from "jquery";
 
@@ -11,7 +11,7 @@ class Home extends React.Component {
         super(props);
 
         this.state = {
-            orgs: club_list,
+            orgs: [],
             currentPage: 1,
             clubPerPage: 9,
             tagDict: {},
@@ -281,8 +281,16 @@ org_grid_component(org) {
     }
 
     componentDidMount() {
+        getClubs().then(clubList =>{
+            this.setState({
+                orgs: clubList["clubs"]
+            })
+            this.generateTagList();
+            this.forceUpdate()
+            this.setUpCarousel()
+        })
+
         this._isMounted = true;
-        this.setUpCarousel()
     }
 }
 //TAKEN FROM ONLINE FOR THE CAROUSEL
