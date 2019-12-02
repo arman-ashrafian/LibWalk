@@ -104,6 +104,7 @@ class Home extends React.Component {
                 club_id: club_id
             }
         });
+        window.location.reload();
     }
 
 

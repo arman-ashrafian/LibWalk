@@ -16,7 +16,7 @@ class EachEvent extends React.Component {
             eventName: "",
             location: "",
             date: "",
-            time: new Date(),
+            time: "",
             pictureURL: "",
             description: "",
             rsvpForm: "",
@@ -31,22 +31,20 @@ class EachEvent extends React.Component {
     this.handleEditEvent = this.handleEditEvent.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.deleteEvent = this.deleteEvent.bind(this);
-	this.fixTime = this.fixTime.bind(this);
-	this.timePrefill = this.timePrefill.bind(this);
   }
 
-    componentDidMount() {
+    async componentDidMount() {
         console.log(this.props.eventId)
-        getEvent(this.props.eventId).then(json => {
-			this.setState({
+        await getEvent(this.props.eventId).then(json => {
+            this.setState({
                 event: {
                     eventName: json["eventName"],
                     description: json["description"],
                     pictureURL: json["pictureURL"],
                     location: json["location"],
                     rsvpForm: json["rsvpForm"],
-                    time: new Date((json["time"]["_seconds"])*1000),
-                    //date: json["date"],
+                    time: json["time"],
+                    date: json["date"],
                     eventReference: json['eventReference']
                 }
             });
@@ -54,12 +52,12 @@ class EachEvent extends React.Component {
     }
 
     redirectToEventDetail() {
-		this.props.history.push({
-			pathname: "/events",
-			state: {
-				event_id: this.state.event.eventReference
-			}
-		});
+    this.props.history.push({
+        pathname: "/events",
+        state: {
+            event_id: this.state.event.eventReference
+        }
+    });
     }
 
     showEventDetail = () => {
@@ -90,35 +88,6 @@ class EachEvent extends React.Component {
         })
     }
 
-	fixTime = (min, hour) => {
-		if(min < 10) {
-			min = "0" + min;
-		}
-		if(hour === 0) {
-			return "12:" + min + "am";
-		}
-		else if(hour === 12) {
-			return hour + ":" + min + "pm";
-		}
-		else if(hour > 12) {
-			hour = hour - 12;
-			return hour + ":" + min + "pm";
-		}
-		else {
-			return hour + ":" + min + "am";
-		}
-	}
-
-	timePrefill = (min, hour) => {
-		if(min < 10) {
-			min = "0" + min;
-		}
-		if(hour < 10) {
-			hour = "0" + hour;
-		}
-		return hour + ":" + min;
-	}
-
     closeModals = () => {
         this.setState({ 
             showEventDetail: false, 
@@ -138,8 +107,8 @@ class EachEvent extends React.Component {
                 ...this.state.event,
                 eventName: e.target[0].value,
                 location: e.target[1].value,
-                //date: e.target[2].value,
-                time: e.target[2].value + e.target[3].value,
+                date: e.target[2].value,
+                time: e.target[3].value,
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
                 rsvpForm: e.target[6].value,
@@ -173,8 +142,8 @@ class EachEvent extends React.Component {
                 style={{ fontSize: "15px", textAlign: "justify-center" }}
                 >
                 📍 {this.state.event.location} <br />
-                📅 {this.state.event.time.toDateString()} <br />
-                🕔 {this.fixTime(this.state.event.time.getMinutes(), this.state.event.time.getHours())}
+                📅 {this.state.event.date} <br />
+                🕔 {this.state.event.time}
                 </Card.Subtitle>
                 <Card.Text>
                 {this.state.event.description.slice(0, 100) + "..."}
@@ -192,7 +161,7 @@ class EachEvent extends React.Component {
             {/* Event Detail Modal */}
             <Modal
             size="lg"
-            show={this.state.showEventDetail && this.props.state.event_id}
+            show={this.state.showEventDetail}
             onHide={this.closeModals}
             aria-labelledby="example-modal-sizes-title-lg"
             >
@@ -213,9 +182,8 @@ class EachEvent extends React.Component {
                         fontSize: "25px"
                     }}
                     >
-                    📍 {this.state.event.location} &nbsp;&nbsp; 
-					📅 {this.state.event.time.toDateString()} &nbsp;&nbsp; 
-					🕔 {this.fixTime(this.state.event.time.getMinutes(), this.state.event.time.getHours())}
+                    📍 {this.state.event.location} &nbsp;&nbsp; 📅{" "}
+                    {this.state.event.date} &nbsp;&nbsp; 🕔 {this.state.event.time}
                     </Card.Subtitle>
                     <Card.Text style={{ textAlign: "justify" }}>
                     {this.state.event.description}
@@ -259,12 +227,12 @@ class EachEvent extends React.Component {
 
                         <Form.Group controlId="formTime">
                             <Form.Label>Date</Form.Label>
-                            <Form.Control type="date" defaultValue={this.state.event.time.toISOString().substring(0,10)}/>
+                            <Form.Control type="date" defaultValue={this.state.event.date}/>
                         </Form.Group>
 
                         <Form.Group controlId="formTime">
                             <Form.Label>Time (12-hr format) </Form.Label>
-                            <Form.Control type="time" defaultValue={this.timePrefill(this.state.event.time.getMinutes(), this.state.event.time.getHours())}/>
+                            <Form.Control type="time" defaultValue={this.state.event.time}/>
                         </Form.Group>
 
                         <Form.Group controlId="formPic">
