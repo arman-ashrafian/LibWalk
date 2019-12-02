@@ -19,7 +19,6 @@ class Home extends React.Component {
         };
 
         this.generateTagList = this.generateTagList.bind(this);
-	//this.org_grid_component = this.org_grid_component.bind(this);
 
         this.generateTagList();
 
@@ -36,6 +35,7 @@ class Home extends React.Component {
                 orgs: []
             };
         }
+
     }
 
     render() {
