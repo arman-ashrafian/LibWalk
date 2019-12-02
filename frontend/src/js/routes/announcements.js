@@ -3,11 +3,8 @@ import "../cloud.js";
 import "../../css/notifs.css";
 import NavBar from "../navbar";
 import db from "../../firebase";
-import {accessAnnouncements, getAnnouncements, getUser, getClub} from "../cloud";
+import {accessAnnouncements, getAnnouncements, getUser} from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
-import Card from "react-bootstrap/Card";
-import TimeAgo from "@jshimko/react-time-ago";
-import Row from "react-bootstrap/Row";
 import EachAnn from "./eachAnn";
 
 class Announcements extends React.Component {
@@ -127,11 +124,6 @@ class Announcements extends React.Component {
      * @returns {*}
      */
     announcement_card = (clubref, announcement) => {
-        //This doesn't work lol
-        // let clubname;
-        // await getClub(clubref).then(clubInfo => {
-        //     clubname = clubInfo['clubName']
-        // })
         return(<EachAnn announcement={announcement} clubRef={clubref} {...this.props} />);
     };
 

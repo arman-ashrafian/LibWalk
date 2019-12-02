@@ -26,7 +26,7 @@ class EachAnn extends React.Component {
             <div key={this.state.announcement.annReference}>
                 <Card className="ml-5 mb-5" border="warning" style={{fontSize: 14, width: "20rem", height: "10rem"}}>
                     <Card.Header>
-                        <strong className="mr-auto"> 📣{this.state.club.clubName}📣 </strong>
+                        <strong className="mr-auto"> 📣{this.state.club.clubName} 📣 </strong>
                     </Card.Header>
                     <Card.Body>{this.state.announcement.annDetail}</Card.Body>
                     <Card.Footer>
