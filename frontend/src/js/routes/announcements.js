@@ -40,7 +40,6 @@ class Announcements extends React.Component {
                         alert("You haven't yet subscribed to any organizations!");
                     } else {
                         this.setState({subs: json.subscriptions, user: json});
-                        this._gotSubs = true;
                     }
                 }).then(this.getAnnouncements);
             } else {
@@ -85,7 +84,6 @@ class Announcements extends React.Component {
         }
         this.render();
     };
-
 
     /**
      * Makes the entire grid of announcements for a user's subs.
