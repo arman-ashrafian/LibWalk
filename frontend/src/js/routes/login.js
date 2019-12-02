@@ -156,14 +156,25 @@ class Login extends React.Component {
                                     </div>
                                 )}
                                 {/* Name */}
-                                <Form.Control required type="name" className="form-control mb-4 mt-5"
+                                <Form.Control required type="text" className="form-control mb-4 mt-5"
                                               placeholder="Preferred Name"/>
                                 {/* Major */}
-                                <Form.Control required type="major" className="form-control mb-4"
+                                <Form.Control required type="text"
                                               placeholder="Major"/>
+                                <Form.Text className="text-muted">
+                                    Please don't abbreviate. Ex: Computer Science, Biology,...
+                                </Form.Text>
                                 {/* Year */}
-                                <Form.Control required type="year" className="form-control mb-4"
-                                              placeholder="Expected Graduation Year"/>
+                                <Form.Group>
+                                    <Form.Control as="select" required className="form-control mb-4">
+                                        <option value="" selected disabled>School Year</option>
+                                        <option>Freshman</option>
+                                        <option>Sophomore</option>
+                                        <option>Junior</option>
+                                        <option>Senior</option>
+                                        <option>Graduate</option>
+                                    </Form.Control>
+                                </Form.Group>
 
                                 {/* Sign in button */}
                                 <button className="btn btn-info btn-block my-4" type="submit">Create Account</button>
