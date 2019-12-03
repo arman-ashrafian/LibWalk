@@ -304,7 +304,7 @@ class AdminHome extends React.Component {
      * Handles the authorization logic for logging out
      */
     handleLogOut() {
-        db.auth().signOut().then((result) => {
+        db.auth().signOut().then(() => {
             this.setState({
                 org: null
             })

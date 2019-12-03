@@ -100,13 +100,13 @@ class Orgs extends React.Component {
         this.setState({
             subscribed: !this.state.subscribed
         });
-        editUser(this.state.user_id, this.state.user);
-        changeClub(this.state.club_id, this.state.club);
+        await editUser(this.state.user_id, this.state.user);
+        await changeClub(this.state.club_id, this.state.club);
     }
 
     render() {
         /* Show all the clubs that user subcribe to */
-        let showEvents = [];
+        let showEvents;
         showEvents = this.state.club.eventList.map(event => {
             return <EachEvent eventId={event} admin={false} {...this.props} />;
         });

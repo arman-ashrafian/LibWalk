@@ -109,7 +109,7 @@ class Home extends React.Component {
 
 
     org_multi_item_carousel(tag, tagList) {
-        let itemsInCarousel = [];
+
         return (
             <div /*className = "container"*/ style={{backgroundColor: "#FFFFFF"}}>
                 <h3 style={{
@@ -152,7 +152,7 @@ class Home extends React.Component {
         org = Object.values(org)[0];
         org.img = "https://ca-times.brightspotcdn.com/dims4/default/9c3ea25/2147483647/strip/true/crop/1600x854+0+0/resize/840x448!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ffd%2Fc6%2Fe58081f27535c976921b49239f35%2Fla-me-0516-ucsd-fundraising-20160516-001";
 
-        if (org.pictureURL != "") {
+        if (org.pictureURL !== "") {
             org.img = org.pictureURL;
         }
         return (
@@ -186,28 +186,19 @@ class Home extends React.Component {
     };
 
     setUpCarousel() {
-        //setTimeout(function() {
-        let itemsMainDiv = ".MultiCarousel";
         let itemsDiv = ".MultiCarousel-inner";
         let itemWidth = "";
+        // noinspection JSJQueryEfficiency
         $(".leftLst, .rightLst").mousedown(function () {
             let condition = $(this).hasClass("leftLst");
             if (condition) click(0, this);
             else click(1, this);
         });
-        $(".leftLst, .rightLst").mouseup(function () {
-            let condition = $(this).hasClass("leftLst");
-            // if (condition) click(0, this, 0);
-            //else click(1, this, 0);
-            // let condition = $(this).hasClass("leftLst");
-            //if (condition) click(0, this);
-            //else click(1, this);
-        });
+
         ResCarouselSize();
 
         $(window).resize(function () {
             ResCarouselSize();
-            // }, 5000);
         });
 
         //It is used to get some elements from btn
@@ -226,13 +217,11 @@ class Home extends React.Component {
 
         //this function define the size of the items
         function ResCarouselSize() {
-            let incno = 0;
             let dataItems = "data-items";
             let itemClass = ".item";
             let id = 0;
             let btnParentSb = "";
             let itemsSplit = "";
-            let sampwidth = $(itemsMainDiv).width();
             let bodyWidth = $("main").width();
             $(itemsDiv).each(function () {
                 id = id + 1;
@@ -245,7 +234,7 @@ class Home extends React.Component {
                     .parent()
                     .attr("id", "MultiCarousel" + id);
 
-                var newWidthConst = bodyWidth / 230;
+                let newWidthConst = bodyWidth / 230;
                 itemWidth = bodyWidth * (1 / newWidthConst);
                 $(this).css({
                     transform: "translateX(0px)",
@@ -273,6 +262,7 @@ class Home extends React.Component {
             let xds = Math.abs(values[4]);
             if (e === 0) {
 
+                // noinspection JSCheckFunctionSignatures
                 translateXval = parseInt(xds) - parseInt(itemWidth * s);
                 $(el + " " + rightBtn).removeClass("over");
                 if (translateXval <= itemWidth / 2) {

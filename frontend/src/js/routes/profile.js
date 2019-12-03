@@ -97,7 +97,7 @@ class Profile extends React.Component {
                 subscriptions: this.state.user.subscriptions
             }
         });
-        editUser(this.state.userId, this.state.user);
+        await editUser(this.state.userId, this.state.user);
         this.close()
     }
 
@@ -202,7 +202,7 @@ class Profile extends React.Component {
 
     switch_view_logout = () => {
         console.log('Onclick');
-        auth.signOut().then((result) => {
+        auth.signOut().then(() => {
             this.setState({
                 user: null
             })

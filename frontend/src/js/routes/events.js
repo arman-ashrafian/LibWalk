@@ -71,6 +71,7 @@ class Events extends React.Component {
         let eventHTML = [];
         if (this.state.events !== null) {
             for (const eventKey in this.state.events) {
+                // noinspection JSUnfilteredForInLoop
                 event = this.state.events[eventKey];
                 eventHTML.push(
                     <Row style={{padding: '1em'}}>

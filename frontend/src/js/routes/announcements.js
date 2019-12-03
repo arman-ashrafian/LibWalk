@@ -96,6 +96,7 @@ class Announcements extends React.Component {
             grid_items[clubname] = [];
         });
 
+        // noinspection SpellCheckingInspection
         Object.keys(announcements).forEach((clubref) => {
             // convert the first 3 announcements
             announcements[clubref].slice(0, 3).forEach(ann => {

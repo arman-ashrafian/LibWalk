@@ -52,7 +52,7 @@ class Subs extends React.Component {
                     });
 
                     const len = Object.keys(this.state.subscriptions).length;
-                    let pages = 0;
+                    let pages;
                     if (Math.ceil(len / 3) < 1) {
                         pages = 1;
                     } else {
@@ -114,7 +114,7 @@ class Subs extends React.Component {
 
     /** Function to move to the last page */
     moveLastPage(event) {
-        var lastPage = this.state.totalPages;
+        let lastPage = this.state.totalPages;
         if (this.state.currentPage < lastPage) {
             this.setState({
                 currentPage: lastPage
@@ -155,9 +155,6 @@ class Subs extends React.Component {
         return pageNumber;
     }
 
-    doNothing(event) {
-        console.log("Do nothing");
-    }
 
     render() {
         let showClubs = [];
@@ -177,13 +174,14 @@ class Subs extends React.Component {
             });
 
             // Find how many pages for the clubs
+            // noinspection JSMismatchedCollectionQueryUpdate
             let pageNumber = [];
             if (totalPages <= 5) {
                 for (let i = 1; i <= totalPages; i++) {
                     pageNumber.push(i);
                 }
             } else {
-                pageNumber = this.pagination(currentPage, totalPages);
+                this.pagination(currentPage, totalPages);
             }
         }
         return (

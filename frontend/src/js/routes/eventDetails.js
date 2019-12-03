@@ -48,6 +48,7 @@ class Events extends React.Component {
         let event = {};
         let eventHTML = [];
         for (const eventKey in this.state.events) {
+            // noinspection JSUnfilteredForInLoop
             event = this.state.events[eventKey];
             eventHTML.push(
                 <Card key={eventKey} style={{width: "20rem"}}>

@@ -34,6 +34,7 @@ class EachEvent extends React.Component {
         this.deleteEvent = this.deleteEvent.bind(this);
     }
 
+    // noinspection JSCheckFunctionSignatures
     async componentDidMount() {
         console.log(this.props.eventId);
         await getEvent(this.props.eventId).then(json => {

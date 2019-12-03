@@ -34,7 +34,7 @@ class AdminLogin extends React.Component {
             e.preventDefault();
             db.auth()
                 .signInWithEmailAndPassword(e.target[0].value, e.target[1].value)
-                .then((user) => {
+                .then(() => {
                     console.log("success")
                 })
                 .catch(function (error) {
