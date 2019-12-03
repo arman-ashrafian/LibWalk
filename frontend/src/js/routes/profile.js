@@ -111,7 +111,7 @@ class Profile extends React.Component {
 
                             {/*Display User Information*/}
                             <div className="col-sm-12 text-center">
-                                <Image src={"https://www.jacobsschool.ucsd.edu/faculty/faculty_bios/photos/300.jpg"}
+                                <Image src={"https://students.ucsd.edu/_images/icons-logos/UCSD-tritons300.jpg"}
                                        height="150" width="150" roundedCircle/>
                             </div>
 

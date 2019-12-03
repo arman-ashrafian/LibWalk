@@ -30,15 +30,16 @@ class Events extends React.Component {
                 firebaseUser &&
                 firebaseUser.providerData[0].providerId === "google.com"
             ) {
-                console.log(firebaseUser.uid);
                 // getUser using userId and populate this.state
                 this.setState({querying: true});
                 getUserEvents(firebaseUser.uid).then(events => {
-                    this.setState({
-                        userId: firebaseUser.uid,
-                        events: events,
-                        querying: false,
-                    });
+                    if(events['code'] !== 3) {
+                      this.setState({
+                          userId: firebaseUser.uid,
+                          events: events,
+                          querying: false,
+                      });
+                    }
                 });
             } else {
                 console.log("Redirecting to login page");
@@ -63,15 +64,17 @@ class Events extends React.Component {
         // render the events
         let event = {};
         let eventHTML = [];
-        for (const eventKey in this.state.events) {
-            event = this.state.events[eventKey];
-            eventHTML.push(
-            <Row style={{padding: '1em'}}>
-                <Col md={{ span: 6, offset: 3 }}>
-                <EventCard event={event} {...this.props} />
-                </Col>
-            </Row>
-            );
+        if(this.state.events !== null) {
+          for (const eventKey in this.state.events) {
+              event = this.state.events[eventKey];
+              eventHTML.push(
+              <Row style={{padding: '1em'}}>
+                  <Col md={{ span: 6, offset: 3 }}>
+                  <EventCard event={event} {...this.props} />
+                  </Col>
+              </Row>
+              );
+          }
         }
 
 
@@ -88,7 +91,7 @@ class Events extends React.Component {
                     {
                         (this.state.events === null && this.state.querying === true) ?
                             <div style={{padding: '1em'}}>
-                                <Spinner animation="border" variant="info"/>
+                                
                             </div>
                         :
                             eventHTML

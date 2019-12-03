@@ -9,12 +9,11 @@ import firebase from "firebase"
 class EventCard extends React.Component {
   constructor(props) {
     super(props);
-
-    let timestamp = new firebase.firestore.Timestamp(props.event.time.seconds, props.event.time.nanoseconds);
-    let time = timestamp.toDate().toLocaleTimeString("en-US");
-    let date = timestamp.toDate().toLocaleDateString("en-US"); 
-    props.event.time = time;
-    props.event.date = date
+    // let timestamp = new firebase.firestore.Timestamp(this.props.event.time.seconds, this.props.event.time.nanoseconds);
+    // let time = timestamp.toDate().toLocaleTimeString("en-US");
+    // let date = timestamp.toDate().toLocaleDateString("en-US"); 
+    // props.event.time = time;
+    // props.event.date = date
 
     this.state = {
         event: props.event,
@@ -96,13 +95,13 @@ class EventCard extends React.Component {
                         display: "flex",
                         justifyContent: "space-around",
                         alignItems: "center",
-                        fontSize: "25px"
+                        fontSize: "20px"
                     }}
                     >
                     📍 {this.state.event.location} &nbsp;&nbsp; 📅{" "}
                     {this.state.event.date} &nbsp;&nbsp; 🕔 {this.state.event.time}
                     </Card.Subtitle>
-                    <Card.Text style={{ textAlign: "justify" }}>
+                    <Card.Text style={{ textAlign: "center" }}>
                     {this.state.event.description}
                     </Card.Text>
                     <div style={{ textAlign: "center" }}>
