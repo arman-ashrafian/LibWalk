@@ -136,8 +136,6 @@ org_grid_component(org) {
     return (
           <div className="item" >
               <Card style={{width: "90%", height: "26vh"}} className="text-center">
-       
-         
                       {/*<Card.Img variant="top" src={org.img}/>*/}
 					  <div style= {{}}> 
                       <Card.Img

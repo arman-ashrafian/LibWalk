@@ -284,7 +284,11 @@ class Search extends React.Component {
             style={{ width: "20rem", height: "15rem" }}
             className="text-center"
           >
-            <Card.Img variant="top" src={org.img} />
+            <Card.Img variant="top" src={org.img} style={{
+              width: '100%',
+              height: '15vh',
+              'object-fit': 'cover'
+            }}/>
             <Card.Body className="text-center">
                 <Card.Title>
                   {org.clubName}
