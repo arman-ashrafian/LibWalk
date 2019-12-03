@@ -1,7 +1,7 @@
+/* eslint-disable */
 import React from "react";
 import NavBar from "../navbar";
 import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import {club_list, getClubs} from "../cloud";
 import "../../css/multiCarousel.css";
 import $ from "jquery";
@@ -50,14 +50,14 @@ class Home extends React.Component {
             <div>
                 <NavBar {...this.props} />
                 <main className="mt-3 pt-3">
-                 <div className="container-fluid centerPage"> 
+                    <div className="container-fluid centerPage">
                         {/*
                         <div className="row centerPage" >
                         </div>*/}
-                      {/*<div className="home_grid_container parent" style={{backgroundColor:'black', width:'100%'}}>*/}
-                          {this.org_grid(currentClubs)}
-                      {/*</div>*/}
-                  </div>
+                        {/*<div className="home_grid_container parent" style={{backgroundColor:'black', width:'100%'}}>*/}
+                        {this.org_grid(currentClubs)}
+                        {/*</div>*/}
+                    </div>
                 </main>
             </div>
         );
@@ -66,12 +66,12 @@ class Home extends React.Component {
     org_grid = () => {
         let tagMap = this.state.tagDict;
         return (
-            <div  style={{backgroundColor: "white", width:'85%'}}>
-                { Object.keys(tagMap).map( tag => 
-                   this.org_multi_item_carousel(tag, tagMap[tag])
-                   //org_multi_item_carousel("Cultural", tagMap["Cultural"])
-                  )
-                //org_multi_item_carousel("Cultural", tagMap["Cultural"])
+            <div style={{backgroundColor: "white", width: '85%'}}>
+                {Object.keys(tagMap).map(tag =>
+                        this.org_multi_item_carousel(tag, tagMap[tag])
+                    //org_multi_item_carousel("Cultural", tagMap["Cultural"])
+                )
+                    //org_multi_item_carousel("Cultural", tagMap["Cultural"])
                 }
             </div>
         );
@@ -108,58 +108,82 @@ class Home extends React.Component {
     }
 
 
-org_multi_item_carousel(tag, tagList) {
-      let itemsInCarousel = [];
-      return (
-            <div /*className = "container"*/  style={{backgroundColor: "#FFFFFF"}}>
-             <h3 style={{fontSize: "3.2vh",textAlign:'left', marginLeft:'5vh', marginBottom:'-2vh', fontWeight:"400", zIndex:"20000000"}}>{tag}</h3>
-              <div className="MultiCarousel" data-items="1,3,3,5" data-slide="2" id="MultiCarousel"  data-interval="1000"  style={{backgroundColor: "rgba(0,0,0,0)"}}>
-                 <div className="MultiCarousel-inner" style={{backgroundColor: "#FFFFFF"}}>
-                      {tagList.map( clubItem => 
-                        this.org_grid_component(clubItem)
+    org_multi_item_carousel(tag, tagList) {
+        let itemsInCarousel = [];
+        return (
+            <div /*className = "container"*/ style={{backgroundColor: "#FFFFFF"}}>
+                <h3 style={{
+                    fontSize: "3.2vh",
+                    textAlign: 'left',
+                    marginLeft: '5vh',
+                    marginBottom: '-2vh',
+                    fontWeight: "400",
+                    zIndex: "20000000"
+                }}>{tag}</h3>
+                <div className="MultiCarousel" data-items="1,3,3,5" data-slide="2" id="MultiCarousel"
+                     data-interval="1000" style={{backgroundColor: "rgba(0,0,0,0)"}}>
+                    <div className="MultiCarousel-inner" style={{backgroundColor: "#FFFFFF"}}>
+                        {tagList.map(clubItem =>
+                            this.org_grid_component(clubItem)
                         )
-                      }
-                      </div>
-                    <button  style={{ borderWidth: "0px", width: "5.4vh", height: "5.4vh", borderRadius: "2.7vh", textAlign: "center"}} className="leftLst">&lt;</button>
-                    <button style={{ borderWidth: "0px",width: "5.4vh", height: "5.4vh", borderRadius: "2.7vh", textAlign: "center"}} className="rightLst">&gt;</button>
-              </div>
-              </div>
+                        }
+                    </div>
+                    <button style={{
+                        borderWidth: "0px",
+                        width: "5.4vh",
+                        height: "5.4vh",
+                        borderRadius: "2.7vh",
+                        textAlign: "center"
+                    }} className="leftLst">&lt;</button>
+                    <button style={{
+                        borderWidth: "0px",
+                        width: "5.4vh",
+                        height: "5.4vh",
+                        borderRadius: "2.7vh",
+                        textAlign: "center"
+                    }} className="rightLst">&gt;</button>
+                </div>
+            </div>
         );
     };
+
 // each club component card to be used in org_multi_item_carousel
-org_grid_component(org) {
-    org = Object.values(org)[0]; 
-	org.img = "https://ca-times.brightspotcdn.com/dims4/default/9c3ea25/2147483647/strip/true/crop/1600x854+0+0/resize/840x448!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ffd%2Fc6%2Fe58081f27535c976921b49239f35%2Fla-me-0516-ucsd-fundraising-20160516-001";; 
-	if (org.pictureURL != "") {
-		org.img = org.pictureURL;
-	} 
-    return (
-          <div className="item" >
-              <Card style={{width: "90%", height: "26vh"}} className="text-center">
-                      {/*<Card.Img variant="top" src={org.img}/>*/}
-					  <div style= {{}}> 
-                      <Card.Img
-                          src={org.img}
-                          style={{
-                              width: '100%',
-                              height: '18vh',
-                              'object-fit': 'cover'
-                          }}/>
-						  </div> 
-                      <Card.Body style={{width: "100%", height: "20vh"}}>
-                          <Card.Text style = {{ whiteSpace: "nowrap" , overflow: "hidden", textOverflow: "ellipsis"}}>
-                          <small style={{color:"#000000",fontSize: "2.2vh",fontWeight:"500"}}>
-                            <a onClick={()=> {this.redirectToClubDetails(org.clubReference)}}>
-                                {org.clubName}
-                            </a>
-                          </small>
+    org_grid_component(org) {
+        org = Object.values(org)[0];
+        org.img = "https://ca-times.brightspotcdn.com/dims4/default/9c3ea25/2147483647/strip/true/crop/1600x854+0+0/resize/840x448!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ffd%2Fc6%2Fe58081f27535c976921b49239f35%2Fla-me-0516-ucsd-fundraising-20160516-001";
+        ;
+        if (org.pictureURL != "") {
+            org.img = org.pictureURL;
+        }
+        return (
+            <div className="item">
+                <Card style={{width: "90%", height: "26vh"}} className="text-center">
+                    {/*<Card.Img variant="top" src={org.img}/>*/}
+                    <div style={{}}>
+                        <Card.Img
+                            src={org.img}
+                            style={{
+                                width: '100%',
+                                height: '18vh',
+                                'object-fit': 'cover'
+                            }}/>
+                    </div>
+                    <Card.Body style={{width: "100%", height: "20vh"}}>
+                        <Card.Text style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
+                            <small style={{color: "#000000", fontSize: "2.2vh", fontWeight: "500"}}>
+                                <a onClick={() => {
+                                    this.redirectToClubDetails(org.clubReference)
+                                }}>
+                                    {org.clubName}
+                                </a>
+                            </small>
                         </Card.Text>
-                      </Card.Body>
-              </Card>
-       
-        </div>
-    );
-};
+                    </Card.Body>
+                </Card>
+
+            </div>
+        );
+    };
 
     setUpCarousel() {
         //setTimeout(function() {
@@ -275,14 +299,14 @@ org_grid_component(org) {
             );
         }
     }
-    
+
     componentWillUnmount() {
         this._isMounted = false;
     }
 
     componentDidMount() {
         this._isMounted = true;
-        getClubs().then(clubList =>{
+        getClubs().then(clubList => {
             this.setState({
                 orgs: clubList["clubs"]
             })
@@ -294,5 +318,6 @@ org_grid_component(org) {
 
     }
 }
+
 //TAKEN FROM ONLINE FOR THE CAROUSEL
 export default Home;

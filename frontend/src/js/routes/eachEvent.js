@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import "../../css/subs.css";
 import Card from "react-bootstrap/Card";

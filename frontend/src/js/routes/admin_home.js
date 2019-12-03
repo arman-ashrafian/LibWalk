@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react'
 import {changeClub, changeEvent, changeTag, createAnnouncements, getClub} from "../cloud";
 import Modal from "react-bootstrap/Modal";
@@ -10,7 +11,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
 
 
 /**

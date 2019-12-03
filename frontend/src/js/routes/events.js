@@ -1,4 +1,5 @@
-﻿import React from "react";
+﻿/* eslint-disable */
+import React from "react";
 import "../../css/bootstrap.min.css";
 import "../../css/mdb.lite.min.css";
 import "../../css/style.min.css";
@@ -8,7 +9,6 @@ import Col from "react-bootstrap/Col";
 import {getUserEvents} from "../cloud";
 import db from "../../firebase";
 import EventCard from "./eventCard";
-import Spinner from "react-bootstrap/Spinner";
 
 /**
  * This class defines the Events component.
@@ -33,12 +33,12 @@ class Events extends React.Component {
                 // getUser using userId and populate this.state
                 this.setState({querying: true});
                 getUserEvents(firebaseUser.uid).then(events => {
-                    if(events['code'] !== 3) {
-                      this.setState({
-                          userId: firebaseUser.uid,
-                          events: events,
-                          querying: false,
-                      });
+                    if (events['code'] !== 3) {
+                        this.setState({
+                            userId: firebaseUser.uid,
+                            events: events,
+                            querying: false,
+                        });
                     }
                 });
             } else {
@@ -46,14 +46,14 @@ class Events extends React.Component {
             }
         });
     }
-    
+
     redirectToEventDetail() {
-    this.props.history.push({
-        pathname: "/events",
-        state: {
-            event_id: this.state.event.eventReference
-        }
-    });
+        this.props.history.push({
+            pathname: "/events",
+            state: {
+                event_id: this.state.event.eventReference
+            }
+        });
     }
 
     showEventDetail = () => {
@@ -64,17 +64,17 @@ class Events extends React.Component {
         // render the events
         let event = {};
         let eventHTML = [];
-        if(this.state.events !== null) {
-          for (const eventKey in this.state.events) {
-              event = this.state.events[eventKey];
-              eventHTML.push(
-              <Row style={{padding: '1em'}}>
-                  <Col md={{ span: 6, offset: 3 }}>
-                  <EventCard event={event} {...this.props} />
-                  </Col>
-              </Row>
-              );
-          }
+        if (this.state.events !== null) {
+            for (const eventKey in this.state.events) {
+                event = this.state.events[eventKey];
+                eventHTML.push(
+                    <Row style={{padding: '1em'}}>
+                        <Col md={{span: 6, offset: 3}}>
+                            <EventCard event={event} {...this.props} />
+                        </Col>
+                    </Row>
+                );
+            }
         }
 
 
@@ -82,18 +82,18 @@ class Events extends React.Component {
             <div>
                 <NavBar {...this.props} />
                 <main>
-                <div className="col-sm-12 text-center">
-                    <h1 className="h1 text-center mb-2" id="header">
-                        Events
-                    </h1>
-                    <h5 className="mb-5">🗓 Below Are The Events From Organizations You Subscribed To 🗓</h5>
-                </div>
+                    <div className="col-sm-12 text-center">
+                        <h1 className="h1 text-center mb-2" id="header">
+                            Events
+                        </h1>
+                        <h5 className="mb-5">🗓 Below Are The Events From Organizations You Subscribed To 🗓</h5>
+                    </div>
                     {
                         (this.state.events === null && this.state.querying === true) ?
                             <div style={{padding: '1em'}}>
-                                
+
                             </div>
-                        :
+                            :
                             eventHTML
                     }
                 </main>

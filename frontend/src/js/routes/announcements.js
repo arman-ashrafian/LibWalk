@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import "../cloud.js";
 import "../../css/notifs.css";
@@ -124,7 +125,7 @@ class Announcements extends React.Component {
      * @returns {*}
      */
     announcement_card = (clubref, announcement) => {
-        return(<EachAnn announcement={announcement} clubRef={clubref} {...this.props} />);
+        return (<EachAnn announcement={announcement} clubRef={clubref} {...this.props} />);
     };
 
     render() {
@@ -137,7 +138,8 @@ class Announcements extends React.Component {
                             {/*Display User Information*/}
                             <div className="col-sm-12 text-center">
                                 <h1 className="h1 text-center mb-2">Announcements</h1>
-                                <h5 className="mb-5">📢 Below Are The Announcements From Organizations You Subscribed To 📢</h5>
+                                <h5 className="mb-5">📢 Below Are The Announcements From Organizations You Subscribed To
+                                    📢</h5>
                             </div>
                             <div className="div-centered">
                                 {this.announcement_grid(this.state.announcements)}
