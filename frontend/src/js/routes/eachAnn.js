@@ -16,6 +16,9 @@ class EachAnn extends React.Component {
 
     componentDidMount() {
         getClub(this.state.clubRef).then(json => {
+            if (json === undefined) {
+                alert("Firebase usage exceeded, refresh page in a minute.")
+            }
             this.setState({
                 club: json
             });
