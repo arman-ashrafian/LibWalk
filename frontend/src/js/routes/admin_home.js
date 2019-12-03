@@ -566,7 +566,6 @@ class AdminHome extends React.Component {
                                 <Form.Label>RSVP (Google Form, TypeForm, SurveyMonkey, others...)</Form.Label>
                                 <Form.Control type="url" placeholder="Enter RSVP URL"/>
                             </Form.Group>
-                            {/*todo add form verification*/}
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
@@ -608,7 +607,6 @@ class AdminHome extends React.Component {
                                 <Form.Control type="timeS" defaultValue={new Date()}/>
                             </Form.Group>
 
-                            {/*todo add form verification*/}
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>

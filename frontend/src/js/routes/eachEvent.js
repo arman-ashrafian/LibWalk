@@ -263,7 +263,6 @@ class EachEvent extends React.Component {
                                     <Form.Control type="url" placeholder="Enter RSVP URL"
                                                   defaultValue={this.state.event.rsvpForm}/>
                                 </Form.Group>
-                                {/*todo add form verification*/}
                                 <Button variant="primary" type="submit">
                                     Submit
                                 </Button>
