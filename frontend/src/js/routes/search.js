@@ -271,8 +271,10 @@ class Search extends React.Component {
 
   org_grid_component = org => {
     org = Object.values(org)[0];
-    org.img = org.pictureURL;
-  
+    org.img = "https://picsum.photos/150/50";;
+    if (org.pictureURL != "") {
+      org.img = org.pictureURL;
+    }
     return (
       <div>
         {/*<Card style={{width: '18rem'}}>*/}
@@ -281,7 +283,11 @@ class Search extends React.Component {
             style={{ width: "20rem", height: "13rem" }}
             className="text-center"
           >
-            <Card.Img variant="top" src={org.img} />
+            <Card.Img variant="top" src={org.img} style={{
+              width: '100%',
+              height: '15vh',
+              'object-fit': 'cover'
+            }}/>
             <Card.Body className="text-center">
                 <Card.Title>
                   {org.clubName}
