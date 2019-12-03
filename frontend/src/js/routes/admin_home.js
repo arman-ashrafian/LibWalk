@@ -18,6 +18,7 @@ import ListGroup from "react-bootstrap/ListGroup";
  */
 class AdminHome extends React.Component {
     // class and overridden methods
+    // noinspection DuplicatedCode,DuplicatedCode
     constructor(props) {
         super(props);
 
@@ -99,8 +100,8 @@ class AdminHome extends React.Component {
                             emailList: 'Failure getClub()',
                             announcements: 'Failure getClub()'
 
-                        })
-
+                        });
+                        alert("Firebase usage exceeded, refresh page in a minute.");
                     } else {
                         this.setState({
                             org: clubInfo
@@ -140,10 +141,10 @@ class AdminHome extends React.Component {
     async deleteTag(e) {
         await this.setState({
             tag: e
-        })
+        });
         // Remove tag from club
-        const newTags = [...this.state.org.tags]
-        const index = newTags.indexOf(this.state.tag.toLowerCase())
+        const newTags = [...this.state.org.tags];
+        const index = newTags.indexOf(this.state.tag.toLowerCase());
         if (index > -1) {
             newTags.splice(index, 1);
         }
@@ -153,11 +154,11 @@ class AdminHome extends React.Component {
                 ...this.state.org,
                 tags: newTags
             }
-        })
+        });
 
         // Remove club from tag
-        const newTagClubs = [...this.state.tagInfo.clubs]
-        const clubIndex = newTagClubs.indexOf(this.state.org.clubReference)
+        const newTagClubs = [...this.state.tagInfo.clubs];
+        const clubIndex = newTagClubs.indexOf(this.state.org.clubReference);
         if (clubIndex > -1) {
             newTagClubs.splice(clubIndex, 1);
         }
@@ -176,9 +177,9 @@ class AdminHome extends React.Component {
         //console.log(e)
         await this.setState({
             tag: e.target[0].value.toLowerCase()
-        })
+        });
 
-        console.log(this.state.org.tags)
+        console.log(this.state.org.tags);
 
 
         //add tag to club
@@ -193,7 +194,7 @@ class AdminHome extends React.Component {
 
         await this.setState({
             tags: [...this.state.tagInfo.clubs]
-        })
+        });
 
         console.log(this.state.org.tags)
     }
@@ -203,7 +204,7 @@ class AdminHome extends React.Component {
      *
      */
     async editHandleTag() {
-        await changeTag(this.state.tag, this.state.tagInfo)
+        await changeTag(this.state.tag, this.state.tagInfo);
         await changeClub(this.state.org.clubReference, this.state.org);
         this.closeTag();
     };
@@ -238,7 +239,6 @@ class AdminHome extends React.Component {
             .then((doc) => {
                 if (doc.exists) {
                     alert('You already have an event like this');
-                    return;
                 } else {
                     changeEvent(this.state.event.eventReference, this.state.event);
                     alert('Event Created');
@@ -246,14 +246,14 @@ class AdminHome extends React.Component {
                 }
             });
 
-        const newEventList = [...this.state.org.eventList]
-        newEventList.push(this.state.event.eventReference)
+        const newEventList = [...this.state.org.eventList];
+        newEventList.push(this.state.event.eventReference);
         this.setState({
             org: {
                 ...this.state.org,
                 eventList: newEventList
             }
-        })
+        });
         await changeClub(this.state.org.clubReference, this.state.org)
     }
 
@@ -274,7 +274,7 @@ class AdminHome extends React.Component {
                 annReference: this.state.org.clubReference + e.target[0].value
             }
 
-        })
+        });
         console.log(this.state.annReference);
         await db.firestore().collection("Announcements").doc(this.state.announcement.annReference).get()
             .then((doc) => {
@@ -289,14 +289,14 @@ class AdminHome extends React.Component {
 
             });
 
-        const newAnnList = [...this.state.org.announcements]
-        newAnnList.unshift(this.state.announcement.annReference)
+        const newAnnList = [...this.state.org.announcements];
+        newAnnList.unshift(this.state.announcement.annReference);
         this.setState({
             org: {
                 ...this.state.org,
                 announcements: newAnnList
             }
-        })
+        });
         await changeClub(this.state.org.clubReference, this.state.org)
     }
 

@@ -25,7 +25,7 @@ class AdminLogin extends React.Component {
             adminId: "",
             login: true
         };
-        this.handleLoginWithEmail = this.handleLoginWithEmail.bind(this)
+        this.handleLoginWithEmail = this.handleLoginWithEmail.bind(this);
         this.registerTime = this.registerTime.bind(this);
     }
 
@@ -38,8 +38,8 @@ class AdminLogin extends React.Component {
                     console.log("success")
                 })
                 .catch(function (error) {
-                    var error_code = error.code;
-                    var error_msg = error.message;
+                    let  error_code = error.code;
+                    let error_msg = error.message;
                     if (error_code === 'auth/wrong-password') {
                         alert("Wrong password");
                     } else {
@@ -48,10 +48,10 @@ class AdminLogin extends React.Component {
                 });
             auth.onAuthStateChanged((user) => {
                 if (user && user.providerData[0].providerId === "password") {
-                    this.setState({adminId: user.uid})
+                    this.setState({adminId: user.uid});
                     db.firestore().collection("Clubs").doc(user.uid).get()
                         .then((doc) => {
-                            console.log(doc)
+                            console.log(doc);
                             if (doc.exists) {
                                 this.props.history.push('/admin_home');
                             } else {
@@ -103,7 +103,7 @@ class AdminLogin extends React.Component {
                                     </div>
                                 </div>
                                 {/* Sign in button */}
-                                <button className="btn btn-info btn-block my-4" type="submit" href={'#'}>Sign in
+                                <button className="btn btn-info btn-block my-4" type="submit">Sign in
                                 </button>
                                 {/* Register */}
                                 <p>Not a member?

@@ -82,7 +82,7 @@ export function createAnnouncements(annId, annData) {
     let data = {
         ann_id: annId,
         announcement: annData
-    }
+    };
     return postRequest(createAnnounceURL, data);
 }
 
@@ -130,14 +130,14 @@ export function changeTag(tagID, tagData) {
     let data = {
         tag_id: tagID,
         tag: tagData
-    }
+    };
     return postRequest(changeTagURL, data);
 }
 
 export function getUserEvents(userId) {
     let data = {
         uid: userId
-    }
+    };
     return postRequest(getUserEventsURL, data);
 }
 

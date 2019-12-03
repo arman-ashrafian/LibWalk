@@ -34,7 +34,7 @@ class Announcements extends React.Component {
                 getUser(firebaseUser.uid).then(json => {
                     // failure check
                     if (json === undefined) {
-                        alert("Firebase usage exceeded, refresh page in a minute.")
+                        alert("Firebase usage exceeded, refresh page in a minute.");
                         this.setState({orgs: []})
                     } else if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
                         console.log("You haven't yet subscribed to any organizations!");
@@ -122,6 +122,7 @@ class Announcements extends React.Component {
     /**
      * Displays one announcement by making a card.
      * @param announcement
+     * @param clubref
      * @returns {*}
      */
     announcement_card = (clubref, announcement) => {
