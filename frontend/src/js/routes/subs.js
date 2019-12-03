@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import NavBar from "../navbar";
 import "../../css/subs.css";

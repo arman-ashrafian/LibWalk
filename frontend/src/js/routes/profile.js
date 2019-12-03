@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import '../../css/bootstrap.min.css'
 import '../../css/mdb.lite.min.css'
@@ -179,7 +180,7 @@ class Profile extends React.Component {
                                     <Form.Group>
                                         <Form.Label>School Year</Form.Label>
                                         <Form.Control as="select" required className="form-control mb-4"
-                                            defaultValue={this.state.user.year}>
+                                                      defaultValue={this.state.user.year}>
                                             <option>Freshman</option>
                                             <option>Sophomore</option>
                                             <option>Junior</option>

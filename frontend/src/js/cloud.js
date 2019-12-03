@@ -1,3 +1,4 @@
+/* eslint-disable */
 // URLS for our Cloud Functions
 
 const getClubsURL =
