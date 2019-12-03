@@ -31,7 +31,7 @@ class Profile extends React.Component {
                 year: '',
                 subscriptions: []
             }
-        }
+        };
 
         this.state = this.initialState;
         this.open = this.open.bind(this);
@@ -42,7 +42,7 @@ class Profile extends React.Component {
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
             if (firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
-                console.log(firebaseUser.uid)
+                console.log(firebaseUser.uid);
                 // getUser using userId and populate this.state
                 getUser(firebaseUser.uid).then(json => {
                     if (json === undefined) {
@@ -96,7 +96,7 @@ class Profile extends React.Component {
                 year: e.target[3].value,
                 subscriptions: this.state.user.subscriptions
             }
-        })
+        });
         editUser(this.state.userId, this.state.user);
         this.close()
     }

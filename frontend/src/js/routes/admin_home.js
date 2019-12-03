@@ -280,7 +280,7 @@ class AdminHome extends React.Component {
             .then((doc) => {
                 if (doc.exists) {
                     alert('You already have an announcement like this');
-                    return;
+
                 } else {
                     createAnnouncements(this.state.announcement.annReference, this.state.announcement);
                     alert('Announcement Created');

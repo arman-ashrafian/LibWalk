@@ -39,7 +39,7 @@ class EventCard extends React.Component {
 
     handleEditEvent = () => {
         this.setState({editEvent: true})
-    }
+    };
 
 
     closeModals = () => {

@@ -38,7 +38,7 @@ class AdminLogin extends React.Component {
                     console.log("success")
                 })
                 .catch(function (error) {
-                    let  error_code = error.code;
+                    let error_code = error.code;
                     let error_msg = error.message;
                     if (error_code === 'auth/wrong-password') {
                         alert("Wrong password");

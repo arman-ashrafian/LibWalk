@@ -35,7 +35,7 @@ class EachEvent extends React.Component {
     }
 
     async componentDidMount() {
-        console.log(this.props.eventId)
+        console.log(this.props.eventId);
         await getEvent(this.props.eventId).then(json => {
 
             if (json === undefined) {
@@ -75,24 +75,24 @@ class EachEvent extends React.Component {
 
     handleEditEvent = () => {
         this.setState({editEvent: true})
-    }
+    };
 
     async deleteEvent() {
-        console.log("delete event")
+        console.log("delete event");
         await db.firestore().collection('Events').doc(this.state.event.eventReference).delete();
         this.setState({
             renderEvent: false
-        })
+        });
         await getClub(this.props.clubId).then(json => {
-            const org = json
-            console.log(org)
-            const newEventList = [...org['eventList']]
-            const index = newEventList.indexOf(this.state.event.eventReference)
+            const org = json;
+            console.log(org);
+            const newEventList = [...org['eventList']];
+            const index = newEventList.indexOf(this.state.event.eventReference);
             if (index > -1) {
                 newEventList.splice(index, 1);
             }
-            org['eventList'] = newEventList
-            console.log(org['eventList'])
+            org['eventList'] = newEventList;
+            console.log(org['eventList']);
             changeClub(this.props.clubId, org)
         })
     }
@@ -110,7 +110,7 @@ class EachEvent extends React.Component {
      */
     async handleSubmitEdit(e) {
         e.preventDefault();
-        console.log("edit event")
+        console.log("edit event");
         await this.setState({
             event: {
                 ...this.state.event,
@@ -122,7 +122,7 @@ class EachEvent extends React.Component {
                 description: e.target[5].value,
                 rsvpForm: e.target[6].value
             }
-        })
+        });
         await changeEvent(this.state.event.eventReference, this.state.event);
         this.closeModals();
     }

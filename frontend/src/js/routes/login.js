@@ -18,7 +18,7 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        console.log('Login constructor call.')
+        console.log('Login constructor call.');
         this.state = {
             login: true,
             user: null,
@@ -47,12 +47,12 @@ class Login extends React.Component {
                         user: result.user,
                         userId: result.uid
                     })
-                })
+                });
 
             auth.onAuthStateChanged((user) => {
                 if (user && user.providerData[0].providerId === "google.com") {
                     this.setState({userId: user.uid});
-                    console.log(user.uid)
+                    console.log(user.uid);
                     db.firestore().collection("Users").doc(user.uid).get()
                         .then((doc) => {
                             if (doc.exists) {
@@ -128,10 +128,11 @@ class Login extends React.Component {
                                 </div>
                                 {/* Register */}
                                 <p> Not a member yet?
-                                    <a  href={'#'} onClick={this.register} style={{color: "#4169E1"}}> Register</a>
+                                    <a href={'#'} onClick={this.register} style={{color: "#4169E1"}}> Register</a>
                                 </p>
                                 <p> Logging in as a student org?
-                                    <a  href={'#'} onClick={this.view_switch_admin_login} style={{color: "#4169E1"}}> Admin Log
+                                    <a href={'#'} onClick={this.view_switch_admin_login}
+                                       style={{color: "#4169E1"}}> Admin Log
                                         In </a>
                                 </p>
                             </form>

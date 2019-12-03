@@ -22,7 +22,7 @@ class EachSub extends React.Component {
     componentDidMount() {
         getClub(this.props.clubId).then(json => {
             if (json === undefined) {
-                console.warn('firebase error with getClub, quota exceeded.')
+                console.warn('firebase error with getClub, quota exceeded.');
                 this.setState(
                     {
                         club_id: 'FirebaseQuote Exceeded',
