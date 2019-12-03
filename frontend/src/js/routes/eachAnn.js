@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import {getClub} from "../cloud";
 import Card from "react-bootstrap/Card";
