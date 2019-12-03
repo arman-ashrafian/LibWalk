@@ -17,8 +17,16 @@ const auth = db.auth();
 // 		.then((resp) => resp.json());
 // };
 
-
+/**
+ * This class shows the page for the administrator to edit and manage their org, as well as send out announcements. *
+ */
 class AdminLogin extends React.Component {
+
+    /**
+     * Constructor, called when app is run.
+     *
+     * @param props parent properties.
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -29,6 +37,11 @@ class AdminLogin extends React.Component {
         this.registerTime = this.registerTime.bind(this);
     }
 
+    /**
+     * Handles the login for the administrator, using their google email.
+     * @param e email to register with.
+     * @return {Promise<void>}
+     */
     async handleLoginWithEmail(e) {
         try {
             e.preventDefault();
@@ -65,18 +78,27 @@ class AdminLogin extends React.Component {
         }
     };
 
+    /**
+     * Re-routes the user to the home page after a user has logged in.
+     */
     view_switch_user_login = () => {
         this.props.history.push('/login');
     };
 
+    /**
+     * Changes the state to reflect that the user has registered, but not logged in.
+     */
     registerTime = () => {
         this.setState({login: false})
     };
 
+    /**
+     * Changes the state to reflect that a user has logged in.
+     */
     loginTime = () => {
-
         this.setState({login: true})
     };
+
 
     render() {
         return (

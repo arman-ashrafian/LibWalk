@@ -326,6 +326,9 @@ class AdminHome extends React.Component {
         this.setState({editTag: true})
     };
 
+    /**
+     * Handles the state change on creating an organization's event.
+     */
     handleCreateEvent = () => {
         this.setState({createEvent: true})
     };

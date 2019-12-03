@@ -4,6 +4,9 @@ import {getClub} from "../cloud";
 import Card from "react-bootstrap/Card";
 import TimeAgo from "@jshimko/react-time-ago";
 
+/**
+ * Defines a component for an announcement. Should only be seen in announcements.js.
+ */
 class EachAnn extends React.Component {
     constructor(props) {
         super(props);
@@ -14,6 +17,9 @@ class EachAnn extends React.Component {
         };
     }
 
+    /**
+     * Called when the component is rendered, setup code here.
+     */
     componentDidMount() {
         getClub(this.state.clubRef).then(json => {
             if (json === undefined) {

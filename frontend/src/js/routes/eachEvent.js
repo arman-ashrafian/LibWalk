@@ -9,6 +9,9 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import db from "../../firebase"
 
+/**
+ * Defines a component for displaying an event.
+ */
 class EachEvent extends React.Component {
     constructor(props) {
         super(props);
@@ -61,6 +64,9 @@ class EachEvent extends React.Component {
         });
     }
 
+    /**
+     * Changes the view to the even details page.
+     */
     redirectToEventDetail() {
         this.props.history.push({
             pathname: "/events",
@@ -70,14 +76,25 @@ class EachEvent extends React.Component {
         });
     }
 
+    /**
+     * Sets the state to show the event details.
+     */
     showEventDetail = () => {
         this.setState({showEventDetail: true})
     };
 
+    /**
+     * Handler to set the state after an event is edited.
+     */
     handleEditEvent = () => {
         this.setState({editEvent: true})
     };
 
+    /**
+     * Deletes an event from the database.
+     *
+     * @returns {Promise<void>}
+     */
     async deleteEvent() {
         console.log("delete event");
         await db.firestore().collection('Events').doc(this.state.event.eventReference).delete();
@@ -98,6 +115,9 @@ class EachEvent extends React.Component {
         })
     }
 
+    /**
+     * Closes all forms on the page.
+     */
     closeModals = () => {
         this.setState({
             showEventDetail: false,
