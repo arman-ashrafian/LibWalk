@@ -36,6 +36,11 @@ class Orgs extends React.Component {
     /* Update user data from Firebase*/
     componentDidMount() {
         getClub(this.props.location.state.club_id).then(clubInfo => {
+            if (clubInfo === undefined) {
+                alert("Firebase usage exceeded, refresh page in a minute.");
+                return;
+            }
+
             this.setState({
                 club_id: this.props.location.state.club_id,
                 club: clubInfo
@@ -47,6 +52,11 @@ class Orgs extends React.Component {
             if (firebaseUser) {
                 // getUser using userId and check if they're already subscribed
                 getUser(firebaseUser.uid).then(json => {
+                    if (json === undefined) {
+                        alert("Firebase usage exceeded, refresh page in a minute.");
+                        return;
+                    }
+
                     this.setState({
                         user_id: firebaseUser.uid,
                         subscribed: json["subscriptions"].includes(this.state.club_id),

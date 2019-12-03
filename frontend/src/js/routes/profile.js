@@ -55,8 +55,8 @@ class Profile extends React.Component {
                                 year: 'Failure getUser()',
                                 subscriptions: 'Failure getUser()',
                             }
-                        })
-
+                        });
+                        alert("Firebase usage exceeded, refresh page in a minute.");
                     } else {
                         this.setState({
                             userId: firebaseUser.uid,

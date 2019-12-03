@@ -39,6 +39,11 @@ class Search extends React.Component {
 
     componentDidMount() {
         getClubs().then(clubList => {
+            if (clubList === undefined) {
+                alert("Firebase usage exceeded, refresh page in a minute.");
+                return;
+            }
+
             this.setState({
                 orgs: clubList["clubs"]
             })

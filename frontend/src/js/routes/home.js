@@ -307,9 +307,14 @@ class Home extends React.Component {
     componentDidMount() {
         this._isMounted = true;
         getClubs().then(clubList => {
+            if (clubList === undefined) {
+                alert("Firebase usage exceeded, refresh page in a minute.");
+                return;
+            }
+
             this.setState({
                 orgs: clubList["clubs"]
-            })
+            });
 
             this.generateTagList();
             this.setUpCarousel()

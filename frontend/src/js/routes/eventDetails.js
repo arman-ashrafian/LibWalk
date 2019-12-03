@@ -28,6 +28,10 @@ class Events extends React.Component {
                 console.log(firebaseUser.uid);
                 // getUser using userId and populate this.state
                 getUserEvents(firebaseUser.uid).then(events => {
+                    if (events === undefined) {
+                        alert('Firebase usage exceeded, please wait a minute and reload the page.');
+                        return
+                    }
                     this.setState({
                         userId: firebaseUser.uid,
                         events: events

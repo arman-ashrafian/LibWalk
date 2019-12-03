@@ -41,6 +41,9 @@ class Subs extends React.Component {
                             userId: 'UID error',
                             subscriptions: []
                         });
+
+                        alert("Firebase usage exceeded, refresh page in a minute.");
+
                         return
                     }
                     this.setState({
