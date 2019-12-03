@@ -271,16 +271,17 @@ class Search extends React.Component {
 
   org_grid_component = org => {
     org = Object.values(org)[0];
-    org.img = "https://picsum.photos/150/50";;
-    if (org.pictureURL != "") {
-      org.img = org.pictureURL;
-    }
+    org.img = "https://ca-times.brightspotcdn.com/dims4/default/9c3ea25/2147483647/strip/true/crop/1600x854+0+0/resize/840x448!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ffd%2Fc6%2Fe58081f27535c976921b49239f35%2Fla-me-0516-ucsd-fundraising-20160516-001";; 
+	if (org.pictureURL != "") {
+		org.img = org.pictureURL;
+	} 
+  
     return (
       <div>
         {/*<Card style={{width: '18rem'}}>*/}
         <a onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
           <Card
-            style={{ width: "20rem", height: "13rem" }}
+            style={{ width: "20rem", height: "15rem" }}
             className="text-center"
           >
             <Card.Img variant="top" src={org.img} style={{
