@@ -40,7 +40,6 @@ class EachEvent extends React.Component {
 		if (json === undefined) {
 
 		    //console.warn(message: 'Firebase error returned undefined for getClub with arg ' + this.state.clubRef);
-		    alert('Firebase response was undefined.');
 		    return;
 
 		}

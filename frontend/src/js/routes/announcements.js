@@ -36,7 +36,7 @@ class Announcements extends React.Component {
                         alert("Firebase usage exceeded, refresh page in a minute.")
                         this.setState({orgs: []})
                     } else if (!('subscriptions' in json) || (json.subscriptions.length === 0)) {
-                        alert("You haven't yet subscribed to any organizations!");
+                        console.log("You haven't yet subscribed to any organizations!");
                     } else {
                         this.setState({subs: json.subscriptions, user: json});
                     }

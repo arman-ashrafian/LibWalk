@@ -33,7 +33,7 @@ class Events extends React.Component {
                 // getUser using userId and populate this.state
                 this.setState({querying: true});
                 getUserEvents(firebaseUser.uid).then(events => {
-                    if(typeof(events) !== 'object') {
+                    if(events['code'] !== 3) {
                       this.setState({
                           userId: firebaseUser.uid,
                           events: events,
@@ -91,8 +91,7 @@ class Events extends React.Component {
                     {
                         (this.state.events === null && this.state.querying === true) ?
                             <div style={{padding: '1em'}}>
-                                {alert("You don't have any upcoming events")}
-                                <Spinner animation="border" variant="info"/>
+                                
                             </div>
                         :
                             eventHTML

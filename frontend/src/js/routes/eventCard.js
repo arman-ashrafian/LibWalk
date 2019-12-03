@@ -9,12 +9,11 @@ import firebase from "firebase"
 class EventCard extends React.Component {
   constructor(props) {
     super(props);
-
-    let timestamp = new firebase.firestore.Timestamp(props.event.time.seconds, props.event.time.nanoseconds);
-    let time = timestamp.toDate().toLocaleTimeString("en-US");
-    let date = timestamp.toDate().toLocaleDateString("en-US"); 
-    props.event.time = time;
-    props.event.date = date
+    // let timestamp = new firebase.firestore.Timestamp(this.props.event.time.seconds, this.props.event.time.nanoseconds);
+    // let time = timestamp.toDate().toLocaleTimeString("en-US");
+    // let date = timestamp.toDate().toLocaleDateString("en-US"); 
+    // props.event.time = time;
+    // props.event.date = date
 
     this.state = {
         event: props.event,
