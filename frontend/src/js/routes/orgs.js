@@ -72,6 +72,10 @@ class Orgs extends React.Component {
     /* Check what clubs user subcribe to */
     async handleSubscribe() {
         if (!this.state.subscribed) {
+            if (this.state.user.subscriptions === undefined) {
+                alert('You need to log in to subscribe to orgs!');
+                return;
+            }
             this.state.user.subscriptions.push(this.state.club_id);
             this.state.club.emailList.push(this.state.user_id);
         } else {
