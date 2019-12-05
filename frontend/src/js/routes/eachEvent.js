@@ -43,7 +43,7 @@ class EachEvent extends React.Component {
         await getEvent(this.props.eventId).then(json => {
 
             if (json === undefined) {
-                alert("Firebase usage exceeded, refresh page in a minute.");
+                //alert("Firebase usage exceeded, refresh page in a minute.");
                 return;
 
             }

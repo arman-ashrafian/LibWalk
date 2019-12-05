@@ -40,7 +40,7 @@ class Search extends React.Component {
     componentDidMount() {
         getClubs().then(clubList => {
             if (clubList === undefined) {
-                alert("Firebase usage exceeded, refresh page in a minute.");
+                //alert("Firebase usage exceeded, refresh page in a minute.");
                 return;
             }
 
@@ -272,6 +272,7 @@ class Search extends React.Component {
                 club_id: club_id
             }
         });
+	window.location.reload();
     }
 
     org_grid_component = org => {

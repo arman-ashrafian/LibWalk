@@ -37,7 +37,7 @@ class Orgs extends React.Component {
     componentDidMount() {
         getClub(this.props.location.state.club_id).then(clubInfo => {
             if (clubInfo === undefined) {
-                alert("Firebase usage exceeded, refresh page in a minute.");
+                //alert("Firebase usage exceeded, refresh page in a minute.");
                 return;
             }
 
@@ -53,7 +53,7 @@ class Orgs extends React.Component {
                 // getUser using userId and check if they're already subscribed
                 getUser(firebaseUser.uid).then(json => {
                     if (json === undefined) {
-                        alert("Firebase usage exceeded, refresh page in a minute.");
+                        //alert("Firebase usage exceeded, refresh page in a minute.");
                         return;
                     }
 
