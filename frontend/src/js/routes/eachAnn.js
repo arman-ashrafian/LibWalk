@@ -23,6 +23,7 @@ class EachAnn extends React.Component {
   componentDidMount() {
     getClub(this.state.clubRef).then(json => {
       if (json === undefined) {
+        return
       }
       this.setState({
         club: json
