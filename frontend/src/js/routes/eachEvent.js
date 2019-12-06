@@ -1,13 +1,17 @@
+/* eslint-disable */
 import React from "react";
 import "../../css/subs.css";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { getEvent, changeEvent, getClub, changeClub } from "../cloud";
-import { MdEdit } from "react-icons/md";
+import {changeClub, changeEvent, getClub, getEvent} from "../cloud";
+import {MdEdit} from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import db from "../../firebase"
 
+/**
+ * Defines a component for displaying an event.
+ */
 class EachEvent extends React.Component {
   constructor(props) {
     super(props);
@@ -37,10 +41,15 @@ class EachEvent extends React.Component {
 	this.convertTime = this.convertTime.bind(this);
   }
 
+    // noinspection JSCheckFunctionSignatures
     async componentDidMount() {
-        console.log(this.props.eventId)
+        console.log(this.props.eventId);
         await getEvent(this.props.eventId).then(json => {
-			console.log(json)
+            if (json === undefined) {
+                //alert("Firebase usage exceeded, refresh page in a minute.");
+                return;
+
+            }
             this.setState({
                 event: {
 					clubHosting: json["clubHosting"],
@@ -51,52 +60,70 @@ class EachEvent extends React.Component {
                     rsvpForm: json["rsvpForm"],
                     time: json["time"]/*new Date(json["time"]["seconds"]*1000)*/,
                     date: json["date"],
-                    eventReference: json['eventReference']
+                    eventReference: json['eventReference'],
+                    clubHosting: json["clubHosting"]
                 }
             });
         });
     }
 
+    /**
+     * Changes the view to the even details page.
+     */
     redirectToEventDetail() {
-    this.props.history.push({
-        pathname: "/events",
-        state: {
-            event_id: this.state.event.eventReference
-        }
-    });
+        this.props.history.push({
+            pathname: "/events",
+            state: {
+                event_id: this.state.event.eventReference
+            }
+        });
     }
 
+    /**
+     * Sets the state to show the event details.
+     */
     showEventDetail = () => {
         this.setState({showEventDetail: true})
     };
 
+    /**
+     * Handler to set the state after an event is edited.
+     */
     handleEditEvent = () => {
         this.setState({editEvent: true})
-    }
+    };
 
+    /**
+     * Deletes an event from the database.
+     *
+     * @returns {Promise<void>}
+     */
     async deleteEvent() {
-        console.log("delete event")
+        console.log("delete event");
         await db.firestore().collection('Events').doc(this.state.event.eventReference).delete();
         this.setState({
             renderEvent: false
-        })
+        });
         await getClub(this.props.clubId).then(json => {
-            const org = json
-            console.log(org)
-            const newEventList = [...org['eventList']]
-            const index = newEventList.indexOf(this.state.event.eventReference)
+            const org = json;
+            console.log(org);
+            const newEventList = [...org['eventList']];
+            const index = newEventList.indexOf(this.state.event.eventReference);
             if (index > -1) {
                 newEventList.splice(index, 1);
             }
-            org['eventList'] = newEventList
-            console.log(org['eventList'])
+            org['eventList'] = newEventList;
+            console.log(org['eventList']);
             changeClub(this.props.clubId, org)
         })
     }
 
+    /**
+     * Closes all forms on the page.
+     */
     closeModals = () => {
-        this.setState({ 
-            showEventDetail: false, 
+        this.setState({
+            showEventDetail: false,
             editEvent: false
         });
     };
@@ -120,9 +147,9 @@ class EachEvent extends React.Component {
                 time: timeStamp,
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
-                rsvpForm: e.target[6].value,
+                rsvpForm: e.target[6].value
             }
-        })
+        });
         await changeEvent(this.state.event.eventReference, this.state.event);
 		console.log(this.state.event.time)
         this.closeModals();
@@ -168,7 +195,6 @@ class EachEvent extends React.Component {
 
   render() {
 	console.log(this.state.event.time);
-	console.log(this.state.event.time['seconds']);
     if(this.state.renderEvent) {
         return (
         <div>
@@ -249,69 +275,70 @@ class EachEvent extends React.Component {
                 </Card>
             </Modal.Body>
             </Modal>
+                    {/* Edit Event Modal */}
+                    <Modal
+                    size="lg"
+                    show={this.state.editEvent}
+                    onHide={this.closeModals}
+                    aria-labelledby="example-modal-sizes-title-lg"
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title id="example-modal-sizes-title-lg">
+                                Edit Event
+                            </Modal.Title>
+                        </Modal.Header>
 
-            {/* Edit Event Modal */}
-            <Modal
-                size="lg"
-                show={this.state.editEvent}
-                onHide={this.closeModals}
-                aria-labelledby="example-modal-sizes-title-lg"
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title id="example-modal-sizes-title-lg">
-                        Edit Event
-                    </Modal.Title>
-                </Modal.Header>
+                        <Modal.Body>
+                            <Form onSubmit={this.handleSubmitEdit}>
+                                <Form.Group controlId="formName">
+                                    <Form.Label>Name</Form.Label>
+                                    <Form.Control type="text" placeholder="Enter Event Name"
+                                                  defaultValue={this.state.event.eventName}/>
+                                </Form.Group>
 
-                <Modal.Body>
-                    <Form onSubmit={this.handleSubmitEdit}>
-                        <Form.Group controlId="formName">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control type="text" placeholder="Enter Event Name" defaultValue={this.state.event.eventName}/>
-                        </Form.Group>
+                                <Form.Group controlId="formPlace">
+                                    <Form.Label>Location</Form.Label>
+                                    <Form.Control type="text" placeholder="Enter Event Location"
+                                                  defaultValue={this.state.event.location}/>
+                                </Form.Group>
 
-                        <Form.Group controlId="formPlace">
-                            <Form.Label>Location</Form.Label>
-                            <Form.Control type="text" placeholder="Enter Event Location" defaultValue={this.state.event.location}/>
-                        </Form.Group>
+                                <Form.Group controlId="formTime">
+                                    <Form.Label>Date</Form.Label>
+                                    <Form.Control type="date" defaultValue={this.state.event.date}/>
+                                </Form.Group>
+								<Form.Group controlId="formTime">
+									<Form.Label>Time (12-hr format) </Form.Label>
+									<Form.Control type="time" defaultValue={this.timePrefill(new Date(this.state.event.time['seconds']*1000).getMinutes(), new Date(this.state.event.time['seconds']*1000).getHours())}/>
+								</Form.Group>
+                                <Form.Group controlId="formPic">
+                                    <Form.Label>Picture URL</Form.Label>
+                                    <Form.Control type="url" placeholder="Enter Event Picture URL"
+                                                  defaultValue={this.state.event.pictureURL}/>
+                                </Form.Group>
 
-                        <Form.Group controlId="formTime">
-                            <Form.Label>Date</Form.Label>
-                            <Form.Control type="date" defaultValue={this.state.event.date}/>
-                        </Form.Group>
+                                <Form.Group controlId="formDetails">
+                                    <Form.Label>Description</Form.Label>
+                                    <Form.Control type="text" placeholder="Enter Event Descriptions"
+                                                  defaultValue={this.state.event.description}/>
+                                </Form.Group>
 
-                        <Form.Group controlId="formTime">
-                            <Form.Label>Time (12-hr format) </Form.Label>
-                            <Form.Control type="time" defaultValue={this.timePrefill(new Date(this.state.event.time['seconds']*1000).getMinutes(), new Date(this.state.event.time['seconds']*1000).getHours())}/>
-                        </Form.Group>
-
-                        <Form.Group controlId="formPic">
-                            <Form.Label>Picture URL</Form.Label>
-                            <Form.Control type="url" placeholder="Enter Event Picture URL" defaultValue={this.state.event.pictureURL}/>
-                        </Form.Group>
-
-                        <Form.Group controlId="formDetails">
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control type="text" placeholder="Enter Event Descriptions" defaultValue={this.state.event.description}/>
-                        </Form.Group>
-
-                        <Form.Group controlId="formRSVP">
-                            <Form.Label>RSVP (Google Form, TypeForm, SurveyMonkey, others...)</Form.Label>
-                            <Form.Control type="url" placeholder="Enter RSVP URL" defaultValue={this.state.event.rsvpForm}/>
-                        </Form.Group>
-                        {/*todo add form verification*/}
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-        </div>
-        );
-    } else {
-        return <div></div>
+                                <Form.Group controlId="formRSVP">
+                                    <Form.Label>RSVP (Google Form, TypeForm, SurveyMonkey, others...)</Form.Label>
+                                    <Form.Control type="url" placeholder="Enter RSVP URL"
+                                                  defaultValue={this.state.event.rsvpForm}/>
+                                </Form.Group>
+                                <Button variant="primary" type="submit">
+                                    Submit
+                                </Button>
+                            </Form>
+                        </Modal.Body>
+                    </Modal>
+                </div>
+            );
+        } else {
+            return <div></div>
+        }
     }
-  }
 }
 
 

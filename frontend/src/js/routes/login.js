@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import '../../css/bootstrap.min.css'
 import '../../css/style.min.css'
@@ -17,7 +18,7 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        console.log('Login constructor call.')
+        console.log('Login constructor call.');
         this.state = {
             login: true,
             user: null,
@@ -42,16 +43,17 @@ class Login extends React.Component {
             await db
                 .auth()
                 .signInWithPopup(googleProvider).then((result) => {
+                    // noinspection JSUnresolvedVariable
                     this.setState({
                         user: result.user,
                         userId: result.uid
                     })
-                })
+                });
 
             auth.onAuthStateChanged((user) => {
                 if (user && user.providerData[0].providerId === "google.com") {
                     this.setState({userId: user.uid});
-                    console.log(user.uid)
+                    console.log(user.uid);
                     db.firestore().collection("Users").doc(user.uid).get()
                         .then((doc) => {
                             if (doc.exists) {
@@ -79,7 +81,7 @@ class Login extends React.Component {
                     major: e.target[1].value,
                     year: e.target[2].value,
                     subscriptions: []
-                })
+                });
 
             this.view_switch_login()
 
@@ -127,10 +129,11 @@ class Login extends React.Component {
                                 </div>
                                 {/* Register */}
                                 <p> Not a member yet?
-                                    <a  href={'#'} onClick={this.register} style={{color: "#4169E1"}}> Register</a>
+                                    <a href={'#'} onClick={this.register} style={{color: "#4169E1"}}> Register</a>
                                 </p>
                                 <p> Logging in as a student org?
-                                    <a  href={'#'} onClick={this.view_switch_admin_login} style={{color: "#4169E1"}}> Admin Log
+                                    <a href={'#'} onClick={this.view_switch_admin_login}
+                                       style={{color: "#4169E1"}}> Admin Log
                                         In </a>
                                 </p>
                             </form>
@@ -156,14 +159,25 @@ class Login extends React.Component {
                                     </div>
                                 )}
                                 {/* Name */}
-                                <Form.Control required type="name" className="form-control mb-4 mt-5"
+                                <Form.Control required type="text" className="form-control mb-4 mt-5"
                                               placeholder="Preferred Name"/>
                                 {/* Major */}
-                                <Form.Control required type="major" className="form-control mb-4"
+                                <Form.Control required type="text"
                                               placeholder="Major"/>
+                                <Form.Text className="text-muted">
+                                    Please don't abbreviate. Ex: Computer Science, Biology,...
+                                </Form.Text>
                                 {/* Year */}
-                                <Form.Control required type="year" className="form-control mb-4"
-                                              placeholder="Expected Graduation Year"/>
+                                <Form.Group>
+                                    <Form.Control as="select" required className="form-control mb-4">
+                                        <option value="" selected disabled>School Year</option>
+                                        <option>Freshman</option>
+                                        <option>Sophomore</option>
+                                        <option>Junior</option>
+                                        <option>Senior</option>
+                                        <option>Graduate</option>
+                                    </Form.Control>
+                                </Form.Group>
 
                                 {/* Sign in button */}
                                 <button className="btn btn-info btn-block my-4" type="submit">Create Account</button>

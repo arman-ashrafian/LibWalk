@@ -476,7 +476,7 @@ exports.getUserEvents = functions.https.onRequest((req, res) => {
             let subs = user.data().subscriptions
             let userEvents = {};
 
-            fs.collection("Events").where("clubsHosting", "array-contains-any", subs).get()
+            fs.collection("Events").where("clubHosting", "in", subs).get()
                 .then(querySnapshot => {
                     querySnapshot.forEach(doc => {
                         userEvents[doc.id] = doc.data();

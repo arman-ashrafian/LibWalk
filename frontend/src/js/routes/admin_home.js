@@ -1,5 +1,6 @@
+/* eslint-disable */
 import React from 'react'
-import {changeClub, changeEvent, changeTag, createAnnouncements, getClub, getEvent} from "../cloud";
+import {changeClub, changeEvent, changeTag, createAnnouncements, getClub} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -10,7 +11,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
 
 
 
@@ -19,6 +19,7 @@ import ListGroupItem from "react-bootstrap/ListGroupItem";
  */
 class AdminHome extends React.Component {
     // class and overridden methods
+    // noinspection DuplicatedCode,DuplicatedCode
     constructor(props) {
         super(props);
 
@@ -101,8 +102,8 @@ class AdminHome extends React.Component {
                             emailList: 'Failure getClub()',
                             announcements: 'Failure getClub()'
 
-                        })
-
+                        });
+                        alert("Firebase usage exceeded, refresh page in a minute.");
                     } else {
                         this.setState({
                             org: clubInfo
@@ -142,10 +143,10 @@ class AdminHome extends React.Component {
     async deleteTag(e) {
         await this.setState({
             tag: e
-        })
+        });
         // Remove tag from club
-        const newTags = [...this.state.org.tags]
-        const index = newTags.indexOf(this.state.tag.toLowerCase())
+        const newTags = [...this.state.org.tags];
+        const index = newTags.indexOf(this.state.tag.toLowerCase());
         if (index > -1) {
             newTags.splice(index, 1);
         }
@@ -155,11 +156,11 @@ class AdminHome extends React.Component {
                 ...this.state.org,
                 tags: newTags
             }
-        })
+        });
 
         // Remove club from tag
-        const newTagClubs = [...this.state.tagInfo.clubs]
-        const clubIndex = newTagClubs.indexOf(this.state.org.clubReference)
+        const newTagClubs = [...this.state.tagInfo.clubs];
+        const clubIndex = newTagClubs.indexOf(this.state.org.clubReference);
         if (clubIndex > -1) {
             newTagClubs.splice(clubIndex, 1);
         }
@@ -178,24 +179,24 @@ class AdminHome extends React.Component {
         //console.log(e)
         await this.setState({
             tag: e.target[0].value.toLowerCase()
-        })
+        });
 
-        console.log(this.state.org.tags)
-	
+        console.log(this.state.org.tags);
+
 
         //add tag to club
-        if ( this.state.org.tags.includes(this.state.tag) === false) {
+        if (this.state.org.tags.includes(this.state.tag) === false) {
             await this.state.org.tags.push(this.state.tag);
         }
 
         //add club to tag
-        if ( this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
+        if (this.state.tagInfo.clubs.includes(this.state.org.clubReference) === false) {
             await this.state.tagInfo.clubs.push(this.state.org.clubReference);
-	}
+        }
 
         await this.setState({
-	    tags: [...this.state.tagInfo.clubs]
-        })
+            tags: [...this.state.tagInfo.clubs]
+        });
 
         console.log(this.state.org.tags)
     }
@@ -205,7 +206,7 @@ class AdminHome extends React.Component {
      *
      */
     async editHandleTag() {
-        await changeTag(this.state.tag, this.state.tagInfo)
+        await changeTag(this.state.tag, this.state.tagInfo);
         await changeClub(this.state.org.clubReference, this.state.org);
         this.closeTag();
     };
@@ -234,7 +235,8 @@ class AdminHome extends React.Component {
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
                 rsvpForm: e.target[6].value,
-                eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value
+                eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value,
+                clubHosting: this.state.org_id
             }
         });
         console.log(this.state.event.eventReference);
@@ -242,7 +244,6 @@ class AdminHome extends React.Component {
             .then((doc) => {
                 if (doc.exists) {
                     alert('You already have an event like this');
-                    return;
                 } else {
                     changeEvent(this.state.event.eventReference, this.state.event);
                     alert('Event Created');
@@ -250,14 +251,14 @@ class AdminHome extends React.Component {
                 }
             });
 
-        const newEventList = [...this.state.org.eventList]
-        newEventList.push(this.state.event.eventReference)
+        const newEventList = [...this.state.org.eventList];
+        newEventList.push(this.state.event.eventReference);
         this.setState({
             org: {
                 ...this.state.org,
                 eventList: newEventList
             }
-        })
+        });
         await changeClub(this.state.org.clubReference, this.state.org)
     }
 
@@ -278,13 +279,13 @@ class AdminHome extends React.Component {
                 annReference: this.state.org.clubReference + e.target[0].value
             }
 
-        })
+        });
         console.log(this.state.annReference);
         await db.firestore().collection("Announcements").doc(this.state.announcement.annReference).get()
             .then((doc) => {
                 if (doc.exists) {
                     alert('You already have an announcement like this');
-                    return;
+
                 } else {
                     createAnnouncements(this.state.announcement.annReference, this.state.announcement);
                     alert('Announcement Created');
@@ -293,14 +294,14 @@ class AdminHome extends React.Component {
 
             });
 
-        const newAnnList = [...this.state.org.announcements]
-        newAnnList.push(this.state.announcement.annReference)
+        const newAnnList = [...this.state.org.announcements];
+        newAnnList.unshift(this.state.announcement.annReference);
         this.setState({
             org: {
                 ...this.state.org,
                 announcements: newAnnList
             }
-        })
+        });
         await changeClub(this.state.org.clubReference, this.state.org)
     }
 
@@ -308,7 +309,7 @@ class AdminHome extends React.Component {
      * Handles the authorization logic for logging out
      */
     handleLogOut() {
-        db.auth().signOut().then((result) => {
+        db.auth().signOut().then(() => {
             this.setState({
                 org: null
             })
@@ -330,6 +331,9 @@ class AdminHome extends React.Component {
         this.setState({editTag: true})
     };
 
+    /**
+     * Handles the state change on creating an organization's event.
+     */
     handleCreateEvent = () => {
         this.setState({createEvent: true})
     };
@@ -411,11 +415,13 @@ class AdminHome extends React.Component {
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleEditTag} href={'#'}>Edit Tags</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleCreateEvent} href={'#'}>Create Event</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateEvent} href={'#'}>Create
+                                Event</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleCreateAnn} href={'#'}>Create Announcement</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleCreateAnn} href={'#'}>Create
+                                Announcement</Card.Link></ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Link onClick={this.handleLogOut}  href={'#'}>Log Out</Card.Link></ListGroup.Item>
+                            <Card.Link onClick={this.handleLogOut} href={'#'}>Log Out</Card.Link></ListGroup.Item>
                     </ListGroup>
                 </Card>
             </div>
@@ -423,11 +429,7 @@ class AdminHome extends React.Component {
     };
 
     // modals
-    /**
-     * Generates the jsx code to create and handle logic for a modal component to edit a clubs events.
-     * @returns {*}
-     */
-    
+
 
     /**
      * Generates the jsx code to create and handle logic for a modal component to edit a club's profile data.
@@ -572,7 +574,6 @@ class AdminHome extends React.Component {
                                 <Form.Label>RSVP (Google Form, TypeForm, SurveyMonkey, others...)</Form.Label>
                                 <Form.Control type="url" placeholder="Enter RSVP URL"/>
                             </Form.Group>
-                            {/*todo add form verification*/}
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
@@ -583,6 +584,10 @@ class AdminHome extends React.Component {
         )
     };
 
+    /**
+     * Generates the jsx code to create and handle logic for a modal component to edit a clubs events.
+     * @returns {*}
+     */
     modal_create_ann = () => {
         return (
             <div>
@@ -610,7 +615,6 @@ class AdminHome extends React.Component {
                                 <Form.Control type="timeS" defaultValue={new Date()}/>
                             </Form.Group>
 
-                            {/*todo add form verification*/}
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
@@ -644,7 +648,7 @@ class AdminHome extends React.Component {
 
                     <Card.Body>
 
-                        <Card.Title style={{fontSize:"2rem"}}>{this.state.org.clubName}</Card.Title>
+                        <Card.Title style={{fontSize: "2rem"}}>{this.state.org.clubName}</Card.Title>
 
                         <Card.Subtitle>{this.state.org.contactEmail} </Card.Subtitle>
 
@@ -658,8 +662,8 @@ class AdminHome extends React.Component {
                             {this.state.org.description}
                         </Card.Text>
 
-                        <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
-                                    {showEvents}
+                        <div style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
+                            {showEvents}
                         </div>
 
                     </Card.Body>
@@ -678,7 +682,7 @@ class AdminHome extends React.Component {
         return (
             <div>
                 {/*start the rest of the page*/}
-                <main >
+                <main>
                     <Container>
                         {/*<Row style={{flex: 5}}>*/}
                         <Row>

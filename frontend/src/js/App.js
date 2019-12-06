@@ -14,24 +14,24 @@ import Events from "./routes/events";
 import Orgs from "./routes/orgs";
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/announcements" component={Announcements} />
-        <Route exact path="/calendar" component={Calendar} />
-        <Route exact path="/search" component={Search} />
-        <Route exact path="/subs" component={Subs} />
-        <Route exact path="/profile" component={Profile} />
-        <Route exact path="/admin_home" component={AdminHome} />
-        <Route exact path="/admin_login" component={AdminLogin} />
-        <Route exact path="/events" component={Events} />
-        <Route exact path="/orgs" component={Orgs} />
-      </div>
-    </Router>
-  );
+    return (
+        <Router>
+            <div className="App">
+                <Route exact path="/" component={Home}/>
+                <Route exact path="/login" component={Login}/>
+                <Route exact path="/home" component={Home}/>
+                <Route exact path="/announcements" component={Announcements}/>
+                <Route exact path="/calendar" component={Calendar}/>
+                <Route exact path="/search" component={Search}/>
+                <Route exact path="/subs" component={Subs}/>
+                <Route exact path="/profile" component={Profile}/>
+                <Route exact path="/admin_home" component={AdminHome}/>
+                <Route exact path="/admin_login" component={AdminLogin}/>
+                <Route exact path="/events" component={Events}/>
+                <Route exact path="/orgs" component={Orgs}/>
+            </div>
+        </Router>
+    );
 }
 
 export default App;

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import '../../css/bootstrap.min.css'
 import '../../css/mdb.lite.min.css'
@@ -30,7 +31,7 @@ class Profile extends React.Component {
                 year: '',
                 subscriptions: []
             }
-        }
+        };
 
         this.state = this.initialState;
         this.open = this.open.bind(this);
@@ -41,7 +42,7 @@ class Profile extends React.Component {
     componentDidMount() {
         db.auth().onAuthStateChanged(firebaseUser => {
             if (firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
-                console.log(firebaseUser.uid)
+                console.log(firebaseUser.uid);
                 // getUser using userId and populate this.state
                 getUser(firebaseUser.uid).then(json => {
                     if (json === undefined) {
@@ -54,8 +55,8 @@ class Profile extends React.Component {
                                 year: 'Failure getUser()',
                                 subscriptions: 'Failure getUser()',
                             }
-                        })
-
+                        });
+                        alert("Firebase usage exceeded, refresh page in a minute.");
                     } else {
                         this.setState({
                             userId: firebaseUser.uid,
@@ -95,8 +96,8 @@ class Profile extends React.Component {
                 year: e.target[3].value,
                 subscriptions: this.state.user.subscriptions
             }
-        })
-        editUser(this.state.userId, this.state.user);
+        });
+        await editUser(this.state.userId, this.state.user);
         this.close()
     }
 
@@ -110,7 +111,7 @@ class Profile extends React.Component {
 
                             {/*Display User Information*/}
                             <div className="col-sm-12 text-center">
-                                <Image src={"https://www.jacobsschool.ucsd.edu/faculty/faculty_bios/photos/300.jpg"}
+                                <Image src={"https://students.ucsd.edu/_images/icons-logos/UCSD-tritons300.jpg"}
                                        height="150" width="150" roundedCircle/>
                             </div>
 
@@ -176,10 +177,16 @@ class Profile extends React.Component {
                                                       defaultValue={this.state.user.major}/>
                                     </Form.Group>
 
-                                    <Form.Group controlId="formYear">
-                                        <Form.Label>Year</Form.Label>
-                                        <Form.Control type="year" placeholder="Enter Expected Graduation Year"
-                                                      defaultValue={this.state.user.year}/>
+                                    <Form.Group>
+                                        <Form.Label>School Year</Form.Label>
+                                        <Form.Control as="select" required className="form-control mb-4"
+                                                      defaultValue={this.state.user.year}>
+                                            <option>Freshman</option>
+                                            <option>Sophomore</option>
+                                            <option>Junior</option>
+                                            <option>Senior</option>
+                                            <option>Graduate</option>
+                                        </Form.Control>
                                     </Form.Group>
                                     <Button variant="primary" type="submit">
                                         Submit
@@ -195,7 +202,7 @@ class Profile extends React.Component {
 
     switch_view_logout = () => {
         console.log('Onclick');
-        auth.signOut().then((result) => {
+        auth.signOut().then(() => {
             this.setState({
                 user: null
             })

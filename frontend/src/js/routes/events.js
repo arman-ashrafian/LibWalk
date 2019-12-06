@@ -1,13 +1,14 @@
-﻿import React from "react";
+﻿/* eslint-disable */
+import React from "react";
 import "../../css/bootstrap.min.css";
 import "../../css/mdb.lite.min.css";
 import "../../css/style.min.css";
 import NavBar from "../navbar";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Row from "react-bootstrap/Row"
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import {getUserEvents} from "../cloud";
 import db from "../../firebase";
+import EventCard from "./eventCard";
 
 /**
  * This class defines the Events component.
@@ -18,7 +19,8 @@ class Events extends React.Component {
         super(props);
         this.state = {
             userId: "",
-            events: {}
+            events: null,
+            querying: false,
         };
     }
 
@@ -28,13 +30,21 @@ class Events extends React.Component {
                 firebaseUser &&
                 firebaseUser.providerData[0].providerId === "google.com"
             ) {
-                console.log(firebaseUser.uid);
                 // getUser using userId and populate this.state
+                this.setState({querying: true});
                 getUserEvents(firebaseUser.uid).then(events => {
-                    this.setState({
-                        userId: firebaseUser.uid,
-                        events: events
-                    });
+                    if (events === undefined) {
+                        alert('Firebase usage exceeded, please wait a minute and reload the page.');
+                        return
+                    }
+
+                    if (events['code'] !== 3) {
+                        this.setState({
+                            userId: firebaseUser.uid,
+                            events: events,
+                            querying: false,
+                        });
+                    }
                 });
             } else {
                 console.log("Redirecting to login page");
@@ -42,42 +52,56 @@ class Events extends React.Component {
         });
     }
 
+    redirectToEventDetail() {
+        this.props.history.push({
+            pathname: "/events",
+            state: {
+                event_id: this.state.event.eventReference
+            }
+        });
+    }
+
+    showEventDetail = () => {
+        this.setState({showEventDetail: true})
+    };
+
     render() {
         // render the events
         let event = {};
         let eventHTML = [];
-        for (const eventKey in this.state.events) {
-            event = this.state.events[eventKey];
-            eventHTML.push(
-                <Card key={eventKey} style={{width: '20rem'}}>
-                    <Card.Img variant="top" src={event.pictureURL}/>
-                    <Card.Body>
-                        <Card.Title>
-                            <strong>{event.eventName}</strong>
-                        </Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">
-                            📍 {event.location} | 🕔
-                        </Card.Subtitle>
-                        <Card.Text>{event.description}</Card.Text>
-                        <Button variant="primary" onClick={event.rsvpForm}>
-                            RSVP
-                        </Button>
-                    </Card.Body>
-                </Card>
-            );
+        if (this.state.events !== null) {
+            for (const eventKey in this.state.events) {
+                // noinspection JSUnfilteredForInLoop
+                event = this.state.events[eventKey];
+                eventHTML.push(
+                    <Row style={{padding: '1em'}}>
+                        <Col md={{span: 6, offset: 3}}>
+                            <EventCard event={event} {...this.props} />
+                        </Col>
+                    </Row>
+                );
+            }
         }
+
 
         return (
             <div>
                 <NavBar {...this.props} />
                 <main>
-                    <h1 className="h1 text-center mb-5" id="header">
-                        {" "}
-                        Events
-                    </h1>
-                    <Row>
-                        {eventHTML}
-                    </Row>
+                    <div className="col-sm-12 text-center">
+                        <h1 className="h1 text-center mb-2" id="header">
+                            Events
+                        </h1>
+                        <h5 className="mb-5">🗓 Below Are The Events From Organizations You Subscribed To 🗓</h5>
+                    </div>
+                    {
+                        (this.state.events === null && this.state.querying === true) ?
+                            <div style={{padding: '1em'}}>
+
+                            </div>
+                            :
+                            eventHTML
+                    }
                 </main>
             </div>
         );

@@ -3,6 +3,10 @@
   padding-top: 1cm;
 }
 
+.body {
+  min-width: 500px;
+}
+
 .image {
   padding-top: 2px;
   height: 450px;
@@ -19,4 +23,37 @@
 
 .sub {
   font-family: "Libre Baskerville", serif;
+}
+
+@media (max-width: 991px) {
+  .image {
+    padding-top: 2px;
+    height: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+}
+
+@media (max-width: 770px) {
+  .image {
+    padding-top: 2px;
+    height: 250px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+}
+
+@media (max-width: 490px) {
+  .image {
+    padding-top: 2px;
+    height: 250px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
 }
