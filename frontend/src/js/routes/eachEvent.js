@@ -13,10 +13,11 @@ class EachEvent extends React.Component {
     super(props);
     this.state = {
         event: {
+			clubHosting: "",
             eventName: "",
             location: "",
             date: "",
-            time: new Date(),
+            time: {},
             pictureURL: "",
             description: "",
             rsvpForm: "",
@@ -33,20 +34,23 @@ class EachEvent extends React.Component {
     this.deleteEvent = this.deleteEvent.bind(this);
 	this.fixTime = this.fixTime.bind(this);
 	this.timePrefill = this.timePrefill.bind(this);
+	this.convertTime = this.convertTime.bind(this);
   }
 
     async componentDidMount() {
         console.log(this.props.eventId)
         await getEvent(this.props.eventId).then(json => {
+			console.log(json)
             this.setState({
                 event: {
+					clubHosting: json["clubHosting"],
                     eventName: json["eventName"],
                     description: json["description"],
                     pictureURL: json["pictureURL"],
                     location: json["location"],
                     rsvpForm: json["rsvpForm"],
-                    time: new Date(json["time"]["seconds"]*1000),
-                    //date: json["date"],
+                    time: json["time"]/*new Date(json["time"]["seconds"]*1000)*/,
+                    date: json["date"],
                     eventReference: json['eventReference']
                 }
             });
@@ -112,7 +116,7 @@ class EachEvent extends React.Component {
                 ...this.state.event,
                 eventName: e.target[0].value,
                 location: e.target[1].value,
-                //date: e.target[2].value,
+                date: e.target[2].value,
                 time: timeStamp,
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
@@ -120,6 +124,7 @@ class EachEvent extends React.Component {
             }
         })
         await changeEvent(this.state.event.eventReference, this.state.event);
+		console.log(this.state.event.time)
         this.closeModals();
     }
 
@@ -152,7 +157,18 @@ class EachEvent extends React.Component {
 		return hour + ":" + min;
 	}
 
+	convertTime = () => {
+		this.setState({
+			event: {
+					...this.state.event,
+					time: new Date(this.state.event.time['seconds']*1000)
+				}
+		});
+	}
+
   render() {
+	console.log(this.state.event.time);
+	console.log(this.state.event.time['seconds']);
     if(this.state.renderEvent) {
         return (
         <div>
@@ -176,8 +192,8 @@ class EachEvent extends React.Component {
                 style={{ fontSize: "15px", textAlign: "justify-center" }}
                 >
                 📍 {this.state.event.location} <br />
-                📅 {this.state.event.time.toDateString()} <br />
-                🕔 {/*this.state.event.time*/this.fixTime(this.state.event.time.getMinutes(), this.state.event.time.getHours())}
+                📅 {new Date(this.state.event.time['seconds']*1000).toDateString()} <br />
+                🕔 {this.fixTime(new Date(this.state.event.time['seconds']*1000).getMinutes(), new Date(this.state.event.time['seconds']*1000).getHours())}
                 </Card.Subtitle>
                 <Card.Text>
                 {this.state.event.description.slice(0, 100) + "..."}
@@ -217,7 +233,7 @@ class EachEvent extends React.Component {
                     }}
                     >
                     📍 {this.state.event.location} &nbsp;&nbsp; 📅{" "}
-                    {this.state.event.time.toDateString()} &nbsp;&nbsp; 🕔 {/*this.state.event.time*/this.fixTime(this.state.event.time.getMinutes(), this.state.event.time.getHours())}
+                    {new Date(this.state.event.time['seconds']*1000).toDateString()} &nbsp;&nbsp; 🕔 {this.fixTime(new Date(this.state.event.time['seconds']*1000).getMinutes(), new Date(this.state.event.time['seconds']*1000).getHours())}
                     </Card.Subtitle>
                     <Card.Text style={{ textAlign: "justify" }}>
                     {this.state.event.description}
@@ -261,12 +277,12 @@ class EachEvent extends React.Component {
 
                         <Form.Group controlId="formTime">
                             <Form.Label>Date</Form.Label>
-                            <Form.Control type="date" defaultValue={this.state.event.time.toISOString().substring(0, 10)}/>
+                            <Form.Control type="date" defaultValue={this.state.event.date}/>
                         </Form.Group>
 
                         <Form.Group controlId="formTime">
                             <Form.Label>Time (12-hr format) </Form.Label>
-                            <Form.Control type="time" defaultValue={/*this.state.event.time*/this.timePrefill(this.state.event.time.getMinutes(), this.state.event.time.getHours())}/>
+                            <Form.Control type="time" defaultValue={this.timePrefill(new Date(this.state.event.time['seconds']*1000).getMinutes(), new Date(this.state.event.time['seconds']*1000).getHours())}/>
                         </Form.Group>
 
                         <Form.Group controlId="formPic">

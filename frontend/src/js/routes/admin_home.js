@@ -42,12 +42,14 @@ class AdminHome extends React.Component {
                 eventList: []
             },
             event: {
+				clubHosting: '',
                 eventReference: '',
                 description: '',
                 eventName: '',
                 location: '',
                 pictureURL: '',
                 rsvpForm: '',
+				date: '',
                 time: {}
             },
             tagInfo: {
@@ -224,8 +226,10 @@ class AdminHome extends React.Component {
 		let timeStamp = new firebase.firestore.Timestamp.fromDate(date);
         await this.setState({
             event: {
+				clubHosting: this.state.org.clubReference,
                 eventName: e.target[0].value,
                 location: e.target[1].value,
+				date: e.target[2].value,
                 time: timeStamp,
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
