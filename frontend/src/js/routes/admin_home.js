@@ -1,10 +1,11 @@
 /* eslint-disable */
 import React from 'react'
-import {changeClub, changeEvent, changeTag, createAnnouncements, getClub} from "../cloud";
+import {accessAnnouncements, changeClub, changeEvent, changeTag, createAnnouncements, getClub} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import EachEvent from "./eachEvent"
+import EachAnn from "./eachAnn"
 import db from "../../firebase.js";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -29,6 +30,7 @@ class AdminHome extends React.Component {
             createAnn: false,
             org_id: "",
             tag: "",
+            announcementJSONs: [],
             org: {
                 clubReference: '',
                 clubName: '',
@@ -101,10 +103,21 @@ class AdminHome extends React.Component {
                             announcements: 'Failure getClub()'
 
                         });
-                        alert("Firebase usage exceeded, refresh page in a minute.");
+                        //alert("Firebase usage exceeded, refresh page in a minute.");
+                        return;
                     } else {
                         this.setState({
                             org: clubInfo
+                        })
+                        let announcementJSONs = []
+                        this.state.org.announcements.slice(0, 3).forEach(announcement => {
+                            accessAnnouncements(announcement).then(json =>{
+                                console.log(json)
+                                announcementJSONs.push(json)
+                                this.setState({
+                                    announcementJSONs: announcementJSONs
+                                })
+                            })
                         })
 
                     }
@@ -112,6 +125,9 @@ class AdminHome extends React.Component {
                 })
             }
         });
+
+
+
     }
 
     // Handler Methods
@@ -298,6 +314,7 @@ class AdminHome extends React.Component {
             }
         });
         await changeClub(this.state.org.clubReference, this.state.org)
+        window.location.reload()
     }
 
     /**
@@ -626,9 +643,18 @@ class AdminHome extends React.Component {
     admin_panel_view = () => {
         //console.log('Org Data' + JSON.stringify(this.state.org));
         let showEvents = [];
+        let showAnnouncements = [];
         if (this.state.org.eventList !== undefined) {
             showEvents = this.state.org.eventList.map(event => {
                 return <EachEvent eventId={event} admin={true} clubId={this.state.org_id}{...this.props} />;
+            });
+        }
+
+        if (this.state.org.announcements !== undefined) {
+            console.log(this.state.announcementJSONs)
+            showAnnouncements = this.state.announcementJSONs.map(announcement => {
+                console.log(announcement.annDetail)
+                return <EachAnn announcement={announcement} clubRef={this.state.org_id}{...this.props}  />;
             });
         }
         return (
@@ -659,6 +685,10 @@ class AdminHome extends React.Component {
 
                         <div style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
                             {showEvents}
+                        </div>
+                        <div className={"mt-5"} style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
+                            {/*console.log(this.state.announcementJSONs)*/}
+                            {showAnnouncements}
                         </div>
 
                     </Card.Body>
