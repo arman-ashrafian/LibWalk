@@ -9,6 +9,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import Table from "react-bootstrap/Table";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 
@@ -22,6 +23,7 @@ class AdminHome extends React.Component {
         super(props);
 
         this.state = {
+            showMemberList: false,
             editInfo: false,
             editTag: false,
             createEvent: false,
@@ -60,7 +62,6 @@ class AdminHome extends React.Component {
                 annReference: ''
             }
         };
-
         this.closeInfo = this.closeInfo.bind(this);
         this.closeTag = this.closeTag.bind(this);
         this.closeEvent = this.closeEvent.bind(this);
@@ -73,6 +74,7 @@ class AdminHome extends React.Component {
         this.editHandleCreateEvent = this.editHandleCreateEvent.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
         this.editHandleCreateAnn = this.editHandleCreateAnn.bind(this);
+        this.showMembershipList = this.showMembershipList.bind(this);
     };
 
     /**
@@ -102,10 +104,10 @@ class AdminHome extends React.Component {
                         })
 
                     } else {
+                        console.log(clubInfo)
                         this.setState({
                             org: clubInfo
                         })
-
                     }
 
                 })
@@ -337,6 +339,14 @@ class AdminHome extends React.Component {
         this.setState({createAnn: true})
     };
 
+    /**
+     * Handles the state change when you edit and org's announcement.
+     */
+    showMembershipList = () => {
+        console.log("show members")
+        this.setState({showMemberList: true})
+    };
+
     // Action Methods
     /**
      * Changes the state for helping render certain elements.
@@ -384,6 +394,12 @@ class AdminHome extends React.Component {
         })
     };
 
+    closeMembershipList = () => {
+        this.setState({
+            showMemberList: false
+        })
+    };
+
     // container components
     /**
      * Creates a container for the Settings panel for the admin.
@@ -396,6 +412,7 @@ class AdminHome extends React.Component {
                 {this.modal_edit_tag()}
                 {this.modal_create_event()}
                 {this.modal_create_ann()}
+                {this.modal_membership_list()}
 
                 {/*Card that contains the buttons*/}
                 <Card>
@@ -412,6 +429,9 @@ class AdminHome extends React.Component {
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleCreateAnn} href={'#'}>Create
                                 Announcement</Card.Link></ListGroup.Item>
+                        <ListGroup.Item>
+                            <Card.Link onClick={this.showMembershipList} href={'#'}> Membership List
+                            </Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleLogOut} href={'#'}>Log Out</Card.Link></ListGroup.Item>
                     </ListGroup>
@@ -453,6 +473,57 @@ class AdminHome extends React.Component {
                         </Form.Group>
                     </Form>
                     <Button variant="success" type="button" onClick={this.editHandleTag}>
+                        Done
+                    </Button>
+                </Modal.Body>
+            </Modal>
+
+        </div>);
+    };
+
+    modal_membership_list = () => {
+        return (<div>
+            <Modal
+                show={this.state.showMemberList}
+                onHide={this.closeMembershipList}
+                aria-labelledby="example-modal-sizes-title-sm"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="example-modal-sizes-title-sm">
+                        Membership List
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <Table striped bordered hover variant="light">
+                    <thead>
+                        <tr>
+                        <th>Member Name</th>
+                        <th>Member Email</th>
+                        <th>Major</th>
+                        <th>Year</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.org.emailList.map(email => (
+                            db.firestore().collection('Users').where('email', '==', email).get()
+                                .then(snapshot => {
+                                    snapshot.forEach(doc => {
+                                        console.log(doc.id, '=>', doc.data());
+                                        return (                     
+                                        <tr>
+                                            <td>{doc.data().name}</td>
+                                            <td>{}</td>
+                                            <td>CS</td>
+                                            <td>Junior</td>
+                                        </tr>
+                                        )
+                                    });
+                                })
+
+                        ))}
+                    </tbody>
+                    </Table>
+                    <Button variant="success" type="button" onClick={this.closeMembershipList}>
                         Done
                     </Button>
                 </Modal.Body>
@@ -672,7 +743,6 @@ class AdminHome extends React.Component {
         // if (check_login_type() === 'user') {
         //     this.view_switch_login();
         // }
-
         return (
             <div>
                 {/*start the rest of the page*/}
