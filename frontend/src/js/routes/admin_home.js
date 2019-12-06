@@ -14,6 +14,7 @@ import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 
 
+
 /**
  * Component responsible for creating the Admin Home Page.
  */
@@ -44,14 +45,15 @@ class AdminHome extends React.Component {
                 eventList: []
             },
             event: {
+				clubHosting: '',
                 eventReference: '',
                 description: '',
                 eventName: '',
                 location: '',
                 pictureURL: '',
                 rsvpForm: '',
-                time: '',
-                clubHosting: ''
+				date: '',
+                time: {}
             },
             tagInfo: {
                 clubs: [],
@@ -236,12 +238,16 @@ class AdminHome extends React.Component {
             alert('Please make sure to have name, location, date, time, and description');
             return;
         }
+		let date = new Date(e.target[2].value + "T" + e.target[3].value + ":00");
+		var firebase = require('firebase');
+		let timeStamp = new firebase.firestore.Timestamp.fromDate(date);
         await this.setState({
             event: {
+				clubHosting: this.state.org.clubReference,
                 eventName: e.target[0].value,
                 location: e.target[1].value,
-                date: e.target[2].value,
-                time: e.target[3].value,
+				date: e.target[2].value,
+                time: timeStamp,
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
                 rsvpForm: e.target[6].value,
@@ -249,7 +255,6 @@ class AdminHome extends React.Component {
                 clubHosting: this.state.org_id
             }
         });
-
         console.log(this.state.event.eventReference);
         await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
             .then((doc) => {

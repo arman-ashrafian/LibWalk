@@ -83,6 +83,7 @@ exports.getUser = functions.https.onRequest((req, res) => {
  *
  */
 exports.changeEvent = functions.https.onRequest((req, res) => {
+	console.log("in index")
     cors(req, res, () => {
         const eventId = req.body.event_id;
         const eventJson = req.body.event;

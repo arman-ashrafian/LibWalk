@@ -9,11 +9,12 @@ import Modal from "react-bootstrap/Modal";
 class EventCard extends React.Component {
     constructor(props) {
         super(props);
-        // let timestamp = new firebase.firestore.Timestamp(this.props.event.time.seconds, this.props.event.time.nanoseconds);
-        // let time = timestamp.toDate().toLocaleTimeString("en-US");
-        // let date = timestamp.toDate().toLocaleDateString("en-US");
-        // props.event.time = time;
-        // props.event.date = date
+		var firebase = require('firebase');
+        let timestamp = new firebase.firestore.Timestamp(this.props.event.time.seconds, this.props.event.time.nanoseconds);
+        let time = timestamp.toDate().toLocaleTimeString("en-US");
+        let date = timestamp.toDate().toLocaleDateString("en-US");
+        props.event.time = time;
+        props.event.date = date
 
         this.state = {
             event: props.event,
@@ -65,8 +66,8 @@ class EventCard extends React.Component {
                                 style={{fontSize: "15px", textAlign: "justify-center"}}
                             >
                                 📍 {this.state.event.location} <br/>
-                                📅 {this.state.event.date} <br/>
-                                🕔 {this.state.event.time}
+                                📅 {this.props.event.date} <br/>
+                                🕔 {this.props.event.time}
                             </Card.Subtitle>
                             <Card.Text>
                                 {this.state.event.description.slice(0, 100) + "..."}
@@ -99,7 +100,7 @@ class EventCard extends React.Component {
                                         }}
                                     >
                                         📍 {this.state.event.location} &nbsp;&nbsp; 📅{" "}
-                                        {this.state.event.date} &nbsp;&nbsp; 🕔 {this.state.event.time}
+                                        {this.props.event.date} &nbsp;&nbsp; 🕔 {this.props.event.time}
                                     </Card.Subtitle>
                                     <Card.Text style={{textAlign: "center"}}>
                                         {this.state.event.description}
