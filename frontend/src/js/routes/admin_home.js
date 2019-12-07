@@ -264,6 +264,7 @@ class AdminHome extends React.Component {
                     changeEvent(this.state.event.eventReference, this.state.event);
                     alert('Event Created');
                     this.closeCEvent();
+			window.location.reload();
                 }
             });
 
