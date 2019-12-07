@@ -143,18 +143,12 @@ class AdminHome extends React.Component {
         e.preventDefault();
         await this.setState({
             org: {
+                ...this.state.org,
                 clubName: e.target[0].value,
                 contactEmail: e.target[1].value,
                 pictureURL: e.target[2].value,
                 description: e.target[3].value,
-                clubReference: this.state.org.clubReference,
-                tags: this.state.org.tags,
-                announcements: this.state.org.announcements,
-                pageURL: this.state.org.pageURL,
-                eventList: this.state.org.eventList,
-                emailList: this.state.org.emailList
             }
-            // you can shorthand this to org: {...this.state.org}
         });
         await changeClub(this.state.org.clubReference, this.state.org);
         alert('Updated');

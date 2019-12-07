@@ -64,7 +64,6 @@ class AdminLogin extends React.Component {
                     this.setState({adminId: user.uid});
                     db.firestore().collection("Clubs").doc(user.uid).get()
                         .then((doc) => {
-                            console.log(doc);
                             if (doc.exists) {
                                 this.props.history.push('/admin_home');
                             } else {
