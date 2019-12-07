@@ -74,7 +74,7 @@ class Orgs extends React.Component {
         return;
       }
       this.state.user.subscriptions.push(this.state.club_id);
-      this.state.club.emailList.push(this.state.user_id);
+      this.state.club.emailList.push(this.state.user.email);
     } else {
       const newSubs = this.state.user.subscriptions.filter(
         item => item !== this.state.club_id
