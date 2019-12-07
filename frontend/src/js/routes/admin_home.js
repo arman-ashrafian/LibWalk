@@ -15,7 +15,6 @@ import Table from "react-bootstrap/Table";
 import ListGroup from "react-bootstrap/ListGroup";
 
 
-
 /**
  * Component responsible for creating the Admin Home Page.
  */
@@ -47,14 +46,14 @@ class AdminHome extends React.Component {
                 eventList: []
             },
             event: {
-				clubHosting: '',
+                clubHosting: '',
                 eventReference: '',
                 description: '',
                 eventName: '',
                 location: '',
                 pictureURL: '',
                 rsvpForm: '',
-				date: '',
+                date: '',
                 time: {}
             },
             tagInfo: {
@@ -112,11 +111,15 @@ class AdminHome extends React.Component {
                         return;
                     } else {
                         this.setState({
-                            org: clubInfo
-                        })
+                            org: {
+                                ...clubInfo, emailList: ['member1@email.com', 'member2@email.com']
+                            }
+                        });
+
+
                         let announcementJSONs = []
                         this.state.org.announcements.slice(0, 3).forEach(announcement => {
-                            accessAnnouncements(announcement).then(json =>{
+                            accessAnnouncements(announcement).then(json => {
                                 announcementJSONs.push(json)
                                 this.setState({
                                     announcementJSONs: announcementJSONs
@@ -148,8 +151,10 @@ class AdminHome extends React.Component {
                 tags: this.state.org.tags,
                 announcements: this.state.org.announcements,
                 pageURL: this.state.org.pageURL,
-                eventList: this.state.org.eventList
+                eventList: this.state.org.eventList,
+                emailList: this.state.org.emailList
             }
+            // you can shorthand this to org: {...this.state.org}
         });
         await changeClub(this.state.org.clubReference, this.state.org);
         alert('Updated');
@@ -233,21 +238,21 @@ class AdminHome extends React.Component {
             alert('Please make sure to have name, location, date, time, and description');
             return;
         }
-		let date = new Date(e.target[2].value + "T" + e.target[3].value + ":00");
-		var firebase = require('firebase');
-		let timeStamp = new firebase.firestore.Timestamp.fromDate(date);
+        let date = new Date(e.target[2].value + "T" + e.target[3].value + ":00");
+        var firebase = require('firebase');
+        let timeStamp = new firebase.firestore.Timestamp.fromDate(date);
         await this.setState({
             event: {
-				clubHosting: this.state.org.clubReference,
+                clubHosting: this.state.org.clubReference,
                 eventName: e.target[0].value,
                 location: e.target[1].value,
-				date: e.target[2].value,
+                date: e.target[2].value,
                 time: timeStamp,
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
                 rsvpForm: e.target[6].value,
                 eventReference: this.state.org.clubReference + e.target[0].value + e.target[2].value,
-                clubHosting: this.state.org_id
+                // clubHosting: this.state.org_id
             }
         });
         await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
@@ -258,7 +263,7 @@ class AdminHome extends React.Component {
                     changeEvent(this.state.event.eventReference, this.state.event);
                     alert('Event Created');
                     this.closeCEvent();
-			window.location.reload();
+                    window.location.reload();
                 }
             });
 
@@ -460,7 +465,6 @@ class AdminHome extends React.Component {
 
     // modals
 
-
     /**
      * Generates the jsx code to create and handle logic for a modal component to edit a club's profile data.
      * @returns {*}
@@ -500,6 +504,11 @@ class AdminHome extends React.Component {
     };
 
     modal_membership_list = () => {
+        if (this.state.org.emailList === undefined) {
+            return
+
+        }
+
         return (<div>
             <Modal
                 show={this.state.showMemberList}
@@ -511,7 +520,9 @@ class AdminHome extends React.Component {
                         Membership List
                     </Modal.Title>
                 </Modal.Header>
+                {console.log('modal ' + JSON.stringify(this.state.org))}
                 <Modal.Body>
+
                     {this.state.org.emailList.map(email => (
                         <p>{email}</p>
                     ))}
@@ -727,7 +738,8 @@ class AdminHome extends React.Component {
                         <div style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
                             {showEvents}
                         </div>
-                        <div className={"mt-5"} style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
+                        <div className={"mt-5"}
+                             style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
                             {showAnnouncements}
                         </div>
 
