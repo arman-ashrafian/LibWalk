@@ -11,6 +11,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import Table from "react-bootstrap/Table";
 import ListGroup from "react-bootstrap/ListGroup";
 
 
@@ -25,6 +26,7 @@ class AdminHome extends React.Component {
         super(props);
 
         this.state = {
+            showMemberList: false,
             editInfo: false,
             editTag: false,
             createEvent: false,
@@ -63,9 +65,9 @@ class AdminHome extends React.Component {
                 annDetail: '',
                 time: '',
                 annReference: ''
-            }
+            },
+            members: []
         };
-
         this.closeInfo = this.closeInfo.bind(this);
         this.closeTag = this.closeTag.bind(this);
         this.closeEvent = this.closeEvent.bind(this);
@@ -78,6 +80,7 @@ class AdminHome extends React.Component {
         this.editHandleCreateEvent = this.editHandleCreateEvent.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
         this.editHandleCreateAnn = this.editHandleCreateAnn.bind(this);
+        this.showMembershipList = this.showMembershipList.bind(this);
     };
 
     /**
@@ -114,7 +117,6 @@ class AdminHome extends React.Component {
                         let announcementJSONs = []
                         this.state.org.announcements.slice(0, 3).forEach(announcement => {
                             accessAnnouncements(announcement).then(json =>{
-                                console.log(json)
                                 announcementJSONs.push(json)
                                 this.setState({
                                     announcementJSONs: announcementJSONs
@@ -127,8 +129,6 @@ class AdminHome extends React.Component {
                 })
             }
         });
-
-
 
     }
 
@@ -197,9 +197,6 @@ class AdminHome extends React.Component {
             tag: e.target[0].value.toLowerCase()
         });
 
-        console.log(this.state.org.tags);
-
-
         //add tag to club
         if (this.state.org.tags.includes(this.state.tag) === false) {
             await this.state.org.tags.push(this.state.tag);
@@ -213,8 +210,6 @@ class AdminHome extends React.Component {
         await this.setState({
             tags: [...this.state.tagInfo.clubs]
         });
-
-        console.log(this.state.org.tags)
     }
 
     /**
@@ -255,7 +250,6 @@ class AdminHome extends React.Component {
                 clubHosting: this.state.org_id
             }
         });
-        console.log(this.state.event.eventReference);
         await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
             .then((doc) => {
                 if (doc.exists) {
@@ -296,7 +290,6 @@ class AdminHome extends React.Component {
             }
 
         });
-        console.log(this.state.annReference);
         await db.firestore().collection("Announcements").doc(this.state.announcement.annReference).get()
             .then((doc) => {
                 if (doc.exists) {
@@ -362,6 +355,15 @@ class AdminHome extends React.Component {
         this.setState({createAnn: true})
     };
 
+    /**
+     * Handles the state change when you edit and org's announcement.
+     */
+    showMembershipList = () => {
+        this.setState({
+            showMemberList: true
+        })
+    };
+
     // Action Methods
     /**
      * Changes the state for helping render certain elements.
@@ -409,6 +411,12 @@ class AdminHome extends React.Component {
         })
     };
 
+    closeMembershipList = () => {
+        this.setState({
+            showMemberList: false
+        })
+    };
+
     // container components
     /**
      * Creates a container for the Settings panel for the admin.
@@ -421,6 +429,7 @@ class AdminHome extends React.Component {
                 {this.modal_edit_tag()}
                 {this.modal_create_event()}
                 {this.modal_create_ann()}
+                {this.modal_membership_list()}
 
                 {/*Card that contains the buttons*/}
                 <Card>
@@ -437,6 +446,9 @@ class AdminHome extends React.Component {
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleCreateAnn} href={'#'}>Create
                                 Announcement</Card.Link></ListGroup.Item>
+                        <ListGroup.Item>
+                            <Card.Link onClick={this.showMembershipList} href={'#'}> Membership List
+                            </Card.Link></ListGroup.Item>
                         <ListGroup.Item>
                             <Card.Link onClick={this.handleLogOut} href={'#'}>Log Out</Card.Link></ListGroup.Item>
                     </ListGroup>
@@ -478,6 +490,31 @@ class AdminHome extends React.Component {
                         </Form.Group>
                     </Form>
                     <Button variant="success" type="button" onClick={this.editHandleTag}>
+                        Done
+                    </Button>
+                </Modal.Body>
+            </Modal>
+
+        </div>);
+    };
+
+    modal_membership_list = () => {
+        return (<div>
+            <Modal
+                show={this.state.showMemberList}
+                onHide={this.closeMembershipList}
+                aria-labelledby="example-modal-sizes-title-sm"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="example-modal-sizes-title-sm">
+                        Membership List
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {this.state.org.emailList.map(email => (
+                        <p>{email}</p>
+                    ))}
+                    <Button variant="success" type="button" onClick={this.closeMembershipList}>
                         Done
                     </Button>
                 </Modal.Body>
@@ -656,9 +693,7 @@ class AdminHome extends React.Component {
         }
 
         if (this.state.org.announcements !== undefined) {
-            console.log(this.state.announcementJSONs)
             showAnnouncements = this.state.announcementJSONs.map(announcement => {
-                console.log(announcement.annDetail)
                 return <EachAnn announcement={announcement} clubRef={this.state.org_id}{...this.props}  />;
             });
         }
@@ -692,7 +727,6 @@ class AdminHome extends React.Component {
                             {showEvents}
                         </div>
                         <div className={"mt-5"} style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
-                            {/*console.log(this.state.announcementJSONs)*/}
                             {showAnnouncements}
                         </div>
 
@@ -708,7 +742,6 @@ class AdminHome extends React.Component {
         // if (check_login_type() === 'user') {
         //     this.view_switch_login();
         // }
-
         return (
             <div>
                 {/*start the rest of the page*/}
