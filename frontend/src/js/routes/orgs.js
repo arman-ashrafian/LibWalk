@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import "../../css/orgs.css";
 import NavBar from "../navbar";
@@ -35,6 +36,10 @@ class Orgs extends React.Component {
   /* Update user data from Firebase*/
   componentDidMount() {
     getClub(this.props.location.state.club_id).then(clubInfo => {
+      if (clubInfo === undefined) {
+        return;
+      }
+
       this.setState({
         club_id: this.props.location.state.club_id,
         club: clubInfo
@@ -43,9 +48,13 @@ class Orgs extends React.Component {
 
     /* Authentication */
     db.auth().onAuthStateChanged(firebaseUser => {
-      if (firebaseUser && firebaseUser.providerData[0].providerId === "google.com") {
+      if (firebaseUser) {
         // getUser using userId and check if they're already subscribed
         getUser(firebaseUser.uid).then(json => {
+          if (json === undefined) {
+            return;
+          }
+
           this.setState({
             user_id: firebaseUser.uid,
             subscribed: json["subscriptions"].includes(this.state.club_id),
@@ -61,8 +70,11 @@ class Orgs extends React.Component {
   /* Check what clubs user subcribe to */
   async handleSubscribe() {
     if (!this.state.subscribed) {
+      if (this.state.user.subscriptions === undefined) {
+        return;
+      }
       this.state.user.subscriptions.push(this.state.club_id);
-      this.state.club.emailList.push(this.state.user_id);
+      this.state.club.emailList.push(this.state.user.email);
     } else {
       const newSubs = this.state.user.subscriptions.filter(
         item => item !== this.state.club_id
@@ -85,13 +97,13 @@ class Orgs extends React.Component {
     this.setState({
       subscribed: !this.state.subscribed
     });
-    editUser(this.state.user_id, this.state.user);
-    changeClub(this.state.club_id, this.state.club);
+    await editUser(this.state.user_id, this.state.user);
+    await changeClub(this.state.club_id, this.state.club);
   }
 
   render() {
     /* Show all the clubs that user subcribe to */
-    let showEvents = [];
+    let showEvents;
     showEvents = this.state.club.eventList.map(event => {
       return <EachEvent eventId={event} admin={false} {...this.props} />;
     });

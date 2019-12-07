@@ -58,7 +58,7 @@ class Calendar extends React.Component {
         );
     }
 
-    calendar_title(props) {
+    calendar_title() {
         return (
             <div className="wow fadeIn">
                 <h4 className="h2 text-center mb-5">{this.props.name}</h4>

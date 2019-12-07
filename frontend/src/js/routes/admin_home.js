@@ -1,9 +1,11 @@
+/* eslint-disable */
 import React from 'react'
-import {changeClub, changeEvent, changeTag, createAnnouncements, getClub} from "../cloud";
+import {accessAnnouncements, changeClub, changeEvent, changeTag, createAnnouncements, getClub} from "../cloud";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import EachEvent from "./eachEvent"
+import EachAnn from "./eachAnn"
 import db from "../../firebase.js";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -11,7 +13,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import ListGroup from "react-bootstrap/ListGroup";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
+
 
 
 /**
@@ -19,6 +21,7 @@ import ListGroupItem from "react-bootstrap/ListGroupItem";
  */
 class AdminHome extends React.Component {
     // class and overridden methods
+    // noinspection DuplicatedCode,DuplicatedCode
     constructor(props) {
         super(props);
 
@@ -30,6 +33,7 @@ class AdminHome extends React.Component {
             createAnn: false,
             org_id: "",
             tag: "",
+            announcementJSONs: [],
             org: {
                 clubReference: '',
                 clubName: '',
@@ -43,14 +47,15 @@ class AdminHome extends React.Component {
                 eventList: []
             },
             event: {
+				clubHosting: '',
                 eventReference: '',
                 description: '',
                 eventName: '',
                 location: '',
                 pictureURL: '',
                 rsvpForm: '',
-                time: '',
-                clubHosting: ''
+				date: '',
+                time: {}
             },
             tagInfo: {
                 clubs: [],
@@ -60,7 +65,8 @@ class AdminHome extends React.Component {
                 annDetail: '',
                 time: '',
                 annReference: ''
-            }
+            },
+            members: []
         };
         this.closeInfo = this.closeInfo.bind(this);
         this.closeTag = this.closeTag.bind(this);
@@ -101,18 +107,29 @@ class AdminHome extends React.Component {
                             emailList: 'Failure getClub()',
                             announcements: 'Failure getClub()'
 
-                        })
-
+                        });
+                        //alert("Firebase usage exceeded, refresh page in a minute.");
+                        return;
                     } else {
-                        console.log(clubInfo)
                         this.setState({
                             org: clubInfo
                         })
+                        let announcementJSONs = []
+                        this.state.org.announcements.slice(0, 3).forEach(announcement => {
+                            accessAnnouncements(announcement).then(json =>{
+                                announcementJSONs.push(json)
+                                this.setState({
+                                    announcementJSONs: announcementJSONs
+                                })
+                            })
+                        })
+
                     }
 
                 })
             }
         });
+
     }
 
     // Handler Methods
@@ -142,10 +159,10 @@ class AdminHome extends React.Component {
     async deleteTag(e) {
         await this.setState({
             tag: e
-        })
+        });
         // Remove tag from club
-        const newTags = [...this.state.org.tags]
-        const index = newTags.indexOf(this.state.tag.toLowerCase())
+        const newTags = [...this.state.org.tags];
+        const index = newTags.indexOf(this.state.tag.toLowerCase());
         if (index > -1) {
             newTags.splice(index, 1);
         }
@@ -155,11 +172,11 @@ class AdminHome extends React.Component {
                 ...this.state.org,
                 tags: newTags
             }
-        })
+        });
 
         // Remove club from tag
-        const newTagClubs = [...this.state.tagInfo.clubs]
-        const clubIndex = newTagClubs.indexOf(this.state.org.clubReference)
+        const newTagClubs = [...this.state.tagInfo.clubs];
+        const clubIndex = newTagClubs.indexOf(this.state.org.clubReference);
         if (clubIndex > -1) {
             newTagClubs.splice(clubIndex, 1);
         }
@@ -178,10 +195,7 @@ class AdminHome extends React.Component {
         //console.log(e)
         await this.setState({
             tag: e.target[0].value.toLowerCase()
-        })
-
-        console.log(this.state.org.tags)
-
+        });
 
         //add tag to club
         if (this.state.org.tags.includes(this.state.tag) === false) {
@@ -195,9 +209,7 @@ class AdminHome extends React.Component {
 
         await this.setState({
             tags: [...this.state.tagInfo.clubs]
-        })
-
-        console.log(this.state.org.tags)
+        });
     }
 
     /**
@@ -205,7 +217,7 @@ class AdminHome extends React.Component {
      *
      */
     async editHandleTag() {
-        await changeTag(this.state.tag, this.state.tagInfo)
+        await changeTag(this.state.tag, this.state.tagInfo);
         await changeClub(this.state.org.clubReference, this.state.org);
         this.closeTag();
     };
@@ -221,12 +233,16 @@ class AdminHome extends React.Component {
             alert('Please make sure to have name, location, date, time, and description');
             return;
         }
+		let date = new Date(e.target[2].value + "T" + e.target[3].value + ":00");
+		var firebase = require('firebase');
+		let timeStamp = new firebase.firestore.Timestamp.fromDate(date);
         await this.setState({
             event: {
+				clubHosting: this.state.org.clubReference,
                 eventName: e.target[0].value,
                 location: e.target[1].value,
-                date: e.target[2].value,
-                time: e.target[3].value,
+				date: e.target[2].value,
+                time: timeStamp,
                 pictureURL: e.target[4].value,
                 description: e.target[5].value,
                 rsvpForm: e.target[6].value,
@@ -234,13 +250,10 @@ class AdminHome extends React.Component {
                 clubHosting: this.state.org_id
             }
         });
-
-        console.log(this.state.event.eventReference);
         await db.firestore().collection("Events").doc(this.state.event.eventReference).get()
             .then((doc) => {
                 if (doc.exists) {
                     alert('You already have an event like this');
-                    return;
                 } else {
                     changeEvent(this.state.event.eventReference, this.state.event);
                     alert('Event Created');
@@ -248,14 +261,14 @@ class AdminHome extends React.Component {
                 }
             });
 
-        const newEventList = [...this.state.org.eventList]
-        newEventList.push(this.state.event.eventReference)
+        const newEventList = [...this.state.org.eventList];
+        newEventList.push(this.state.event.eventReference);
         this.setState({
             org: {
                 ...this.state.org,
                 eventList: newEventList
             }
-        })
+        });
         await changeClub(this.state.org.clubReference, this.state.org)
     }
 
@@ -276,13 +289,12 @@ class AdminHome extends React.Component {
                 annReference: this.state.org.clubReference + e.target[0].value
             }
 
-        })
-        console.log(this.state.annReference);
+        });
         await db.firestore().collection("Announcements").doc(this.state.announcement.annReference).get()
             .then((doc) => {
                 if (doc.exists) {
                     alert('You already have an announcement like this');
-                    return;
+
                 } else {
                     createAnnouncements(this.state.announcement.annReference, this.state.announcement);
                     alert('Announcement Created');
@@ -291,22 +303,23 @@ class AdminHome extends React.Component {
 
             });
 
-        const newAnnList = [...this.state.org.announcements]
-        newAnnList.unshift(this.state.announcement.annReference)
+        const newAnnList = [...this.state.org.announcements];
+        newAnnList.unshift(this.state.announcement.annReference);
         this.setState({
             org: {
                 ...this.state.org,
                 announcements: newAnnList
             }
-        })
+        });
         await changeClub(this.state.org.clubReference, this.state.org)
+        window.location.reload()
     }
 
     /**
      * Handles the authorization logic for logging out
      */
     handleLogOut() {
-        db.auth().signOut().then((result) => {
+        db.auth().signOut().then(() => {
             this.setState({
                 org: null
             })
@@ -328,6 +341,9 @@ class AdminHome extends React.Component {
         this.setState({editTag: true})
     };
 
+    /**
+     * Handles the state change on creating an organization's event.
+     */
     handleCreateEvent = () => {
         this.setState({createEvent: true})
     };
@@ -343,8 +359,9 @@ class AdminHome extends React.Component {
      * Handles the state change when you edit and org's announcement.
      */
     showMembershipList = () => {
-        console.log("show members")
-        this.setState({showMemberList: true})
+        this.setState({
+            showMemberList: true
+        })
     };
 
     // Action Methods
@@ -494,35 +511,9 @@ class AdminHome extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <Table striped bordered hover variant="light">
-                    <thead>
-                        <tr>
-                        <th>Member Name</th>
-                        <th>Member Email</th>
-                        <th>Major</th>
-                        <th>Year</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.org.emailList.map(email => (
-                            db.firestore().collection('Users').where('email', '==', email).get()
-                                .then(snapshot => {
-                                    snapshot.forEach(doc => {
-                                        console.log(doc.id, '=>', doc.data());
-                                        return (                     
-                                        <tr>
-                                            <td>{doc.data().name}</td>
-                                            <td>{}</td>
-                                            <td>CS</td>
-                                            <td>Junior</td>
-                                        </tr>
-                                        )
-                                    });
-                                })
-
-                        ))}
-                    </tbody>
-                    </Table>
+                    {this.state.org.emailList.map(email => (
+                        <p>{email}</p>
+                    ))}
                     <Button variant="success" type="button" onClick={this.closeMembershipList}>
                         Done
                     </Button>
@@ -637,7 +628,6 @@ class AdminHome extends React.Component {
                                 <Form.Label>RSVP (Google Form, TypeForm, SurveyMonkey, others...)</Form.Label>
                                 <Form.Control type="url" placeholder="Enter RSVP URL"/>
                             </Form.Group>
-                            {/*todo add form verification*/}
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
@@ -679,7 +669,6 @@ class AdminHome extends React.Component {
                                 <Form.Control type="timeS" defaultValue={new Date()}/>
                             </Form.Group>
 
-                            {/*todo add form verification*/}
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
@@ -696,9 +685,16 @@ class AdminHome extends React.Component {
     admin_panel_view = () => {
         //console.log('Org Data' + JSON.stringify(this.state.org));
         let showEvents = [];
+        let showAnnouncements = [];
         if (this.state.org.eventList !== undefined) {
             showEvents = this.state.org.eventList.map(event => {
                 return <EachEvent eventId={event} admin={true} clubId={this.state.org_id}{...this.props} />;
+            });
+        }
+
+        if (this.state.org.announcements !== undefined) {
+            showAnnouncements = this.state.announcementJSONs.map(announcement => {
+                return <EachAnn announcement={announcement} clubRef={this.state.org_id}{...this.props}  />;
             });
         }
         return (
@@ -729,6 +725,9 @@ class AdminHome extends React.Component {
 
                         <div style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
                             {showEvents}
+                        </div>
+                        <div className={"mt-5"} style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
+                            {showAnnouncements}
                         </div>
 
                     </Card.Body>

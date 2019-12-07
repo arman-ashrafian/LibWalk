@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import NavBar from "../navbar";
 import "../../css/dopeStyle.css";
@@ -5,7 +6,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { club_list, getClubs } from "../cloud";
+import { getClubs } from "../cloud";
 import CardDeck from "react-bootstrap/CardDeck";
 import Card from "react-bootstrap/Card";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -25,10 +26,8 @@ class Search extends React.Component {
     if (this.state.orgs === undefined) {
       this.state = {
         orgs: []
-      }
+      };
     }
-
-
 
     this.searchByKeyword = this.searchByKeyword.bind(this);
     this.searchByTags = this.searchByTags.bind(this);
@@ -38,17 +37,18 @@ class Search extends React.Component {
   }
 
   componentDidMount() {
-    getClubs().then(clubList =>{
+    getClubs().then(clubList => {
+      if (clubList === undefined) {
+        return;
+      }
+
       this.setState({
         orgs: clubList["clubs"]
-      })
-    })
-
+      });
+    });
   }
 
   render() {
-    const { orgs } = this.state;
-
     return (
       <div>
         <NavBar {...this.props} />
@@ -130,8 +130,8 @@ class Search extends React.Component {
 
   org_grid = orgs => {
     let grid_items = [];
-    var numcols = 4;
-    var numrows = 1;
+    let numcols = 4;
+    let numrows = 1;
     //Change the number of cols to properly accomodate small results
     if (orgs.length < 4) {
       numcols = orgs.length;
@@ -142,8 +142,8 @@ class Search extends React.Component {
       numrows = Math.ceil(numrows);
     }
 
-    orgs.forEach((e) => {
-        grid_items.push(this.org_grid_component(e));
+    orgs.forEach(e => {
+      grid_items.push(this.org_grid_component(e));
     });
 
     let grid = [];
@@ -195,7 +195,7 @@ class Search extends React.Component {
 
   //Go through the orgs and add a the found orgs to the results
   searchByKeyword(keyword) {
-    var searchedOrgs = [];
+    let searchedOrgs = [];
 
     //If the keyword is empty, do not do anything
     if (keyword.length === 0) {
@@ -203,7 +203,7 @@ class Search extends React.Component {
     }
 
     this.state.orgs.forEach(function(e) {
-      var org = Object.values(e)[0];
+      let org = Object.values(e)[0];
       if (org.clubName.toLowerCase().includes(keyword.toLowerCase())) {
         searchedOrgs.push(e);
       }
@@ -218,10 +218,10 @@ class Search extends React.Component {
 
   //Searches the clubs based on tags.  tags param is a string of tags
   searchByTags(tagString) {
-    var currentOrgs = [...this.state.orgs]; //Current orgs during the algorithm
+    let currentOrgs = [...this.state.orgs]; //Current orgs during the algorithm
 
     //First cut up the string into a list of strings
-    var tags = tagString.split(",");
+    let tags = tagString.split(",");
     console.log(tags);
     //If the keyword is empty, do not do anything
     if (tags.length === 0 || tagString.length === 0) {
@@ -231,13 +231,13 @@ class Search extends React.Component {
     //Iterate through each searched tag
     tags.forEach(function(tag) {
       //Iterate through all orgs still in the list
-      var i = currentOrgs.length;
+      let i = currentOrgs.length;
       while (i--) {
         let org = Object.values(currentOrgs[i])[0];
         if (!org.tags) {
           currentOrgs.splice(i, 1);
         } else {
-          var match = false;
+          let match = false;
           org.tags.forEach(function(orgTag) {
             //Check non case sensitive
             if (orgTag.toLowerCase() === tag.toLowerCase().trim()) {
@@ -267,32 +267,39 @@ class Search extends React.Component {
         club_id: club_id
       }
     });
+    window.location.reload();
   }
 
   org_grid_component = org => {
     org = Object.values(org)[0];
-    org.img = "https://ca-times.brightspotcdn.com/dims4/default/9c3ea25/2147483647/strip/true/crop/1600x854+0+0/resize/840x448!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ffd%2Fc6%2Fe58081f27535c976921b49239f35%2Fla-me-0516-ucsd-fundraising-20160516-001";; 
-	if (org.pictureURL != "") {
-		org.img = org.pictureURL;
-	} 
-  
+    org.img = "https://picsum.photos/150/50";
+
+    if (org.pictureURL !== "") {
+      org.img = org.pictureURL;
+    }
     return (
       <div>
         {/*<Card style={{width: '18rem'}}>*/}
-        <a onClick={() => {this.redirectToClubDetails(org.clubReference)}}>
+        <a
+          onClick={() => {
+            this.redirectToClubDetails(org.clubReference);
+          }}
+        >
           <Card
-            style={{ width: "20rem", height: "15rem" }}
+            style={{ width: "20rem", height: "13rem" }}
             className="text-center"
           >
-            <Card.Img variant="top" src={org.img} style={{
-              width: '100%',
-              height: '15vh',
-              'object-fit': 'cover'
-            }}/>
+            <Card.Img
+              variant="top"
+              src={org.img}
+              style={{
+                width: "100%",
+                height: "15vh",
+                "object-fit": "cover"
+              }}
+            />
             <Card.Body className="text-center">
-                <Card.Title>
-                  {org.clubName}
-                </Card.Title>
+              <Card.Title>{org.clubName}</Card.Title>
             </Card.Body>
           </Card>
         </a>
@@ -300,6 +307,5 @@ class Search extends React.Component {
     );
   };
 }
-
 
 export default Search;

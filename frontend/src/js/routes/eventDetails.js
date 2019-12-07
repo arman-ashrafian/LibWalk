@@ -1,4 +1,5 @@
-﻿import React from "react";
+﻿/* eslint-disable */
+import React from "react";
 import "../../css/bootstrap.min.css";
 import "../../css/mdb.lite.min.css";
 import "../../css/style.min.css";
@@ -6,10 +7,8 @@ import NavBar from "../navbar";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
-import { getUserEvents, getUser } from "../cloud";
+import { getUserEvents } from "../cloud";
 import db from "../../firebase";
-
-import { Divider } from "@material-ui/core";
 
 class Events extends React.Component {
   constructor(props) {
@@ -29,6 +28,9 @@ class Events extends React.Component {
         console.log(firebaseUser.uid);
         // getUser using userId and populate this.state
         getUserEvents(firebaseUser.uid).then(events => {
+          if (events === undefined) {
+            return;
+          }
           this.setState({
             userId: firebaseUser.uid,
             events: events
@@ -45,6 +47,7 @@ class Events extends React.Component {
     let event = {};
     let eventHTML = [];
     for (const eventKey in this.state.events) {
+      // noinspection JSUnfilteredForInLoop
       event = this.state.events[eventKey];
       eventHTML.push(
         <Card key={eventKey} style={{ width: "20rem" }}>

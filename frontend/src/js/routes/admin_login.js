@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import '../../css/bootstrap.min.css'
 import '../../css/style.min.css'
@@ -16,29 +17,42 @@ const auth = db.auth();
 // 		.then((resp) => resp.json());
 // };
 
-
+/**
+ * This class shows the page for the administrator to edit and manage their org, as well as send out announcements. *
+ */
 class AdminLogin extends React.Component {
+
+    /**
+     * Constructor, called when app is run.
+     *
+     * @param props parent properties.
+     */
     constructor(props) {
         super(props);
         this.state = {
             adminId: "",
             login: true
         };
-        this.handleLoginWithEmail = this.handleLoginWithEmail.bind(this)
+        this.handleLoginWithEmail = this.handleLoginWithEmail.bind(this);
         this.registerTime = this.registerTime.bind(this);
     }
 
+    /**
+     * Handles the login for the administrator, using their google email.
+     * @param e email to register with.
+     * @return {Promise<void>}
+     */
     async handleLoginWithEmail(e) {
         try {
             e.preventDefault();
             db.auth()
                 .signInWithEmailAndPassword(e.target[0].value, e.target[1].value)
-                .then((user) => {
+                .then(() => {
                     console.log("success")
                 })
                 .catch(function (error) {
-                    var error_code = error.code;
-                    var error_msg = error.message;
+                    let error_code = error.code;
+                    let error_msg = error.message;
                     if (error_code === 'auth/wrong-password') {
                         alert("Wrong password");
                     } else {
@@ -47,10 +61,10 @@ class AdminLogin extends React.Component {
                 });
             auth.onAuthStateChanged((user) => {
                 if (user && user.providerData[0].providerId === "password") {
-                    this.setState({adminId: user.uid})
+                    this.setState({adminId: user.uid});
                     db.firestore().collection("Clubs").doc(user.uid).get()
                         .then((doc) => {
-                            console.log(doc)
+                            console.log(doc);
                             if (doc.exists) {
                                 this.props.history.push('/admin_home');
                             } else {
@@ -64,18 +78,27 @@ class AdminLogin extends React.Component {
         }
     };
 
+    /**
+     * Re-routes the user to the home page after a user has logged in.
+     */
     view_switch_user_login = () => {
         this.props.history.push('/login');
     };
 
+    /**
+     * Changes the state to reflect that the user has registered, but not logged in.
+     */
     registerTime = () => {
         this.setState({login: false})
     };
 
+    /**
+     * Changes the state to reflect that a user has logged in.
+     */
     loginTime = () => {
-
         this.setState({login: true})
     };
+
 
     render() {
         return (
@@ -102,13 +125,15 @@ class AdminLogin extends React.Component {
                                     </div>
                                 </div>
                                 {/* Sign in button */}
-                                <button className="btn btn-info btn-block my-4" type="submit"  href={'#'}>Sign in</button>
+                                <button className="btn btn-info btn-block my-4" type="submit">Sign in
+                                </button>
                                 {/* Register */}
                                 <p>Not a member?
-                                    <a href={'#'} onClick={this.registerTime} style={{color: "#4169E1"}}  > Register</a>
+                                    <a href={'#'} onClick={this.registerTime} style={{color: "#4169E1"}}> Register</a>
                                 </p>
                                 <p>Logging in as a student?
-                                    <a href={'#'} onClick={this.view_switch_user_login} style={{color: "#4169E1"}} > Student Log
+                                    <a href={'#'} onClick={this.view_switch_user_login}
+                                       style={{color: "#4169E1"}}> Student Log
                                         In</a>
                                 </p>
                             </Form>
@@ -145,7 +170,7 @@ class AdminLogin extends React.Component {
                                 <button className="btn btn-info btn-block my-4" type="submit">Create Account</button>
                                 {/* Register */}
                                 <p>Already registered?
-                                    <a onClick={this.loginTime}  href={'#'}> Login</a>
+                                    <a onClick={this.loginTime} href={'#'}> Login</a>
                                 </p>
                             </Form>
                         </Container>
