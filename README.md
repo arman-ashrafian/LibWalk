@@ -1,30 +1,33 @@
 # LibWalk
 
-### Github Workflow
-You are assigned ticket #5 which tells you to implement a new feature.
+## Introduction:
+The infamous Library Walk at UCSD is jam-packed , especially during the first few weeks of classes during Fall Quarter when student organizations on campus swarm by-walkers with vigorous flyer distribution in order to recruit more members. Although student organizations are an essential part of contributing to an active campus, the whole recruiting process is chaotic and unorganized.
 
+LibWalk, a centralized platform to connect students and student organizations on campus, aims to streamline this process and provide UCSD students with a pleasant experience of finding and managing their student organization involvement. With LibWalk, students will be able to search and filter through organizations that align with their interests, subscribe to the student organizations, and manage the organizations' events in an efficient manner. In addition, LibWalk provides student organizations with the tools to manage all information and events at one place, alleviating the administrative burdens and allowing student organizations to instead focus on the quality of their content and events that they execute.
 
-```
-git pull origin master      # get latest code
-git checkout -b feature/5   # create new branch and check it out
+## Login Credentials:
+Student accounts: Any UCSD login credentials
 
-# make some changes to the code... 
-# you can make as many commits to your branch as you want
+Admin (student org) accounts:
+Prepopulated - (vgdc@ucsd.edu, TeieGmDvlp)
+Not populated - (os-ucsd@eng.ucsd.edu, OeSucCDSsn)
+All - https://docs.google.com/spreadsheets/d/1MXptmgQAFEoKlZ354dIjvQDT_cRBhCq8y9rafuMcSAY/edit?usp=sharing
 
-git add -A
-git commit -m "commit message"
+## Requirements:
+Internet connection
 
-git push origin feature/5   # push your branch to github
-```
-When you are ready to make a pull request just go to GitHub because its easier to see the conflicts and comments etc. Any pull request should be reviewed and approved by at least 1 other teammates. 
+## Installation Instruction:
+Run the following commands:
+`git clone https://github.com/arman-ashrafian/LibWalk.git`
+`cd LibWalk`
+`cd frontend/`
+`npm install`
 
-Here is a useful [link](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) on creating pull requests in Github. 
+## How to Run:
+`cd LibWalk/frontend/`
+`npm start`
 
-# Coding Stuff
+## Known Bugs:
+We implemented local caching with a certain time threshold to prevent going over the Firebase quota limitation, so when editing club info, the updated information might not reflect right away due to our use of the local cache.
 
-### Events Page
-
-The Events Page will query for events using the `getUserEvents(userId)` cloud function. That function will query the events collection based on the user's subscriptions. This means that in order for the page to display some events:
-
-1. The user must have some subscriptions
-2. There must exist some Events where the `event.clubsHosting` array contains at least one of the orgs that the user is subscribed to 
+Sometimes async functions that call Firestore cloud functions return undefined due to too many requests being sent.
