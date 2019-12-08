@@ -9,8 +9,11 @@ LibWalk, a centralized platform to connect students and student organizations on
 Student accounts: Any UCSD login credentials
 
 Admin (student org) accounts:
+
 Prepopulated - (vgdc@ucsd.edu, TeieGmDvlp)
-Not populated - (os-ucsd@eng.ucsd.edu, OeSucCDSsn)
+
+Not populated - (os-ucsd@eng.ucsd.edu, OeSucCDSsn).
+
 All - https://docs.google.com/spreadsheets/d/1MXptmgQAFEoKlZ354dIjvQDT_cRBhCq8y9rafuMcSAY/edit?usp=sharing
 
 ## Requirements:
@@ -18,14 +21,18 @@ Internet connection
 
 ## Installation Instruction:
 Run the following commands:
-`git clone https://github.com/arman-ashrafian/LibWalk.git`
-`cd LibWalk`
-`cd frontend/`
-`npm install`
+```
+git clone https://github.com/arman-ashrafian/LibWalk.git
+cd LibWalk
+cd frontend/
+npm install
+```
 
 ## How to Run:
-`cd LibWalk/frontend/`
-`npm start`
+```
+cd LibWalk/frontend/
+npm start
+```
 
 ## Known Bugs:
 We implemented local caching with a certain time threshold to prevent going over the Firebase quota limitation, so when editing club info, the updated information might not reflect right away due to our use of the local cache.
