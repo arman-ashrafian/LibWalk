@@ -5,6 +5,8 @@ The infamous Library Walk at UCSD is the central for pedestrian traffic, especia
 
 LibWalk, a centralized platform to connect students and student organizations on campus, aims to streamline this process and provide UCSD students with a pleasant experience of finding and managing their student organization involvement. With LibWalk, students will be able to search and filter through organizations that align with their interests, subscribe to the student organizations, and manage the organizations' events in an efficient manner. In addition, LibWalk provides student organizations with the tools to manage all information and events at one place, alleviating the administrative burdens and allowing student organizations to instead focus on the quality of their content and events that they execute.
 
+Here is the link to the website: https://libwalk-721c2.firebaseapp.com/
+
 ## Login Credentials:
 Student accounts: Any UCSD login credentials
 
